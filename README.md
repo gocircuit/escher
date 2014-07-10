@@ -19,7 +19,8 @@ might be an informative (but not necessary) read for the theoretically inclined.
 ## Meaning
 
 An Escher program is a collection of interconnected _reflexes_. A reflex, the only
-abstraction in Escher, 
+abstraction in Escher, represents an independent computing entity that can interact
+with the “outside” world through a collection of named _valves_.
 
 ![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 

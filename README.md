@@ -18,5 +18,5 @@ might be an informative (but not necessary) read for the theoretically inclined.
 
 ## Meaning
 
-![An Escher reflex.](https://raw.githubusercontent.com/gocircuit/escher/master/misc/img/escher-reflex.png)
+![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 

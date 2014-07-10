@@ -23,7 +23,7 @@ abstraction in Escher, represents an independent computing entity that can inter
 with the “outside” world through a collection of named _valves_.
 
 The illustration below shows a reflex, named “AND”, which has three valves,
-named “X”, “Y” and “X and Y”, respectively.
+named “X”, “Y” and `XandY`, respectively.
 
 ![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 

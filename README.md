@@ -27,7 +27,9 @@ named `X`, `Y` and `XandY`, respectively.
 
 ![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 
-A reflex can be implemented in another technology or it can be composed of pre-existing ones.
+A reflex can be implemented in another technology (currently only the 
+[Go Programming Language](http://golang.org) is supported
+as an external technology) or it can be composed of pre-existing ones.
 The former is called a _gate_, while the latter is called a _circuit_.
 
 ### Gates

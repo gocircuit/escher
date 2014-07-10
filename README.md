@@ -1,7 +1,7 @@
 # Escher
 
 Escher is a progrmaming language for everything. It can naturally represent both process and data,
-while being simpler than a calculator.
+while being simpler than a calculator. The remainder of this page constitutes a complete documentation.
 
 Some of the application domains of Escher are:
 
@@ -15,3 +15,5 @@ Some of the application domains of Escher are:
 An early “proposal” for the design of Escher, 
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),
 might be an informative (but not necessary) read for the theoretically inclined.
+
+## 

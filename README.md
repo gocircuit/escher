@@ -20,10 +20,17 @@ might be an informative (but not necessary) read for the theoretically inclined.
 
 An Escher program is a collection of interconnected _reflexes_. A reflex, the only
 abstraction in Escher, represents an independent computing entity that can interact
-with the “outside” world through a collection of named _valves_.
+with the “outside world” through a collection of named _valves_.
 
 The illustration below shows a reflex, named `AND`, which has three valves,
 named `X`, `Y` and `XandY`, respectively.
 
 ![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
+
+A reflex can be implemented in another technology or it can be composed of pre-existing ones.
+The former is called a _gate_, while the latter is called a _circuit_.
+
+### Gates
+
+### Circuits
 

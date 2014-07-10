@@ -18,5 +18,8 @@ might be an informative (but not necessary) read for the theoretically inclined.
 
 ## Meaning
 
+An Escher program is a collection of interconnected “reflexes”. A _reflex_ is the main and only
+abstraction in Escher. 
+
 ![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 

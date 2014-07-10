@@ -16,4 +16,7 @@ An early “proposal” for the design of Escher,
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),
 might be an informative (but not necessary) read for the theoretically inclined.
 
-## 
+## Meaning
+
+![An Escher reflex.](https://raw.githubusercontent.com/gocircuit/escher/master/misc/img/escher-reflex.png)
+

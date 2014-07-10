@@ -22,8 +22,8 @@ An Escher program is a collection of interconnected _reflexes_. A reflex, the on
 abstraction in Escher, represents an independent computing entity that can interact
 with the “outside” world through a collection of named _valves_.
 
-The illustration below shows a reflex, named “AND”, which has three valves,
-named “X”, “Y” and `XandY`, respectively.
+The illustration below shows a reflex, named `AND`, which has three valves,
+named `X`, `Y` and `XandY`, respectively.
 
 ![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 

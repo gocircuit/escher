@@ -72,6 +72,10 @@ Coming soon.
 
 Coming soon.
 
+## The future collapsed
+
+I envision that in the natural course of action at play, …
+
 ## And…
 
 …if you think this language is `#KingOfMetaphor`, please, tweet to

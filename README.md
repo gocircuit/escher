@@ -54,7 +54,7 @@ Circuits are a composition of a few reflexes.
 
 ### Data (Noun) gates
 
-??
+![Impression of the mind](https://github.com/gocircuit/escher/raw/master/misc/img/impress.png)
 
 ### Arithmetic (Applying) gates
 

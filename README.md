@@ -85,5 +85,7 @@ I envision that in the natural course of action at play, …
 …if you want to inquire about the science behind [@escherio](https://twitter.com/escherio), tweet to me,
 Petar [@maymounkov](https://twitter.com/maymounkov).
 
-…or, lose yourself in the [initial thoughts](http://www.maymounkov.org/puzzle-test-turing-test) that
+…or, lose yourself in the 
+[initial](http://www.maymounkov.org/chomsky-valiant-algorithmic-mirror)
+[thoughts](http://www.maymounkov.org/puzzle-test-turing-test) that
 led to the invention of Escher.

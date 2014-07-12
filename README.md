@@ -43,9 +43,9 @@ Circuits are a composition of a few reflexes.
 
 ## Data and transformation gates
 
-### Arithmetic gates
+### Arithmetic (Application) gates
 
-### The Reasoning Gate 
+### The Reasoning (Learning) Gate
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
@@ -55,10 +55,10 @@ Circuits are a composition of a few reflexes.
 
 ## Introspective and extrospective gates
 
-## The Fractal Gate
+## The Fractal (Exploiting) Gate
 
 Coming soon.
 
-## The Escher Gate
+## The Escher (Teaching) Gate
 
 Coming soon.

@@ -47,6 +47,8 @@ Circuits are a composition of a few reflexes.
 
 ![Explanation](https://github.com/gocircuit/escher/raw/master/misc/img/explanation.png)
 
+![Prediction](https://github.com/gocircuit/escher/raw/master/misc/img/prediction.png)
+
 ### Fractal and Escher gates
 
 Coming soon.

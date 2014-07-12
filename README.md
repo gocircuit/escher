@@ -42,7 +42,7 @@ Circuits are a composition of a few reflexes.
 
 ![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
-## Syntax and file-directory structure
+## Syntax (files) and faculties (directories) structure
 
 	// The main circuit is always the one materialized (executed).
 	main {
@@ -56,9 +56,13 @@ Circuits are a composition of a few reflexes.
 
 ![Impression of the mind](https://github.com/gocircuit/escher/raw/master/misc/img/impress.png)
 
+### Combinator (Manipulator) gates
+
+![Grammar manipulation gates](https://github.com/gocircuit/escher/raw/master/misc/img/combine.png)
+
 ### Arithmetic (Applying) gates
 
-??
+Coming soon.
 
 ### The Reason (Learning) Gate
 

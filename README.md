@@ -29,10 +29,16 @@ named `X`, `Y` and `XandY`, respectively.
 
 A reflex can be implemented in another technology (currently only the 
 [Go Programming Language](http://golang.org) is supported
-as an external technology) or it can be composed of pre-existing ones.
+as an external technology) or it can be composed of pre-existing reflexes.
 The former is called a _gate_, while the latter is called a _circuit_.
 
 ### Gates
 
 ### Circuits
 
+### Basis gates
+
+![Enumerative explication.](https://github.com/gocircuit/escher/raw/master/misc/img/enumerative-explication.png)
+
+
+Circuits are a composition of a few reflexes. 

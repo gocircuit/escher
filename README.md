@@ -38,6 +38,8 @@ The former is called a _gate_, while the latter is called a _circuit_.
 
 Circuits are a composition of a few reflexes. 
 
+![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
+
 ## Syntax
 
 	// The main circuit is always the one materialized (executed).
@@ -45,8 +47,6 @@ Circuits are a composition of a few reflexes.
 		s @show
 		s = "¡Hello, world!"
 	}
-
-![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
 ## Data  and transformation (Sentence) gates
 

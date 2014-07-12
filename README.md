@@ -41,7 +41,9 @@ Circuits are a composition of a few reflexes.
 ![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
 
-## Data (Noun) and transformation (Verb) gates
+## Data  and transformation (Sentence) gates
+
+### Data (Noun) gates
 
 ### Arithmetic (Applying) gates
 

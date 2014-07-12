@@ -36,11 +36,17 @@ The former is called a _gate_, while the latter is called a _circuit_.
 
 ### Circuits
 
-### Basis gates
+Circuits are a composition of a few reflexes. 
+
+![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
+
+
+### Data and transformation gates
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
 ![Explanation](https://github.com/gocircuit/escher/raw/master/misc/img/explanation.png)
 
+### Fractal and Escher gates
 
-Circuits are a composition of a few reflexes. 
+Coming soon.

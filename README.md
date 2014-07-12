@@ -75,5 +75,5 @@ Coming soon.
 ## And…
 
 …if you think this language is King of Metaphor, please, tweet to
-[@StephenAtHome](https://twitter/StephenAtHome) that his title of
+[@StephenAtHome](https://twitter.com/StephenAtHome) that his title of
 King of Metaphor is being challenged.

@@ -74,9 +74,9 @@ Coming soon.
 
 ## And…
 
-…if you think this language is King of Metaphor, please, tweet to
+…if you think this language is `#KingofMetaphor`, please, tweet to
 [@StephenAtHome](https://twitter.com/StephenAtHome) that his title of
-King of Metaphor is being challenged.
+`#KingofMetaphor` is being challenged.
 
-…if you want to inquire about the science behind Escher, tweet to me,
+…if you want to inquire about the science behind [@escherio](https://twitter.com/escherio), tweet to me,
 Petar [@maymounkov](https://twitter.com/maymounkov).

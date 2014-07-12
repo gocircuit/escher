@@ -70,13 +70,9 @@ Circuits are a composition of a few reflexes.
 
 ## Duality gates
 
-### Variation (Surprise) gates
+### Variation (Surprise) and Causation (Action) gates
 
-??
-
-### Causation (Action) gates
-
-??
+![See and Show](https://github.com/gocircuit/escher/raw/master/misc/img/seeshow.png)
 
 ## Introspective and extrospective gates
 
@@ -90,7 +86,7 @@ Coming soon.
 
 ## The future collapsed
 
-I envision that in the natural course of action at play, …
+I envision that in the natural course of action at play, … (more coming soon).
 
 ## And…
 

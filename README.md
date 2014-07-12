@@ -25,7 +25,7 @@ with the “outside world” through a collection of named _valves_.
 The illustration below shows a reflex, named `AND`, which has three valves,
 named `X`, `Y` and `XandY`, respectively.
 
-![An Escher reflex](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
+![An Escher reflex](https://github.com/gocircuit/escher/raw/master/misc/img/design.png)
 
 A reflex can be implemented in another technology (currently only the 
 [Go Programming Language](http://golang.org) is supported

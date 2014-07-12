@@ -95,7 +95,7 @@ Coming soon.
 
 ## Introspective and extrospective gates
 
-### The Fractal (Exploiting) Gate
+### The Julia (Exploiting) Gate
 
 Coming soon.
 

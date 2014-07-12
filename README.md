@@ -43,9 +43,9 @@ Circuits are a composition of a few reflexes.
 
 ## Data and transformation gates
 
-### Arithmetic (Application) gates
+### Arithmetic (Applying) gates
 
-### The Reasoning (Learning) Gate
+### The Reason (Learning) Gate
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 

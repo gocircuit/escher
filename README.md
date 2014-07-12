@@ -42,6 +42,19 @@ Circuits are a composition of a few reflexes.
 
 ![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
+Programmatically, this gate is expressed as
+
+	nand {
+		// reflex recollections
+		and and
+		not not
+		// connections
+		not.X = and.XandY
+		XnandY = not.notX
+		and.X = X
+		and.Y = Y
+	}
+
 ## Syntax (files) and faculties (directories) structure
 
 	// The main circuit is always the one materialized (executed).

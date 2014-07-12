@@ -25,7 +25,7 @@ with the “outside world” through a collection of named _valves_.
 The illustration below shows a reflex, named `AND`, which has three valves,
 named `X`, `Y` and `XandY`, respectively.
 
-![An Escher reflex.](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
+![An Escher reflex](https://github.com/gocircuit/escher/raw/master/misc/img/escher-reflex.png)
 
 A reflex can be implemented in another technology (currently only the 
 [Go Programming Language](http://golang.org) is supported
@@ -38,7 +38,7 @@ The former is called a _gate_, while the latter is called a _circuit_.
 
 ### Basis gates
 
-![Enumerative explication.](https://github.com/gocircuit/escher/raw/master/misc/img/enumerative-explication.png)
+![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
 
 Circuits are a composition of a few reflexes. 

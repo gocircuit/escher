@@ -55,10 +55,10 @@ Circuits are a composition of a few reflexes.
 
 ## Introspective and extrospective gates
 
-## The Fractal (Exploiting) Gate
+### The Fractal (Exploiting) Gate
 
 Coming soon.
 
-## The Escher (Teaching) Gate
+### The Escher (Teaching) Gate
 
 Coming soon.

@@ -1,5 +1,7 @@
 # Escher
 
+[![Build Status](https://travis-ci.org/gocircuit/escher.svg?branch=master)](https://travis-ci.org/gocircuit/escher/escher) [![GoDoc](https://godoc.org/github.com/gocircuit/escher?status.png)](https://godoc.org/github.com/gocircuit/escher)
+
 Escher is a progrmaming language for everything. It can naturally represent both process and data,
 while being simpler than a calculator. The remainder of this page constitutes a complete documentation.
 

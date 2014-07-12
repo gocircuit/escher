@@ -40,5 +40,7 @@ The former is called a _gate_, while the latter is called a _circuit_.
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
+![Explanation](https://github.com/gocircuit/escher/raw/master/misc/img/explanation.png)
+
 
 Circuits are a composition of a few reflexes. 

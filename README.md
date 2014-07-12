@@ -40,7 +40,7 @@ Circuits are a composition of a few reflexes.
 
 ![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
-## Syntax
+## Syntax and file-directory structure
 
 	// The main circuit is always the one materialized (executed).
 	main {

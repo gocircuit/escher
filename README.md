@@ -32,18 +32,20 @@ A reflex can be implemented in another technology (currently only the
 as an external technology) or it can be composed of pre-existing reflexes.
 The former is called a _gate_, while the latter is called a _circuit_.
 
-### Gates
+## Gates
 
-### Circuits
+## Circuits
 
 Circuits are a composition of a few reflexes. 
 
 ![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
 
-### Data and transformation gates
+## Data and transformation gates
 
-#### The Reasoning Gate 
+### Arithmetic gates
+
+### The Reasoning Gate 
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
@@ -51,6 +53,12 @@ Circuits are a composition of a few reflexes.
 
 ![Prediction](https://github.com/gocircuit/escher/raw/master/misc/img/prediction.png)
 
-### Fractal and Escher gates
+## Introspective and extrospective gates
+
+## The Fractal Gate
+
+Coming soon.
+
+## The Escher Gate
 
 Coming soon.

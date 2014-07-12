@@ -34,6 +34,8 @@ The former is called a _gate_, while the latter is called a _circuit_.
 
 ## Gates
 
+??
+
 ## Circuits
 
 Circuits are a composition of a few reflexes. 
@@ -52,7 +54,11 @@ Circuits are a composition of a few reflexes.
 
 ### Data (Noun) gates
 
+??
+
 ### Arithmetic (Applying) gates
+
+??
 
 ### The Reason (Learning) Gate
 
@@ -61,6 +67,16 @@ Circuits are a composition of a few reflexes.
 ![Explanation](https://github.com/gocircuit/escher/raw/master/misc/img/explanation.png)
 
 ![Prediction](https://github.com/gocircuit/escher/raw/master/misc/img/prediction.png)
+
+## Duality gates
+
+### Variation (Surprise) gates
+
+??
+
+### Causation (Action) gates
+
+??
 
 ## Introspective and extrospective gates
 

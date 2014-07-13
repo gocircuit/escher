@@ -39,8 +39,8 @@ The former is called a _gate_, while the latter is called a _circuit_.
 
 ## Gates
 
-Gates are reflexes, whose behvaior is implemented in a the underlying technology,
-which is the Go language. From Escher's point-of-view (POV), gates are simply
+Gates are reflexes whose behvaior is implemented in a the underlying technology,
+which is the Go language, at the moment. From Escher's point-of-view (POV), gates are simply
 reflexes that broker values. But from the user's POV, gates can have “side-effects”
 in the “outside world” and, vice-versa, the outside world can prompt reflexive
 action, such as sending out a message over a valve asynchronously.

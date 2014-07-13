@@ -133,6 +133,10 @@ And the respective source code:
 
 ## Introspective and extrospective gates
 
+This special type of gates fulfills the complementary functions of
+constructing new circuit designs “dynamically” (akin to “reflection” in other languages),
+and materializing (i.e. executing) these designs. Coming soon.
+
 ### The Julia (Exploiting) Gate
 
 Coming soon.

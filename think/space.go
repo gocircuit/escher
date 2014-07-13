@@ -9,9 +9,9 @@ package think
 import (
 	"strings"
 
-	"github.com/petar/maymounkov.io/escher/kit/record"
-	"github.com/petar/maymounkov.io/escher/see"
-	"github.com/petar/maymounkov.io/escher/understand"
+	"github.com/gocircuit/escher/kit/record"
+	"github.com/gocircuit/escher/see"
+	"github.com/gocircuit/escher/understand"
 )
 
 // Space encloses the entire faculty tree of an Escher program, starting from the root.

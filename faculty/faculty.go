@@ -9,8 +9,8 @@ package faculty
 import (
 	"sync"
 
-	"github.com/petar/maymounkov.io/escher/think"
-	"github.com/petar/maymounkov.io/escher/understand"
+	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/understand"
 )
 
 // Root is a global variable where packages can add gates as side-effect of being imported.

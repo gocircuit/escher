@@ -9,7 +9,7 @@ package understand
 import (
 	"fmt"
 
-	"github.com/petar/maymounkov.io/escher/see"
+	"github.com/gocircuit/escher/see"
 )
 
 // TODO: Eventually Circuit can be represented as a record.Record

@@ -8,7 +8,7 @@ package see
 
 import (
 	// "fmt"
-	"github.com/petar/maymounkov.io/escher/kit/record"
+	"github.com/gocircuit/escher/kit/record"
 )
 
 func SeeRecord(src *Src) (rec RecordDesign, ok bool) {

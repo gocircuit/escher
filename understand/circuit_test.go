@@ -10,7 +10,7 @@ import (
 	//"fmt"
 	"testing"
 
-	"github.com/petar/maymounkov.io/escher/see"
+	"github.com/gocircuit/escher/see"
 )
 
 var src = []string{
@@ -74,5 +74,5 @@ func TestFaculty(t *testing.T) {
 		}
 	}()
 	ns := NewFaculty()
-	ns.UnderstandDirectory("/Users/petar/0/src/github.com/petar/maymounkov.io/escher/understand/testdata")
+	ns.UnderstandDirectory("/Users/petar/0/src/github.com/gocircuit/escher/understand/testdata")
 }

@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/petar/maymounkov.io/escher/see"
+	"github.com/gocircuit/escher/see"
 )
 
 func (x *Circuit) Print(prefix, indent string) string {

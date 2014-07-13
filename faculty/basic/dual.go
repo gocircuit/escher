@@ -9,9 +9,9 @@ package basic
 import (
 	"fmt"
 
-	"github.com/petar/maymounkov.io/escher/kit/record"
-	"github.com/petar/maymounkov.io/escher/think"
-	"github.com/petar/maymounkov.io/escher/faculty"
+	"github.com/gocircuit/escher/kit/record"
+	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {

@@ -9,11 +9,11 @@ package main
 import (
 	"flag"
 
-	"github.com/petar/maymounkov.io/escher/think"
-	"github.com/petar/maymounkov.io/escher/understand"
+	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/understand"
 
-	"github.com/petar/maymounkov.io/escher/faculty"
-	_ "github.com/petar/maymounkov.io/escher/faculty/basic"
+	"github.com/gocircuit/escher/faculty"
+	_ "github.com/gocircuit/escher/faculty/basic"
 )
 
 var (

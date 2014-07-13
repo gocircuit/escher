@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/petar/maymounkov.io/escher/kit/record"
+	"github.com/gocircuit/escher/kit/record"
 )
 
 // Design is one of the built-in designs listed below.

@@ -11,7 +11,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/petar/maymounkov.io/escher/see"
+	"github.com/gocircuit/escher/see"
 )
 
 // I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.

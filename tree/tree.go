@@ -6,18 +6,34 @@
 
 package tree
 
+import (
+	"github.com/gocircuit/escher/think"
+)
+
 // Branch is…
 type Branch []interface{}
 
-func (b Branch) Yield() interface{} {
+func (b Branch) Yield() (interface{}, bool) {
 	if len(b) == 0 {
-		return nil
+		return nil, false
 	}
-	return b[len(b)-1]
+	return b[len(b)-1], true
+}
+
+func SameYield(g, h Branch) bool {
+	gy, gok := g.Yield()
+	hy, hok := h.Yield()
+	if gok != hok {
+		return false
+	}
+	if !gok {
+		return true
+	}
+	return think.Same(gy, hy)
 }
 
 // Tree is a data structure modeled after:
-//	http://research.microsoft.com/pubs/65409/scopedlabels.pdf
+//	http://research.microsoft.com/pubs/65409/branchdlabels.pdf
 type Tree map[string]Branch
 
 // Make allocates a new tree structure.
@@ -25,37 +41,54 @@ func Make() Tree {
 	return make(Tree)
 }
 
-// Grow adds a new scope to the tree with a given initial value.
+// Grow adds a new branch to the tree with a given initial value.
 func (tree Tree) Grow(name string, value interface{}) Tree {
 	tree[name] = append(tree[name], value)
 	return tree
 }
 
-// Restrict removes the name from the tree.
-func (tree Tree) Restrict(name string) {
-	scope := tree[name]
-	if len(scope) == 1 {
+// Forget removes the name from the tree.
+func (tree Tree) Forget(name string) {
+	branch := tree[name]
+	if len(branch) == 1 {
 		delete(tree, name)
 		return
 	}
-	tree[name] = scope[:len(scope)-1]
+	tree[name] = branch[:len(branch)-1]
 }
 
 // Copy copies just the high-level map of this tree into a new one.
 func (tree Tree) Copy() Tree {
 	s := Make()
-	for name, scope := range tree {
-		s[name] = make([]interface{}, len(scope))
-		copy(s[name], scope)
+	for name, branch := range tree {
+		s[name] = make(Branch, len(branch))
+		copy(s[name], branch)
 	}
 	return s
 }
 
-// Flattens leaves only the top-level element of each scope in the tree.
-func (tree Tree) Flatten() {
-	for name, scope := range tree {
-		tree[name] = Branch{scope[len(scope)-1]}
+// Project leaves only the top-level element of each branch in the tree.
+func (tree Tree) Project() (shadow Tree) {
+	shadow = tree.Copy()
+	for name, branch := range tree {
+		shadow[name], _ = branch.Yield()
 	}
+	return
+}
+
+func (tree Tree) Mix(s Tree) (teach, learn Tree) { // (t-s, s-t) setwise
+	teach, learn = Make(), Make()
+	for name, branch := range tree {
+		if idea, known := s[name]; !known || !SameYield(idea, branch) {
+			teach[name], _ = branch.Yield()
+		}
+	}
+	for name, idea := range s {
+		if branch, know := tree[name]; !know || !SameYield(branch, idea) {
+			learn[name], _ = idea.Yield()
+		}
+	}
+	return
 }
 
 func TranslateObservation(observation Tree) (sense string, what interface{}, intelligible bool) {
@@ -63,11 +96,11 @@ func TranslateObservation(observation Tree) (sense string, what interface{}, int
 	if !intelligible { // no change in belief if input is unintelligible
 		return "", nil, false
 	}
-	scope, intelligible = observation["What?"]
+	branch, intelligible = observation["What?"]
 	if !intelligible { // no change in belief if input is unintelligible
 		return "", nil, false
 	}
-	return name, scope[len(scope)-1], true
+	return name, branch[len(branch)-1], true
 }
 
 // Belief combined with an Observation produces a Theory.
@@ -85,7 +118,7 @@ func Explain(theory, observation Tree) Tree {
 	if !intelligible { // no change in belief, if observation is unintelligible
 		return belief
 	}
-	for name, scope := range theory {
+	for name, branch := range theory {
 		if name == sense {
 			if ?? {
 			} else {

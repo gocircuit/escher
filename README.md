@@ -160,7 +160,7 @@ Or, simply lose yourself in the
 [thoughts](http://www.maymounkov.org/puzzle-test-turing-test) that
 led to the invention of Escher.
 
-To me, Escher is a language for weaving dreams of imagination.
+To me, Escher is a language for weaving dreams of imagination: Escher makes them real.
 
 ## Sponsors and credits
 

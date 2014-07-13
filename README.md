@@ -97,6 +97,8 @@ Programmatically, this circuit is defined by the code:
 
 ### Arithmetic (Applying) gates
 
+Arithmetic gates are a sufficient basis of operations that enables
+algorithmic manipulation of the types string, int, float and complex.
 Coming soon.
 
 ### The Reason (Learning) Gate

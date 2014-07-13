@@ -146,5 +146,5 @@ led to the invention of Escher.
 ## Sponsors and credits
 
 * [DARPA XDATA](http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx) initiative, 2013–2014
-* [Data Tactics Corp](http://www.data-tactics.com/), 2012-2014
+* [Data Tactics Corp](http://www.data-tactics.com/), 2013-2014
 * [L3](http://www.l-3com.com/), 2014

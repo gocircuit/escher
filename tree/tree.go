@@ -96,11 +96,12 @@ func TranslateObservation(observation Tree) (sense string, what interface{}, int
 	if !intelligible { // no change in belief if input is unintelligible
 		return "", nil, false
 	}
-	branch, intelligible = observation["What?"]
+	branch, intelligible = observation["What"]
 	if !intelligible { // no change in belief if input is unintelligible
 		return "", nil, false
 	}
-	return name, branch[len(branch)-1], true
+	what, _ = branch.Yield()
+	return name, what, true
 }
 
 // Belief combined with an Observation produces a Theory.
@@ -118,7 +119,7 @@ func Explain(theory, observation Tree) Tree {
 	if !intelligible { // no change in belief, if observation is unintelligible
 		return belief
 	}
-	for name, branch := range theory {
+	for name, idea := range theory {
 		if name == sense {
 			if ?? {
 			} else {
@@ -134,13 +135,14 @@ func Explain(theory, observation Tree) Tree {
 
 //  Belief combined with Theory produces a Prediction.
 func Predict(belief, theory Tree) Tree {
-	diff := theory.Copy()
-	for name, bs := range belief {
-		ts, ok := diff[name]
-		if !ok {
-			xx
-		}
+	teach, _ := theory.Mix(belief)
+	switch len(teach) {
+	case 0:
+		??
+	case 1:
+		??
+	default:
+		??
 	}
-	??
-	return diff
+	panic(8)
 }

@@ -109,6 +109,12 @@ Coming soon.
 
 ## Duality gates
 
+Duality gates are the boundary between Escher semantics and the outside world. 
+They are the I/O with the outside. Such gates affect some external technology
+when prompted through Escher in a certain way. Alternatively, such gates might
+fire an Escher message on one of its valves, in response to an asynchronous
+events occuring in an external technology.
+
 ### Variation (Surprise) and Causation (Action) gates
 
 ![See and Show](https://github.com/gocircuit/escher/raw/master/misc/img/seeshow.png)

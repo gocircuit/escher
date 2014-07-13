@@ -5,6 +5,9 @@
 Escher is a progrmaming language for everything. It can naturally represent both process and data,
 while being simpler than a calculator. The remainder of this page constitutes a complete documentation.
 
+Escher is a language for building intelligent real-time translations between the semantics of
+different devices accessible through digital or electrical technology.
+
 Some of the application domains of Escher are:
 
 * Definition and generation of synthetic worlds governed by Physical laws, as in Augmented Reality and the Gaming Industry,

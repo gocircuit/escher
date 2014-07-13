@@ -85,7 +85,19 @@ Programmatically, this circuit is defined by the code:
 		s = "¡Hello, world!"
 	}
 
-## Data  (Concept) and transformation (Sentence) gates
+## Basic gates
+
+By default, the Escher environment provides a basic set of gates (a basis),
+which enable a rich (infinite) language of possibilities in data manipulation.
+
+Collectively, they are data (concept) and transformation (sentence) gates
+
+These gates are not part of Escher's semantics. They are merely an optional
+library—a playground for beginners. Users can implement their own gates
+for data and transformation.
+
+The basis reference below is nearly entirely visual. You will notice that the
+visual language follows a prescribed format.
 
 ### Data (Noun) gates
 

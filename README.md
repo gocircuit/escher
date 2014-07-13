@@ -45,6 +45,9 @@ reflexes that broker values. But from the user's POV, gates can have “side-eff
 in the “outside world” and, vice-versa, the outside world can prompt reflexive
 action, such as sending out a message over a valve asynchronously.
 
+To implement your own gates, take example from the [implementation of the 
+“reasoning” gate](https://github.com/gocircuit/escher/blob/master/faculty/basic/reason.go) (discussed later).
+
 ## Circuits
 
 Circuits are a composition of a few reflexes. 

@@ -1,0 +1,8 @@
+
+* Connect compiler, programmer and software in a feedback loop, whereby
+the compiler infers: Which circuit/valve pairs are historically (over the
+dev/use lifecycle of the software library) joined together and how long these
+circuit designs stick around over cycles of usage and revisions of development.
+Use these insights to inver “types” of data flowing on the wires and provide
+code suggestions (as opposed to warning or errors).  I.e. pre-empt the
+programmer in making a mistake.

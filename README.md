@@ -138,7 +138,7 @@ that `@escherio` wants a `#ColbertBump`. The `#ColbertFaculty` is coming soon.
 …if you want to inquire about the science behind [@escherio](https://twitter.com/escherio), tweet to me,
 Petar [@maymounkov](https://twitter.com/maymounkov).
 
-…or, lose yourself in the 
+Or, simply lose yourself in the 
 [initial](http://www.maymounkov.org/chomsky-valiant-algorithmic-mirror)
 [thoughts](http://www.maymounkov.org/puzzle-test-turing-test) that
 led to the invention of Escher.
@@ -146,5 +146,5 @@ led to the invention of Escher.
 ## Sponsors and credits
 
 * [DARPA XDATA](http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx) initiative, 2013–2014
-* [Data Tactics Corp](http://www.data-tactics.com/), 2013-2014
+* [Data Tactics Corp](http://www.data-tactics.com/), 2013–2014
 * [L3](http://www.l-3com.com/), 2014

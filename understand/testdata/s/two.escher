@@ -1,0 +1,37 @@
+// Written in 2014 by Petar Maymounkov.
+//
+// It helps future understanding of past knowledge to save
+// this notice, so peers of other times and backgrounds can
+// see history clearly, unless you have a better idea.
+
+// Nand is a circuit.
+Nand { // comments are everywhere
+	and And
+	not Not
+
+	str "stringißh"
+	num +12.3e5
+	msg {
+		msg: ["http://gocircuit.org/hello.html"],
+		num: [12.3e5],  // number
+	} // string
+
+	A = and.A // matching
+	B = and.B
+	not.B = C
+	and.C = not.A
+	X = src
+	msg.Src = Y
+	not.N = +3.14e00 // assign constants directly to wires, only on the right side
+
+	// peer declarations are not sensitive to order within the block
+	src `
+<html>
+<head><title>E.g.</title></head>
+<body>Hello world!</body>
+</html>
+`
+	3.14 // send to empty-string valve
+}
+// end comment
+

@@ -68,7 +68,7 @@ Programmatically, this gate is expressed as
 		s = "¡Hello, world!"
 	}
 
-## Data  and transformation (Sentence) gates
+## Data  (Concept) and transformation (Sentence) gates
 
 ### Data (Noun) gates
 

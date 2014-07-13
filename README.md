@@ -141,3 +141,7 @@ Petar [@maymounkov](https://twitter.com/maymounkov).
 [initial](http://www.maymounkov.org/chomsky-valiant-algorithmic-mirror)
 [thoughts](http://www.maymounkov.org/puzzle-test-turing-test) that
 led to the invention of Escher.
+
+## Sponsors
+
+* [DARPA XDATA](http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx) initiative, 2012-2014

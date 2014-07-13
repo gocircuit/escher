@@ -160,6 +160,8 @@ Or, simply lose yourself in the
 [thoughts](http://www.maymounkov.org/puzzle-test-turing-test) that
 led to the invention of Escher.
 
+To me, Escher is a language for weaving dreams of imagination.
+
 ## Sponsors and credits
 
 * [DARPA XDATA](http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx) initiative, 2013–2014

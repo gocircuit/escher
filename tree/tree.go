@@ -20,6 +20,11 @@ func (b Branch) Yield() (interface{}, bool) {
 	return b[len(b)-1], true
 }
 
+func (b Branch) YieldNil() (y interface{}) {
+	y, _ = b.Yield()
+	return
+}
+
 func SameYield(g, h Branch) bool {
 	gy, gok := g.Yield()
 	hy, hok := h.Yield()
@@ -91,58 +96,54 @@ func (tree Tree) Mix(s Tree) (teach, learn Tree) { // (t-s, s-t) setwise
 	return
 }
 
-func TranslateObservation(observation Tree) (sense string, what interface{}, intelligible bool) {
-	name, intelligible = observation["Sense"]
+func ConceptualizeObservation(obs Tree) Tree {
+	for sense, what := range obs {
+		return Make().Grow("Sense", sense).Grow("What", what.YieldNil())
+	}
+	panic(8)
+}
+
+func DeConceptualizeObservation(observation Tree) Tree {
+	name_, intelligible = observation["Sense"]
 	if !intelligible { // no change in belief if input is unintelligible
-		return "", nil, false
+		return nil
+	}
+	name, ok := name_.YieldNil().(string)
+	if !ok {
+		return nil
 	}
 	branch, intelligible = observation["What"]
 	if !intelligible { // no change in belief if input is unintelligible
-		return "", nil, false
+		return nil
 	}
-	what, _ = branch.Yield()
-	return name, what, true
+	return Make().Grow(name, branch.YieldNil())
 }
 
 // Belief combined with an Observation produces a Theory.
-func Generalize(belief, observation Tree) Tree {
-	sense, what, intelligible := TranslateObservation(observation)
-	if !intelligible { // no change in belief, if observation is unintelligible
-		return belief
+func Generalize(belief, observation Tree) (theory Tree) {
+	obs := DeConceptualizeObservation(observation)
+	for sense, what := range obs {
+		return belief.Copy().Grow(sense, what)
 	}
-	return belief.Copy().Grow(sense, what)
+	panic(8)
 }
 
 //  Theory combined with an Observation produces a Belief.
-func Explain(theory, observation Tree) Tree {
-	sense, what, intelligible := TranslateObservation(observation)
-	if !intelligible { // no change in belief, if observation is unintelligible
-		return belief
-	}
-	for name, idea := range theory {
-		if name == sense {
-			if ?? {
-			} else {
-				// If prior theory does not address this category of observation, return confusion.
-				return nil
-			}
-		}
-	}
-	// If observation was not found in theory, i.e. it is not explained by a consistent belief.
-	// Return nil to signify confusion.
-	return nil
+func Explain(theory, observation Tree) (belief Tree) {
+	belief, _ = theory.Mix(DeConceptualizeObservation(observation))
+	return
 }
 
 //  Belief combined with Theory produces a Prediction.
-func Predict(belief, theory Tree) Tree {
-	teach, _ := theory.Mix(belief)
+func Predict(belief, theory Tree) (observation Tree) {
+	teach, _ := theory.Mix(belief) // _ is the undiscovered misunderstanding in a conversation
 	switch len(teach) {
 	case 0:
-		??
+		return nil
 	case 1:
-		??
+		return ConceptualizeObservation(teach)
 	default:
-		??
+		return nil // _ inaction in the face of overwheming difference between theory and belief
 	}
 	panic(8)
 }

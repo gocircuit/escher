@@ -132,7 +132,8 @@ I envision that in the natural course of action at play, … (more coming soon).
 
 …if you think this language is `#KingOfMetaphor`, please, tweet to
 [@StephenAtHome](https://twitter.com/StephenAtHome) that his title of
-`#KingOfMetaphor` is being challenged. The “Colbert Faculty” is coming soon.
+`#KingOfMetaphor` is being challenged, in a good way. Tweet
+that @escherio wants a #ColbertBump. The #ColbertFaculty is coming soon.
 
 …if you want to inquire about the science behind [@escherio](https://twitter.com/escherio), tweet to me,
 Petar [@maymounkov](https://twitter.com/maymounkov).

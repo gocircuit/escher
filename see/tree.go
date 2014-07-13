@@ -33,7 +33,7 @@ func SeeTree(src *Src) (rec TreeDesign, ok bool) {
 		q.TryMatch(",")
 		Space(q)
 		for _, w := range scope {
-			(tree.Tree)(rec).Extend(name, w)
+			(tree.Tree)(rec).Grow(name, w)
 		}
 		t.Become(q)
 	}

@@ -21,6 +21,15 @@ An early “proposal” for the design of Escher,
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),
 might be an informative (but not necessary) read for the theoretically inclined.
 
+## Quick start ##
+
+Escher is an interpreter, comprising a singular executable binary. It can be built for Linux, Darwin and Windows.
+
+Given that the [Go Language](http://golang.org) compiler is [installed](http://golang.org/doc/install),
+you can build and install the circuit binary with one line:
+
+	go get github.com/gocircuit/escher/escher
+
 ## Meaning
 
 An Escher program is a collection of interconnected _reflexes_. A reflex, the only

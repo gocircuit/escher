@@ -55,7 +55,7 @@ Circuits are a composition of a few reflexes.
 
 ![Boolean “not and”](https://github.com/gocircuit/escher/raw/master/misc/img/circuit.png)
 
-Programmatically, this gate is expressed as
+Programmatically, this circuit is defined by the code:
 
 	nand {
 		// reflex recollections

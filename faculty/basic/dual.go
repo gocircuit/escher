@@ -23,7 +23,7 @@ func init() {
 type Println struct{}
 
 func (Println) Materialize() think.Reflex {
-	s, t := think.NewMemory()
+	s, t := think.NewSynapse()
 	go func() {
 		s.Attach(func(v interface{}) { println(fmt.Sprintf("%v", v)) })
 	}()

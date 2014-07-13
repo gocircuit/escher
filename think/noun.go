@@ -9,7 +9,7 @@ package think
 func DontCognize(interface{}) {}
 
 func NewNounReflex(v interface{}) Reflex {
-	s, t := NewMemory()
+	s, t := NewSynapse()
 	go func() {
 		s.Attach(DontCognize).ReCognize(v)
 	}()

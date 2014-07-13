@@ -7,8 +7,8 @@
 package think
 
 
-// Reflex is a bundle of un-attached memory endpoints
-type Reflex map[string]*Memory
+// Reflex is a bundle of un-attached sense endpoints
+type Reflex map[string]*Synapse
 
 type Gate interface {
 	Materialize() Reflex
@@ -18,7 +18,7 @@ type Gate interface {
 type Ignore struct{}
 
 func (Ignore) Materialize() Reflex {
-	s, t := NewMemory()
+	s, t := NewSynapse()
 	go func() {
 		s.Attach(DontCognize)
 	}()

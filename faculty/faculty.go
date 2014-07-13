@@ -43,7 +43,7 @@ func NumNonNil(short []Sentence) (n int) {
 type ShortCognize func([]Sentence)
 
 type ShortMemory struct {
-	y []*think.Memory
+	y []*think.Synapse
 	recognizer ShortMemoryReCognizer
 }
 
@@ -51,7 +51,7 @@ type ShortMemory struct {
 func NewShortMemory(valve ...string) (think.Reflex, *ShortMemory) {
 	reflex := make(think.Reflex)
 	m := &ShortMemory{
-		y: make([]*think.Memory, len(valve)),
+		y: make([]*think.Synapse, len(valve)),
 		recognizer: ShortMemoryReCognizer{
 			recognize: make(map[string]*think.ReCognizer),
 			memory: make([]Sentence, len(valve)),
@@ -61,7 +61,7 @@ func NewShortMemory(valve ...string) (think.Reflex, *ShortMemory) {
 		if _, ok := reflex[v]; ok {
 			panic("duplicate valve")
 		}
-		reflex[v], m.y[i] = think.NewMemory()
+		reflex[v], m.y[i] = think.NewSynapse()
 		m.recognizer.memory[i] = Sentence{Valve: v, Value: nil}
 	}
 	return reflex, m

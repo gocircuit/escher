@@ -113,7 +113,7 @@ func Generalize(belief, observation Tree) Tree {
 	return belief.Copy().Grow(sense, what)
 }
 
-//  Theory combined with an Observation produces an Explanation.
+//  Theory combined with an Observation produces a Belief.
 func Explain(theory, observation Tree) Tree {
 	sense, what, intelligible := TranslateObservation(observation)
 	if !intelligible { // no change in belief, if observation is unintelligible

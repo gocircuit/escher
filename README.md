@@ -93,6 +93,24 @@ Coming soon.
 
 ![See and Show](https://github.com/gocircuit/escher/raw/master/misc/img/seeshow.png)
 
+For instance, with the gates we've seen so far, one might construct the following higher-level
+circuit abstraction for an I/O device, which is controlled by a defered logic:
+
+![I/O device](https://github.com/gocircuit/escher/raw/master/misc/img/io.png)
+
+And the respective source code:
+
+	io_device {
+		// recalls
+		in see
+		out show
+		swtch switch
+		// matchings
+		Logic = swtch.Socialize
+		in.Sensation = swtch.Hear
+		out.Action = swtch.Speak
+	}
+
 ## Introspective and extrospective gates
 
 ### The Julia (Exploiting) Gate

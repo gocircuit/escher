@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly, unless you have a better idea.
 
-package record
+package tree
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	"fmt"
 )
 
-func (rec Record) Marshal() []byte {
+func (rec Tree) Marshal() []byte {
 	buf, err := json.Marshal(rec)
 	if err != nil {
 		panic(err)
@@ -20,7 +20,7 @@ func (rec Record) Marshal() []byte {
 	return buf
 }
 
-func (rec Record) String() string {
+func (rec Tree) String() string {
 	var w bytes.Buffer
 	for l, s := range rec {
 		fmt.Fprintf(&w, "%s(%d): %v\n", l, len(s), s[len(s)-1])

@@ -16,7 +16,7 @@ func SeeDesign(src *Src) (v Design, ok bool) {
 	if v, ok = SeeBasic(src); ok {
 		return
 	}
-	if v, ok = SeeRecord(src); ok {
+	if v, ok = SeeTree(src); ok {
 		return
 	}
 	if v, ok = SeeNameOrPackage(src); ok {
@@ -29,7 +29,7 @@ func SeeNoNameDesign(src *Src) (v Design, ok bool) {
 	if v, ok = SeeBasic(src); ok {
 		return
 	}
-	if v, ok = SeeRecord(src); ok {
+	if v, ok = SeeTree(src); ok {
 		return
 	}
 	return nil, false

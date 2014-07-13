@@ -8,17 +8,17 @@ package see
 
 import (
 	// "fmt"
-	"github.com/gocircuit/escher/kit/record"
+	"github.com/gocircuit/escher/tree"
 )
 
-func SeeRecord(src *Src) (rec RecordDesign, ok bool) {
+func SeeTree(src *Src) (rec TreeDesign, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			rec, ok = nil, false
 		}
 	}()
 	// println(fmt.Sprintf("R<=[%s]", src.String()))
-	rec = RecordDesign(record.Make())
+	rec = TreeDesign(tree.Make())
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
@@ -33,7 +33,7 @@ func SeeRecord(src *Src) (rec RecordDesign, ok bool) {
 		q.TryMatch(",")
 		Space(q)
 		for _, w := range scope {
-			(record.Record)(rec).Extend(name, w)
+			(tree.Tree)(rec).Extend(name, w)
 		}
 		t.Become(q)
 	}

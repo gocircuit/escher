@@ -51,9 +51,9 @@ import (
 // 	fmt.Printf("n=%v, s=%v, ok=%v\n", n, s, ok)
 // }
 
-// func TestRecord(t *testing.T) {
-// 	r, ok := Record(NewSrcString("{ baha: [1, 2, `a`], empty: [], mama: [`3a`]}"))
-// 	fmt.Printf("--\n%v\n--\nok=%v\n", (*record.Record)(r).String(), ok)
+// func TestTree(t *testing.T) {
+// 	r, ok := Tree(NewSrcString("{ baha: [1, 2, `a`], empty: [], mama: [`3a`]}"))
+// 	fmt.Printf("--\n%v\n--\nok=%v\n", (*tree.Tree)(r).String(), ok)
 // }
 
 // func TestMatch(t *testing.T) {

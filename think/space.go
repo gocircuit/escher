@@ -9,7 +9,7 @@ package think
 import (
 	"strings"
 
-	"github.com/gocircuit/escher/kit/record"
+	"github.com/gocircuit/escher/tree"
 	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/understand"
 )
@@ -43,7 +43,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 			continue
 		}
 		switch t := peer.Design.(type) {
-		case see.StringDesign, see.IntDesign , see.FloatDesign , see.ComplexDesign , see.RecordDesign:
+		case see.StringDesign, see.IntDesign , see.FloatDesign , see.ComplexDesign , see.TreeDesign:
 			peers[peer.Name] = materializeBuiltin(t)
 		case see.AbsNameDesign:
 			peers[peer.Name] = x.Materialize(strings.Split(string(t), ".")...)
@@ -83,7 +83,7 @@ func (x Space) materializeName(within understand.Faculty, name string) Reflex {
 	parts := strings.Split(name, ".")
 	unfold := x.Lookup(within, parts[0])
 	switch t := unfold.(type) {
-	case see.StringDesign, see.IntDesign, see.FloatDesign, see.ComplexDesign, see.RecordDesign:
+	case see.StringDesign, see.IntDesign, see.FloatDesign, see.ComplexDesign, see.TreeDesign:
 		if len(parts) != 1 {
 			panic("constant designs do not have sub-faculties")
 		}
@@ -110,8 +110,8 @@ func materializeBuiltin(d see.Design) Reflex {
 		return NewNounReflex(float64(t))
 	case see.ComplexDesign:
 		return NewNounReflex(complex128(t))
-	case see.RecordDesign:
-		return NewNounReflex(record.Record(t))
+	case see.TreeDesign:
+		return NewNounReflex(tree.Tree(t))
 	}
 	panic("unknown builting design")
 }

@@ -9,7 +9,7 @@ package basic
 import (
 	"fmt"
 
-	"github.com/gocircuit/escher/kit/record"
+	"github.com/gocircuit/escher/tree"
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 )
@@ -50,21 +50,21 @@ func (f *reason) ShortCognize(short []Sentence) {
 	switch short[2].Valve { // least recently updated valve, the one being computed
 	case "Belief":
 		f.recognizer.Recognize(
-			record.Explain(
+			tree.Explain(
 				faculty.AtValve("Theory", short), 
 				faculty.AtValve("Observation", short),
 			),
 		)
 	case "Observation":
 		f.recognizer.Recognize(
-			record.Predict(
+			tree.Predict(
 				faculty.AtValve("Belief", short), 
 				faculty.AtValve("Theory", short),
 			),
 		)
 	case "Theory":
 		f.recognizer.Recognize(
-			record.Generalize(
+			tree.Generalize(
 				faculty.AtValve("Belief", short), 
 				faculty.AtValve("Observation", short),
 			),

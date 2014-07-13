@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/gocircuit/escher/kit/record"
+	"github.com/gocircuit/escher/tree"
 )
 
 // Design is one of the built-in designs listed below.
@@ -25,11 +25,11 @@ type (
 	IntDesign int
 	FloatDesign float64
 	ComplexDesign complex128
-	RecordDesign record.Record
+	TreeDesign tree.Tree
 )
 
-func (x RecordDesign) String() string {
-	return string((record.Record)(x).Marshal())
+func (x TreeDesign) String() string {
+	return string((tree.Tree)(x).Marshal())
 }
 
 func (x ComplexDesign) String() string {

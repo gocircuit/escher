@@ -4,25 +4,27 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly, unless you have a better idea.
 
-package record
+package tree
 
-// Record is a data structure modeled after:
+// Tree is a data structure modeled after:
 //	http://research.microsoft.com/pubs/65409/scopedlabels.pdf
-type Record map[string][]interface{}
+type Tree map[string][]interface{}
 
-// Make allocates a new record structure.
-func Make() Record {
-	return make(Record)
+type Branch []interface{}
+
+// Make allocates a new tree structure.
+func Make() Tree {
+	return make(Tree)
 }
 
-// Extends adds a new scope to the record with a given initial value.
-func (rec Record) Extend(label string, value interface{}) Record {
+// Extends adds a new scope to the tree with a given initial value.
+func (rec Tree) Extend(label string, value interface{}) Tree {
 	rec[label] = append(rec[label], value)
 	return rec
 }
 
-// Restrict removes the label from the record.
-func (rec Record) Restrict(label string) {
+// Restrict removes the label from the tree.
+func (rec Tree) Restrict(label string) {
 	scope := rec[label]
 	if len(scope) == 1 {
 		delete(rec, label)
@@ -31,8 +33,8 @@ func (rec Record) Restrict(label string) {
 	rec[label] = scope[:len(scope)-1]
 }
 
-// Copy copies just the high-level map of this record into a new one.
-func (rec Record) Copy() Record {
+// Copy copies just the high-level map of this tree into a new one.
+func (rec Tree) Copy() Tree {
 	s := Make()
 	for label, scope := range rec {
 		s[label] = make([]interface{}, len(scope))
@@ -41,14 +43,14 @@ func (rec Record) Copy() Record {
 	return s
 }
 
-// Flattens leaves only the top-level element of each scope in the record.
-func (rec Record) Flatten() {
+// Flattens leaves only the top-level element of each scope in the tree.
+func (rec Tree) Flatten() {
 	for label, scope := range rec {
 		rec[label] = []interface{}{scope[len(scope)-1]}
 	}
 }
 
-func TranslateObservation(observation Record) (sense string, what interface{}, intelligible bool) {
+func TranslateObservation(observation Tree) (sense string, what interface{}, intelligible bool) {
 	label, intelligible = observation["Sense"]
 	if !intelligible { // no change in belief if input is unintelligible
 		return "", nil, false
@@ -61,7 +63,7 @@ func TranslateObservation(observation Record) (sense string, what interface{}, i
 }
 
 // Belief combined with an Observation produces a Theory.
-func Generalize(belief, observation Record) Record {
+func Generalize(belief, observation Tree) Tree {
 	sense, what, intelligible := TranslateObservation(observation)
 	if !intelligible { // no change in belief, if observation is unintelligible
 		return belief
@@ -70,7 +72,7 @@ func Generalize(belief, observation Record) Record {
 }
 
 //  Theory combined with an Observation produces an Explanation.
-func Explain(theory, observation Record) Record {
+func Explain(theory, observation Tree) Tree {
 	sense, what, intelligible := TranslateObservation(observation)
 	if !intelligible { // no change in belief, if observation is unintelligible
 		return belief
@@ -90,7 +92,7 @@ func Explain(theory, observation Record) Record {
 }
 
 //  Belief combined with Theory produces a Prediction.
-func Predict(belief, theory Record) Record {
+func Predict(belief, theory Tree) Tree {
 	diff := theory.Copy()
 	for label, bs := range belief {
 		ts, ok := diff[label]

@@ -23,8 +23,9 @@ type Func struct {
 	Value interface{}
 }
 
-// Sentence is a collection of functionals, sorted most recently updated first and so on
-type Sentence []Func
+// Sentence is a collection of functionals, indexed by a rank that decreases with the 
+// recency of the functional's update.
+type Sentence tree.Tree // Rank:int -> Functional:Func
 
 func (s Sentence) At(valve string) interface{} {
 	for _, f := range s {
@@ -33,6 +34,10 @@ func (s Sentence) At(valve string) interface{} {
 		}
 	}
 	panic(7)
+}
+
+func (s Sentence) AtAsTree(valve string) tree.Tree {
+	return tree.Make().Grow(valve, s.At(valve))
 }
 
 func (s Sentence) NumNonNil() (n int) {
@@ -60,7 +65,7 @@ func NewShortMemory(valve ...string) (think.Reflex, *ShortMemory) {
 		y: make([]*think.Synapse, len(valve)),
 		recognizer: ShortMemoryReCognizer{
 			recognize: make(map[string]*think.ReCognizer),
-			memory: make([]Func, len(valve)),
+			memory: make(Sentence, len(valve)),
 		},
 	}
 	for i, v := range valve {
@@ -95,10 +100,10 @@ type ShortMemoryReCognizer struct {
 	cognize ShortCognize
 	recognize map[string]*think.ReCognizer
 	sync.Mutex
-	memory []Func // most-recent to least recent
+	memory Sentence // most-recent to least recent
 }
 
-func (recognizer *ShortMemoryReCognizer) ReCognize(sentence []Func) {
+func (recognizer *ShortMemoryReCognizer) ReCognize(sentence Sentence) {
 	ch := make(chan struct{})
 	for _, s := range sentence {
 		go func() {
@@ -116,7 +121,7 @@ func (recognizer *ShortMemoryReCognizer) cognizeOn(valve string, value interface
 	i := recognizer.indexOf(valve)
 	recognizer.memory[0], recognizer.memory[i] = recognizer.memory[i], recognizer.memory[0]
 	recognizer.memory[0].Value = value
-	r := make([]Func, len(recognizer.memory))
+	r := make(Sentence, len(recognizer.memory))
 	recognizer.Unlock()
 	//
 	copy(r, recognizer.memory)

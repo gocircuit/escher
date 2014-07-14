@@ -40,6 +40,7 @@ func SpawnReason(memory *faculty.ShortMemory) {
 	}()
 }
 
+??
 func (f *reason) ShortCognize(short faculty.Sentence) {
 	<-f.ready
 	if short[0].Value == nil || short[1].Value == nil { // If either of the two most recently updated valves are nil, inaction.
@@ -48,24 +49,15 @@ func (f *reason) ShortCognize(short faculty.Sentence) {
 	switch short[2].Valve { // least recently updated valve, the one being computed
 	case "Belief":
 		f.recognizer.ReCognize(
-			tree.Explain(
-				faculty.AtValve("Theory", short), 
-				faculty.AtValve("Observation", short),
-			),
+			tree.Explain(short.AtAsTree("Theory"), short.AtAsTree("Observation")),
 		)
 	case "Observation":
 		f.recognizer.ReCognize(
-			tree.Predict(
-				faculty.AtValve("Belief", short), 
-				faculty.AtValve("Theory", short),
-			),
+			tree.Predict(short.AtAsTree("Belief"), short.AtAsTree("Theory")),
 		)
 	case "Theory":
 		f.recognizer.ReCognize(
-			tree.Generalize(
-				faculty.AtValve("Belief", short), 
-				faculty.AtValve("Observation", short),
-			),
+			tree.Generalize(short.AtAsTree("Belief"), short.AtAsTree("Observation")),
 		)
 	}
 	panic(7)

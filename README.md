@@ -94,9 +94,7 @@ source directory.
 
 	escher -src tutorial/helloworld
 
-### Main
-
-Escher looks for and materializes the circuit design named `main` in the root source directory, e.g.
+Escher materializes the circuit design named `main` in the root source directory, e.g.
 
 	// The main circuit is always the one materialized (executed).
 	main {

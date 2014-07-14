@@ -109,7 +109,7 @@ func ConceptualizeObservation(obs Tree) Tree {
 }
 
 func DeConceptualizeObservation(observation Tree) Tree {
-	name_, intelligible = observation["Sense"]
+	name_, intelligible := observation["Sense"]
 	if !intelligible { // no change in belief if input is unintelligible
 		return nil
 	}
@@ -117,7 +117,7 @@ func DeConceptualizeObservation(observation Tree) Tree {
 	if !ok {
 		return nil
 	}
-	branch, intelligible = observation["What"]
+	branch, intelligible := observation["What"]
 	if !intelligible { // no change in belief if input is unintelligible
 		return nil
 	}

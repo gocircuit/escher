@@ -9,7 +9,6 @@ package basic
 import (
 	"fmt"
 
-	"github.com/gocircuit/escher/tree"
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 )

@@ -7,10 +7,8 @@
 package basic
 
 import (
-	"fmt"
-
-	"github.com/gocircuit/escher/tree"
 	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/tree"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -42,28 +40,28 @@ func SpawnReason(memory *faculty.ShortMemory) {
 	}()
 }
 
-func (f *reason) ShortCognize(short []Sentence) {
+func (f *reason) ShortCognize(short faculty.Sentence) {
 	<-f.ready
-	if short[0] == nil || short[1] == nil { // If either of the two most recently updated valves are nil, inaction.
+	if short[0].Value == nil || short[1].Value == nil { // If either of the two most recently updated valves are nil, inaction.
 		return
 	}
 	switch short[2].Valve { // least recently updated valve, the one being computed
 	case "Belief":
-		f.recognizer.Recognize(
+		f.recognizer.ReCognize(
 			tree.Explain(
 				faculty.AtValve("Theory", short), 
 				faculty.AtValve("Observation", short),
 			),
 		)
 	case "Observation":
-		f.recognizer.Recognize(
+		f.recognizer.ReCognize(
 			tree.Predict(
 				faculty.AtValve("Belief", short), 
 				faculty.AtValve("Theory", short),
 			),
 		)
 	case "Theory":
-		f.recognizer.Recognize(
+		f.recognizer.ReCognize(
 			tree.Generalize(
 				faculty.AtValve("Belief", short), 
 				faculty.AtValve("Observation", short),

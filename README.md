@@ -1,4 +1,4 @@
-# Escher
+# Escher: HTML for Web 3.0
 
 [![Build Status](https://travis-ci.org/gocircuit/escher.svg?branch=master)](https://travis-ci.org/gocircuit/escher/escher) [![GoDoc](https://godoc.org/github.com/gocircuit/escher?status.png)](https://godoc.org/github.com/gocircuit/escher)
 

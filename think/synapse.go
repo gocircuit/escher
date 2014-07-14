@@ -7,8 +7,6 @@
 package think
 
 import (
-	"reflect"
-
 	"github.com/gocircuit/escher/tree"
 )
 

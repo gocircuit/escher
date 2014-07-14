@@ -10,37 +10,43 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/tree"
 	"github.com/gocircuit/escher/understand"
 )
 
 // Root is a global variable where packages can add gates as side-effect of being imported.
 var Root = understand.NewFaculty()
 
-// Sentence combines the name of a valve and an associated value.
-type Sentence struct {
+// Func combines the name of a valve and an associated value.
+type Func struct {
 	Valve string
 	Value interface{}
 }
 
-func AtValve(valve string, short []Sentence) interface{} {
-	for _, s := range short {
-		if s.Valve == valve {
-			return s.Value
+// Sentence is a collection of functionals, sorted most recently updated first and so on
+type Sentence []Func
+
+func (s Sentence) At(valve string) interface{} {
+	for _, f := range s {
+		if f.Valve == valve {
+			return f.Value
 		}
-	}	
+	}
+	panic(7)
 }
 
-func NumNonNil(short []Sentence) (n int) {
-	for _, s := range short {
-		if s.Value == nil {
+func (s Sentence) NumNonNil() (n int) {
+	for _, f := range s {
+		if f.Value == nil {
 			n++
 		}
 	}
+	return
 }
 
 // …
 // The first entry is the most recent one.
-type ShortCognize func([]Sentence)
+type ShortCognize func(Sentence)
 
 type ShortMemory struct {
 	y []*think.Synapse
@@ -54,7 +60,7 @@ func NewShortMemory(valve ...string) (think.Reflex, *ShortMemory) {
 		y: make([]*think.Synapse, len(valve)),
 		recognizer: ShortMemoryReCognizer{
 			recognize: make(map[string]*think.ReCognizer),
-			memory: make([]Sentence, len(valve)),
+			memory: make([]Func, len(valve)),
 		},
 	}
 	for i, v := range valve {
@@ -62,7 +68,7 @@ func NewShortMemory(valve ...string) (think.Reflex, *ShortMemory) {
 			panic("duplicate valve")
 		}
 		reflex[v], m.y[i] = think.NewSynapse()
-		m.recognizer.memory[i] = Sentence{Valve: v, Value: nil}
+		m.recognizer.memory[i] = Func{Valve: v, Value: nil}
 	}
 	return reflex, m
 }
@@ -89,10 +95,10 @@ type ShortMemoryReCognizer struct {
 	cognize ShortCognize
 	recognize map[string]*think.ReCognizer
 	sync.Mutex
-	memory []Sentence // most-recent to least recent
+	memory []Func // most-recent to least recent
 }
 
-func (recognizer *ShortMemoryReCognizer) ReCognize(sentence []Sentence) {
+func (recognizer *ShortMemoryReCognizer) ReCognize(sentence []Func) {
 	ch := make(chan struct{})
 	for _, s := range sentence {
 		go func() {
@@ -100,7 +106,7 @@ func (recognizer *ShortMemoryReCognizer) ReCognize(sentence []Sentence) {
 			ch <- struct{}{}
 		}()
 	}
-	for _, s := range sentence {
+	for _ = range sentence {
 		<-ch
 	}
 }
@@ -110,7 +116,7 @@ func (recognizer *ShortMemoryReCognizer) cognizeOn(valve string, value interface
 	i := recognizer.indexOf(valve)
 	recognizer.memory[0], recognizer.memory[i] = recognizer.memory[i], recognizer.memory[0]
 	recognizer.memory[0].Value = value
-	r := make([]Sentence, len(recognizer.memory))
+	r := make([]Func, len(recognizer.memory))
 	recognizer.Unlock()
 	//
 	copy(r, recognizer.memory)

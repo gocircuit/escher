@@ -21,6 +21,18 @@ An early “proposal” for the design of Escher,
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),
 might be an informative (but not necessary) read for the theoretically inclined.
 
+## Attention: Mathematics
+
+The Escher abstraction of the world is NOT Turing-compatible: From the point-of-view of an
+Escher program, there is no input and output: There are only emergences and disappearances of events.
+
+Escher presents the world in a model called [Choiceless Computation](http://arxiv.org/pdf/math/9705225.pdf),
+introduced by the legendary Mathematicians
+[Andreas Blass](http://www.math.lsa.umich.edu/~ablass/), 
+[Yuri Gurevich](http://research.microsoft.com/en-us/um/people/gurevich/) and 
+[Sharon Shelah](http://shelah.logic.at/), and introduced to me by the to-be legendary
+although-already-should-be [Benjamin Rossman](http://research.nii.ac.jp/~rossman/).
+
 ## Quick start ##
 
 Escher is an interpreter, comprising a singular executable binary. It can be built for Linux, Darwin and Windows.

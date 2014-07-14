@@ -20,17 +20,17 @@ func init() {
 type Reason struct{}
 
 func (Reason) Materialize() think.Reflex {
-	reflex, m := faculty.NewShortMemory("Belief", "Observation", "Theory") // Create to (yet unattached) memory endpoints.
+	reflex, m := faculty.NewEye("Belief", "Observation", "Theory") // Create to (yet unattached) memory endpoints.
 	SpawnReason(m)
 	return reflex
 }
 
 type reason struct {
 	ready chan struct{}
-	recognizer *faculty.ShortMemoryReCognizer
+	recognizer *faculty.EyeReCognizer
 }
 
-func SpawnReason(memory *faculty.ShortMemory) {
+func SpawnReason(memory *faculty.Eye) {
 	go func() {
 		f := &reason{  // Create the object that will handle the cognition of the reason reflex
 			ready: make(chan struct{}),

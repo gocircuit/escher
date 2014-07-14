@@ -30,7 +30,7 @@ Escher presents the world in a model called [Choiceless Computation](http://arxi
 introduced by the legendary Mathematicians
 [Andreas Blass](http://www.math.lsa.umich.edu/~ablass/), 
 [Yuri Gurevich](http://research.microsoft.com/en-us/um/people/gurevich/) and 
-[Sharon Shelah](http://shelah.logic.at/), and introduced to me by the to-be legendary
+[Sharon Shelah](http://shelah.logic.at/), and introduced to me by the dare-to-be-great, to-be-legendary,
 although-already-should-be [Benjamin Rossman](http://research.nii.ac.jp/~rossman/).
 
 ## Quick start ##

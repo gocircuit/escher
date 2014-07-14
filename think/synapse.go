@@ -8,6 +8,8 @@ package think
 
 import (
 	"reflect"
+
+	"github.com/gocircuit/escher/tree"
 )
 
 // Cognize is a called when …
@@ -48,14 +50,9 @@ type ReCognizer struct {
 
 // ReCognize sends value to the reciprocal side of this synapse.
 func (s *ReCognizer) ReCognize(value interface{}) {
-	if Same(s.recognized, value) {
+	if tree.Same(s.recognized, value) {
 		return
 	}
 	s.recognized = value
 	s.reciprocal(value)
-}
-
-// Same returns true if its arguments are equal in value.
-func Same(v, w interface{}) bool {
-	return reflect.DeepEqual(v, w)
 }

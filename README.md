@@ -83,6 +83,21 @@ Programmatically, this circuit is defined by the code:
 
 ## Syntax (files) and faculties (directories) structure
 
+Escher programs are designated by a local root directory and all its descendants.
+That directory is represented as the root in the faculty namespace inside the Escher programming environment.
+
+Escher compiles all files ending in `.escher` and attaches the resulting circuit designs
+to the namespaces corresponding to their directory parents.
+
+To materialize (i.e. run) an Escher program, use the mandatory `-src` flag to specify the path to the local 
+source directory.
+
+	escher -src tutorial/helloworld
+
+### Main
+
+Escher looks for and materializes the circuit design named `main` in the root source directory, e.g.
+
 	// The main circuit is always the one materialized (executed).
 	main {
 		s @show

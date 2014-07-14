@@ -93,10 +93,15 @@ type ShortMemoryReCognizer struct {
 }
 
 func (recognizer *ShortMemoryReCognizer) ReCognize(sentence []Sentence) {
+	ch := make(chan struct{})
 	for _, s := range sentence {
 		go func() {
 			recognizer.recognize[s.Valve].ReCognize(s.Value)
+			ch <- struct{}{}
 		}()
+	}
+	for _, s := range sentence {
+		<-ch
 	}
 }
 

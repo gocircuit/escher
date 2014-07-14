@@ -7,7 +7,7 @@
 package tree
 
 import (
-	"github.com/gocircuit/escher/think"
+	"reflect"
 )
 
 // Branch is…
@@ -34,7 +34,12 @@ func SameYield(g, h Branch) bool {
 	if !gok {
 		return true
 	}
-	return think.Same(gy, hy)
+	return Same(gy, hy)
+}
+
+// Same returns true if its arguments are equal in value.
+func Same(v, w interface{}) bool {
+	return reflect.DeepEqual(v, w)
 }
 
 // Tree is a data structure modeled after:
@@ -74,9 +79,9 @@ func (tree Tree) Copy() Tree {
 
 // Project leaves only the top-level element of each branch in the tree.
 func (tree Tree) Project() (shadow Tree) {
-	shadow = tree.Copy()
+	shadow = Make()
 	for name, branch := range tree {
-		shadow[name], _ = branch.Yield()
+		shadow.Grow(name, branch.YieldNil())
 	}
 	return
 }
@@ -85,12 +90,12 @@ func (tree Tree) Mix(s Tree) (teach, learn Tree) { // (t-s, s-t) setwise
 	teach, learn = Make(), Make()
 	for name, branch := range tree {
 		if idea, known := s[name]; !known || !SameYield(idea, branch) {
-			teach[name], _ = branch.Yield()
+			teach.Grow(name, branch.YieldNil())
 		}
 	}
 	for name, idea := range s {
 		if branch, know := tree[name]; !know || !SameYield(branch, idea) {
-			learn[name], _ = idea.Yield()
+			learn.Grow(name, idea.YieldNil())
 		}
 	}
 	return

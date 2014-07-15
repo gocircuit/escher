@@ -186,9 +186,18 @@ between the valve values shown examplifies the effect of the gate.
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
+> Belief for the current state of the world, combined with a new observation, results in
+a theory.
+
 ![Explanation](https://github.com/gocircuit/escher/raw/master/misc/img/explanation.png)
 
+> A theory of observations, which explains (includes) an observation at hand, explains
+the observation only to a belief consisting of the theory without the observation.
+
 ![Prediction](https://github.com/gocircuit/escher/raw/master/misc/img/prediction.png)
+
+> When a belief of the state of the world is combined with a theory that is bigger,
+the conjectured difference must be found in a new observation.
 
 ## Duality gates
 

@@ -51,10 +51,38 @@ func Make() Tree {
 	return make(Tree)
 }
 
+func Plant(name string, value interface{}) Tree {
+	return Make().Grow(name, value)
+}
+
 // Grow adds a new branch to the tree with a given initial value.
 func (tree Tree) Grow(name string, value interface{}) Tree {
 	tree[name] = append(tree[name], value)
 	return tree
+}
+
+func (tree Tree) At(name string) interface{} {
+	v, ok := tree[name]
+	if !ok {
+		panic(7)
+	}
+	return v
+}
+
+func (tree Tree) Int(name string) int {
+	v, ok := tree[name]
+	if !ok {
+		panic(7)
+	}
+	return v.(int)
+}
+
+func (tree Tree) String(name string) string {
+	v, ok := tree[name]
+	if !ok {
+		panic(7)
+	}
+	return v.(string)
 }
 
 // Forget removes the name from the tree.

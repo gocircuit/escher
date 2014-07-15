@@ -144,6 +144,10 @@ Coming soon.
 
 ### The Reason (Learning) Gate
 
+The following three illustrations show the same gate design, but under different
+orientations of the event streams. In all valid cases, the relationship
+between the valves is examplified there.
+
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 
 ![Explanation](https://github.com/gocircuit/escher/raw/master/misc/img/explanation.png)

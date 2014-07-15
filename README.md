@@ -168,11 +168,16 @@ Arithmetic gates are a sufficient basis of operations that enables
 algorithmic manipulation of the types string, int, float and complex.
 Coming soon.
 
-### The Reason (Learning) Gate
+### Tree of Knowledge and the Reason (Learning) Gate
+
+You will notice, one of the basic data gates allows the creation of a struct-like object.
+This is called a _tree_. It is a novel data structure, described in detail in
+[Extensible records with scoped labels, Daan Leijen](http://research.microsoft.com/pubs/65409/scopedlabels.pdf).
+
 
 The following three illustrations show the same gate design, but under different
 orientations of the event streams. In all valid cases, the relationship
-between the valves is examplified there.
+between the valves is examplified.
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 

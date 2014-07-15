@@ -40,9 +40,6 @@ func (x Space) Materialize(walk ...string) Reflex {
 	println(cir.Print("	\t", "\t"))
 	peers := make(map[string]Reflex)
 	for _, peer := range cir.Peer {
-		if peer == nil {
-			panic("whaa")
-		}
 		if peer.Name == "" { // skip the super peer of this circuit
 			continue
 		}

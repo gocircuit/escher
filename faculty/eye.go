@@ -8,11 +8,8 @@ package faculty
 
 import (
 	"sort"
-	"sync"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/tree"
-	"github.com/gocircuit/escher/understand"
 )
 
 func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
@@ -28,16 +25,16 @@ func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
 	}
 }
 
-func (attendant *EyeReCognizer) cognize(valve string, value interface{}) {
+func (attendant *EyeReCognizer) cognizeWith(valve string, value interface{}) {
 	attendant.Lock()
-	attendant.Age++
-	attendant.memory.At(valve).mf.Grow("Age", attendant.Age).Grow("Value", value).Collapse()
+	attendant.age++
+	attendant.memory.At(valve).Grow("Age", attendant.age).Grow("Value", value).Collapse()
 	reply := attendant.formulate()
 	attendant.Unlock()
 	attendant.cognize(reply)
 }
 
-func (attendant *EyeReCognize) formulate() Sentence {
+func (attendant *EyeReCognizer) formulate() Sentence {
 	var sorting impressionStrength
 	for valve, mf := range attendant.memory {
 		sorting = append(sorting, MemoryFunctional(mf))
@@ -51,7 +48,7 @@ type impressionStrength []MemoryFunctional
 func (x impressionStrength) Verbalize() Sentence {
 	s := make(Sentence)
 	for i, mf := range x {
-		s.Grow(??)
+		s.Grow(i, tree.Make().Grow("Valve", mf.Valve()).Grow("Value", mf.Value()).Grow("Time", i))
 	}
 	return s
 }

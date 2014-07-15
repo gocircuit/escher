@@ -7,9 +7,6 @@
 package faculty
 
 import (
-	"sync"
-
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/tree"
 )
 

@@ -11,7 +11,6 @@ import (
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/tree"
-	"github.com/gocircuit/escher/understand"
 )
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
@@ -59,7 +58,7 @@ func (m *Eye) Focus(cognize ShortCognize) *EyeReCognizer {
 		v := v_
 		m.attention.recognize[v] = m.synapse[v].Focus(
 			func(w interface{}) {
-				m.attention.cognize(v, w)
+				m.attention.cognizeWith(v, w)
 			},
 		)
 	}

@@ -8,16 +8,11 @@ package tree
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 )
 
 func (rec Tree) Marshal() []byte {
-	buf, err := json.Marshal(rec)
-	if err != nil {
-		panic(err)
-	}
-	return buf
+	return []byte(rec.String())
 }
 
 func (rec Tree) String() string {

@@ -43,7 +43,7 @@ func NewEye(valve ...tree.Name) (think.Reflex, *Eye) {
 			panic("two valves, same name")
 		}
 		reflex[v], m.synapse[v] = think.NewSynapse()
-		m.attention.memory.Grow(v, tree.Plant("Valve", v).Grow("Value", nil).Grow("Age", 0))
+		m.attention.memory.Grow(v, 0, nil)
 	}
 	return reflex, m
 }

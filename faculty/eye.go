@@ -29,7 +29,7 @@ func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
 func (attendant *EyeReCognizer) cognizeWith(valve tree.Name, value tree.Meaning) {
 	attendant.Lock()
 	attendant.age++
-	attendant.memory.At(valve).Grow("Age", attendant.age).Grow("Value", value).Collapse()
+	attendant.memory.Grow(valve, attendant.age, value)
 	reply := attendant.formulate()
 	attendant.Unlock()
 	attendant.cognize(reply)
@@ -37,8 +37,8 @@ func (attendant *EyeReCognizer) cognizeWith(valve tree.Name, value tree.Meaning)
 
 func (attendant *EyeReCognizer) formulate() Sentence {
 	var sorting impressionStrength
-	for valve, mf := range attendant.memory {
-		sorting = append(sorting, MemoryFunctional(mf))
+	for _, mf := range attendant.memory {
+		sorting = append(sorting, mf.YieldNil().(MemoryFunctional))
 	}
 	sort.Sort(sorting)
 	return sorting.Verbalize()
@@ -49,7 +49,7 @@ type impressionStrength []MemoryFunctional
 func (x impressionStrength) Verbalize() Sentence {
 	s := make(Sentence)
 	for i, mf := range x {
-		s.Grow(i, tree.Make().Grow("Valve", mf.Valve()).Grow("Value", mf.Value()).Grow("Time", i))
+		s.Grow(i, mf.Valve(), mf.Value())
 	}
 	return s
 }

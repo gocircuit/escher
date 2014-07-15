@@ -14,8 +14,17 @@ import (
 // Time zero is most recent, time one is earlier, and so on.
 type Sentence tree.Tree
 
-func (s Sentence) Grow(time int, value tree.Tree) Sentence {
-	return Sentence(tree.Tree(s).Grow(time, value))
+func (s Sentence) Grow(time int, valve tree.Name, value tree.Meaning) Sentence {
+	return Sentence(
+		tree.Tree(s).Grow(
+			time,
+			SentenceFunctional{
+				"Valve": tree.Branch{valve}, 
+				"Value": tree.Branch{value}, 
+				"Time": tree.Branch{time},
+			},
+		).Collapse(),
+	)
 }
 
 func (s Sentence) At(valve tree.Name) SentenceFunctional {
@@ -26,7 +35,7 @@ func (s Sentence) At(valve tree.Name) SentenceFunctional {
 type SentenceFunctional tree.Tree
 
 func (sf SentenceFunctional) Valve() tree.Name {
-	return tree.Tree(sf).Name("Valve")
+	return tree.Tree(sf).AtName("Valve")
 }
 
 func (sf SentenceFunctional) Value() tree.Meaning {
@@ -34,14 +43,23 @@ func (sf SentenceFunctional) Value() tree.Meaning {
 }
 
 func (sf SentenceFunctional) Time() int {
-	return tree.Tree(sf).Int("Time")
+	return tree.Tree(sf).AtInt("Time")
 }
 
 // Valve—>MemoryFunctional
 type Memory tree.Tree
 
-func (m Memory) Grow(valve tree.Name, value tree.Tree) Memory {
-	return Memory(tree.Tree(m).Grow(valve, value))
+func (m Memory) Grow(valve tree.Name, age int, value tree.Meaning) Memory {
+	return Memory(
+		tree.Tree(m).Grow(
+			valve, 
+			MemoryFunctional{
+				"Valve": tree.Branch{valve}, 
+				"Value": tree.Branch{value}, 
+				"Age": tree.Branch{age},
+			},
+		).Collapse(),
+	)
 }
 
 func (m Memory) At(valve tree.Name) MemoryFunctional {
@@ -52,15 +70,15 @@ func (m Memory) At(valve tree.Name) MemoryFunctional {
 type MemoryFunctional tree.Tree
 
 func (mf MemoryFunctional) Valve() tree.Name {
-	return tree.Tree(sf).Name("Valve")
+	return tree.Tree(mf).AtName("Valve")
 }
 
 func (mf MemoryFunctional) Value() tree.Meaning {
-	return tree.Tree(sf).At("Value")
+	return tree.Tree(mf).At("Value")
 }
 
 func (mf MemoryFunctional) Age() int {
-	return tree.Tree(sf).Int("Age")
+	return tree.Tree(mf).AtInt("Age")
 }
 
 // ShortCognize is the cognition interface provided by the Mind's Eye (short-term memory) mechanism.

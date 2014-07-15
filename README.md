@@ -172,12 +172,17 @@ Coming soon.
 
 You will notice, one of the basic data gates allows the creation of a struct-like object.
 This is called a _tree_. It is a novel data structure, described in detail in
-[Extensible records with scoped labels, Daan Leijen](http://research.microsoft.com/pubs/65409/scopedlabels.pdf).
+[“Extensible records with scoped labels” by Daan Leijen](http://research.microsoft.com/pubs/65409/scopedlabels.pdf).
 
+These data structures are “built out” and “trimmed down” using three elegant
+reflection methods, described in the above publication. 
+
+Escher embodies all three in one gate, whose main purpose is to manipulate
+the contents of trees. This is the _Reason Gate_, illustrated below.
 
 The following three illustrations show the same gate design, but under different
 orientations of the event streams. In all valid cases, the relationship
-between the valves is examplified.
+between the valve values shown examplifies the effect of the gate.
 
 ![Generalization](https://github.com/gocircuit/escher/raw/master/misc/img/generalization.png)
 

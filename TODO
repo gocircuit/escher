@@ -1,3 +1,5 @@
+* Tree keys must be type-recursive as well
+
 
 * Connect compiler, programmer and software in a feedback loop, whereby
 the compiler infers: Which circuit/valve pairs are historically (over the

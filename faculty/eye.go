@@ -31,28 +31,39 @@ func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
 func (attendant *EyeReCognizer) cognize(valve string, value interface{}) {
 	attendant.Lock()
 	attendant.Age++
-	attendant.memory[valve].Age = attendant.Age
-	attendant.memory[valve].Value = value
-	x := attendant.formulate()
+	attendant.memory.At(valve).mf.Grow("Age", attendant.Age).Grow("Value", value).Collapse()
+	reply := attendant.formulate()
 	attendant.Unlock()
-	attendant.cognize(x)
+	attendant.cognize(reply)
 }
 
 func (attendant *EyeReCognize) formulate() Sentence {
-	var sf sortFunctional
-	??
+	var sorting impressionStrength
+	for valve, mf := range attendant.memory {
+		sorting = append(sorting, MemoryFunctional(mf))
+	}
+	sort.Sort(sorting)
+	return sorting.Verbalize()
 }
 
-type sortFunctional []tree.Tree
+type impressionStrength []MemoryFunctional
 
-func (sf sortFunctional) Len() int {
-	return len(sf)
+func (x impressionStrength) Verbalize() Sentence {
+	s := make(Sentence)
+	for i, mf := range x {
+		s.Grow(??)
+	}
+	return s
 }
 
-func (sf sortFunctional) Less(i, j int) bool {
-	return sf[i].Int("Age") > sf[j].Int("Age")
+func (x impressionStrength) Len() int {
+	return len(x)
 }
 
-func (sf sortFunctional) Swap(i, j int) {
-	sf[i], sf[j] = sf[j], sf[i]
+func (x impressionStrength) Less(i, j int) bool {
+	return x[i].Age() > x[j].Age()
+}
+
+func (x impressionStrength) Swap(i, j int) {
+	x[i], x[j] = x[j], x[i]
 }

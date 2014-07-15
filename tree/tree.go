@@ -114,6 +114,13 @@ func (tree Tree) Project() (shadow Tree) {
 	return
 }
 
+func (tree Tree) Collapse() Tree {
+	for name, branch := range tree {
+		tree[name] = Branch{branch.YieldNil()}
+	}
+	return tree
+}
+
 func (tree Tree) Mix(s Tree) (teach, learn Tree) { // (t-s, s-t) setwise
 	teach, learn = Make(), Make()
 	for name, branch := range tree {

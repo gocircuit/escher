@@ -16,6 +16,23 @@ import (
 func init() {
 	faculty.Root.AddTerminal("ignore", think.Ignore{})
 	faculty.Root.AddTerminal("show", Println{})
+	faculty.Root.AddTerminal("see", Scanln{})
+}
+
+// Scanln
+type Scanln struct{}
+
+func (Scanln) Materialize() think.Reflex {
+	s, t := think.NewSynapse()
+	go func() {
+		s.Focus(
+			func(v interface{}) { 
+				println(fmt.Sprintf("%v", v)) 
+			},
+		)
+		??
+	}()
+	return think.Reflex{"Sensation": t}
 }
 
 // Println
@@ -26,5 +43,5 @@ func (Println) Materialize() think.Reflex {
 	go func() {
 		s.Focus(func(v interface{}) { println(fmt.Sprintf("%v", v)) })
 	}()
-	return think.Reflex{"": t}
+	return think.Reflex{"Action": t}
 }

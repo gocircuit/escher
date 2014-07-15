@@ -16,6 +16,6 @@ main {
 
 	// Match the default valve of the show reflex instance to a string constant reflex.
 	// Constant reflexes output a constant value on their default valve.
-	s = "¡Hello, world!"
+	s.Action = "¡Hello, world!"
 
 }

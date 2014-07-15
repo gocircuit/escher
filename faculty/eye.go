@@ -28,7 +28,7 @@ func (re *EyeReCognizer) ReCognize(sentence Sentence) {
 	}
 }
 
-func (re *EyeReCognizer) cognizeOn(valve string, value interface{}) {
+func (re *EyeReCognizer) cognize(valve string, value interface{}) {
 	re.Lock()
 	re.Age++
 	re.memory[valve].Age = re.Age
@@ -39,6 +39,7 @@ func (re *EyeReCognizer) cognizeOn(valve string, value interface{}) {
 }
 
 func (re *EyeReCognize) formulate() Sentence {
+	var sf sortFunctional
 	??
 }
 

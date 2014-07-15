@@ -14,13 +14,21 @@ import (
 	"github.com/gocircuit/escher/understand"
 )
 
-// Sentence is a collection of functional values, indexed by valve name.
-// The tree-scheme of sentence is:
-//	Sentence: Rank—>Functional
-//				Valve—>string
-//				Value—>interface{}
-//				Age—>int
+// Time—>SentenceFunctional
 type Sentence tree.Tree
+
+// "Valve"—>string, "Value"—>interface{}
+type SentenceFunctional tree.Tree
+
+// Valve—>MemoryFunctional
+type Memory tree.Tree
+
+func (m Memory) At(valve string) MemoryFunctional {
+	return tree.Tree(m).At(valve).(MemoryFunctional)
+}
+
+// "Valve"—>string, "Value"—>interface{}, "Age"—>int
+type MemoryFunctional tree.Tree
 
 // ShortCognize is the cognition interface provided by the Mind's Eye (short-term memory) mechanism.
 // The short-term memory is what allows people to process a linguistic sentence with all its structure.
@@ -29,17 +37,9 @@ type ShortCognize func(Sentence)
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 type Eye struct {
-	y []*think.Synapse
-	recognizer EyeReCognizer
+	synapse map[string]*think.Synapse
+	attention EyeReCognizer
 }
-
-// Memory is an internal representation of the 
-//	Memory:	Valve—>
-//				Valve—>string
-//				Value—>interface{}
-//				Age—>int
-//				Index—>int
-type Memory tree.Tree
 
 type EyeReCognizer struct {
 	cognize ShortCognize
@@ -53,37 +53,35 @@ type EyeReCognizer struct {
 func NewEye(valve ...string) (think.Reflex, *Eye) {
 	reflex := make(think.Reflex)
 	m := &Eye{
-		y: make([]*think.Synapse, len(valve)),
-		recognizer: EyeReCognizer{
+		synapse: make(map[string]*think.Synapse),
+		attention: EyeReCognizer{
 			recognize: make(map[string]*think.ReCognizer),
 			memory: make(Memory),
 		},
 	}
-	for i, v := range valve {
+	for _, v := range valve {
 		if _, ok := reflex[v]; ok {
-			panic("duplicate valve")
+			panic("two valves, same name")
 		}
-		reflex[v], m.y[i] = think.NewSynapse()
-		m.recognizer.memory.Grow(v, tree.Plant("Valve", v).Grow("Value", nil).Grow("Age", 0).Grow("Index", i))
+		reflex[v], m.synapse[v] = think.NewSynapse()
+		m.attention.memory.Grow(v, tree.Plant("Valve", v).Grow("Value", nil).Grow("Age", 0))
 	}
 	return reflex, m
 }
 
-func (m *Eye) Attach(cognize ShortCognize) *EyeReCognizer {
-	// Locking prevents individual completing Attach invocations 
-	// from initiating cogntion, before all valves have been attached.
-	m.recognizer.Lock()
-	defer m.recognizer.Unlock()
-	//
-	m.recognizer.cognize = cognize
-	for v_, f_ := range m.recognizer.memory {
+func (m *Eye) Focus(cognize ShortCognize) *EyeReCognizer {
+	// Locking prevents individual competing Focus invocations 
+	// from initiating cogntion before all valves/synapses have been attached.
+	m.attention.Lock()
+	defer m.attention.Unlock()
+	m.attention.cognize = cognize
+	for v_, _ := range m.attention.memory {
 		v := v_
-		f := f_.(tree.Tree)
-		m.recognizer.recognize[v] = m.y[f.Int("Index")].Attach(
+		m.attention.recognize[v] = m.synapse[v].Focus(
 			func(w interface{}) {
-				m.recognizer.cognizeOn(v, w)
+				m.attention.cognize(v, w)
 			},
 		)
 	}
-	return &m.recognizer
+	return &m.attention
 }

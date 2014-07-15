@@ -1,4 +1,4 @@
-# Escher in Language
+# Escher in language
 
 (Or “HTML and JavaScript for Web 3.0 all-in-one”.)
 

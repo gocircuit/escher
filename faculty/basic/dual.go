@@ -25,7 +25,8 @@ type Scanln struct{}
 func (Scanln) Materialize() think.Reflex {
 	s, t := think.NewSynapse()
 	go func() {
-		s.Focus(
+		??
+		r := s.Focus(
 			func(v interface{}) { 
 				println(fmt.Sprintf("%v", v)) 
 			},

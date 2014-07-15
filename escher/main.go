@@ -31,5 +31,5 @@ func main() {
 
 func load(src string) understand.Faculty {
 	faculty.Root.UnderstandDirectory(src)
-	return faculty.Faculty
+	return faculty.Root
 }

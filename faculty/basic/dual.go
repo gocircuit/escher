@@ -25,13 +25,14 @@ type Scanln struct{}
 func (Scanln) Materialize() think.Reflex {
 	s, t := think.NewSynapse()
 	go func() {
-		??
-		r := s.Focus(
-			func(v interface{}) { 
-				println(fmt.Sprintf("%v", v)) 
-			},
-		)
-		??
+		r := s.Focus(think.DontCognize)
+		go func() {
+			for {
+				var em string
+				fmt.Scanln(&em)
+				r.ReCognize(em)
+			}
+		}()
 	}()
 	return think.Reflex{"Sensation": t}
 }

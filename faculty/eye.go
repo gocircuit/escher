@@ -15,11 +15,11 @@ import (
 	"github.com/gocircuit/escher/understand"
 )
 
-func (re *EyeReCognizer) ReCognize(sentence Sentence) {
+func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
 	ch := make(chan struct{})
-	for _, funcl := range sentence {
+	for _, sf := range sentence {
 		go func() {
-			re.recognize[funcl.String("Valve")].ReCognize(funcl.At("Value"))
+			attendant.recognize[sf.Valve()].ReCognize(sf.Value())
 			ch <- struct{}{}
 		}()
 	}
@@ -28,17 +28,17 @@ func (re *EyeReCognizer) ReCognize(sentence Sentence) {
 	}
 }
 
-func (re *EyeReCognizer) cognize(valve string, value interface{}) {
-	re.Lock()
-	re.Age++
-	re.memory[valve].Age = re.Age
-	re.memory[valve].Value = value
-	x := re.formulate()
-	re.Unlock()
-	re.cognize(x)
+func (attendant *EyeReCognizer) cognize(valve string, value interface{}) {
+	attendant.Lock()
+	attendant.Age++
+	attendant.memory[valve].Age = attendant.Age
+	attendant.memory[valve].Value = value
+	x := attendant.formulate()
+	attendant.Unlock()
+	attendant.cognize(x)
 }
 
-func (re *EyeReCognize) formulate() Sentence {
+func (attendant *EyeReCognize) formulate() Sentence {
 	var sf sortFunctional
 	??
 }

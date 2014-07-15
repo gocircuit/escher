@@ -14,26 +14,6 @@ import (
 	"github.com/gocircuit/escher/understand"
 )
 
-// Time—>SentenceFunctional
-type Sentence tree.Tree
-
-// "Valve"—>string, "Value"—>interface{}
-type SentenceFunctional tree.Tree
-
-// Valve—>MemoryFunctional
-type Memory tree.Tree
-
-func (m Memory) At(valve string) MemoryFunctional {
-	return tree.Tree(m).At(valve).(MemoryFunctional)
-}
-
-// "Valve"—>string, "Value"—>interface{}, "Age"—>int
-type MemoryFunctional tree.Tree
-
-// ShortCognize is the cognition interface provided by the Mind's Eye (short-term memory) mechanism.
-// The short-term memory is what allows people to process a linguistic sentence with all its structure.
-type ShortCognize func(Sentence)
-
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 type Eye struct {

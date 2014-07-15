@@ -19,7 +19,7 @@ Some of the application domains of Escher are:
 * Relational data representation, as in databases and CAD file formats,
 * Real-time control loops, as in Robotics,
 * Numerical and scientific computation pipelines,
-* Anything that filters information from some input sources, in real-time, and sends it out to others!
+* Anything that filters information from some input sources, in real-time, and sends a somehow transformed form to others!
 
 An early “proposal” for the design of Escher, 
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),

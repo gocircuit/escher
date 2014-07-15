@@ -33,6 +33,11 @@ introduced by the legendary Mathematicians
 [Sharon Shelah](http://shelah.logic.at/), and introduced to me by the dare-to-be-great, soon-to-be-legendary,
 although-already-should-be [Benjamin Rossman](http://research.nii.ac.jp/~rossman/).
 
+Understanding the difference between Turing Machines and Choiceless Computation,
+while not entirely necessary, sheds much light on the profound difference between 
+Escher and other languages. The relevant publications are quoted in the 
+[bibliography](https://github.com/gocircuit/escher#bibliography) at the end.
+
 ## Quick start ##
 
 Escher is an interpreter, comprising a singular executable binary. It can be built for Linux, Darwin and Windows.
@@ -224,3 +229,14 @@ To me, Escher is a language for weaving dreams: It makes imagination real. Help 
 * [DARPA XDATA](http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx) initiative, 2013–2014
 * [Data Tactics Corp](http://www.data-tactics.com/), 2013–2014
 * [L3](http://www.l-3com.com/), 2014
+
+## Bibliography
+
+* [Choiceless Polynomial Time](http://arxiv.org/pdf/math/9705225.pdf), 
+[Andreas Blass](http://www.math.lsa.umich.edu/~ablass/), 
+[Yuri Gurevich](http://research.microsoft.com/en-us/um/people/gurevich/) and 
+[Saharon Shelah](http://shelah.logic.at/), published by Shelah Office
+on [arXiv](http://arxiv.org/abs/math/9705225), 1997
+
+* [Choiceless Polynomial Time Logic: Inability to Express](http://link.springer.com/chapter/10.1007%2F3-540-44622-2_6),
+[Saharon Shelah](http://shelah.logic.at/), Springer Lecture Notes in Computer Science, Volume 1862, 2000, pp. 72-125

@@ -17,7 +17,9 @@ import (
 // Sentence is a collection of functional values, indexed by valve name.
 // The tree-scheme of sentence is:
 //	Sentence: Rank—>Functional
-//	Functional: Valve—>string, Value—>interface{}, Age—>int
+//				Valve—>string
+//				Value—>interface{}
+//				Age—>int
 type Sentence tree.Tree
 
 // ShortCognize is the cognition interface provided by the Mind's Eye (short-term memory) mechanism.
@@ -32,7 +34,11 @@ type Eye struct {
 }
 
 // Memory is an internal representation of the 
-//	Memory: (Valve)—>(Valve—>string, Value—>interface{}, Age—>int, Index—>int)
+//	Memory:	Valve—>
+//				Valve—>string
+//				Value—>interface{}
+//				Age—>int
+//				Index—>int
 type Memory tree.Tree
 
 type EyeReCognizer struct {

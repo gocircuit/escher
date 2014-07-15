@@ -7,6 +7,7 @@
 package faculty
 
 import (
+	"sort"
 	"sync"
 
 	"github.com/gocircuit/escher/think"
@@ -14,11 +15,11 @@ import (
 	"github.com/gocircuit/escher/understand"
 )
 
-func (recognizer *EyeReCognizer) ReCognize(sentence Sentence) {
+func (re *EyeReCognizer) ReCognize(sentence Sentence) {
 	ch := make(chan struct{})
 	for _, funcl := range sentence {
 		go func() {
-			recognizer.recognize[funcl.String("Valve")].ReCognize(funcl.At("Value"))
+			re.recognize[funcl.String("Valve")].ReCognize(funcl.At("Value"))
 			ch <- struct{}{}
 		}()
 	}
@@ -27,26 +28,30 @@ func (recognizer *EyeReCognizer) ReCognize(sentence Sentence) {
 	}
 }
 
-func (recognizer *EyeReCognizer) cognizeOn(valve string, value interface{}) {
-	recognizer.Lock()
-	recognizer.Age++
-	??
-	i := recognizer.indexOf(valve)
-	recognizer.memory[0], recognizer.memory[i] = recognizer.memory[i], recognizer.memory[0]
-	recognizer.memory[0].Value = value
-	r := make(Sentence, len(recognizer.memory))
-	recognizer.Unlock()
-	//
-	copy(r, recognizer.memory)
-	recognizer.cognize(r)
+func (re *EyeReCognizer) cognizeOn(valve string, value interface{}) {
+	re.Lock()
+	re.Age++
+	re.memory[valve].Age = re.Age
+	re.memory[valve].Value = value
+	x := re.formulate()
+	re.Unlock()
+	re.cognize(x)
 }
 
-// indexOf returns the current index of valve in the most-recent-first order memory slice.
-func (recognizer *EyeReCognizer) indexOf(valve string) int {
-	for i, meme := range recognizer.memory {
-		if meme.Valve == valve {
-			return i
-		}
-	}
-	panic(7)
+func (re *EyeReCognize) formulate() Sentence {
+	??
+}
+
+type sortFunctional []tree.Tree
+
+func (sf sortFunctional) Len() int {
+	return len(sf)
+}
+
+func (sf sortFunctional) Less(i, j int) bool {
+	return sf[i].Int("Age") > sf[j].Int("Age")
+}
+
+func (sf sortFunctional) Swap(i, j int) {
+	sf[i], sf[j] = sf[j], sf[i]
 }

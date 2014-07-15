@@ -11,16 +11,19 @@ import (
 )
 
 // Branch is…
-type Branch []interface{}
+type Branch []Meaning
 
-func (b Branch) Yield() (interface{}, bool) {
+// Meaning…
+type Meaning interface{}
+
+func (b Branch) Yield() (Meaning, bool) {
 	if len(b) == 0 {
 		return nil, false
 	}
 	return b[len(b)-1], true
 }
 
-func (b Branch) YieldNil() (y interface{}) {
+func (b Branch) YieldNil() (y Meaning) {
 	y, _ = b.Yield()
 	return
 }
@@ -38,30 +41,33 @@ func SameYield(g, h Branch) bool {
 }
 
 // Same returns true if its arguments are equal in value.
-func Same(v, w interface{}) bool {
+func Same(v, w Meaning) bool {
 	return reflect.DeepEqual(v, w)
 }
 
 // Tree is a data structure modeled after:
 //	http://research.microsoft.com/pubs/65409/branchdlabels.pdf
-type Tree map[string]Branch
+type Tree map[Name]Branch
+
+// 
+type Name interface{}
 
 // Make allocates a new tree structure.
 func Make() Tree {
 	return make(Tree)
 }
 
-func Plant(name string, value interface{}) Tree {
+func Plant(name Name, value Meaning) Tree {
 	return Make().Grow(name, value)
 }
 
 // Grow adds a new branch to the tree with a given initial value.
-func (tree Tree) Grow(name string, value interface{}) Tree {
+func (tree Tree) Grow(name Name, value Meaning) Tree {
 	tree[name] = append(tree[name], value)
 	return tree
 }
 
-func (tree Tree) At(name string) interface{} {
+func (tree Tree) At(name Name) Meaning {
 	v, ok := tree[name]
 	if !ok {
 		panic(7)
@@ -69,24 +75,24 @@ func (tree Tree) At(name string) interface{} {
 	return v
 }
 
-func (tree Tree) Int(name string) int {
+func (tree Tree) AtInt(name Name) int {
 	v, ok := tree[name]
 	if !ok {
 		panic(7)
 	}
-	return v.(int)
+	return v.YieldNil().(int)
 }
 
-func (tree Tree) String(name string) string {
+func (tree Tree) AtString(name Name) string {
 	v, ok := tree[name]
 	if !ok {
 		panic(7)
 	}
-	return v.(string)
+	return v.YieldNil().(string)
 }
 
 // Forget removes the name from the tree.
-func (tree Tree) Forget(name string) {
+func (tree Tree) Forget(name Name) {
 	branch := tree[name]
 	if len(branch) == 1 {
 		delete(tree, name)

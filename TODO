@@ -1,5 +1,5 @@
-* Tree keys must be type-recursive as well
-
+* Go cannot have maps for map keys, but eventually I should extend tree.Tree
+to be able to have tree.Trees as keys. Not critical for now.
 
 * Connect compiler, programmer and software in a feedback loop, whereby
 the compiler infers: Which circuit/valve pairs are historically (over the

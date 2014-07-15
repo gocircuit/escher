@@ -6,9 +6,12 @@
 
 package think
 
+import (
+	"github.com/gocircuit/escher/tree"
+)
 
 // Reflex is a bundle of un-attached sense endpoints
-type Reflex map[string]*Synapse
+type Reflex map[tree.Name]*Synapse
 
 type Gate interface {
 	Materialize() Reflex
@@ -20,7 +23,7 @@ type Ignore struct{}
 func (Ignore) Materialize() Reflex {
 	s, t := NewSynapse()
 	go func() {
-		s.Attach(DontCognize)
+		s.Focus(DontCognize)
 	}()
 	return Reflex{"": t}
 }

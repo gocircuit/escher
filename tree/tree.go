@@ -10,10 +10,8 @@ import (
 	"reflect"
 )
 
-// Branch is…
 type Branch []Meaning
 
-// Meaning…
 type Meaning interface{}
 
 func (b Branch) Yield() (Meaning, bool) {
@@ -23,8 +21,8 @@ func (b Branch) Yield() (Meaning, bool) {
 	return b[len(b)-1], true
 }
 
-func (b Branch) YieldNil() (y Meaning) {
-	y, _ = b.Yield()
+func (b Branch) YieldNil() (m Meaning) {
+	m, _ = b.Yield()
 	return
 }
 
@@ -40,7 +38,6 @@ func SameYield(g, h Branch) bool {
 	return Same(gy, hy)
 }
 
-// Same returns true if its arguments are equal in value.
 func Same(v, w Meaning) bool {
 	return reflect.DeepEqual(v, w)
 }
@@ -49,10 +46,8 @@ func Same(v, w Meaning) bool {
 //	http://research.microsoft.com/pubs/65409/branchdlabels.pdf
 type Tree map[Name]Branch
 
-// 
 type Name interface{}
 
-// Make allocates a new tree structure.
 func Make() Tree {
 	return make(Tree)
 }
@@ -61,7 +56,6 @@ func Plant(name Name, value Meaning) Tree {
 	return Make().Grow(name, value)
 }
 
-// Grow adds a new branch to the tree with a given initial value.
 func (tree Tree) Grow(name Name, value Meaning) Tree {
 	tree[name] = append(tree[name], value)
 	return tree
@@ -89,6 +83,14 @@ func (tree Tree) AtString(name Name) string {
 		panic(7)
 	}
 	return v.YieldNil().(string)
+}
+
+func (tree Tree) AtName(name Name) Name {
+	v, ok := tree[name]
+	if !ok {
+		panic(7)
+	}
+	return v.YieldNil().(Name)
 }
 
 // Forget removes the name from the tree.

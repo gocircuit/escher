@@ -14,7 +14,8 @@ import (
 
 func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
 	ch := make(chan struct{})
-	for _, sf := range sentence {
+	for _, sf_ := range sentence {
+		sf := sf_.YieldNil().(SentenceFunctional)
 		go func() {
 			attendant.recognize[sf.Valve()].ReCognize(sf.Value())
 			ch <- struct{}{}
@@ -25,7 +26,7 @@ func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
 	}
 }
 
-func (attendant *EyeReCognizer) cognizeWith(valve string, value interface{}) {
+func (attendant *EyeReCognizer) cognizeWith(valve tree.Name, value tree.Meaning) {
 	attendant.Lock()
 	attendant.age++
 	attendant.memory.At(valve).Grow("Age", attendant.age).Grow("Value", value).Collapse()

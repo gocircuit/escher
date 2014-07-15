@@ -11,7 +11,7 @@ func DontCognize(interface{}) {}
 func NewNounReflex(v interface{}) Reflex {
 	s, t := NewSynapse()
 	go func() {
-		s.Attach(DontCognize).ReCognize(v)
+		s.Focus(DontCognize).ReCognize(v)
 	}()
 	return Reflex{"": t}
 }

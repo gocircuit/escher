@@ -14,22 +14,22 @@ import (
 // Time zero is most recent, time one is earlier, and so on.
 type Sentence tree.Tree
 
-func (s Sentence) Grow(valve string, value tree.Tree) Sentence {
-	return Sentence(tree.Tree(s).Grow(valve, value))
+func (s Sentence) Grow(time int, value tree.Tree) Sentence {
+	return Sentence(tree.Tree(s).Grow(time, value))
 }
 
-func (s Sentence) At(valve string) SentenceFunctional {
+func (s Sentence) At(valve tree.Name) SentenceFunctional {
 	return tree.Tree(s).At(valve).(SentenceFunctional)
 }
 
-// "Valve"—>string, "Value"—>interface{}, "Time"—>int
+// "Valve"—>tree.Name, "Value"—>tree.Meaning, "Time"—>int
 type SentenceFunctional tree.Tree
 
-func (sf SentenceFunctional) Valve() string {
-	return tree.Tree(sf).String("Valve")
+func (sf SentenceFunctional) Valve() tree.Name {
+	return tree.Tree(sf).Name("Valve")
 }
 
-func (sf SentenceFunctional) Value() interface{} {
+func (sf SentenceFunctional) Value() tree.Meaning {
 	return tree.Tree(sf).At("Value")
 }
 
@@ -40,22 +40,22 @@ func (sf SentenceFunctional) Time() int {
 // Valve—>MemoryFunctional
 type Memory tree.Tree
 
-func (m Memory) Grow(valve string, value tree.Tree) Memory {
+func (m Memory) Grow(valve tree.Name, value tree.Tree) Memory {
 	return Memory(tree.Tree(m).Grow(valve, value))
 }
 
-func (m Memory) At(valve string) MemoryFunctional {
+func (m Memory) At(valve tree.Name) MemoryFunctional {
 	return tree.Tree(m).At(valve).(MemoryFunctional)
 }
 
-// "Valve"—>string, "Value"—>interface{}, "Age"—>int
+// "Valve"—>tree.Name, "Value"—>tree.Meaning, "Age"—>int
 type MemoryFunctional tree.Tree
 
-func (mf MemoryFunctional) Valve() string {
-	return tree.Tree(sf).String("Valve")
+func (mf MemoryFunctional) Valve() tree.Name {
+	return tree.Tree(sf).Name("Valve")
 }
 
-func (mf MemoryFunctional) Value() interface{} {
+func (mf MemoryFunctional) Value() tree.Meaning {
 	return tree.Tree(sf).At("Value")
 }
 

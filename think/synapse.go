@@ -28,7 +28,7 @@ func NewSynapse() (x, y *Synapse) {
 	return
 }
 
-func (m *Synapse) Attach(cognize Cognize) *ReCognizer {
+func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
 	m.teach <- cognize
 	m.recognizer.reciprocal = <-m.learn
 	return &m.recognizer

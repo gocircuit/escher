@@ -16,25 +16,25 @@ import (
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 type Eye struct {
-	synapse map[string]*think.Synapse
+	synapse map[tree.Name]*think.Synapse
 	attention EyeReCognizer
 }
 
 type EyeReCognizer struct {
 	cognize ShortCognize
-	recognize map[string]*think.ReCognizer
+	recognize map[tree.Name]*think.ReCognizer
 	sync.Mutex
 	age int
 	memory Memory
 }
 
 // NewEye creates a new short-term memory mechanism.
-func NewEye(valve ...string) (think.Reflex, *Eye) {
+func NewEye(valve ...tree.Name) (think.Reflex, *Eye) {
 	reflex := make(think.Reflex)
 	m := &Eye{
-		synapse: make(map[string]*think.Synapse),
+		synapse: make(map[tree.Name]*think.Synapse),
 		attention: EyeReCognizer{
-			recognize: make(map[string]*think.ReCognizer),
+			recognize: make(map[tree.Name]*think.ReCognizer),
 			memory: make(Memory),
 		},
 	}

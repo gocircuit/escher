@@ -1,4 +1,6 @@
-# Escher: HTML and JavaScript for Web 3.0 all-in-one
+# Escher in Language
+
+(Or “HTML and JavaScript for Web 3.0 all-in-one”.)
 
 [![Build Status](https://travis-ci.org/gocircuit/escher.svg?branch=master)](https://travis-ci.org/gocircuit/escher/escher) [![GoDoc](https://godoc.org/github.com/gocircuit/escher?status.png)](https://godoc.org/github.com/gocircuit/escher)
 

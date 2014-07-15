@@ -63,7 +63,7 @@ func SeeNameOrPackage(src *Src) (np Design, ok bool) {
 	if l[0] != '@' {
 		return NameDesign(l), true
 	}
-	return AbsNameDesign(l[1:]), true
+	return RootNameDesign(l[1:]), true
 }
 
 // Int …

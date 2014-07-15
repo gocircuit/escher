@@ -20,7 +20,7 @@ type Design interface{
 
 type (
 	NameDesign string
-	AbsNameDesign string
+	RootNameDesign string
 	StringDesign string
 	IntDesign int
 	FloatDesign float64
@@ -48,7 +48,7 @@ func (x NameDesign) String() string {
 	return string(x)
 }
 
-func (x AbsNameDesign) String() string {
+func (x RootNameDesign) String() string {
 	return string(x)
 }
 

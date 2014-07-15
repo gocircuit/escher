@@ -105,7 +105,7 @@ func parseDesignJoin(src *Src) (design *DesignJoin) {
 	if _, ok := d.(NameDesign); ok {
 		return nil
 	}
-	if _, ok := d.(AbsNameDesign); ok {
+	if _, ok := d.(RootNameDesign); ok {
 		return nil
 	}
 	src.Become(t)

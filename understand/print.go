@@ -20,7 +20,7 @@ func (x *Circuit) Print(prefix, indent string) string {
 		if p.Design == nil {
 			p.Design = see.NameDesign("☻")
 		}
-		fmt.Fprintf(&w,"%s%s%s %s\n", prefix, indent, printable(p.Name), p.Design.String())
+		fmt.Fprintf(&w,"%s%s%s %s/%T\n", prefix, indent, printable(p.Name), p.Design.String(), p.Design)
 		for _, v := range p.Valve {
 			fmt.Fprintf(&w, "%s%s%s%s·%s = %s·%s\n", 
 				prefix, indent, indent, 

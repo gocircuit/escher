@@ -37,20 +37,25 @@ func (x Space) Materialize(walk ...string) Reflex {
 		return gate.Materialize()
 	}
 	within, cir := within_.(understand.Faculty), term.(*understand.Circuit)
+	println(cir.Print("	\t", "\t"))
 	peers := make(map[string]Reflex)
 	for _, peer := range cir.Peer {
+		if peer == nil {
+			panic("whaa")
+		}
 		if peer.Name == "" { // skip the super peer of this circuit
 			continue
 		}
 		switch t := peer.Design.(type) {
 		case see.StringDesign, see.IntDesign , see.FloatDesign , see.ComplexDesign , see.TreeDesign:
 			peers[peer.Name] = materializeBuiltin(t)
-		case see.AbsNameDesign:
+		case see.RootNameDesign:
 			peers[peer.Name] = x.Materialize(strings.Split(string(t), ".")...)
 		case see.NameDesign: // e.g. “hello.who.is.there”
 			peers[peer.Name] = x.materializeName(within, string(t))
+		default:
+			panicf("unknown design: %T/%v", t, t)
 		}
-		panic("unknown design")
 	}
 	// Connect/attach all reflex memories
 	super := make(Reflex)
@@ -91,7 +96,7 @@ func (x Space) materializeName(within understand.Faculty, name string) Reflex {
 	case see.NameDesign:
 		parts = append(strings.Split(string(t), "."), parts[1:]...)
 		return Space(within).Materialize(parts...)
-	case see.AbsNameDesign:
+	case see.RootNameDesign:
 		parts = append(strings.Split(string(t), "."), parts[1:]...)
 		return x.Materialize(parts...)
 	case nil:

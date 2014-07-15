@@ -21,9 +21,7 @@ func stk() {
 
 // panicf is a quick/lazy way to report errors with their reason stacks
 func panicf(format string, arg ...interface{}) {
-	println(fmt.Sprintf(format, arg...))
-	stk()
-	os.Exit(1)
+	panic(fmt.Sprintf(format, arg...))
 }
 
 type Expire struct {

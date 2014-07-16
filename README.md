@@ -303,5 +303,5 @@ on [arXiv](http://arxiv.org/abs/math/9705225), 1997
 Additional, enlightening reading includes:
 
 * [Ancient Evenings](http://en.wikipedia.org/wiki/Ancient_Evenings), Norman Mailer, 1983
-*[Yoga Philosophy of Patañjali](http://www.amazon.com/Yoga-Philosophy-Patanjali-Translation-Annotations/dp/0873957296),
+* [Yoga Philosophy of Patañjali](http://www.amazon.com/Yoga-Philosophy-Patanjali-Translation-Annotations/dp/0873957296),
 State University of New York Press, 1984

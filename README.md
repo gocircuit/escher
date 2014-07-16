@@ -312,3 +312,49 @@ Additional, enlightening reading includes:
 State University of New York Press, 1984
 * [Samskrta-Subodhini: A Sanskrit Primer](http://www.amazon.com/Samskrta-Subodhini-Sanskrit-Primer-Michigan-Southeast/dp/089148079X), 
 Michigan Papers on South and Southeast Asia, Book 47, 1999
+
+## Appendix: Close but not there!
+
+A list of people who have inspired my work and whose work, ironically, is
+a hair-distance away from final insight.
+
+* [Steven Witten](http://acko.net/about/) and [Kyle McDonald](http://kylemcdonald.net/) for heroic
+attempts at fluidity in digital art.
+
+* [Bret Victor](http://worrydream.com/#!2/LadderOfAbstraction) for the insight that inventing a
+good user interface and reverse-engineering the mind is one and the same thing.
+
+* [Noam Chomsky](https://www.youtube.com/watch?v=bfSyWRvoYfw) for suggesting
+that language 
+
+* [John Conway](http://www.amazon.com/The-Symmetries-Things-John-Conway/dp/1568812205)
+
+* [Daniel Spielman](http://www.cs.yale.edu/homes/spielman/precon/precon.html) for the
+insight that general linear systems will never be invertible in linear time, because there are
+no naturally linguistically-posable problems that can result in such matrices.
+
+* [Madhu Sudan](http://people.csail.mit.edu/madhu/) and [Irit Dinur](http://www.wisdom.weizmann.ac.il/~dinuri/) for
+[Probabilistically-checkable Proofs](http://www.ams.org/journals/bull/2007-44-01/S0273-0979-06-01143-8/home.html) and 
+[Universal Semantic Communication](http://people.csail.mit.edu/madhu/talks/2008/Semantic-TRDDC.pdf).
+
+* [Steven Pinker](http://stevenpinker.com/) and 
+[The Stuff of Thought](http://www.amazon.com/The-Stuff-Thought-Language-Window/dp/0143114247).
+
+* [Steven Boyd]() for [CVX]()
+* [Leslie Valiant]() for [Circuits of the Mind]() and [Probably Approximately Correct]().
+
+* [Saharon Shelah]() for [Choiceless Computation]().
+
+* [William Thurston]()
+
+* [Ken Thomson]()
+
+* [Ray Kurzweil]()
+
+* [Steve Jobs]()
+
+* [The Clay Institute]() for the insight that reducing the count of open problems and the 
+theoretical unification of logical theories (reducing the count of axioms) are one
+and the same thing.
+
+* And much more.

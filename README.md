@@ -44,7 +44,7 @@ Escher and other languages. The relevant publications are quoted in the
 
 ### Choiceless programming by example
 
-The following puzzle demonstrates choiceless programming via a simple relatable highschool 
+The following puzzle demonstrates choiceless programming via a simple relatable high-school 
 Math puzzle:
 
 > Four beer caps are placed on the corners of a square table with arbitrary

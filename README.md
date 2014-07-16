@@ -361,7 +361,7 @@ that enabled the idea and later, via the [Go Language](http://golang.org), the r
 * [Ken Stephenson](http://www.math.utk.edu/~kens/) and his work 
 on [Circle Packings](http://www.amazon.com/Introduction-Circle-Packing-Discrete-Functions/dp/0521823560)
 
-* [The Clay Institute]() for the insight that reducing the count of open problems and the 
+* [The Clay Institute](http://www.claymath.org) for the insight that reducing the count of open problems and the 
 theoretical unification of logical theories (reducing the count of axioms) are one
 and the same thing.
 

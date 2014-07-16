@@ -25,7 +25,7 @@ An early “proposal” for the design of Escher,
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),
 might be an informative (but not necessary) read for the theoretically inclined.
 
-## Attention: Mathematics
+## Attention: Non-Turing Mathematics ahead
 
 The Escher abstraction of the world is NOT Turing-compatible: From the point-of-view of an
 Escher program, there is no input and output: There are only emergences and disappearances of events.

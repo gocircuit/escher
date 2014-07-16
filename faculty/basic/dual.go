@@ -45,7 +45,7 @@ func (Println) Materialize() think.Reflex {
 	go func() {
 		s.Focus(
 			func(v interface{}) { 
-				fmt.Printf("%v", v)
+				fmt.Printf("%v\n", v)
 			},
 		)
 	}()

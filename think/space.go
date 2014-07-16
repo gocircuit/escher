@@ -37,7 +37,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 		return gate.Materialize()
 	}
 	within, cir := within_.(understand.Faculty), term.(*understand.Circuit)
-	println(cir.Print("	", "\t"))
+	//println(cir.Print("	", "\t"))
 	peers := make(map[string]Reflex)
 	for _, peer := range cir.Peer {
 		if peer.Name == "" { // skip the super peer of this circuit
@@ -63,25 +63,26 @@ func (x Space) Materialize(walk ...string) Reflex {
 		for _, v := range p.Valve {
 			m1 := peers[p.Name][v.Name]
 			if m1 == nil {
-				println("m1", p.Name, v.Name)
+				continue
 			}
 			delete(peers[p.Name], v.Name)
 			if v.Matching.Of.Name == "" {
+				if _, ok := super[v.Matching.Name]; ok {
+					panic(6)
+				}
 				super[v.Matching.Name] = m1
 			} else {
-				m2 := peers[v.Matching.Of.Name][v.Matching.Name]
-				if m2 == nil {
-					println("m2", v.Matching.Of.Name, v.Matching.Name)
-				}
-				delete(peers[v.Matching.Of.Name], v.Matching.Name)
+				qp, qv := v.Matching.Of.Name, v.Matching.Name
+				m2 := peers[qp][qv]
+				delete(peers[qp], qv)
 				Merge(m1, m2)
 			}
 		}
 	}
 	// Check for unmatched valves
-	for _, p := range cir.Peer {
-		for _, v := range p.Valve {
-			panicf("%s.%s not matched", p.Name, v.Name)
+	for pname, p := range peers {
+		for vname, _ := range p {
+			panicf("%s.%s not matched", pname, vname)
 		}
 	}
 	return super

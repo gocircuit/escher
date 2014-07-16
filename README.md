@@ -259,7 +259,7 @@ and materializing (i.e. executing) these designs. Coming soon.
 
 Coming soon.
 
-### The Escher (Teaching) Gate
+### The Escher (Einstein) Gate: Multiple foci over Space and Time
 
 Coming soon.
 
@@ -314,10 +314,7 @@ State University of New York Press, 1984
 * [Samskrta-Subodhini: A Sanskrit Primer](http://www.amazon.com/Samskrta-Subodhini-Sanskrit-Primer-Michigan-Southeast/dp/089148079X), 
 Michigan Papers on South and Southeast Asia, Book 47, 1999
 
-## Appendix: Close but not there!
-
-A list of people who have inspired my work and whose work, ironically, is
-a hair-distance away from final insight.
+People working in this or unsuspectingly related areas:
 
 * [Steven Witten](http://acko.net/about/) and [Kyle McDonald](http://kylemcdonald.net/) for heroic
 attempts at fluidity in digital art.

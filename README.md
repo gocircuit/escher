@@ -12,6 +12,8 @@ while being simpler than a calculator grammar.
 Escher is a language for building intelligent real-time translations between the semantics of
 different physical devices accessible through chains or networks of digital or electrical technologies.
 
+In Escher, you can program from first- and third-person point-of-view at the same time.
+
 Some of the application domains of Escher are:
 
 * Definition and generation of synthetic worlds governed by Physical laws, as in Augmented Reality and the Gaming Industry,

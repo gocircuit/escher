@@ -160,6 +160,16 @@ visual language follows a prescribed format.
 
 ### Data (Noun) gates
 
+On blank slate, there is “nothing to do”—so to speak. For this reason,
+we have a collection of gates which are effectively “springs” of objects.
+
+Some produce integers, some floats, some complex numbers, some strings.
+These are familiar types.
+
+There is one gate that produces “trees”. Trees are the basic type of
+“weavable” (or mutable) knowledge. (In fact, the other types are not
+necessary but we throw them in for convenience.)
+
 ![Impression of the mind](https://github.com/gocircuit/escher/raw/master/misc/img/impress.png)
 
 ### Combinator (Manipulator) gates

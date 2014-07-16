@@ -23,7 +23,6 @@ func init() {
 type Scanln struct{}
 
 func (Scanln) Materialize() think.Reflex {
-	println("materializing Scanln")
 	s, t := think.NewSynapse()
 	go func() {
 		r := s.Focus(think.DontCognize)
@@ -31,7 +30,6 @@ func (Scanln) Materialize() think.Reflex {
 			for {
 				var em string
 				fmt.Scanln(&em)
-				println("ripple~")
 				r.ReCognize(em)
 			}
 		}()
@@ -43,7 +41,6 @@ func (Scanln) Materialize() think.Reflex {
 type Println struct{}
 
 func (Println) Materialize() think.Reflex {
-	println("materializing Println")
 	s, t := think.NewSynapse()
 	go func() {
 		s.Focus(

@@ -62,11 +62,17 @@ func (x Space) Materialize(walk ...string) Reflex {
 		}
 		for _, v := range p.Valve {
 			m1 := peers[p.Name][v.Name]
+			if m1 == nil {
+				println("m1", p.Name, v.Name)
+			}
 			delete(peers[p.Name], v.Name)
 			if v.Matching.Of.Name == "" {
 				super[v.Matching.Name] = m1
 			} else {
 				m2 := peers[v.Matching.Of.Name][v.Matching.Name]
+				if m2 == nil {
+					println("m2", v.Matching.Of.Name, v.Matching.Name)
+				}
 				delete(peers[v.Matching.Of.Name], v.Matching.Name)
 				Merge(m1, m2)
 			}

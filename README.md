@@ -323,7 +323,8 @@ attempts at fluidity in digital art.
 good user interface and reverse-engineering the mind is one and the same thing.
 
 * [Noam Chomsky](https://www.youtube.com/watch?v=bfSyWRvoYfw) for suggesting
-that language 
+that discrepancies in language vs action are a window into the producing device, as well as
+the circularity of the meaning of languages.
 
 * [John Conway](http://www.amazon.com/The-Symmetries-Things-John-Conway/dp/1568812205)
 
@@ -338,22 +339,26 @@ no naturally linguistically-posable problems that can result in such matrices.
 * [Steven Pinker](http://stevenpinker.com/) and 
 [The Stuff of Thought](http://www.amazon.com/The-Stuff-Thought-Language-Window/dp/0143114247).
 
-* [Steven Boyd]() for [CVX]()
+* [Steven Boyd](http://web.stanford.edu/~boyd/) for pointing my attention to the relationship
+between convex optimization [CVX](https://class.stanford.edu/courses/Engineering/CVX101/Winter2014/about) and language.
 
-* [Leslie Valiant]() for [Circuits of the Mind]() and [Probably Approximately Correct]().
+* [Leslie Valiant](http://people.seas.harvard.edu/~valiant/) for 
+[Circuits of the Mind](http://www.amazon.com/Circuits-Mind-Leslie-G-Valiant/dp/0195126688) and 
+[Probably Approximately Correct](http://www.probablyapproximatelycorrect.com/), as well as
+for inspiring a spirit of thought outside of my profession (Theoretical Computer Science).
 
-* [Saharon Shelah]() for [Choiceless Computation]().
+* [Saharon Shelah](http://shelah.logic.at) for the notion 
+of [Choiceless Computation](http://link.springer.com/chapter/10.1007%2F3-540-44622-2_6).
 
-* [William Thurston]() for 
+* [William Thurston](http://en.wikipedia.org/wiki/William_Thurston) for 
+the [Geometry and Topology of Three-manifolds](http://library.msri.org/books/gt3m/).
 
-* [Ken Thompson]()
+* [Ken Thompson](http://en.wikipedia.org/wiki/Ken_Thompson) and 
+[Rob Pike](http://en.wikipedia.org/wiki/Rob_Pike) for his pioneering work in programming languages
+that enabled the idea and later, via the [Go Language](http://golang.org), the realization of Escher.
 
 * [Ken Stephenson](http://www.math.utk.edu/~kens/) and his work 
 on [Circle Packings](http://www.amazon.com/Introduction-Circle-Packing-Discrete-Functions/dp/0521823560)
-
-* [Ray Kurzweil]()
-
-* [Steve Jobs]()
 
 * [The Clay Institute]() for the insight that reducing the count of open problems and the 
 theoretical unification of logical theories (reducing the count of axioms) are one

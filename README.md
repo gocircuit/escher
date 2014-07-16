@@ -170,7 +170,7 @@ There is one gate that produces “trees”. Trees are the basic type of
 “weavable” (or mutable) knowledge. (In fact, the other types are not
 necessary but we throw them in for convenience.)
 
-In the illustration below, the syntax of the respective gates is displayed
+In the illustration below, the syntax of the respective gate design is displayed
 as their name (white on black).
 
 ![Impression of the mind](https://github.com/gocircuit/escher/raw/master/misc/img/impress.png)

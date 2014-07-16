@@ -299,3 +299,9 @@ on [arXiv](http://arxiv.org/abs/math/9705225), 1997
 
 * [Choiceless Polynomial Time Logic: Inability to Express](http://link.springer.com/chapter/10.1007%2F3-540-44622-2_6),
 [Saharon Shelah](http://shelah.logic.at/), Springer Lecture Notes in Computer Science, Volume 1862, 2000, pp. 72-125
+
+Additional, enlightening reading includes:
+
+* [Ancient Evenings](http://en.wikipedia.org/wiki/Ancient_Evenings), Norman Mailer, 1983
+*[Yoga Philosophy of Patañjali](http://www.amazon.com/Yoga-Philosophy-Patanjali-Translation-Annotations/dp/0873957296),
+State University of New York Press, 1984

@@ -355,7 +355,7 @@ of [Choiceless Computation](http://link.springer.com/chapter/10.1007%2F3-540-446
 the [Geometry and Topology of Three-manifolds](http://library.msri.org/books/gt3m/).
 
 * [Ken Thompson](http://en.wikipedia.org/wiki/Ken_Thompson) and 
-[Rob Pike](http://en.wikipedia.org/wiki/Rob_Pike) for his pioneering work in programming languages
+[Rob Pike](http://en.wikipedia.org/wiki/Rob_Pike) for their pioneering work in programming languages
 that enabled the idea and later, via the [Go Language](http://golang.org), the realization of Escher.
 
 * [Ken Stephenson](http://www.math.utk.edu/~kens/) and his work 

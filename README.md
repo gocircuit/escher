@@ -326,7 +326,8 @@ good user interface and reverse-engineering the mind is one and the same thing.
 that discrepancies in language vs action are a window into the producing device, as well as
 the circularity of the meaning of languages.
 
-* [John Conway](http://www.amazon.com/The-Symmetries-Things-John-Conway/dp/1568812205)
+* [John Conway](http://en.wikipedia.org/wiki/John_Horton_Conway)
+for the [Symmetris of Things](http://www.amazon.com/The-Symmetries-Things-John-Conway/dp/1568812205).
 
 * [Daniel Spielman](http://www.cs.yale.edu/homes/spielman/precon/precon.html) for the
 insight that general linear systems will never be invertible in linear time, because there are

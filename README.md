@@ -271,7 +271,8 @@ To me, Escher is a language for weaving dreams: It makes imagination real. Help 
 ## Sponsors and credits
 
 * [DARPA XDATA](http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx) initiative 
-under [Dr. Christopher White](http://www.darpa.mil/Our_Work/I2O/Personnel/Dr_Christopher_White.aspx), 2013–2014
+under the program management of
+[Dr. Christopher White](http://www.darpa.mil/Our_Work/I2O/Personnel/Dr_Christopher_White.aspx), 2013–2014
 * [Data Tactics Corp](http://www.data-tactics.com/), 2013–2014
 * [L3](http://www.l-3com.com/), 2014
 

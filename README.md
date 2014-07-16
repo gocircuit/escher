@@ -308,3 +308,5 @@ Additional, enlightening reading includes:
 * [Ancient Evenings](http://en.wikipedia.org/wiki/Ancient_Evenings), Norman Mailer, 1983
 * [Yoga Philosophy of Patañjali](http://www.amazon.com/Yoga-Philosophy-Patanjali-Translation-Annotations/dp/0873957296),
 State University of New York Press, 1984
+* [Samskrta-Subodhini: A Sanskrit Primer](http://www.amazon.com/Samskrta-Subodhini-Sanskrit-Primer-Michigan-Southeast/dp/089148079X), 
+Michigan Papers on South and Southeast Asia, Book 47, 1999

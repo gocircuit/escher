@@ -346,7 +346,10 @@ no naturally linguistically-posable problems that can result in such matrices.
 
 * [William Thurston]() for 
 
-* [Ken Thomson]()
+* [Ken Thompson]()
+
+* [Ken Stephenson](http://www.math.utk.edu/~kens/) and his work 
+on [Circle Packings](http://www.amazon.com/Introduction-Circle-Packing-Discrete-Functions/dp/0521823560)
 
 * [Ray Kurzweil]()
 

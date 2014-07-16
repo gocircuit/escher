@@ -1,4 +1,4 @@
-# Escher in language
+# Escher in language—The algorithmic mirror
 
 (Or “HTML and JavaScript for Web 3.0 all-in-one”.)
 
@@ -12,7 +12,8 @@ while being simpler than a calculator grammar.
 Escher is a language for building intelligent real-time translations between the semantics of
 different physical devices accessible through chains or networks of digital or electrical technologies.
 
-In Escher, you can program from first- and third-person point-of-view at the same time.
+In Escher, you can program from first- and third-person point-of-view at the same time. (Just like
+Physics is particles and waves at the same time.)
 
 Some of the application domains of Escher are:
 
@@ -341,11 +342,12 @@ no naturally linguistically-posable problems that can result in such matrices.
 [The Stuff of Thought](http://www.amazon.com/The-Stuff-Thought-Language-Window/dp/0143114247).
 
 * [Steven Boyd]() for [CVX]()
+
 * [Leslie Valiant]() for [Circuits of the Mind]() and [Probably Approximately Correct]().
 
 * [Saharon Shelah]() for [Choiceless Computation]().
 
-* [William Thurston]()
+* [William Thurston]() for 
 
 * [Ken Thomson]()
 

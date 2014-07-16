@@ -36,7 +36,6 @@ func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
 
 // Merge attaches two endpoints, of distinct memories, together.
 func Merge(m1, m2 *Synapse) {
-	println("eh", m1, m2)
 	m2.teach <- <-m1.learn
 	m1.teach <- <-m2.learn
 }

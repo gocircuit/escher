@@ -144,7 +144,7 @@ Escher materializes the circuit design named `main` in the root source directory
 	// The main circuit is always the one materialized (executed).
 	main {
 		s @show
-		s = "¡Hello, world!"
+		s.Action = "¡Hello, world!"
 	}
 
 ## Basic gates

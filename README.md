@@ -6,7 +6,7 @@
 
 ![Escher in language](https://github.com/gocircuit/escher/raw/master/misc/img/main.png)
 
-Escher is a progrmaming language for everything. It can naturally represent both process and data,
+Escher is a programming language for everything. It can naturally represent both process and data,
 while being simpler than a calculator grammar.
 
 Escher is a language for building intelligent real-time translations between the semantics of

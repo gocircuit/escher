@@ -6,7 +6,7 @@
 
 ![Escher in language](https://github.com/gocircuit/escher/raw/master/misc/img/main.png)
 
-Escher is a progrmaming language for everything. It can naturally represent both process and data,
+Escher is a programming language for everything. It can naturally represent both process and data,
 while being simpler than a calculator grammar.
 
 Escher is a language for building intelligent real-time translations between the semantics of
@@ -73,7 +73,7 @@ Escher is an interpreter, comprising a singular executable binary. It can be bui
 Given that the [Go Language](http://golang.org) compiler is [installed](http://golang.org/doc/install),
 you can build and install the circuit binary with one line:
 
-	go install github.com/gocircuit/escher/escher
+	go get github.com/gocircuit/escher/escher
 
 Go to the Escher base directory and run one of the tutorials
 

@@ -267,6 +267,23 @@ Coming soon.
 
 I envision that in the natural course of action at play, … (more coming soon).
 
+## Why you should be excited
+
+It may seem that Escher is not more than a new semantic to do an old job.
+But something nearly magical happens when transition to using the
+Escher semantic—various compiler intelligence improvements that
+used to be NP-hard become simple and tractable:
+
+* Users do not need to explicitly moduralize (sub-divide) their circuits.
+One could start designing a circuit wiring and the compiler will automatically
+find sub-patterns that are abstractable as circuits. Which includes
+non-obvious and/or recursive ones.
+
+* Code speed/space/etc optimizations reduce to a simple sub-graph
+replacement game, highly transparent to and customizable by the user.
+
+* 
+
 ## And…
 
 …if you think this language is `#KingOfMetaphor`, please, tweet to
@@ -327,11 +344,14 @@ that discrepancies in language vs action are a window into the producing device,
 the circularity of the meaning of languages.
 
 * [John Conway](http://en.wikipedia.org/wiki/John_Horton_Conway)
-for the [Symmetris of Things](http://www.amazon.com/The-Symmetries-Things-John-Conway/dp/1568812205).
+for the [Symmetries of Things](http://www.amazon.com/The-Symmetries-Things-John-Conway/dp/1568812205).
 
 * [Daniel Spielman](http://www.cs.yale.edu/homes/spielman/precon/precon.html) for the
 insight that general linear systems will never be invertible in linear time, because there are
-no naturally linguistically-posable problems that can result in such matrices.
+no naturally linguistically-posable problems that can result in such matrices. As well as the 
+insight that even circular objects (like general undirected graphs) have to be intellectually
+broken down to “simple” trees (via the notion of “distribution of trees”) in order to enable
+a thinking process: Thereby motivting the “tree of knowledge” data representation.
 
 * [Madhu Sudan](http://people.csail.mit.edu/madhu/) and [Irit Dinur](http://www.wisdom.weizmann.ac.il/~dinuri/) for
 [Probabilistically-checkable Proofs](http://www.ams.org/journals/bull/2007-44-01/S0273-0979-06-01143-8/home.html) and 

@@ -27,8 +27,8 @@ func (s Sentence) Grow(time int, valve tree.Name, value tree.Meaning) Sentence {
 	)
 }
 
-func (s Sentence) At(valve tree.Name) SentenceFunctional {
-	return tree.Tree(s).At(valve).(SentenceFunctional)
+func (s Sentence) At(time int) SentenceFunctional {
+	return tree.Tree(s).At(time).(SentenceFunctional)
 }
 
 // "Valve"—>tree.Name, "Value"—>tree.Meaning, "Time"—>int

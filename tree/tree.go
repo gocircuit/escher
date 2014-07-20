@@ -144,6 +144,7 @@ func (tree Tree) Mix(s Tree) (teach, learn Tree) { // (t-s, s-t) setwise
 	return
 }
 
+// ConceptualizeObservation maps {x/y,…} to {Sense/x, What/y}
 func ConceptualizeObservation(obs Tree) Tree {
 	for sense, what := range obs {
 		return Make().Grow("Sense", sense).Grow("What", what.YieldNil())
@@ -152,19 +153,15 @@ func ConceptualizeObservation(obs Tree) Tree {
 }
 
 func DeConceptualizeObservation(observation Tree) Tree {
-	name_, intelligible := observation["Sense"]
+	name, intelligible := observation["Sense"]
 	if !intelligible { // no change in belief if input is unintelligible
-		return nil
-	}
-	name, ok := name_.YieldNil().(string)
-	if !ok {
 		return nil
 	}
 	branch, intelligible := observation["What"]
 	if !intelligible { // no change in belief if input is unintelligible
 		return nil
 	}
-	return Make().Grow(name, branch.YieldNil())
+	return Make().Grow(name.YieldNil(), branch.YieldNil())
 }
 
 // Belief combined with an Observation produces a Theory.

@@ -14,6 +14,10 @@ import (
 // Time zero is most recent, time one is earlier, and so on.
 type Sentence tree.Tree
 
+func MakeSentence() Sentence {
+	return make(Sentence)
+}
+
 func (s Sentence) Grow(time int, valve tree.Name, value tree.Meaning) Sentence {
 	return Sentence(
 		tree.Tree(s).Grow(
@@ -31,6 +35,15 @@ func (s Sentence) At(time int) SentenceFunctional {
 	return tree.Tree(s).At(time).(SentenceFunctional)
 }
 
+func (s Sentence) AtName(name string) SentenceFunctional {
+	for n, sf := range s {
+		if n == name {
+			return (sf.YieldNil()).(SentenceFunctional)
+		}
+	}
+	return nil
+}
+
 // "Valve"—>tree.Name, "Value"—>tree.Meaning, "Time"—>int
 type SentenceFunctional tree.Tree
 
@@ -40,6 +53,10 @@ func (sf SentenceFunctional) Valve() tree.Name {
 
 func (sf SentenceFunctional) Value() tree.Meaning {
 	return tree.Tree(sf).At("Value")
+}
+
+func (sf SentenceFunctional) TreeValue() tree.Tree {
+	return tree.Tree(sf).At("Value").(tree.Tree)
 }
 
 func (sf SentenceFunctional) Time() int {

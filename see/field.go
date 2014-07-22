@@ -2,9 +2,19 @@
 //
 // It helps future understanding of past knowledge to save
 // this notice, so peers of other times and backgrounds can
-// see history clearly, unless you have a better idea.
+// see history clearly.
 
 package see
+
+//
+func SeeLine(src *Src) (s *star.Star) {
+	defer func() {
+		recover()
+	}()
+	t := src.Copy()
+	Space(t)
+	?
+}
 
 // “min: [v, u, w, x],  // comment”
 func SeeField(src *Src) (name string, scope []interface{}, ok bool) {
@@ -18,8 +28,6 @@ func SeeField(src *Src) (name string, scope []interface{}, ok bool) {
 	if name = Identifier(t); name == "" { // Name
 		return "", nil, false
 	}
-	Space(t)
-	t.Match(":")
 	Space(t)
 	scope, ok = Scope(t)
 	if !ok {

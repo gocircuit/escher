@@ -2,7 +2,7 @@
 //
 // It helps future understanding of past knowledge to save
 // this notice, so peers of other times and backgrounds can
-// see history clearly, unless you have a better idea.
+// see history clearly.
 
 package see
 
@@ -11,12 +11,14 @@ package see
 // 	"strconv"
 // )
 
-func SeeCircuit(src *Src) (cir *Circuit) {
+func SeeCircuit(src *Src, named bool) (cir *Circuit) {
 	cir = &Circuit{}
 	t := src.Copy()
 	Space(t)
-	cir.Name = Identifier(t) // empty-string identifier ok
-	Space(t)
+	if named {
+		cir.Name = Identifier(t) // empty-string identifier ok
+		Space(t)
+	}
 	if !t.TryMatch("{") {
 		return nil
 	}

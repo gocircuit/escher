@@ -2,7 +2,7 @@
 //
 // It helps future understanding of past knowledge to save
 // this notice, so peers of other times and backgrounds can
-// see history clearly, unless you have a better idea.
+// see history clearly.
 
 package star
 
@@ -11,6 +11,7 @@ import (
 	"fmt"
 )
 
+// Star is a node from a symmetric tree, i.e. a tree without a distinct root.
 type Star struct {
 	star map[string]*Star
 	value interface{}
@@ -63,8 +64,28 @@ func (s *Star) Traverse(name string) *Star {
 }
 
 // See returns the value stored at this node.
-func (s *Star) See() interface{} {
+func (s *Star) Interface() interface{} {
 	return s.value
+}
+
+func (s *Star) String() string {
+	return s.value.(string)
+}
+
+func (s *Star) Int() int {
+	return s.value.(int)
+}
+
+func (s *Star) Float() float64 {
+	return s.value.(float64)
+}
+
+func (s *Star) Complex() complex128 {
+	return s.value.(complex128)
+}
+
+func (s *Star) Star() *Star {
+	return s.value.(*Star)
 }
 
 // Show sets the value stored at this node.
@@ -117,7 +138,7 @@ func (s *Star) Contains(t *Star) bool {
 
 // Printing
 
-func (s *Star) Print(prefix, indent string, without ...string) string {
+func (s *Star) Print(prefix, indent string) string {
 	defer unpebble(pebble(s))
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "%s{\n", prefix)
@@ -125,7 +146,7 @@ func (s *Star) Print(prefix, indent string, without ...string) string {
 		if ss.pebble {
 			continue
 		}
-		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, name, ss.Print(prefix+indent, indent, ""))
+		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, name, ss.Print(prefix+indent, indent))
 	}
 	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()

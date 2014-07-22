@@ -2,7 +2,7 @@
 //
 // It helps future understanding of past knowledge to save
 // this notice, so peers of other times and backgrounds can
-// see history clearly, unless you have a better idea.
+// see history clearly.
 
 package browser
 

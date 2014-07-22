@@ -2,7 +2,7 @@
 //
 // It helps future understanding of past knowledge to save
 // this notice, so peers of other times and backgrounds can
-// see history clearly, unless you have a better idea.
+// see history clearly.
 
 package see
 
@@ -11,14 +11,14 @@ import (
 	"github.com/gocircuit/escher/tree"
 )
 
-func SeeTree(src *Src) (rec TreeDesign, ok bool) {
+func SeeStar(src *Src) (star StarDesign, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			rec, ok = nil, false
 		}
 	}()
-	// println(fmt.Sprintf("R<=[%s]", src.String()))
-	rec = TreeDesign(tree.Make())
+	star = StarDesign(star.Make())
+
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
@@ -37,8 +37,6 @@ func SeeTree(src *Src) (rec TreeDesign, ok bool) {
 		}
 		t.Become(q)
 	}
-	Space(t)
-	t.TryMatch(",")
 	Space(t)
 	t.Match("}")
 	src.Become(t)

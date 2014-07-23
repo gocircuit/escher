@@ -1,9 +1,4 @@
 
-
-
-
-
-
 Syntax:
 
 Nand {
@@ -26,20 +21,4 @@ Nand {
 Corresponding star:
 
 {
-	Nand {
-		int 123
-		float 3.14e-9
-		complex 3-2i
-		dstring "aha"
-		bstring `boo`
-		star {
-			int 456
-			out @show
-			show.Action = int
-		}
-		m1 {
-			show Action
-			int
-		}
-	}
 }

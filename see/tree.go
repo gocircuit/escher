@@ -11,13 +11,13 @@ import (
 	"github.com/gocircuit/escher/tree"
 )
 
-func SeeStar(src *Src) (star StarDesign, ok bool) {
+func SeeStar(src *Src) (star Star, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			rec, ok = nil, false
 		}
 	}()
-	star = StarDesign(star.Make())
+	star = Star(star.Make())
 
 	t := src.Copy()
 	t.Match("{")

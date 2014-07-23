@@ -25,7 +25,7 @@ func SeeDesign(src *Src) (v Design, ok bool) {
 	return nil, false
 }
 
-func SeeNoNameDesign(src *Src) (v Design, ok bool) {
+func SeeNoName(src *Src) (v Design, ok bool) {
 	if v, ok = SeeBasic(src); ok {
 		return
 	}
@@ -61,13 +61,13 @@ func SeeNameOrPackage(src *Src) (np Design, ok bool) {
 		return nil, false
 	}
 	if l[0] != '@' {
-		return NameDesign(l), true
+		return Name(l), true
 	}
-	return RootNameDesign(l[1:]), true
+	return RootName(l[1:]), true
 }
 
 // Int …
-func SeeInt(src *Src) (i IntDesign, ok bool) {
+func SeeInt(src *Src) (i Int, ok bool) {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
@@ -82,7 +82,7 @@ func SeeInt(src *Src) (i IntDesign, ok bool) {
 }
 
 // Float …
-func SeeFloat(src *Src) (f FloatDesign, ok bool) {
+func SeeFloat(src *Src) (f Float, ok bool) {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
@@ -97,7 +97,7 @@ func SeeFloat(src *Src) (f FloatDesign, ok bool) {
 }
 
 // Complex …
-func SeeComplex(src *Src) (c ComplexDesign, ok bool) {
+func SeeComplex(src *Src) (c Complex, ok bool) {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
@@ -112,7 +112,7 @@ func SeeComplex(src *Src) (c ComplexDesign, ok bool) {
 }
 
 // SeeBackquoteString …
-func SeeBackquoteString(src *Src) (str StringDesign, ok bool) {
+func SeeBackquoteString(src *Src) (str String, ok bool) {
 	t := src.Copy()
 	var quoted string
 	quoted, ok = DelimitBackquoteString(t)
@@ -123,7 +123,7 @@ func SeeBackquoteString(src *Src) (str StringDesign, ok bool) {
 	// if str, err = strconv.Unquote(quoted); err != nil {
 	// 	return "", false
 	// }
-	str = StringDesign(quoted[1:len(quoted)-1])
+	str = String(quoted[1:len(quoted)-1])
 	src.Become(t)
 	return str, true
 }
@@ -171,7 +171,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 }
 
 // SeeDoubleQuoteString …
-func SeeDoubleQuoteString(src *Src) (sd StringDesign, ok bool) {
+func SeeDoubleQuoteString(src *Src) (sd String, ok bool) {
 	t := src.Copy()
 	var quoted string
 	quoted, ok = DelimitDoubleQuoteString(t)
@@ -184,7 +184,7 @@ func SeeDoubleQuoteString(src *Src) (sd StringDesign, ok bool) {
 		return "", false
 	}
 	src.Become(t)
-	return StringDesign(str), true
+	return String(str), true
 }
 
 func DelimitDoubleQuoteString(src *Src) (string, bool) {

@@ -98,14 +98,14 @@ func parseDesignJoin(src *Src) (design *DesignJoin) {
 		}
 	}()
 	t := src.Copy()
-	d, ok := SeeNoNameDesign(t)
+	d, ok := SeeNoName(t)
 	if !ok {
 		return nil
 	}
-	if _, ok := d.(NameDesign); ok {
+	if _, ok := d.(Name); ok {
 		return nil
 	}
-	if _, ok := d.(RootNameDesign); ok {
+	if _, ok := d.(RootName); ok {
 		return nil
 	}
 	src.Become(t)

@@ -11,6 +11,8 @@ import (
 	"fmt"
 )
 
+// XXX: Grow and Traverse should merge, and garbage-collect behind them if no values are present in nodes.
+
 // Star is a node from a symmetric tree, i.e. a tree without a distinct root.
 type Star struct {
 	star map[string]*Star

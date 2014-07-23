@@ -24,23 +24,15 @@
 // The star encoding of a CIRCUIT is:
 //
 //	name {
-//		peer {
-//			{ // empty-string peer contains valve names
-//				valve1
-//				…
-//			}
-//			name // CIRCUIT star or built-in DESIGN
-//			…
-//		}
-//		matching {
-//			name MATCHING
-//			…
-//		}
+//		name CIRCUIT // PEER
+//		name DESIGN // PEER
+//		name MATCHING // MATCHING
+//		…
 //	}
 //
 // The star encoding of a MATCHING is:
 //
-//	{
+//	{ // type Matching *star.Star
 //		Left {
 //			Peer "" // string indicates a peer name; star is a circuit or a built-in design
 //			Valve "X"
@@ -77,7 +69,7 @@
 //			0 {
 //				Left {
 //					Peer Name("a")
-//					Valve Name("XndY")
+//					Valve Name("XandY")
 //				}
 //				Right {
 //					Peer Name("n")
@@ -103,17 +95,17 @@ type Design interface{
 }
 
 type (
+	Star *star.Star
 	Name string
 	RootName string
 	String string
 	Int int
 	Float float64
 	Complex complex128
-	Star star.Star
 )
 
 func (x Star) String() string {
-	return (star.Star)(x).String()
+	return (*star.Star)(x).String()
 }
 
 func (x Complex) String() string {

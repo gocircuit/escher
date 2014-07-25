@@ -13,27 +13,29 @@ import (
 
 // Star is a node from a symmetric tree, i.e. a tree without a distinct root.
 type Star struct {
-	choice map[string]*Star
-	value interface{}
+	Choice Choice
+	Value interface{}
 }
+
+type Choice map[string]*Star
 
 // Make creates a singleton node star and an eye into it.
 func Make() *Star {
 	return &Star{
-		choice: make(map[string]*Star),
+		Choice: make(Choice),
 	}
 }
 
 func (s *Star) scrub() {
-	s.choice = nil
-	s.value = nil
+	s.Choice = nil
+	s.Value = nil
 }
 
 // Copy returns a complete copy of the star with the same point-of-view into it.
 func (s *Star) Copy(exclude ...string) *Star {
 	t := Make()
 	t.Show(s.Interface())
-	for fwd, choice := range s.choice {
+	for fwd, choice := range s.Choice {
 		if contains(exclude, fwd) {
 			continue
 		}
@@ -54,11 +56,11 @@ func contains(set []string, s string) bool {
 
 // Reverse returns the name of the choice on fwd that points back to s.
 func (s *Star) Reverse(fwd string) (*Star, string) {
-	t, ok := s.choice[fwd]
+	t, ok := s.Choice[fwd]
 	if !ok {
 		return nil, ""
 	}
-	for rev, r := range t.choice {
+	for rev, r := range t.Choice {
 		if r == s {
 			return t, rev
 		}
@@ -67,20 +69,20 @@ func (s *Star) Reverse(fwd string) (*Star, string) {
 }
 
 func (s *Star) Merge(fwd, rev string, t *Star) *Star {
-	if _, ok := s.choice[fwd]; ok {
+	if _, ok := s.Choice[fwd]; ok {
 		panic("forward clash")
 	}
-	if _, ok := t.choice[rev]; ok {
+	if _, ok := t.Choice[rev]; ok {
 		panic("reverse clash")
 	}
-	s.choice[fwd], t.choice[rev] = t, s
+	s.Choice[fwd], t.Choice[rev] = t, s
 	return s
 }
 
 // Point-of-view
 
 // Traverse gives a different point-of-view on the same star, by moving the current rootcalong the branch labeled name.
-func (s *Star) Traverse(fwd, rev string) (t *Star) {
+func Traverse(s *Star, fwd, rev string) (t *Star) {
 	defer s.collect()
 	var trev string
 	t, trev = s.Reverse(fwd)
@@ -96,64 +98,64 @@ func (s *Star) Traverse(fwd, rev string) (t *Star) {
 }
 
 func (s *Star) collect() {
-	if s.value != nil {
+	if s.Value != nil {
 		return
 	}
-	if len(s.choice) != 1 {
+	if len(s.Choice) != 1 {
 		return
 	}
-	for fwd, _ := range s.choice {
+	for fwd, _ := range s.Choice {
 		t, rev := s.Reverse(fwd)
-		t.Split(rev, fwd)
+		Split(t, rev, fwd)
 		s.scrub()
 		return
 	}
 	panic(1)
 }
 
-func (s *Star) Split(fwd, rev string) (parent, child *Star) {
+func Split(s *Star, fwd, rev string) (parent, child *Star) {
 	t, trev := s.Reverse(fwd)
 	if trev != rev {
 		panic("unintended reverse")
 	}
-	delete(t.choice, rev)
-	delete(s.choice, fwd)
+	delete(t.Choice, rev)
+	delete(s.Choice, fwd)
 	return s, t
 }
 
 // See returns the value stored at this node.
 func (s *Star) Interface() interface{} {
-	return s.value
+	return s.Value
 }
 
 func (s *Star) String() string {
-	return s.value.(string)
+	return s.Value.(string)
 }
 
 func (s *Star) Int() int {
-	return s.value.(int)
+	return s.Value.(int)
 }
 
 func (s *Star) Float() float64 {
-	return s.value.(float64)
+	return s.Value.(float64)
 }
 
 func (s *Star) Complex() complex128 {
-	return s.value.(complex128)
+	return s.Value.(complex128)
 }
 
 func (s *Star) Star() *Star {
-	return s.value.(*Star)
+	return s.Value.(*Star)
 }
 
 // Show sets the value stored at this node.
 func (s *Star) Show(v interface{}) {
-	s.value = v
+	s.Value = v
 }
 
 // Comparison
 
-func SameStar(s, t *Star) bool {
+func Same(s, t *Star) bool {
 	return s.Contains(t) && t.Contains(s)
 }
 
@@ -163,10 +165,10 @@ func SameValue(x, y interface{}) bool {
 }
 
 func (s *Star) Contains(t *Star, exclude ...string) bool {
-	if !SameValue(s.value, t.value) {
+	if !SameValue(s.Value, t.Value) {
 		return false
 	}
-	for tfwd, tchoice := range t.choice {
+	for tfwd, tchoice := range t.Choice {
 		if contains(exclude, tfwd) {
 			continue
 		}
@@ -184,12 +186,8 @@ func (s *Star) Contains(t *Star, exclude ...string) bool {
 
 func (s *Star) Print(prefix, indent string, exclude ...string) string {
 	var w bytes.Buffer
-	var value string
-	if s.value != nil {
-		value = "*"
-	}
-	fmt.Fprintf(&w, "%s{\n", value)
-	for fwd, choice := range s.choice {
+	fmt.Fprintf(&w, "%s{\n", fmt.Sprintf("<%v>", s.Value))
+	for fwd, choice := range s.Choice {
 		if contains(exclude, fwd) {
 			continue
 		}

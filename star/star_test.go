@@ -8,23 +8,32 @@ package star
 
 import (
 	"testing"
-	"fmt"
 )
 
 func TestStar(t *testing.T) {
-	s := Make() // singleton
+
+	// Construct
+	s := Make()
 	s.Show(1)
-	fmt.Println(s.Print("", "\t"))
-	s = s.Traverse("fwd1", "rev1")
-	fmt.Println(s.Print("", "\t"))
-	s = s.Traverse("fwd2", "rev2")
-	fmt.Println(s.Print("", "\t"))
-	s1, s2 := s.Split("rev2", "fwd2")
-	fmt.Println("split")
-	fmt.Println(s1.Print("", "\t"))
-	fmt.Println(s2.Print("", "\t"))
-	r := s2.Copy()
-	fmt.Println(r.Print("", "\t"))
-	r = r.Merge("ha", "ha", s1)
-	fmt.Println(r.Print("", "\t"))
+	s = Traverse(s, "f1", "")
+	s.Show(2)
+
+	// Inverse construct
+	r := Make()
+	r.Show(2)
+	r = Traverse(r, "", "f1")
+	r.Show(1)
+	r = Traverse(r, "f1", "")
+	if !Same(s, r) {
+		t.Errorf("mismatch")
+	}
+
+	// Criss-cross split-merge
+	x, y := Split(s, "", "f1")
+	a, b := Split(r, "", "f1")
+	x.Merge("xx", "", b)
+	a.Merge("xx", "", y)
+	if !Same(x, a) {
+		t.Errorf("mismatch")
+	}
 }

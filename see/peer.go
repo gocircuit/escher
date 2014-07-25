@@ -6,26 +6,31 @@
 
 package see
 
-func SeePeer(src *Src) (p *Peer) {
+import (
+	"github.com/gocircuit/escher/star"
+)
+
+func SeePeerOrMatching(src *Src) (name string, x *star.Star) {
+	??
+}
+
+func SeePeer(src *Src) (name string, x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
-			p = nil
+			x = nil
 		}
 	}()
 	t := src.Copy()
 	Space(t)
-	p = &Peer{}
-	p.Name = Identifier(t)
-	if p.Name == "" {
-		return nil
-	}
+	name = Identifier(t)
 	SpaceNoNewline(t)
 	var ok bool
-	if p.Design, ok = SeeDesign(t); !ok {
-		return nil
+	design := SeeDesign(t)
+	if design == nil {
+		return "", nil
 	}
 	if !Space(t) { // require newline at end
-		return nil
+		return "", nil
 	}
 	src.Become(t)
 	return

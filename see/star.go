@@ -7,38 +7,34 @@
 package see
 
 import (
-	// "fmt"
-	"github.com/gocircuit/escher/tree"
+	"github.com/gocircuit/escher/star"
 )
 
-func SeeStar(src *Src) (star Star, ok bool) {
+func SeeStar(src *Src) (x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
-			rec, ok = nil, false
+			x = nil
 		}
 	}()
-	star = Star(star.Make())
-
+	x = star.Make()
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
 	for {
 		q := t.Copy()
 		Space(q)
-		name, scope, ok := SeeField(q)
-		if !ok {
+		name, peer := SeePeer(q)
+		if peer == nil {
 			break
 		}
 		Space(q)
 		q.TryMatch(",")
 		Space(q)
-		for _, w := range scope {
-			(tree.Tree)(rec).Grow(name, w)
-		}
 		t.Become(q)
+		x.Grow(name, "", peer)
 	}
 	Space(t)
 	t.Match("}")
 	src.Become(t)
-	return rec, true
+	return x
 }

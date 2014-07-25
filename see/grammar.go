@@ -48,7 +48,7 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// Design is one of the built-in designs listed below.
+// Design is a type that is meant to be stored in the value of a star.
 type Design interface{
 	String() string
 }
@@ -116,7 +116,7 @@ type Peer struct {
 }
 
 func (p *Peer) String() string {
-	return fmt.Sprintf("Peer{%s, %v}", p.Name, p.Design)
+	return fmt.Sprintf("Peer(%s, %v)", p.Name, p.Design)
 }
 
 type Matching struct {

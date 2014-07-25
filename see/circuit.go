@@ -6,12 +6,19 @@
 
 package see
 
-// import (
-// 	"fmt"
-// 	"strconv"
-// )
+import (
+	"github.com/gocircuit/escher/star"
+)
 
-func SeeCircuit(src *Src, named bool) (cir *Circuit) {
+func SeeCircuit(src *Src) (name string, x *star.Star) {
+	name, x = SeePeer(src)
+	if x == nil {
+		return "", nil
+	}
+	// XXX: process?
+}
+
+func SeeCircuit(src *Src) (name string, x *star.Star) {
 	cir = &Circuit{}
 	t := src.Copy()
 	Space(t)

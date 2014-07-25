@@ -81,12 +81,7 @@ func (s *Star) Merge(fwd, rev string, t *Star) *Star {
 
 // Traverse gives a different point-of-view on the same star, by moving the current rootcalong the branch labeled name.
 func (s *Star) Traverse(fwd, rev string) (t *Star) {
-	defer func() {
-		if s.value == nil && len(s.choice) == 0 { // garbage-collect behind us
-			t.Split(rev, fwd)
-			s.scrub()
-		}
-	}()
+	defer s.collect()
 	var trev string
 	t, trev = s.Reverse(fwd)
 	if t != nil {
@@ -95,7 +90,25 @@ func (s *Star) Traverse(fwd, rev string) (t *Star) {
 		}
 		return t
 	}
-	return s.Merge(fwd, rev, Make())
+	t = Make()
+	s.Merge(fwd, rev, t)
+	return t
+}
+
+func (s *Star) collect() {
+	if s.value != nil {
+		return
+	}
+	if len(s.choice) != 1 {
+		return
+	}
+	for fwd, _ := range s.choice {
+		t, rev := s.Reverse(fwd)
+		t.Split(rev, fwd)
+		s.scrub()
+		return
+	}
+	panic(1)
 }
 
 func (s *Star) Split(fwd, rev string) (parent, child *Star) {
@@ -173,9 +186,9 @@ func (s *Star) Print(prefix, indent string, exclude ...string) string {
 	var w bytes.Buffer
 	var value string
 	if s.value != nil {
-		value = " *"
+		value = "*"
 	}
-	fmt.Fprintf(&w, "%s%s{\n", prefix, value)
+	fmt.Fprintf(&w, "%s{\n", value)
 	for fwd, choice := range s.choice {
 		if contains(exclude, fwd) {
 			continue

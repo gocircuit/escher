@@ -12,8 +12,19 @@ import (
 )
 
 func TestStar(t *testing.T) {
-	r := Make()
-	r.Grow("hello").Grow("there").Grow("dolly")
+	s := Make() // singleton
+	s.Show(1)
+	fmt.Println(s.Print("", "\t"))
+	s = s.Traverse("fwd1", "rev1")
+	fmt.Println(s.Print("", "\t"))
+	s = s.Traverse("fwd2", "rev2")
+	fmt.Println(s.Print("", "\t"))
+	s1, s2 := s.Split("rev2", "fwd2")
+	fmt.Println("split")
+	fmt.Println(s1.Print("", "\t"))
+	fmt.Println(s2.Print("", "\t"))
+	r := s2.Copy()
 	fmt.Println(r.Print("", "\t"))
-	fmt.Println(r.Traverse("there").Print("", "\t"))
+	r = r.Merge("ha", "ha", s1)
+	fmt.Println(r.Print("", "\t"))
 }

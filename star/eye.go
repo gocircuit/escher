@@ -11,23 +11,20 @@ import (
 	"fmt"
 )
 
-// Star is a node from a symmetric tree, i.e. a tree without a distinct root.
-type Star struct {
-	choice map[string]*Star
-	value interface{}
-	pebble bool
+// Eye…
+type Eye struct {
+	star *Star
 }
 
-// Make creates a singleton node star and an eye into it.
-func Make() *Star {
-	&Star{
-		choice: make(map[string]*Star),
-	},
-}
+// Creation
 
-func (s *Star) scrub() {
-	s.choice = nil
-	s.value = nil
+// Make creates a singleton node star.
+func Make() *Eye {
+	return &Eye{
+		&Star{
+			choice: make(map[string]*Star),
+		},
+	}
 }
 
 func pebble(s *Star) *bool {
@@ -50,70 +47,68 @@ func (s *Star) Copy() *Star {
 	defer unpebble(pebble(s))
 	t := Make()
 	t.Show(s.Interface())
-	for fwd, choice := range s.choice {
+	for name, choice := range s.choice {
 		if choice.pebble {
 			continue
 		}
-		_, rev := s.Reverse(fwd)
-		t.Merge(fwd, rev, choice.Copy())
+		t.Merge(name, choice.Copy())
 	}
 	return t
 }
 
-// Reverse returns the name of the choice on fwd that points back to s.
-func (s *Star) Reverse(fwd string) (*Star, string) {
-	t, ok := s.choice[fwd]
-	if !ok {
-		return nil, ""
+func (s *Star) Merge(name string, t *Star) *Star {
+	if _, ok := s.choice[name]; ok {
+		panic("clash")
 	}
-	for rev, r := range t.choice {
-		if r == s {
-			return t, rev
-		}
-	}
-	panic(3)
+	s.choice[name] = t
+	s.below += t.Weight()
+	return s
 }
 
-func (s *Star) Merge(fwd, rev string, t *Star) *Star {
-	if _, ok := s.choice[fwd]; ok {
-		panic("forward clash")
+// Value
+
+// Number of non-nil value nodes in this star.
+func (s *Star) Weight() int {
+	if s.value != nil {
+		return s.below+1
 	}
-	if _, ok := t.choice[rev]; ok {
-		panic("reverse clash")
-	}
-	s.choice[fwd], t.choice[rev] = t, s
-	return s
+	return s.below
 }
 
 // Point-of-view
 
 // Traverse gives a different point-of-view on the same star, by moving the current rootcalong the branch labeled name.
-func (s *Star) Traverse(fwd, rev string) (t *Star) {
-	defer func() {
-		if s.value == nil && len(s.choice) == 0 { // garbage-collect behind us
-			t.Split(rev, fwd)
-			s.scrub()
-		}
-	}()
-	var trev string
-	t, trev = s.Reverse(fwd)
-	if t != nil {
-		if rev != trev {
-			panic("unintended reverse")
+func (s *Star) Traverse(forward, backward string) *Star {
+	t, ok := s.choice[forward]
+	if ok {
+		if t.choice[backward] != s {
+			panic("unintended traversal")
 		}
 		return t
 	}
-	return s.Merge(fwd, rev, Make())
+	t = Make()
+	s.choice[forward] = t
+	t.choice[backward] = s
+	return t
 }
 
-func (s *Star) Split(fwd, rev string) (parent, child *Star) {
-	t, trev := s.Reverse(fwd)
-	if trev != rev {
-		panic("unintended reverse")
+func (s *Star) goto(t *Star) {
+	??
+}
+
+func (s *Star) comefrom(t *Star) {
+	??
+}
+
+func (s *Star) Split(name string) *Star {
+	??
+	t, ok := s.choice[name]
+	if !ok {
+		panic(8)
 	}
-	delete(t.choice, rev)
-	delete(s.choice, fwd)
-	return s, t
+	delete(s.choice, name)
+	delete(t.choice, "")
+	return s
 }
 
 // See returns the value stored at this node.
@@ -188,7 +183,7 @@ func (s *Star) Print(prefix, indent string) string {
 		if choice.pebble {
 			continue
 		}
-		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, name, choice.Print(prefix+indent, indent))
+		fmt.Fprintf(&w, "%s%s%s(%d) %s\n", prefix, indent, name, choice.Width(), choice.Print(prefix+indent, indent))
 	}
 	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()

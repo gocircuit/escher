@@ -15,14 +15,13 @@ import (
 type Star struct {
 	choice map[string]*Star
 	value interface{}
-	pebble bool
 }
 
 // Make creates a singleton node star and an eye into it.
 func Make() *Star {
-	&Star{
+	return &Star{
 		choice: make(map[string]*Star),
-	},
+	}
 }
 
 func (s *Star) scrub() {
@@ -30,34 +29,27 @@ func (s *Star) scrub() {
 	s.value = nil
 }
 
-func pebble(s *Star) *bool {
-	if s.pebble == true {
-		panic(3)
-	}
-	s.pebble = true
-	return &s.pebble
-}
-
-func unpebble(p *bool) {
-	if !*p {
-		panic(3)
-	}
-	*p = false
-}
-
 // Copy returns a complete copy of the star with the same point-of-view into it.
-func (s *Star) Copy() *Star {
-	defer unpebble(pebble(s))
+func (s *Star) Copy(exclude ...string) *Star {
 	t := Make()
 	t.Show(s.Interface())
 	for fwd, choice := range s.choice {
-		if choice.pebble {
+		if contains(exclude, fwd) {
 			continue
 		}
 		_, rev := s.Reverse(fwd)
-		t.Merge(fwd, rev, choice.Copy())
+		t.Merge(fwd, rev, choice.Copy(rev))
 	}
 	return t
+}
+
+func contains(set []string, s string) bool {
+	for _, x := range set {
+		if x == s {
+			return true
+		}
+	}
+	return false
 }
 
 // Reverse returns the name of the choice on fwd that points back to s.
@@ -153,42 +145,47 @@ func SameStar(s, t *Star) bool {
 }
 
 func SameValue(x, y interface{}) bool {
+	// star values should only be basic Go types that are directly comparable
 	return x == y
 }
 
-func (s *Star) Contains(t *Star) bool {
-	defer unpebble(pebble(s))
+func (s *Star) Contains(t *Star, exclude ...string) bool {
 	if !SameValue(s.value, t.value) {
 		return false
 	}
-	for name, tchoice := range t.choice {
-		if tchoice.pebble {
+	for tfwd, tchoice := range t.choice {
+		if contains(exclude, tfwd) {
 			continue
 		}
-		schoice, ok := s.choice[name]
-		if !ok {
+		_, trev := t.Reverse(tfwd)
+		schoice, srev := s.Reverse(tfwd)
+		if schoice == nil || srev != trev {
 			return false
 		}
-		return schoice.Contains(choice)
+		if !schoice.Contains(tchoice, trev) {
+			return false
+		}
 	}
 	return true
 }
 
-// Printing
-
-func (s *Star) Print(prefix, indent string) string {
-	defer unpebble(pebble(s))
+func (s *Star) Print(prefix, indent string, exclude ...string) string {
 	var w bytes.Buffer
 	var value string
 	if s.value != nil {
 		value = " *"
 	}
 	fmt.Fprintf(&w, "%s%s{\n", prefix, value)
-	for name, choice := range s.choice {
-		if choice.pebble {
+	for fwd, choice := range s.choice {
+		if contains(exclude, fwd) {
 			continue
 		}
-		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, name, choice.Print(prefix+indent, indent))
+		_, rev := s.Reverse(fwd)
+		fmt.Fprintf(
+			&w, "%s%s%s\\%s %s\n", 
+			prefix, indent, fwd, rev,
+			choice.Print(prefix+indent, indent, rev),
+		)
 	}
 	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()

@@ -4,47 +4,6 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// A CIRCUIT is
-//
-//	name {
-//		PEER
-//		MATCHING
-//		…
-//	}
-//
-// A PEER is one of the following:
-//
-//	(a)	3.12e+9		// assignment to the empty-string valve of the circuit being defined
-//	(b)	peer CIRCUIT	// birth of peer with a respective design, specified by the circuit rule
-//	(c)	f.A = g.X		// matching of the valves of two peers
-//	(d)	f.A = Out		// matching a peer valve with a valve of the default empty-string peer
-//	(e)	f.A = CIRCUIT	// matching a peer valve with an anonymous circuit's empty-string valve
-//	(f)	CIRCUIT = Out	// matching a valve of the default empty-string peer with an anonymous circuit
-//
-// The star encoding of a CIRCUIT is:
-//
-//	name {
-//		name CIRCUIT // PEER
-//		name DESIGN // PEER
-//		name MATCHING // MATCHING
-//		…
-//	}
-//
-// The star encoding of a MATCHING is:
-//
-//	{ // type Matching *star.Star
-//		Left {
-//			Peer "" // string indicates a peer name; star is a circuit or a built-in design
-//			Valve "X"
-//		}
-//		Right {
-//			Peer "f"
-//			Valve "A"
-//		}
-//	}
-//
-// For instance, the circuit source code:
-//
 //	nand {
 //		a and
 //		n not
@@ -95,7 +54,6 @@ type Design interface{
 }
 
 type (
-	Star *star.Star
 	Name string
 	RootName string
 	String string

@@ -81,6 +81,14 @@ func (s *Star) Merge(fwd, rev string, t *Star) *Star {
 
 // Point-of-view
 
+func (s *Star) Grow(fwd, rev string, value interface{}) *Star {
+	if value == nil {
+		panic(1)
+	}
+	s.Merge(fwd, rev, Make().Show(value))
+	return s
+}
+
 // Traverse gives a different point-of-view on the same star, by moving the current rootcalong the branch labeled name.
 func Traverse(s *Star, fwd, rev string) (t *Star) {
 	defer s.collect()
@@ -149,8 +157,9 @@ func (s *Star) Star() *Star {
 }
 
 // Show sets the value stored at this node.
-func (s *Star) Show(v interface{}) {
+func (s *Star) Show(v interface{}) *Star {
 	s.Value = v
+	return s
 }
 
 // Comparison

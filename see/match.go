@@ -7,17 +7,35 @@
 package see
 
 import (
-	// "fmt"
-	// "strings"
+	"github.com/gocircuit/escher/star"
 )
 
-func SeeMatching(src *Src) (m *Matching) {
+// A MATCHING is one of the following syntactic structures
+//
+//	MATCHING: JOIN “=” JOIN
+//	JOIN: ID “.” ID | ID | DESIGN
+//
+// The star encoding of a MATCHING is:
+//
+//	{
+//		"Matching" // empty-string choice
+//		Left {
+//			Peer "" // string indicates a peer name; star is a circuit or a built-in design
+//			Valve "X"
+//		}
+//		Right {
+//			Peer "f"
+//			Valve "A"
+//		}
+//	}
+//
+func SeeMatching(src *Src) (m *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
 			m = nil
 		}
 	}()
-	m = &Matching{}
+	m = star.Make()
 	t := src.Copy()
 	Space(t)
 	if m.Join[0] = SeeJoin(t); m.Join[0] == nil {

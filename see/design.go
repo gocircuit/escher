@@ -10,122 +10,117 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
+	"github.com/gocircuit/escher/star"
 )
 
-func SeeDesign(src *Src) (v Design, ok bool) {
-	if v, ok = SeeBasic(src); ok {
+// SeeDesign parses a star definition. The grammar is:
+//
+//	DESIGN = STAR | BUILTIN
+//
+// SeeDesign returns a star, as follows.
+// On “123”, returns {123}, and so on for all primitive types (int, float, complex, string).
+// On “{…}”, returns {…}.
+//
+func SeeDesign(src *Src) (x *star.Star) {
+	if x = SeeArithmetic(src); x != nil {
 		return
 	}
-	if v, ok = SeeTree(src); ok {
+	if x = SeeStar(src); x != nil {
 		return
 	}
-	if v, ok = SeeNameOrPackage(src); ok {
+	if x = SeeName(src); x != nil {
 		return
 	}
-	return nil, false
+	return nil
 }
 
-func SeeNoName(src *Src) (v Design, ok bool) {
-	if v, ok = SeeBasic(src); ok {
+func SeeArithmetic(src *Src) (x *star.Star) {
+	if x = SeeInt(src); x != nil {
 		return
 	}
-	if v, ok = SeeTree(src); ok {
+	if x = SeeFloat(src); x != nil {
 		return
 	}
-	return nil, false
-}
-
-func SeeBasic(src *Src) (v Design, ok bool) {
-	if v, ok = SeeInt(src); ok {
+	if x = SeeComplex(src); x != nil {
 		return
 	}
-	if v, ok = SeeFloat(src); ok {
+	if x = SeeBackquoteString(src); x != nil {
 		return
 	}
-	if v, ok = SeeComplex(src); ok {
+	if x = SeeDoubleQuoteString(src); x != nil {
 		return
 	}
-	if v, ok = SeeBackquoteString(src); ok {
-		return
-	}
-	if v, ok = SeeDoubleQuoteString(src); ok {
-		return
-	}
-	return nil, false
+	return nil
 }
 
 // Name …
-func SeeNameOrPackage(src *Src) (np Design, ok bool) {
+func SeeName(src *Src) (x *star.Star) {
 	l := Identifier(src)
 	if l == "" {
-		return nil, false
+		return nil
 	}
 	if l[0] != '@' {
-		return Name(l), true
+		return star.Make().Show(Name(l))
 	}
-	return RootName(l[1:]), true
+	return star.Make().Show(RootName(l))
 }
 
 // Int …
-func SeeInt(src *Src) (i Int, ok bool) {
+func SeeInt(src *Src) *star.Start {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return 0, false
+		return nil
 	}
 	r := bytes.NewBufferString(l)
 	if n, _ := fmt.Fscanf(r, "%d", &i); n != 1 || r.Len() != 0  {
-		return 0, false
+		return nil
 	}
 	src.Become(t)
-	return i, true
+	return star.Make().Show(Int(i))
 }
 
 // Float …
-func SeeFloat(src *Src) (f Float, ok bool) {
+func SeeFloat(src *Src) *star.Star {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return 0, false
+		return nil
 	}
 	r := bytes.NewBufferString(l)
 	if n, _ := fmt.Fscanf(r, "%g", &f); n != 1 || r.Len() != 0 {
-		return 0, false
+		return nil
 	}
 	src.Become(t)
-	return f, true
+	return star.Make().Show(Float(f))
 }
 
 // Complex …
-func SeeComplex(src *Src) (c Complex, ok bool) {
+func SeeComplex(src *Src) *star.Star {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return 0, false
+		return nil
 	}
 	r := bytes.NewBufferString(l)
 	if n, _ := fmt.Fscanf(r, "%g", &c); n != 1 || r.Len() != 0 {
-		return 0, false
+		return nil
 	}
 	src.Become(t)
-	return c, true
+	return star.Make().Show(Complex(c))
 }
 
 // SeeBackquoteString …
-func SeeBackquoteString(src *Src) (str String, ok bool) {
+func SeeBackquoteString(src *Src) *star.Star {
 	t := src.Copy()
 	var quoted string
 	quoted, ok = DelimitBackquoteString(t)
 	if !ok {
-		return "", false
+		return nil
 	}
-	// var err error
-	// if str, err = strconv.Unquote(quoted); err != nil {
-	// 	return "", false
-	// }
 	str = String(quoted[1:len(quoted)-1])
 	src.Become(t)
-	return str, true
+	return star.Make().Show(str)
 }
 
 func DelimitBackquoteString(src *Src) (string, bool) {
@@ -171,20 +166,20 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 }
 
 // SeeDoubleQuoteString …
-func SeeDoubleQuoteString(src *Src) (sd String, ok bool) {
+func SeeDoubleQuoteString(src *Src) *star.Star {
 	t := src.Copy()
 	var quoted string
 	quoted, ok = DelimitDoubleQuoteString(t)
 	if !ok {
-		return "", false
+		return nil
 	}
 	var err error
 	var str string
 	if str, err = strconv.Unquote(quoted); err != nil {
-		return "", false
+		return nil
 	}
 	src.Become(t)
-	return String(str), true
+	return star.Make().Show(String(str))
 }
 
 func DelimitDoubleQuoteString(src *Src) (string, bool) {

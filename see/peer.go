@@ -30,10 +30,9 @@ func SeePeer(src *Src) (name string, x *star.Star) {
 	t := src.Copy()
 	Space(t)
 	name = Identifier(t)
-	if len(name) == 0 {
-		return "", nil
+	if len(name) > 0 {
+		SpaceNoNewline(t)
 	}
-	SpaceNoNewline(t)
 	arithmeticOrNameOrStar := SeeArithmeticOrNameOrStar(t)
 	if arithmeticOrNameOrStar == nil {
 		return "", nil

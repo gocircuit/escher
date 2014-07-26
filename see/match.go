@@ -45,7 +45,7 @@ func SeeMatching(src *Src) (x *star.Star) {
 	}
 	Space(t)
 	t.Match("=")
-	Space(t)
+	Whitespace(t)
 	if right := SeeJoin(t); right != nil {
 		x.Merge("Right", "", right)
 	}

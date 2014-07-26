@@ -11,55 +11,25 @@ import (
 	"testing"
 )
 
-// func TestReflex(t *testing.T) {
-// 	r := SeeReflex(NewSrcString("reflex Name(A, B, C) // comment"))
-// 	fmt.Printf("r=%v\n", r)
-// }
+var testDesign = []string{
+	`3.19e-2`,
+	`22`,
+	`"ha" `,
+	"`la` ",
+	`1-2i`,
+	`name`,
+	`@root`,
+}
 
-// func TestInt(t *testing.T) {
-// 	v, ok := Int(NewSrcString("-31***"))
-// 	fmt.Printf("v=%v ok=%v\n", v, ok)
-// }
-
-// func TestFloat(t *testing.T) {
-// 	v, ok := Float(NewSrcString("-07.1e23$$$"))
-// 	fmt.Printf("v=%v ok=%v\n", v, ok)
-// }
-
-// func TestComplex(t *testing.T) {
-// 	v, ok := Complex(NewSrcString("(-07.1e23+2i)$$$"))
-// 	fmt.Printf("v=%v ok=%v\n", v, ok)
-// }
-
-// func TestBackquoteString(t *testing.T) {
-// 	v, ok := BackquoteString(NewSrcString("`hello\\\\tthere`"))
-// 	fmt.Printf("v=%v ok=%v\n", v, ok)
-// }
-
-// func TestDoubleQuoteString(t *testing.T) {
-// 	v, ok := DoubleQuoteString(NewSrcString(`"hello\tthere"`))
-// 	fmt.Printf("v=%v ok=%v\n", v, ok)
-// }
-
-// func TestScope(t *testing.T) {
-// 	s, ok := Scope(NewSrcString("[1, 2, `a`]…"))
-// 	fmt.Printf("s=%v, ok=%v\n", s, ok)
-// }
-
-// func TestField(t *testing.T) {
-// 	n, s, ok := Field(NewSrcString("baha: [1, 2, `a`] ,…"))
-// 	fmt.Printf("n=%v, s=%v, ok=%v\n", n, s, ok)
-// }
-
-// func TestTree(t *testing.T) {
-// 	r, ok := Tree(NewSrcString("{ baha: [1, 2, `a`], empty: [], mama: [`3a`]}"))
-// 	fmt.Printf("--\n%v\n--\nok=%v\n", (*tree.Tree)(r).String(), ok)
-// }
-
-// func TestMatch(t *testing.T) {
-// 	m := Match(NewSrcString("a.b = c.d // ha\n"))
-// 	fmt.Printf("match=%v\n", m)
-// }
+func TestDesign(t *testing.T) {
+	for _, q := range testDesign {
+		x := SeeDesignOrName(NewSrcString(q))
+		if x == nil {
+			t.Errorf("problem parsing: %s", q)
+		}
+		fmt.Printf("%v\n", x.Print("", "\t"))
+	}
+}
 
 var testSource = []string{
 	`
@@ -70,10 +40,9 @@ NaMo { // comment
 	str "stringißh"
 	num +12.3e5
 	msg {
-		msg: ["http://gocircuit.org/hello.html"],
-		num: [12.3e5],  // number
+		msg "http://gocircuit.org/hello.html",
+		num 12.3e5  // number
 	} // string
-
 	A = and.A // matching
 	B = and.B
 	not.B = C
@@ -81,7 +50,6 @@ NaMo { // comment
 	X = src
 	msg.Src = Y
 	not.N = +3.14e00 // assign constants directly to wires, only on the right side
-
 	// peer declarations are not sensitive to order within the block
 	src ` + "`" + `
 <html>
@@ -94,13 +62,13 @@ NaMo { // comment
 `,
 }
 
-func TestSyntax(t *testing.T) {
-	for i, s := range testSource {
-		src := NewSrcString(s)
-		c := SeeCircuit(src)
-		if c == nil {
-			t.Fatalf("#%d misparses", i)
-		}
-		fmt.Printf("circuit=%v\n---\n", c)
-	}
-}
+// func TestSyntax(t *testing.T) {
+// 	for i, s := range testSource {
+// 		src := NewSrcString(s)
+// 		c := SeeCircuit(src)
+// 		if c == nil {
+// 			t.Fatalf("#%d misparses", i)
+// 		}
+// 		fmt.Printf("circuit=%v\n---\n", c)
+// 	}
+// }

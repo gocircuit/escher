@@ -78,11 +78,11 @@ func (x Int) String() string {
 }
 
 func (x Name) String() string {
-	return fmt.Sprintf("Name(%d)", x)
+	return fmt.Sprintf("Name(%s)", strconv.Quote(string(x)))
 }
 
 func (x RootName) String() string {
-	return fmt.Sprintf("RootName(%d)", x)
+	return fmt.Sprintf("RootName(%s)", strconv.Quote(string(x)))
 }
 
 func (x String) String() string {

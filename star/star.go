@@ -213,18 +213,22 @@ func (s *Star) Contains(t *Star, exclude ...string) bool {
 
 func (s *Star) Print(prefix, indent string, exclude ...string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%s{\n", fmt.Sprintf("<%v>", s.Value))
-	for fwd, choice := range s.Choice {
-		if contains(exclude, fwd) {
-			continue
+	if s.Value != nil {
+		fmt.Fprintf(&w, "%v", s.Value)
+	} else {
+		fmt.Fprintf(&w, "{\n")
+		for fwd, choice := range s.Choice {
+			if contains(exclude, fwd) {
+				continue
+			}
+			_, rev := s.Reverse(fwd)
+			fmt.Fprintf(
+				&w, "%s%s%s\\%s %s\n", 
+				prefix, indent, fwd, rev,
+				choice.Print(prefix+indent, indent, rev),
+			)
 		}
-		_, rev := s.Reverse(fwd)
-		fmt.Fprintf(
-			&w, "%s%s%s\\%s %s\n", 
-			prefix, indent, fwd, rev,
-			choice.Print(prefix+indent, indent, rev),
-		)
+		fmt.Fprintf(&w, "%s}", prefix)
 	}
-	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()
 }

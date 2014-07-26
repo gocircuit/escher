@@ -7,17 +7,17 @@
 package see
 
 import (
+	// "fmt"
 	"github.com/gocircuit/escher/star"
 )
 
-func SeePeerOrMatching(src *Src) (name string, x *star.Star) {
+func SeePeerOrMatching(src *Src, anon string) (name string, x *star.Star) {
 	if name, x = SeePeer(src); x != nil {
 		return
 	}
-	// if x = SeeMatching(src); x != nil {
-	// 	??
-	// 	return x
-	// }
+	if x = SeeMatching(src); x != nil {
+		return anon, x
+	}
 	return "", nil
 }
 
@@ -30,14 +30,17 @@ func SeePeer(src *Src) (name string, x *star.Star) {
 	t := src.Copy()
 	Space(t)
 	name = Identifier(t)
+	if len(name) == 0 {
+		return "", nil
+	}
 	SpaceNoNewline(t)
-	design := SeeDesign(t)
-	if design == nil {
+	arithmeticOrNameOrStar := SeeArithmeticOrNameOrStar(t)
+	if arithmeticOrNameOrStar == nil {
 		return "", nil
 	}
 	if !Space(t) { // require newline at end
 		return "", nil
 	}
 	src.Become(t)
-	return
+	return name, arithmeticOrNameOrStar
 }

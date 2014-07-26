@@ -13,15 +13,8 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// SeeDesign parses a star definition. The grammar is:
-//
-//	DESIGN = STAR | BUILTIN
-//
-// SeeDesign returns a star, as follows.
-// On “123”, returns {123}, and so on for all primitive types (int, float, complex, string).
-// On “{…}”, returns {…}.
-//
-func SeeDesign(src *Src) (x *star.Star) {
+// SeeArithmeticOrStar parses a built-in type (int, float, complex, string, name) into a star.
+func SeeArithmeticOrStar(src *Src) (x *star.Star) {
 	if x = SeeArithmetic(src); x != nil {
 		return
 	}
@@ -31,11 +24,14 @@ func SeeDesign(src *Src) (x *star.Star) {
 	return nil
 }
 
-func SeeDesignOrName(src *Src) (x *star.Star) {
-	if x = SeeDesign(src); x != nil {
+func SeeArithmeticOrNameOrStar(src *Src) (x *star.Star) {
+	if x = SeeArithmetic(src); x != nil {
 		return
 	}
 	if x = SeeName(src); x != nil {
+		return
+	}
+	if x = SeeStar(src); x != nil {
 		return
 	}
 	return nil

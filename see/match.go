@@ -7,6 +7,7 @@
 package see
 
 import (
+	// "fmt"
 	"github.com/gocircuit/escher/star"
 )
 
@@ -82,12 +83,12 @@ func seeDesignJoin(src *Src) (x *star.Star) {
 		}
 	}()
 	t := src.Copy()
-	d := SeeDesign(t)
+	d := SeeArithmeticOrStar(t)
 	if d == nil {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Grow("Peer", "", Anonymous{}).Merge("Valve", "", d)
+	return star.Make().Merge("Peer", "", d).Grow("Valve", "", Name(""))
 }
 
 // seePeerValveJoin…

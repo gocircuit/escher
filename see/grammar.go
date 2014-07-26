@@ -4,39 +4,34 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
+// The source:
+//
 //	nand {
 //		a and
 //		n not
 //		a.XandY = n.X
-//		n.notX // the empty-string valve of the nand circuit connects to n's notX valve
+//		= n.notX // the empty-string valve of the nand circuit connects to n's notX valve
 //		a.X = X
 //		a.Y = 1
 //	}
 //
-// Has the following star representation, after seeing (parsing):
+// Has the following desugared representation after parsing:
 //
 //	nand {
-//		peer {
-//			{
-//				X Name("X")
-//				Name("") //  the empty string valve
+//		a Name("and")
+//		n Name("not")
+//		matching_1 {
+//			Kind Name("Matching")
+//			Left {
+//				Peer	Name("a")
+//				Valve Name("XandY")
 //			}
-//			a Name("and")
-//			n Name("not")
+//			Right {
+//				Peer	Name("n")
+//				Valve Name("X")
+//			}
 //		}
-//		matching {
-//			0 {
-//				Left {
-//					Peer Name("a")
-//					Valve Name("XandY")
-//				}
-//				Right {
-//					Peer Name("n")
-//					Valve Name("X")
-//				}
-//			} // end of 0
-//			…
-//		}
+//		…
 //	}
 //
 package see
@@ -62,11 +57,11 @@ type (
 )
 
 func (Anonymous) String() string {
-	return "anon"
+	return "Anon"
 }
 
 func (x Complex) String() string {
-	return fmt.Sprintf("Complex(%g)", x)
+	return fmt.Sprintf("Complex%g", x)
 }
 
 func (x Float) String() string {

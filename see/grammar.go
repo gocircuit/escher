@@ -44,8 +44,6 @@ package see
 import (
 	"fmt"
 	"strconv"
-
-	"github.com/gocircuit/escher/star"
 )
 
 // Design is a type that is meant to be stored in the value of a star.
@@ -54,6 +52,7 @@ type Design interface{
 }
 
 type (
+	Anonymous struct{}
 	Name string
 	RootName string
 	String string
@@ -62,8 +61,8 @@ type (
 	Complex complex128
 )
 
-func (x Star) String() string {
-	return (*star.Star)(x).String()
+func (Anonymous) String() string {
+	return "anon"
 }
 
 func (x Complex) String() string {
@@ -95,12 +94,6 @@ func chop(x string) string {
 		return x
 	}
 	return x[:20]+"…"
-}
-
-// Reflex represents the name of a reflex and its arguments.
-type Reflex struct {
-	Name  string
-	Valve []string
 }
 
 type Circuit struct {

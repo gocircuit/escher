@@ -49,13 +49,3 @@ func SeeCircuit(src *Src) (name string, x *star.Star) {
 	src.Become(t)
 	return DesugarCircuit(cir)
 }
-
-func SeePeerOrMatching(src *Src) (v interface{}) {
-	if p := SeePeer(src); p != nil {
-		return p
-	}
-	if m := SeeMatching(src); m != nil {
-		return m
-	}
-	return nil
-}

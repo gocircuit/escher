@@ -75,6 +75,12 @@ func (s *Star) Merge(fwd, rev string, t *Star) *Star {
 	if _, ok := t.Choice[rev]; ok {
 		panic("reverse clash")
 	}
+	if s.Value != nil && len(s.Choice) > 0 {
+		panic(1)
+	}
+	if t.Value != nil && len(t.Choice) > 0 {
+		panic(1)
+	}
 	s.Choice[fwd], t.Choice[rev] = t, s
 	return s
 }
@@ -85,13 +91,16 @@ func (s *Star) Grow(fwd, rev string, value interface{}) *Star {
 	if value == nil {
 		panic(1)
 	}
+	if _, ok := value.(*Star); ok {
+		panic(2)
+	}
 	s.Merge(fwd, rev, Make().Show(value))
 	return s
 }
 
-// Traverse gives a different point-of-view on the same star, by moving the current rootcalong the branch labeled name.
+// Traverse gives a different point-of-view on the same star, by moving the current root along the branch labeled name.
 func Traverse(s *Star, fwd, rev string) (t *Star) {
-	defer s.collect()
+	// defer s.collect()
 	var trev string
 	t, trev = s.Reverse(fwd)
 	if t != nil {
@@ -105,21 +114,21 @@ func Traverse(s *Star, fwd, rev string) (t *Star) {
 	return t
 }
 
-func (s *Star) collect() {
-	if s.Value != nil {
-		return
-	}
-	if len(s.Choice) != 1 {
-		return
-	}
-	for fwd, _ := range s.Choice {
-		t, rev := s.Reverse(fwd)
-		Split(t, rev, fwd)
-		s.scrub()
-		return
-	}
-	panic(1)
-}
+// func (s *Star) collect() {
+// 	if s.Value != nil {
+// 		return
+// 	}
+// 	if len(s.Choice) != 1 {
+// 		return
+// 	}
+// 	for fwd, _ := range s.Choice {
+// 		t, rev := s.Reverse(fwd)
+// 		Split(t, rev, fwd)
+// 		s.scrub()
+// 		return
+// 	}
+// 	panic(1)
+// }
 
 func Split(s *Star, fwd, rev string) (parent, child *Star) {
 	t, trev := s.Reverse(fwd)
@@ -158,6 +167,9 @@ func (s *Star) Star() *Star {
 
 // Show sets the value stored at this node.
 func (s *Star) Show(v interface{}) *Star {
+	if v != nil && len(s.Choice) > 1 {
+		panic("value in a non-terminal node")
+	}
 	s.Value = v
 	return s
 }
@@ -169,7 +181,13 @@ func Same(s, t *Star) bool {
 }
 
 func SameValue(x, y interface{}) bool {
-	// star values should only be basic Go types that are directly comparable
+	// star values should only be basic Go types that are directly comparable with ==
+	if _, ok := x.(*Star); ok {
+		panic(1)
+	}
+	if _, ok := y.(*Star); ok {
+		panic(1)
+	}
 	return x == y
 }
 

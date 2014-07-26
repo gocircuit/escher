@@ -11,7 +11,14 @@ import (
 )
 
 func SeePeerOrMatching(src *Src) (name string, x *star.Star) {
-	??
+	if name, x = SeePeer(src); x != nil {
+		return
+	}
+	// if x = SeeMatching(src); x != nil {
+	// 	??
+	// 	return x
+	// }
+	return "", nil
 }
 
 func SeePeer(src *Src) (name string, x *star.Star) {
@@ -24,7 +31,6 @@ func SeePeer(src *Src) (name string, x *star.Star) {
 	Space(t)
 	name = Identifier(t)
 	SpaceNoNewline(t)
-	var ok bool
 	design := SeeDesign(t)
 	if design == nil {
 		return "", nil

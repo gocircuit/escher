@@ -10,45 +10,43 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// A MATCHING is one of the following syntactic structures
+// A matching is the following syntactic structure:
 //
-//	MATCHING: JOIN “=” JOIN
-//	JOIN: ID “.” ID | ID | DESIGN
+//	Matching —> Join “=” Join NewLine
+//	Join —> ID “.” ID / ID / Design
 //
-// The star encoding of a MATCHING is:
+// The star representation of a matching is:
 //
 //	{
-//		"Matching" // empty-string choice
+//		Kind Name("Matching")
 //		Left {
-//			Peer "" // string indicates a peer name; star is a circuit or a built-in design
-//			Valve "X"
+//			Peer Name(…)
+//			Valve Name(…) or Design()
 //		}
 //		Right {
-//			Peer "f"
-//			Valve "A"
+//			Peer Name(…)
+//			Valve ??
 //		}
 //	}
 //
-func SeeMatching(src *Src) (m *star.Star) {
+func SeeMatching(src *Src) (x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
-			m = nil
+			x = nil
 		}
 	}()
-	m = star.Make()
+	x = star.Make()
+	x.Grow("Kind", "", Name("Matching"))
 	t := src.Copy()
 	Space(t)
-	if m.Join[0] = SeeJoin(t); m.Join[0] == nil {
-		return nil
+	if left := SeeJoin(t); left != nil {
+		x.Merge("Left", "", left)
 	}
-	if Space(t) {
-		src.Become(t)
-		return
-	}
+	Space(t)
 	t.Match("=")
 	Space(t)
-	if m.Join[1] = SeeJoin(t); m.Join[1] == nil {
-		return nil
+	if right := SeeJoin(t); right != nil {
+		x.Merge("Right", "", right)
 	}
 	if !Space(t) { // require newline at end
 		return nil
@@ -57,75 +55,71 @@ func SeeMatching(src *Src) (m *star.Star) {
 	return
 }
 
-// “one.Two” or “Wolf” or “+3.12e2”
-func SeeJoin(src *Src) Join {
-	if j := parseDesignJoin(src); j != nil {
-		//fmt.Printf("Design=%T/%v [%s]\n", j, j, src.String())
-		return j
+// Join = 3.19 | Peer.Valve | Valve
+//
+//	{
+//		Peer Name("??")
+//		Valve Name("??")
+//	}
+//
+func SeeJoin(src *Src) (x *star.Star) {
+	if x = seeDesignJoin(src); x != nil { // int, string, etc.
+		return x
 	}
-	if j := parsePeerJoin(src); j != nil {
-		return j
+	if x = seePeerValveJoin(src); x != nil { // peer.valve
+		return x
 	}
-	if j := parseValveJoin(src); j != nil {
-		return j
+	if x = seeValveJoin(src); x != nil { // valve (or empty string)
+		return x
 	}
 	return nil
 }
 
-// “one.Two”
-func parsePeerJoin(src *Src) (peer *PeerJoin) {
+func seeDesignJoin(src *Src) (x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
-			peer = nil
+			x = nil
 		}
 	}()
 	t := src.Copy()
-	peer = &PeerJoin{}
-	if peer.Peer = Identifier(t); peer.Peer == "" {
+	d := SeeDesign(t)
+	if d == nil {
+		return nil
+	}
+	src.Become(t)
+	return star.Make().Grow("Peer", "", Anonymous{}).Merge("Valve", "", d)
+}
+
+// seePeerValveJoin…
+func seePeerValveJoin(src *Src) (x *star.Star) {
+	defer func() {
+		if r := recover(); r != nil {
+			x = nil
+		}
+	}()
+	t := src.Copy()
+	peer := Identifier(t)
+	if peer == "" {
 		return nil
 	}
 	t.Match(".")
-	if peer.Valve = Identifier(t); peer.Valve == "" {
+	valve := Identifier(t)
+	if valve == "" {
 		return nil
 	}
 	src.Become(t)
-	return
+	return star.Make().Grow("Peer", "", Name(peer)).Grow("Valve", "", Name(valve))
 }
 
-// “Wolf”
-func parseValveJoin(src *Src) (valve *ValveJoin) {
+// seeValveJoin parses a single identifier as a valve name
+func seeValveJoin(src *Src) (x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
-			valve = nil
+			x = nil
 		}
 	}()
 	t := src.Copy()
-	valve = &ValveJoin{}
-	if valve.Valve = Identifier(t); valve.Valve == "" {
-		return nil
-	}
+	valve := Identifier(t)
 	src.Become(t)
-	return
-}
-
-// “+3.12e5”
-func parseDesignJoin(src *Src) (design *DesignJoin) {
-	defer func() {
-		if r := recover(); r != nil {
-			design = nil
-		}
-	}()
-	t := src.Copy()
-	d, ok := SeeNoName(t)
-	if !ok {
-		return nil
-	}
-	if _, ok := d.(Name); ok {
-		return nil
-	}
-	if _, ok := d.(RootName); ok {
-		return nil
-	}
-	src.Become(t)
-	return &DesignJoin{d}
+	return star.Make().Grow("Peer", "", Name("")).Grow("Valve", "", Name(valve))
 }

@@ -28,6 +28,13 @@ func SeeDesign(src *Src) (x *star.Star) {
 	if x = SeeStar(src); x != nil {
 		return
 	}
+	return nil
+}
+
+func SeeDesignOrName(src *Src) (x *star.Star) {
+	if x = SeeDesign(src); x != nil {
+		return
+	}
 	if x = SeeName(src); x != nil {
 		return
 	}
@@ -66,18 +73,19 @@ func SeeName(src *Src) (x *star.Star) {
 }
 
 // Int …
-func SeeInt(src *Src) *star.Start {
+func SeeInt(src *Src) *star.Star {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
+	var i Int
 	if n, _ := fmt.Fscanf(r, "%d", &i); n != 1 || r.Len() != 0  {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(Int(i))
+	return star.Make().Show(i)
 }
 
 // Float …
@@ -88,11 +96,12 @@ func SeeFloat(src *Src) *star.Star {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
+	var f Float
 	if n, _ := fmt.Fscanf(r, "%g", &f); n != 1 || r.Len() != 0 {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(Float(f))
+	return star.Make().Show(f)
 }
 
 // Complex …
@@ -103,22 +112,22 @@ func SeeComplex(src *Src) *star.Star {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
+	var c Complex
 	if n, _ := fmt.Fscanf(r, "%g", &c); n != 1 || r.Len() != 0 {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(Complex(c))
+	return star.Make().Show(c)
 }
 
 // SeeBackquoteString …
 func SeeBackquoteString(src *Src) *star.Star {
 	t := src.Copy()
-	var quoted string
-	quoted, ok = DelimitBackquoteString(t)
+	quoted, ok := DelimitBackquoteString(t)
 	if !ok {
 		return nil
 	}
-	str = String(quoted[1:len(quoted)-1])
+	str := String(quoted[1:len(quoted)-1])
 	src.Become(t)
 	return star.Make().Show(str)
 }
@@ -168,8 +177,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 // SeeDoubleQuoteString …
 func SeeDoubleQuoteString(src *Src) *star.Star {
 	t := src.Copy()
-	var quoted string
-	quoted, ok = DelimitDoubleQuoteString(t)
+	quoted, ok := DelimitDoubleQuoteString(t)
 	if !ok {
 		return nil
 	}

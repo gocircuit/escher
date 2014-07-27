@@ -15,16 +15,16 @@ func TestStar(t *testing.T) {
 	// Construct
 	s := Make()
 	s.Show(1)
-	s = Traverse(s, "f1")
+	s = s.Down("f1")
 	s.Show(2)
-	s = Traverse(s, Parent)
+	s = s.Up()
 
 	// Inverse construct
 	r := Make()
 	r.Show(1)
-	r = Traverse(r, "f1")
+	r = r.Down("f1")
 	r.Show(2)
-	r = Traverse(r, Parent)
+	r = r.Up()
 	if !Same(s, r) {
 		t.Errorf("mismatch")
 	}

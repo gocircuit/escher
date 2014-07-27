@@ -100,18 +100,9 @@ func (s *Star) Grow(fwd string, value interface{}) *Star {
 	return s
 }
 
-// Traverse gives a different point-of-view on the same star, by moving the current root along the branch labeled name.
-func Traverse(s *Star, fwd string) (t *Star) {
+func (s *Star) Up() (t *Star) {
 	defer s.collect()
-	t, _ = s.Reverse(fwd)
-	if t != nil {
-		return t
-	}
-	if fwd == Parent { // if at root
-		return nil
-	}
-	t = Make()
-	s.Merge(fwd, t)
+	t, _ = s.Reverse(Parent)
 	return t
 }
 
@@ -123,12 +114,28 @@ func (s *Star) collect() {
 		return
 	}
 	for fwd, _ := range s.Choice {
-		t, _ := s.Reverse(fwd)
-		Split(t, fwd)
+		if fwd != Parent {
+			panic(4)
+		}
+		t, rev := s.Reverse(fwd)
+		Split(t, rev)
 		s.scrub()
 		return
 	}
 	panic(1)
+}
+
+func (s *Star) Down(fwd string) (t *Star) {
+	t, _ = s.Reverse(fwd)
+	if t != nil {
+		return t
+	}
+	if fwd == Parent { // if at root
+		return nil
+	}
+	t = Make()
+	s.Merge(fwd, t)
+	return t
 }
 
 func Split(s *Star, fwd string) (parent, child *Star) {

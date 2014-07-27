@@ -30,7 +30,7 @@ import (
 //		}
 //	}
 //
-func SeeMatching(src *Src) (x *star.Star) {
+func SeeMatching(src *Src, name string) (fwd, rev string, x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
@@ -50,10 +50,10 @@ func SeeMatching(src *Src) (x *star.Star) {
 		x.Merge("Right", "", right)
 	}
 	if !Space(t) { // require newline at end
-		return nil
+		return "", "", nil
 	}
 	src.Become(t)
-	return
+	return name+"_fwd", name+"_rev", x
 }
 
 // Join = 3.19 | Peer.Valve | Valve

@@ -24,7 +24,7 @@ func SeeStar(src *Src) (x *star.Star) {
 	for i := 0; ; i++ {
 		q := t.Copy()
 		Space(q)
-		name, peer := SeePeerOrMatching(q, fmt.Sprintf("$match_%d", i))
+		fwd, rev, peer := SeePeerOrMatching(q, fmt.Sprintf("$%d", i))
 		if peer == nil {
 			break
 		}
@@ -32,7 +32,7 @@ func SeeStar(src *Src) (x *star.Star) {
 		q.TryMatch(",")
 		Space(q)
 		t.Become(q)
-		x.Merge(name, "", peer)
+		x.Merge(fwd, rev, peer)
 	}
 	Space(t)
 	t.Match("}")

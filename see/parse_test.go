@@ -44,7 +44,7 @@ var testMatching = []string {
 
 func TestMatching(t *testing.T) {
 	for _, q := range testMatching {
-		x := SeeMatching(NewSrcString(q))
+		_, _, x := SeeMatching(NewSrcString(q), "$")
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -54,17 +54,17 @@ func TestMatching(t *testing.T) {
 }
 
 var testPeer = []string{
-	`a b`,
-	`a @b`,
-	`a "abc"`,
-	`a 3.13`,
-	`a {}`,
-	`{ }`,
+	`a\v b`,
+	`\a @b`,
+	`\ "abc"`,
+	`a\ 3.13`,
+	`a\ {}`,
+	`\ { }`,
 }
 
 func TestPeer(t *testing.T) {
 	for _, q := range testPeer {
-		_, x := SeePeer(NewSrcString(q))
+		_, _, x := SeePeer(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -76,16 +76,17 @@ func TestPeer(t *testing.T) {
 var testStar = []string{
 	`{}`,
 	`{
-		g {}
+		g\ {}
 		a = b
-		{}
+		\ {}
 	}`,
 	`{
-		a b
-		c @d
-		e 1.23
-		f "123"
+		a\ b
+		c\ @d
+		e\ 1.23
+		f\ "123"
 		 = 0-2i
+		 \ 123
 	}`,
 }
 
@@ -101,13 +102,13 @@ func TestStar(t *testing.T) {
 }
 
 var testCircuit = []string{
-	`nand {
-		a and
-		n not
+	`nand\ {
+		a\ and
+		n\ not
 		X=a.X
 		Y=a.Y
 		n.X=a.XandY
-		b "3e3"
+		b\ "3e3"
 		n.notX=
 		{}=
 	}
@@ -116,11 +117,11 @@ var testCircuit = []string{
 
 func TestCircuit(t *testing.T) {
 	for _, q := range testCircuit {
-		nm, x := SeeCircuit(NewSrcString(q))
+		f, r, x := SeeCircuit(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}
-		fmt.Printf("%s %v\n", nm, x.Print("", "\t"))
+		fmt.Printf("%s\\%s %v\n", f, r, x.Print("", "\t"))
 	}
 }

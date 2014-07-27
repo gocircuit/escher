@@ -30,14 +30,13 @@ import (
 //		}
 //	}
 //
-func SeeMatching(src *Src, name string) (fwd, rev string, x *star.Star) {
+func SeeMatching(src *Src) (x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
 	x = star.Make()
-	x.Grow("Kind", "", Name("Matching"))
 	t := src.Copy()
 	Space(t)
 	if left := SeeJoin(t); left != nil {
@@ -50,10 +49,10 @@ func SeeMatching(src *Src, name string) (fwd, rev string, x *star.Star) {
 		x.Merge("Right", "", right)
 	}
 	if !Space(t) { // require newline at end
-		return "", "", nil
+		return nil
 	}
 	src.Become(t)
-	return name+"_fwd", name+"_rev", x
+	return
 }
 
 // Join = 3.19 | Peer.Valve | Valve

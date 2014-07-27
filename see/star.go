@@ -18,21 +18,27 @@ func SeeStar(src *Src) (x *star.Star) {
 		}
 	}()
 	x = star.Make()
+	m := star.Make()
+	x.Merge("$", "", m)
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
-	for i := 0; ; i++ {
+	var i int
+	for {
 		q := t.Copy()
 		Space(q)
-		fwd, rev, peer := SeePeerOrMatching(q, fmt.Sprintf("$%d", i))
-		if peer == nil {
+		fwd, rev, peer, match := SeePeerOrMatching(q)
+		if peer == nil && match == nil {
 			break
 		}
 		Space(q)
-		q.TryMatch(",")
-		Space(q)
 		t.Become(q)
-		x.Merge(fwd, rev, peer)
+		if peer != nil {
+			x.Merge(fwd, rev, peer)
+		} else {
+			m.Merge(fmt.Sprintf("%d", i), "", match)
+			i++
+		}
 	}
 	Space(t)
 	t.Match("}")

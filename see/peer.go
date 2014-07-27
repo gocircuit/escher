@@ -11,14 +11,14 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-func SeePeerOrMatching(src *Src, name string) (fwd, rev string, x *star.Star) {
-	if fwd, rev, x = SeePeer(src); x != nil {
+func SeePeerOrMatching(src *Src) (fwd, rev string, peer, match *star.Star) {
+	if fwd, rev, peer = SeePeer(src); peer != nil {
 		return
 	}
-	if fwd, rev, x = SeeMatching(src, name); x != nil {
+	if match = SeeMatching(src); match != nil {
 		return
 	}
-	return "", "", nil
+	return "", "", nil, nil
 }
 
 func SeePeer(src *Src) (fwd, rev string, x *star.Star) {

@@ -44,7 +44,7 @@ var testMatching = []string {
 
 func TestMatching(t *testing.T) {
 	for _, q := range testMatching {
-		_, _, x := SeeMatching(NewSrcString(q), "$")
+		x := SeeMatching(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue

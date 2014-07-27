@@ -54,17 +54,16 @@ func TestMatching(t *testing.T) {
 }
 
 var testPeer = []string{
-	`a\v b`,
-	`\a @b`,
-	`\ "abc"`,
-	`a\ 3.13`,
-	`a\ {}`,
-	`\ { }`,
+	`a b`,
+	`a @b`,
+	`_ "abc"`,
+	`a 3.13`,
+	`a { }`,
 }
 
 func TestPeer(t *testing.T) {
 	for _, q := range testPeer {
-		_, _, x := SeePeer(NewSrcString(q))
+		_, x := SeePeer(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -76,17 +75,17 @@ func TestPeer(t *testing.T) {
 var testStar = []string{
 	`{}`,
 	`{
-		g\ {}
+		g {}
 		a = b
-		\ {}
+		x {}
 	}`,
 	`{
-		a\ b
-		c\ @d
-		e\ 1.23
-		f\ "123"
+		a b
+		c @d
+		e 1.23
+		f "123"
 		 = 0-2i
-		 \ 123
+		 _ 123
 	}`,
 }
 
@@ -102,13 +101,13 @@ func TestStar(t *testing.T) {
 }
 
 var testCircuit = []string{
-	`nand\ {
-		a\ and
-		n\ not
+	`nand {
+		a and
+		n not
 		X=a.X
 		Y=a.Y
 		n.X=a.XandY
-		b\ "3e3"
+		b "3e3"
 		n.notX=
 		{}=
 	}
@@ -117,11 +116,11 @@ var testCircuit = []string{
 
 func TestCircuit(t *testing.T) {
 	for _, q := range testCircuit {
-		f, r, x := SeeCircuit(NewSrcString(q))
+		nm, x := SeeCircuit(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}
-		fmt.Printf("%s\\%s %v\n", f, r, x.Print("", "\t"))
+		fmt.Printf("%s %v\n", nm, x.Print("", "\t"))
 	}
 }

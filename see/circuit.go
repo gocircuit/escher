@@ -10,6 +10,6 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-func SeeCircuit(src *Src) (fwd, rev string, x *star.Star) {
+func SeeCircuit(src *Src) (name string, x *star.Star) {
 	return SeePeer(src)
 }

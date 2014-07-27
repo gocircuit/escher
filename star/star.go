@@ -36,11 +36,11 @@ func (s *Star) Copy(exclude ...string) *Star {
 	t := Make()
 	t.Show(s.Interface())
 	for fwd, choice := range s.Choice {
-		if contains(exclude, fwd) {
+		if fwd == Parent || contains(exclude, fwd) {
 			continue
 		}
 		_, rev := s.Reverse(fwd)
-		t.Merge(fwd, rev, choice.Copy(rev))
+		t.Merge(fwd, choice.Copy(rev))
 	}
 	return t
 }
@@ -68,12 +68,14 @@ func (s *Star) Reverse(fwd string) (*Star, string) {
 	panic(3)
 }
 
-func (s *Star) Merge(fwd, rev string, t *Star) *Star {
+const Parent = ""
+
+func (s *Star) Merge(fwd string, t *Star) *Star {
 	if _, ok := s.Choice[fwd]; ok {
 		panic("forward clash")
 	}
-	if _, ok := t.Choice[rev]; ok {
-		panic("reverse clash")
+	if _, ok := t.Choice[Parent]; ok {
+		panic("Parent clash")
 	}
 	if s.Value != nil && len(s.Choice) > 0 {
 		panic(1)
@@ -81,60 +83,56 @@ func (s *Star) Merge(fwd, rev string, t *Star) *Star {
 	if t.Value != nil && len(t.Choice) > 0 {
 		panic(1)
 	}
-	s.Choice[fwd], t.Choice[rev] = t, s
+	s.Choice[fwd], t.Choice[Parent] = t, s
 	return s
 }
 
 // Point-of-view
 
-func (s *Star) Grow(fwd, rev string, value interface{}) *Star {
+func (s *Star) Grow(fwd string, value interface{}) *Star {
 	if value == nil {
 		panic(1)
 	}
 	if _, ok := value.(*Star); ok {
 		panic(2)
 	}
-	s.Merge(fwd, rev, Make().Show(value))
+	s.Merge(fwd, Make().Show(value))
 	return s
 }
 
 // Traverse gives a different point-of-view on the same star, by moving the current root along the branch labeled name.
-func Traverse(s *Star, fwd, rev string) (t *Star) {
-	// defer s.collect()
-	var trev string
-	t, trev = s.Reverse(fwd)
+func Traverse(s *Star, fwd string) (t *Star) {
+	defer s.collect()
+	t, _ = s.Reverse(fwd)
 	if t != nil {
-		if rev != trev {
-			panic("unintended reverse")
-		}
 		return t
 	}
+	if fwd == Parent { // if at root
+		return nil
+	}
 	t = Make()
-	s.Merge(fwd, rev, t)
+	s.Merge(fwd, t)
 	return t
 }
 
-// func (s *Star) collect() {
-// 	if s.Value != nil {
-// 		return
-// 	}
-// 	if len(s.Choice) != 1 {
-// 		return
-// 	}
-// 	for fwd, _ := range s.Choice {
-// 		t, rev := s.Reverse(fwd)
-// 		Split(t, rev, fwd)
-// 		s.scrub()
-// 		return
-// 	}
-// 	panic(1)
-// }
-
-func Split(s *Star, fwd, rev string) (parent, child *Star) {
-	t, trev := s.Reverse(fwd)
-	if trev != rev {
-		panic("unintended reverse")
+func (s *Star) collect() {
+	if s.Value != nil {
+		return
 	}
+	if len(s.Choice) != 1 {
+		return
+	}
+	for fwd, _ := range s.Choice {
+		t, _ := s.Reverse(fwd)
+		Split(t, fwd)
+		s.scrub()
+		return
+	}
+	panic(1)
+}
+
+func Split(s *Star, fwd string) (parent, child *Star) {
+	t, rev := s.Reverse(fwd)
 	delete(t.Choice, rev)
 	delete(s.Choice, fwd)
 	return s, t
@@ -196,7 +194,7 @@ func (s *Star) Contains(t *Star, exclude ...string) bool {
 		return false
 	}
 	for tfwd, tchoice := range t.Choice {
-		if contains(exclude, tfwd) {
+		if tfwd == Parent || contains(exclude, tfwd) {
 			continue
 		}
 		_, trev := t.Reverse(tfwd)
@@ -218,13 +216,16 @@ func (s *Star) Print(prefix, indent string, exclude ...string) string {
 	} else {
 		fmt.Fprintf(&w, "{\n")
 		for fwd, choice := range s.Choice {
-			if contains(exclude, fwd) {
+			if fwd == Parent || contains(exclude, fwd) {
 				continue
 			}
 			_, rev := s.Reverse(fwd)
+			if fwd != rev {
+				panic(1)
+			}
 			fmt.Fprintf(
-				&w, "%s%s%s\\%s %s\n", 
-				prefix, indent, fwd, rev,
+				&w, "%s%s%s %s\n", 
+				prefix, indent, fwd,
 				choice.Print(prefix+indent, indent, rev),
 			)
 		}

@@ -40,13 +40,13 @@ func SeeMatching(src *Src) (x *star.Star) {
 	t := src.Copy()
 	Space(t)
 	if left := SeeJoin(t); left != nil {
-		x.Merge("Left", "", left)
+		x.Merge("Left", left)
 	}
 	Space(t)
 	t.Match("=")
 	Whitespace(t)
 	if right := SeeJoin(t); right != nil {
-		x.Merge("Right", "", right)
+		x.Merge("Right", right)
 	}
 	if !Space(t) { // require newline at end
 		return nil
@@ -87,7 +87,7 @@ func seeDesignJoin(src *Src) (x *star.Star) {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Merge("Peer", "", d).Grow("Valve", "", Name(""))
+	return star.Make().Merge("Peer", d).Grow("Valve", Name(""))
 }
 
 // seePeerValveJoin…
@@ -108,7 +108,7 @@ func seePeerValveJoin(src *Src) (x *star.Star) {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Grow("Peer", "", Name(peer)).Grow("Valve", "", Name(valve))
+	return star.Make().Grow("Peer", Name(peer)).Grow("Valve", Name(valve))
 }
 
 // seeValveJoin parses a single identifier as a valve name
@@ -121,5 +121,5 @@ func seeValveJoin(src *Src) (x *star.Star) {
 	t := src.Copy()
 	valve := Identifier(t)
 	src.Become(t)
-	return star.Make().Grow("Peer", "", Name("")).Grow("Valve", "", Name(valve))
+	return star.Make().Grow("Peer", Name("")).Grow("Valve", Name(valve))
 }

@@ -227,9 +227,6 @@ func (s *Star) Print(prefix, indent string, exclude ...string) string {
 				continue
 			}
 			_, rev := s.Reverse(fwd)
-			if fwd != rev {
-				panic(1)
-			}
 			fmt.Fprintf(
 				&w, "%s%s%s %s\n", 
 				prefix, indent, fwd,

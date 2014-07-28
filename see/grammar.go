@@ -21,7 +21,6 @@
 //		a Name("and")
 //		n Name("not")
 //		matching_1 {
-//			Kind Name("Matching")
 //			Left {
 //				Peer	Name("a")
 //				Valve Name("XandY")
@@ -47,7 +46,6 @@ type Design interface{
 }
 
 type (
-	Anonymous struct{}
 	Name string
 	RootName string
 	String string
@@ -55,10 +53,6 @@ type (
 	Float float64
 	Complex complex128
 )
-
-func (Anonymous) String() string {
-	return "Anon"
-}
 
 func (x Complex) String() string {
 	return fmt.Sprintf("Complex%g", x)

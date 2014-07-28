@@ -44,5 +44,8 @@ func SeeStar(src *Src) (x *star.Star) {
 	Space(t)
 	t.Match("}")
 	src.Become(t)
+	if m.Len() == 1 { // no matchings
+		star.Split(x, "$")
+	}
 	return x
 }

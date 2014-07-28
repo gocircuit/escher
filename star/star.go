@@ -70,6 +70,10 @@ func (s *Star) Reverse(fwd string) (*Star, string) {
 
 const Parent = ""
 
+func (s *Star) Len() int {
+	return len(s.Choice)
+}
+
 func (s *Star) Merge(fwd string, t *Star) *Star {
 	if _, ok := s.Choice[fwd]; ok {
 		panic("forward clash")

@@ -20,11 +20,11 @@ import (
 //
 //	{
 //		Kind Name("Matching")
-//		Left {
+//		0 {
 //			Peer Name(…)
 //			Valve Name(…) or Design()
 //		}
-//		Right {
+//		1 {
 //			Peer Name(…)
 //			Valve ??
 //		}
@@ -40,13 +40,13 @@ func SeeMatching(src *Src) (x *star.Star) {
 	t := src.Copy()
 	Space(t)
 	if left := SeeJoin(t); left != nil {
-		x.Merge("Left", left)
+		x.Merge("0", left)
 	}
 	Space(t)
 	t.Match("=")
 	Whitespace(t)
 	if right := SeeJoin(t); right != nil {
-		x.Merge("Right", right)
+		x.Merge("1", right)
 	}
 	if !Space(t) { // require newline at end
 		return nil

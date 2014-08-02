@@ -11,7 +11,9 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-func SeeStar(src *Src) (x *star.Star) {
+const MatchingName = "$"
+
+func SeeStar(src *Src) (x *star.Star) { ??
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
@@ -19,7 +21,7 @@ func SeeStar(src *Src) (x *star.Star) {
 	}()
 	x = star.Make()
 	m := star.Make()
-	x.Merge("$", m)
+	x.Merge(MatchingName, m)
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
@@ -45,7 +47,7 @@ func SeeStar(src *Src) (x *star.Star) {
 	t.Match("}")
 	src.Become(t)
 	if m.Len() == 1 { // no matchings
-		star.Split(x, "$")
+		star.Split(x, MatchingName)
 	}
 	return x
 }

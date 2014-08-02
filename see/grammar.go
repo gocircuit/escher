@@ -20,12 +20,12 @@
 //	nand {
 //		a Name("and")
 //		n Name("not")
-//		matching_1 {
-//			Left {
+//		$ {
+//			0 {
 //				Peer	Name("a")
 //				Valve Name("XandY")
 //			}
-//			Right {
+//			1 {
 //				Peer	Name("n")
 //				Valve Name("X")
 //			}
@@ -38,6 +38,7 @@ package see
 import (
 	"fmt"
 	"strconv"
+	"github.com/gocircuit/escher/star"
 )
 
 // Design is a type that is meant to be stored in the value of a star.
@@ -52,7 +53,12 @@ type (
 	Int int
 	Float float64
 	Complex complex128
+	Star *star.Star
 )
+
+func (s Star) String() string {
+	return (*star.Star)(s).Print("", "\t")
+}
 
 func (x Complex) String() string {
 	return fmt.Sprintf("Complex%g", x)
@@ -83,43 +89,4 @@ func chop(x string) string {
 		return x
 	}
 	return x[:20]+"…"
-}
-
-type Circuit struct {
-	Name string
-	Valve []string
-	Peer    []*Peer
-	Match []*Matching
-}
-
-type Peer struct {
-	Name   string
-	Design Design
-}
-
-func (p *Peer) String() string {
-	return fmt.Sprintf("Peer(%s, %v)", p.Name, p.Design)
-}
-
-type Matching struct {
-	Join [2]Join
-}
-
-// Join is one of PeerJoin, ValveJoin or DesignJoin.
-type Join interface{}
-
-// E.g. “a.X”
-type PeerJoin struct {
-	Peer string
-	Valve string
-}
-
-// E.g. “Y”
-type ValveJoin struct {
-	Valve string
-}
-
-// E.g. “12.1e3”
-type DesignJoin struct {
-	Design Design
 }

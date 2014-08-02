@@ -15,4 +15,5 @@ Nand {
 	Y = and.Y
 	not.X = and.XAndY
 	not.NotX // return
+	c 1-2i // complex
 }

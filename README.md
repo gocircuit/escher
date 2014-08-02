@@ -242,11 +242,11 @@ And the respective source code:
 		// recalls
 		in see
 		out show
-		swtch switch
+		switch switch
 		// matchings
-		Logic = swtch.Socialize
-		in.Sensation = swtch.Hear
-		out.Action = swtch.Speak
+		Logic = switch.Socialize
+		in.Sensation = switch.Hear
+		out.Action = switch.Speak
 	}
 
 ## Introspective and extrospective gates

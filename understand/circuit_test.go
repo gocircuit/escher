@@ -23,8 +23,8 @@ Nand { // comments are everywhere
 	str "stringißh"
 	num +12.3e5
 	msg {
-		msg: ["http://gocircuit.org/hello.html"],
-		num: [12.3e5],  // number
+		msg "http://gocircuit.org/hello.html"
+		num 12.3e5 // number
 	} // string
 
 	A = and.A // matching
@@ -42,18 +42,18 @@ Nand { // comments are everywhere
 <body>Hello world!</body>
 </html>
 ` + "`" +`
-	5.14 // return, 
+	=5.14 // return, 
 }
 // end comment
 `,
 	`
-{
+namarupa{
 	nama Name
 	rupa 123
 }`,
 	`
 circuit {
-	"123"
+	="123"
 }
 `,
 }

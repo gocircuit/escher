@@ -4,11 +4,11 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-{
+import {
 	nama Name
 	rupa 123
 }
 
 circuit {
-	"123"
+	="123"
 }

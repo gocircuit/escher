@@ -18,7 +18,7 @@ func (x *Circuit) Print(prefix, indent string) string {
 	fmt.Fprintf(&w, "%s%s {\n", prefix, x.Name)
 	for _, p := range x.Peer {
 		if p.Design == nil {
-			p.Design = see.NameDesign("☻")
+			p.Design = see.Name("☻")
 		}
 		fmt.Fprintf(&w,"%s%s%s %s/%T\n", prefix, indent, printable(p.Name), p.Design.String(), p.Design)
 		for _, v := range p.Valve {

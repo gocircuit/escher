@@ -31,7 +31,7 @@ Nand { // comments are everywhere
 <body>Hello world!</body>
 </html>
 `
-	3.14 // send to empty-string valve
+	=3.14 // send to empty-string valve
 }
 // end comment
 

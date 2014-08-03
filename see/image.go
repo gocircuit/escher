@@ -13,13 +13,13 @@ import (
 
 const MatchingName = "$"
 
-func SeeStar(src *Src) (x *star.Star) { ??
+func SeeImage(src *Src) (y *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			y = nil
 		}
 	}()
-	x = star.Make()
+	x := star.Make()
 	m := star.Make()
 	x.Merge(MatchingName, m)
 	t := src.Copy()
@@ -49,5 +49,5 @@ func SeeStar(src *Src) (x *star.Star) { ??
 	if m.Len() == 1 { // no matchings
 		star.Split(x, MatchingName)
 	}
-	return x
+	return Wrap(ImagineStar(x)) // enclose image in a star singleton
 }

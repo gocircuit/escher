@@ -16,11 +16,15 @@ import (
 // 	return SeePeer(src)
 // }
 
-func SeeCircuit(src *Src) (name string, cir *Circuit) {
-	name, r := SeePeer(src)
+func SeeCircuit(src *Src) *Circuit {
+	return Circuitize(SeePeer(src))
+}
+
+func Circuitize(name string, x *star.Star) (cir *Circuit) {
+	img := x??
 	cir = &Circuit{
-		Peer: make([]*Peer, 0, r.Len()), // # explicit peers + default empty-string peer = # of src children = # peers + child for "$"
-		Match: make([]*Matching, 0, r.Down(MatchingName).Len()), // # of matchings
+		Peer: make([]*Peer, 0, peer.Len()), // # explicit peers + default empty-string peer = # of src children = # peers + child for "$"
+		Match: make([]*Matching, 0, peer.Down(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
 	cir.Peer = append(
@@ -30,7 +34,7 @@ func SeeCircuit(src *Src) (name string, cir *Circuit) {
 			Design: nil, // no design for implied peer
 		}, // default empty-string peer
 	)
-	for name, v := range r.Choice {
+	for name, v := range peer.Interface().(Image).Star().Choice {
 		if name == MatchingName {
 			cir.seeMatching(v)
 			continue
@@ -43,7 +47,7 @@ func SeeCircuit(src *Src) (name string, cir *Circuit) {
 			},
 		)
 	}
-	return name, cir
+	return
 }
 
 func (cir *Circuit) seeMatching(s *star.Star) {

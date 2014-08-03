@@ -34,7 +34,7 @@ func SeePeer(src *Src) (name string, x *star.Star) {
 		panic("peer name")
 	}
 	SpaceNoNewline(t)
-	if x = SeeArithmeticOrNameOrStar(t); x == nil {
+	if x = SeeArithmeticOrNameOrImage(t); x == nil {
 		return "", nil
 	}
 	if !Space(t) { // require newline at end

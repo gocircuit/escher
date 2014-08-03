@@ -41,6 +41,11 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
+// Wrap wraps the value v inside a singleton star.
+func Wrap(v interface{}) *star.Star {
+	return star.Make().Show(v)
+}
+
 // Design is a type that is meant to be stored in the value of a star.
 type Design interface{
 	String() string
@@ -53,11 +58,19 @@ type (
 	Int int
 	Float float64
 	Complex complex128
-	Star *star.Star
+	Image star.Star // An image is a *star.Star structure constructed through parsing a textual representation
 )
 
-func (s Star) String() string {
-	return (*star.Star)(s).Print("", "\t")
+func ImagineStar(x *star.Star) Design {
+	return (*Image)(x)
+}
+
+func (x *Image) String() string {
+	return fmt.Sprintf("Image(%s)", (*star.Star)(x).Print("", "\t"))
+}
+
+func (x *Image) Unwrap() *star.Star {
+	return (*star.Star)(x)
 }
 
 func (x Complex) String() string {

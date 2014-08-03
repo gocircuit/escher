@@ -39,15 +39,11 @@ func SeeMatching(src *Src) (x *star.Star) {
 	x = star.Make()
 	t := src.Copy()
 	Space(t)
-	if left := SeeJoin(t); left != nil {
-		x.Merge("0", left)
-	}
-	Space(t)
+	x.Merge("0", SeeJoin(t))
+	Whitespace(t)
 	t.Match("=")
 	Whitespace(t)
-	if right := SeeJoin(t); right != nil {
-		x.Merge("1", right)
-	}
+	x.Merge("1", SeeJoin(t))
 	if !Space(t) { // require newline at end
 		return nil
 	}
@@ -82,7 +78,7 @@ func seeDesignJoin(src *Src) (x *star.Star) {
 		}
 	}()
 	t := src.Copy()
-	d := SeeArithmeticOrStar(t)
+	d := SeeArithmeticOrImage(t)
 	if d == nil {
 		return nil
 	}
@@ -111,7 +107,8 @@ func seePeerValveJoin(src *Src) (x *star.Star) {
 	return star.Make().Grow("Peer", Name(peer)).Grow("Valve", Name(valve))
 }
 
-// seeValveJoin parses a single identifier as a valve name
+// seeValveJoin parses a single identifier as a valve name. 
+// It captures the empty string.
 func seeValveJoin(src *Src) (x *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {

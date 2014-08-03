@@ -13,25 +13,25 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// SeeArithmeticOrStar parses a built-in type (int, float, complex, string, name) into a star.
-func SeeArithmeticOrStar(src *Src) (x *star.Star) {
+// SeeArithmeticOrImage parses a built-in type (int, float, complex, string, name) into a star.
+func SeeArithmeticOrImage(src *Src) (x *star.Star) {
 	if x = SeeArithmetic(src); x != nil {
 		return
 	}
-	if x = SeeStar(src); x != nil {
+	if x = SeeImage(src); x != nil {
 		return
 	}
 	return nil
 }
 
-func SeeArithmeticOrNameOrStar(src *Src) (x *star.Star) {
+func SeeArithmeticOrNameOrImage(src *Src) (x *star.Star) {
 	if x = SeeArithmetic(src); x != nil {
 		return
 	}
 	if x = SeeName(src); x != nil {
 		return
 	}
-	if x = SeeStar(src); x != nil {
+	if x = SeeImage(src); x != nil {
 		return
 	}
 	return nil
@@ -63,9 +63,9 @@ func SeeName(src *Src) (x *star.Star) {
 		return nil
 	}
 	if l[0] != '@' {
-		return star.Make().Show(Name(l))
+		return Wrap(Name(l))
 	}
-	return star.Make().Show(RootName(l))
+	return Wrap(RootName(l))
 }
 
 // Int …
@@ -81,7 +81,7 @@ func SeeInt(src *Src) *star.Star {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(i)
+	return Wrap(i)
 }
 
 // Float …
@@ -97,7 +97,7 @@ func SeeFloat(src *Src) *star.Star {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(f)
+	return Wrap(f)
 }
 
 // Complex …
@@ -113,7 +113,7 @@ func SeeComplex(src *Src) *star.Star {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(c)
+	return Wrap(c)
 }
 
 // SeeBackquoteString …
@@ -125,7 +125,7 @@ func SeeBackquoteString(src *Src) *star.Star {
 	}
 	str := String(quoted[1:len(quoted)-1])
 	src.Become(t)
-	return star.Make().Show(str)
+	return Wrap(str)
 }
 
 func DelimitBackquoteString(src *Src) (string, bool) {
@@ -183,7 +183,7 @@ func SeeDoubleQuoteString(src *Src) *star.Star {
 		return nil
 	}
 	src.Become(t)
-	return star.Make().Show(String(str))
+	return Wrap(String(str))
 }
 
 func DelimitDoubleQuoteString(src *Src) (string, bool) {

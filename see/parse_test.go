@@ -23,7 +23,7 @@ var testDesign = []string{
 
 func TestDesign(t *testing.T) {
 	for _, q := range testDesign {
-		x := SeeArithmeticOrNameOrStar(NewSrcString(q))
+		x := SeeArithmeticOrNameOrImage(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -72,7 +72,7 @@ func TestPeer(t *testing.T) {
 	}
 }
 
-var testStar = []string{
+var testImage = []string{
 	`{}`,
 	`{
 		g {}
@@ -89,9 +89,9 @@ var testStar = []string{
 	}`,
 }
 
-func TestStar(t *testing.T) {
-	for _, q := range testStar {
-		x := SeeStar(NewSrcString(q))
+func TestImage(t *testing.T) {
+	for _, q := range testImage {
+		x := SeeImage(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -116,11 +116,11 @@ var testCircuit = []string{
 
 func TestCircuit(t *testing.T) {
 	for _, q := range testCircuit {
-		nm, x := SeeCircuit(NewSrcString(q))
+		x := SeeCircuit(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}
-		fmt.Printf("%s %v\n", nm, x)
+		fmt.Printf("%v\n", x)
 	}
 }

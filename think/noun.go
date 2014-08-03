@@ -6,9 +6,13 @@
 
 package think
 
-func DontCognize(interface{}) {}
+import (
+	"github.com/gocircuit/escher/star"
+)
 
-func NewNounReflex(v interface{}) Reflex {
+func DontCognize(*star.Star) {}
+
+func NewNounReflex(v *star.Star) Reflex {
 	s, t := NewSynapse()
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)

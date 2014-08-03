@@ -24,6 +24,8 @@ func panicf(format string, arg ...interface{}) {
 	panic(fmt.Sprintf(format, arg...))
 }
 
+// Expire is a device that invokes an expiration function, 
+// if a termination condition is not met in time.
 type Expire struct {
 	sync.Mutex
 	done bool

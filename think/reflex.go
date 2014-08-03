@@ -6,12 +6,8 @@
 
 package think
 
-import (
-	"github.com/gocircuit/escher/tree"
-)
-
-// Reflex is a bundle of un-attached sense endpoints
-type Reflex map[tree.Name]*Synapse
+// Reflex is a bundle of not yet attached sense endpoints (synapses).
+type Reflex map[string]*Synapse
 
 type Gate interface {
 	Materialize() Reflex

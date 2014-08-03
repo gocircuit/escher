@@ -9,25 +9,26 @@ package star
 import (
 	"bytes"
 	"fmt"
+	"sort"
 )
 
 // Star is a node from a symmetric tree, i.e. a tree without a distinct root.
 type Star struct {
-	Choice Choice
+	Arm Arm
 	Value interface{}
 }
 
-type Choice map[string]*Star
+type Arm map[string]*Star
 
 // Make creates a singleton node star and an eye into it.
 func Make() *Star {
 	return &Star{
-		Choice: make(Choice),
+		Arm: make(Arm),
 	}
 }
 
 func (s *Star) scrub() {
-	s.Choice = nil
+	s.Arm = nil
 	s.Value = nil
 }
 
@@ -35,12 +36,12 @@ func (s *Star) scrub() {
 func (s *Star) Copy(exclude ...string) *Star {
 	t := Make()
 	t.Show(s.Interface())
-	for fwd, choice := range s.Choice {
+	for fwd, arm := range s.Arm {
 		if fwd == Parent || contains(exclude, fwd) {
 			continue
 		}
 		_, rev := s.Reverse(fwd)
-		t.Merge(fwd, choice.Copy(rev))
+		t.Merge(fwd, arm.Copy(rev))
 	}
 	return t
 }
@@ -54,13 +55,13 @@ func contains(set []string, s string) bool {
 	return false
 }
 
-// Reverse returns the name of the choice on fwd that points back to s.
+// Reverse returns the name of the arm on fwd that points back to s.
 func (s *Star) Reverse(fwd string) (*Star, string) {
-	t, ok := s.Choice[fwd]
+	t, ok := s.Arm[fwd]
 	if !ok {
 		return nil, ""
 	}
-	for rev, r := range t.Choice {
+	for rev, r := range t.Arm {
 		if r == s {
 			return t, rev
 		}
@@ -68,26 +69,29 @@ func (s *Star) Reverse(fwd string) (*Star, string) {
 	panic(3)
 }
 
+// Parent is the name of the parent within a child star.
 const Parent = ""
 
+// Len returns the number of arms (including the one to the parent, if present) that s has.
 func (s *Star) Len() int {
-	return len(s.Choice)
+	return len(s.Arm)
 }
 
+// Merge…
 func (s *Star) Merge(fwd string, t *Star) *Star {
-	if _, ok := s.Choice[fwd]; ok {
+	if _, ok := s.Arm[fwd]; ok {
 		panic("forward clash")
 	}
-	if _, ok := t.Choice[Parent]; ok {
+	if _, ok := t.Arm[Parent]; ok {
 		panic("Parent clash")
 	}
-	if s.Value != nil && len(s.Choice) > 0 {
+	if s.Value != nil && len(s.Arm) > 0 {
 		panic(1)
 	}
-	if t.Value != nil && len(t.Choice) > 0 {
+	if t.Value != nil && len(t.Arm) > 0 {
 		panic(1)
 	}
-	s.Choice[fwd], t.Choice[Parent] = t, s
+	s.Arm[fwd], t.Arm[Parent] = t, s
 	return s
 }
 
@@ -114,10 +118,10 @@ func (s *Star) collect() {
 	if s.Value != nil {
 		return
 	}
-	if len(s.Choice) != 1 {
+	if len(s.Arm) != 1 {
 		return
 	}
-	for fwd, _ := range s.Choice {
+	for fwd, _ := range s.Arm {
 		if fwd != Parent {
 			panic(4)
 		}
@@ -144,8 +148,8 @@ func (s *Star) Down(fwd string) (t *Star) {
 
 func Split(s *Star, fwd string) (parent, child *Star) {
 	t, rev := s.Reverse(fwd)
-	delete(t.Choice, rev)
-	delete(s.Choice, fwd)
+	delete(t.Arm, rev)
+	delete(s.Arm, fwd)
 	return s, t
 }
 
@@ -176,11 +180,23 @@ func (s *Star) Star() *Star {
 
 // Show sets the value stored at this node.
 func (s *Star) Show(v interface{}) *Star {
-	if v != nil && len(s.Choice) > 1 {
+	if v != nil && len(s.Arm) > 1 {
 		panic("value in a non-terminal node")
 	}
 	s.Value = v
 	return s
+}
+
+// Sorted
+
+// Sort returns the keys in s in sorted order.
+func (s *Star) Sort() []string {
+	arm := make([]string, 0, s.Len())
+	for a, _ := range s.Arm {
+		arm = append(arm, a)
+	}
+	sort.Strings(arm)
+	return arm
 }
 
 // Comparison
@@ -204,16 +220,16 @@ func (s *Star) Contains(t *Star, exclude ...string) bool {
 	if !SameValue(s.Value, t.Value) {
 		return false
 	}
-	for tfwd, tchoice := range t.Choice {
+	for tfwd, tarm := range t.Arm {
 		if tfwd == Parent || contains(exclude, tfwd) {
 			continue
 		}
 		_, trev := t.Reverse(tfwd)
-		schoice, srev := s.Reverse(tfwd)
-		if schoice == nil || srev != trev {
+		sarm, srev := s.Reverse(tfwd)
+		if sarm == nil || srev != trev {
 			return false
 		}
-		if !schoice.Contains(tchoice, trev) {
+		if !sarm.Contains(tarm, trev) {
 			return false
 		}
 	}
@@ -226,7 +242,7 @@ func (s *Star) Print(prefix, indent string, exclude ...string) string {
 		fmt.Fprintf(&w, "%v", s.Value)
 	} else {
 		fmt.Fprintf(&w, "{\n")
-		for fwd, choice := range s.Choice {
+		for fwd, arm := range s.Arm {
 			if fwd == Parent || contains(exclude, fwd) {
 				continue
 			}
@@ -234,7 +250,7 @@ func (s *Star) Print(prefix, indent string, exclude ...string) string {
 			fmt.Fprintf(
 				&w, "%s%s%s %s\n", 
 				prefix, indent, fwd,
-				choice.Print(prefix+indent, indent, rev),
+				arm.Print(prefix+indent, indent, rev),
 			)
 		}
 		fmt.Fprintf(&w, "%s}", prefix)

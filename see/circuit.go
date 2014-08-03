@@ -30,7 +30,7 @@ func Circuitize(name string, x *star.Star) (cir *Circuit) {
 		Match: make([]*Matching, 0, img.Down(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
-	for name, v := range img.Choice {
+	for name, v := range img.Arm {
 		if name == star.Parent {
 			continue
 		}
@@ -50,7 +50,7 @@ func Circuitize(name string, x *star.Star) (cir *Circuit) {
 }
 
 func (cir *Circuit) seeMatching(s *star.Star) {
-	for w, x := range s.Choice {
+	for w, x := range s.Arm {
 		if string(w) == star.Parent {
 			continue
 		}

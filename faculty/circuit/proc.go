@@ -4,7 +4,8 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package basic
+// circuit provides Escher bindings for the circuit runtime of http://gocircuit.org
+package circuit
 
 import (
 	"fmt"
@@ -14,17 +15,20 @@ import (
 )
 
 func init() {
-	println("Loading basic faculty")
-	faculty.Root.AddTerminal("reason", Reason{})
+	ns := faculty.Root.Refine("circuit")
+	ns.AddTerminal("proc", Process{})
+	// ns.AddTerminal("docker", Docker{})
+	// ns.AddTerminal("chan", Chan{})
+	// ns.AddTerminal("subscription", Subscription{})
 }
 
-// Reason
-type Reason struct{}
+// Process
+type Process struct{}
 
-func (Reason) Materialize() think.Reflex {
-	reflex, eye := faculty.NewEye("Belief", "Observation", "Theory") // Create to (yet unattached) memory endpoints.
+func (Process) Materialize() think.Reflex {
+	reflex, eye := faculty.NewEye("config", "spawn", "exit", "io")
 	go func() {
-		f := &reason{  // Create the object that will handle the cognition of the reason reflex
+		f := &process{
 			ready: make(chan struct{}),
 		}
 		f.x = eye.Focus(f.ShortCognize)
@@ -33,12 +37,12 @@ func (Reason) Materialize() think.Reflex {
 	return reflex
 }
 
-type reason struct {
+type process struct {
 	ready chan struct{}
 	x *faculty.EyeReCognizer
 }
 
-func (f *reason) ShortCognize(saw faculty.Sentence) {
+func (f *process) ShortCognize(saw faculty.Sentence) {
 	println(fmt.Sprintf("saw=%v", saw))
 	<-f.ready
 	if saw.At(0).Value() == nil || saw.At(1).Value() == nil { // If either of the two most recently updated valves are nil, inaction.

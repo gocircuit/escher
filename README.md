@@ -1,4 +1,4 @@
-# Escher in language—The algorithmic mirror
+# Escher in language and the algorithmic mirror
 
 (Or “HTML and JavaScript for Web 3.0 all-in-one”.)
 

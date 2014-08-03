@@ -7,15 +7,14 @@
 package faculty
 
 import (
-	"github.com/gocircuit/escher/tree"
+	"github.com/gocircuit/escher/star"
 )
 
-// Time—>SentenceFunctional
-// Time zero is most recent, time one is earlier, and so on.
-type Sentence tree.Tree
+// Sentence is a packaging of valve values received in a most-recent to least-recent index order.
+type Sentence star.Star
 
 func MakeSentence() Sentence {
-	return make(Sentence)
+	return star.Make()
 }
 
 func (s Sentence) Grow(time int, valve tree.Name, value tree.Meaning) Sentence {
@@ -31,7 +30,7 @@ func (s Sentence) Grow(time int, valve tree.Name, value tree.Meaning) Sentence {
 	)
 }
 
-func (s Sentence) At(time int) SentenceFunctional {
+func (s Sentence) At(time int) *star.Star {
 	return tree.Tree(s).At(time).(SentenceFunctional)
 }
 

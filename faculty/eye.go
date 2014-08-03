@@ -9,7 +9,7 @@ package faculty
 import (
 	"sort"
 
-	"github.com/gocircuit/escher/tree"
+	"github.com/gocircuit/escher/star"
 )
 
 func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {

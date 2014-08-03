@@ -13,15 +13,17 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// func SeeCircuit(src *Src) (string, *star.Star) {
-// 	return SeePeer(src)
-// }
-
 func SeeCircuit(src *Src) *Circuit {
+	if src.Len() == 0 {
+		return nil
+	}
 	return Circuitize(SeePeer(src))
 }
 
 func Circuitize(name string, x *star.Star) (cir *Circuit) {
+	if x == nil {
+		return nil
+	}
 	img := x.Interface().(*Image).Unwrap()
 	cir = &Circuit{
 		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"

@@ -7,6 +7,7 @@
 package understand
 
 import (
+	// "fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -74,7 +75,6 @@ func (fty Faculty) UnderstandDirectory(dir string) {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() {
-			//println(path.Join(dir, fileInfo.Name()))
 			fty.Refine(fileInfo.Name()).UnderstandDirectory(filePath)
 			continue
 		}

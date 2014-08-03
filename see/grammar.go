@@ -66,7 +66,7 @@ func ImagineStar(x *star.Star) Design {
 }
 
 func (x *Image) String() string {
-	return fmt.Sprintf("Image(%s)", (*star.Star)(x).Print("", "\t"))
+	return fmt.Sprintf("Image(%s)", linearize((*star.Star)(x).Print("", "\t")))
 }
 
 func (x *Image) Unwrap() *star.Star {

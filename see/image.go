@@ -7,7 +7,7 @@
 package see
 
 import (
-	"fmt"
+	"strconv"
 	"github.com/gocircuit/escher/star"
 )
 
@@ -38,8 +38,7 @@ func SeeImage(src *Src) (y *star.Star) {
 		if peer != nil {
 			x.Merge(name, peer)
 		} else {
-			k := fmt.Sprintf("%d", i)
-			m.Merge(k, match)
+			m.Merge(strconv.Itoa(i), match)
 			i++
 		}
 	}

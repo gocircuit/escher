@@ -21,10 +21,10 @@ func SeeCircuit(src *Src) *Circuit {
 }
 
 func Circuitize(name string, x *star.Star) (cir *Circuit) {
-	img := x??
+	img := x.Interface().(*Image).Unwrap()
 	cir = &Circuit{
-		Peer: make([]*Peer, 0, peer.Len()), // # explicit peers + default empty-string peer = # of src children = # peers + child for "$"
-		Match: make([]*Matching, 0, peer.Down(MatchingName).Len()), // # of matchings
+		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + default empty-string peer = # of src children = # peers + child for "$"
+		Match: make([]*Matching, 0, img.Down(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
 	cir.Peer = append(
@@ -34,7 +34,7 @@ func Circuitize(name string, x *star.Star) (cir *Circuit) {
 			Design: nil, // no design for implied peer
 		}, // default empty-string peer
 	)
-	for name, v := range peer.Interface().(Image).Star().Choice {
+	for name, v := range img.Choice {
 		if name == MatchingName {
 			cir.seeMatching(v)
 			continue
@@ -52,11 +52,14 @@ func Circuitize(name string, x *star.Star) (cir *Circuit) {
 
 func (cir *Circuit) seeMatching(s *star.Star) {
 	for w, x := range s.Choice {
-		println("*", string(w))
+		if string(w) == star.Parent {
+			continue
+		}
+		// fmt.Printf("=%s=>\n", string(w))
 		m := &Matching{}
 		for i := 0; i < 2; i++ {
 			y := x.Down(strconv.Itoa(i))
-			fmt.Println(">", y.Print("\t", "\t"))
+			// fmt.Printf("    –%d–>\n    %s\n", i, y.Print("    ", "\t"))
 
 			v := string(y.Down("Valve").Interface().(Name))
 			switch p := y.Down("Peer").Interface().(type) {

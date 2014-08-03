@@ -7,6 +7,7 @@
 package see
 
 import (
+	"bytes"
 	"fmt"
 	"strconv"
 	"github.com/gocircuit/escher/star"
@@ -23,18 +24,14 @@ func SeeCircuit(src *Src) *Circuit {
 func Circuitize(name string, x *star.Star) (cir *Circuit) {
 	img := x.Interface().(*Image).Unwrap()
 	cir = &Circuit{
-		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + default empty-string peer = # of src children = # peers + child for "$"
+		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
 		Match: make([]*Matching, 0, img.Down(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
-	cir.Peer = append(
-		cir.Peer, 
-		&Peer{
-			Name: "",
-			Design: nil, // no design for implied peer
-		}, // default empty-string peer
-	)
 	for name, v := range img.Choice {
+		if name == star.Parent {
+			continue
+		}
 		if name == MatchingName {
 			cir.seeMatching(v)
 			continue
@@ -93,17 +90,42 @@ type Circuit struct {
 	Match []*Matching
 }
 
+func (c *Circuit) Print(prefix, indent string) string {
+	var w bytes.Buffer
+	fmt.Fprintf(&w, "%s (", c.Name)
+	for i, v := range c.Valve {
+		var comma = ", "
+		if i + 1 == len(c.Valve) {
+			comma = ""
+		}
+		fmt.Fprintf(&w, "%s%s", v, comma)
+	}
+	w.WriteString(") {\n")
+	for _, p := range c.Peer {
+		fmt.Fprintf(&w, "%s%s%v\n", prefix, indent, p)
+	}
+	for _, m := range c.Match {
+		fmt.Fprintf(&w, "%s%s%v\n", prefix, indent, m)
+	}
+	fmt.Fprintf(&w, "%s}\n", prefix)
+	return w.String()
+}
+
 type Peer struct {
 	Name   string
 	Design Design
 }
 
 func (p *Peer) String() string {
-	return fmt.Sprintf("Peer(%s, %v)", p.Name, p.Design)
+	return fmt.Sprintf("%s %v", p.Name, p.Design)
 }
 
 type Matching struct {
 	Join [2]Join
+}
+
+func (m *Matching) String() string {
+	return fmt.Sprintf("%v=%v", m.Join[0], m.Join[1])
 }
 
 // Join is one of PeerJoin, ValveJoin or DesignJoin.
@@ -115,12 +137,24 @@ type PeerJoin struct {
 	Valve string
 }
 
+func (p *PeerJoin) String() string {
+	return fmt.Sprintf("%s.%s", p.Peer, p.Valve)
+}
+
 // E.g. “Y”
 type ValveJoin struct {
 	Valve string
 }
 
+func (v *ValveJoin) String() string {
+	return v.Valve
+}
+
 // E.g. “12.1e3”
 type DesignJoin struct {
 	Design Design
+}
+
+func (d *DesignJoin) String() string {
+	return d.Design.String()
 }

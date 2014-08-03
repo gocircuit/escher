@@ -121,6 +121,6 @@ func TestCircuit(t *testing.T) {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}
-		fmt.Printf("%v\n", x)
+		fmt.Printf("%s\n", x.Print("", "    "))
 	}
 }

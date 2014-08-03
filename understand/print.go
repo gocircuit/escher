@@ -10,17 +10,17 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/gocircuit/escher/see"
+	// "github.com/gocircuit/escher/see"
 )
 
 func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "%s%s {\n", prefix, x.Name)
 	for _, p := range x.Peer {
-		if p.Design == nil {
-			p.Design = see.Name("☻")
-		}
-		fmt.Fprintf(&w,"%s%s%s %s\n", prefix, indent, printable(p.Name), p.Design.String())
+		// if p.Design == nil {
+		// 	p.Design = see.Name("☻")
+		// }
+		fmt.Fprintf(&w,"%s%s%s %v\n", prefix, indent, printable(p.Name), p.Design)
 		for _, v := range p.Valve {
 			fmt.Fprintf(&w, "%s%s%s%s·%s = %s·%s\n", 
 				prefix, indent, indent, 
@@ -37,5 +37,5 @@ func printable(s string) string {
 	if s != "" {
 		return s
 	}
-	return "¶"
+	return "•"
 }

@@ -8,7 +8,7 @@ package see
 
 import (
 	// "fmt"
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
 // A matching is the following syntactic structure:
@@ -33,19 +33,19 @@ import (
 func SeeMatching(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = NoImage
+			x = nil
 		}
 	}()
-	x = star.Make()
+	x = Make()
 	t := src.Copy()
 	Space(t)
-	x.Merge("0", SeeJoin(t).Star)
+	x.Grow("0", SeeJoin(t))
 	Whitespace(t)
 	t.Match("=")
 	Whitespace(t)
-	x.Merge("1", SeeJoin(t).Star)
+	x.Grow("1", SeeJoin(t))
 	if !Space(t) { // require newline at end
-		return NoImage
+		return nil
 	}
 	src.Become(t)
 	return
@@ -59,52 +59,58 @@ func SeeMatching(src *Src) (x Image) {
 //	}
 //
 func SeeJoin(src *Src) (x Image) {
-	if x = seeDesignJoin(src); x.Lit() { // int, string, etc.
+	if x = seeDesignJoin(src); x != nil { // int, string, etc.
 		return x
 	}
-	if x = seePeerValveJoin(src); x.Lit() { // peer.valve
+	if x = seePeerValveJoin(src); x != nil { // peer.valve
 		return x
 	}
-	if x = seeValveJoin(src); x.Lit() { // valve (or empty string)
+	if x = seeValveJoin(src); x != nil { // valve (or empty string)
 		return x
 	}
-	return NoImage
+	panic(1)
 }
 
 func seeDesignJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = NoImage
+			x = nil
 		}
 	}()
 	t := src.Copy()
-	dimg := SeeArithmeticOrImage(t)
+	dimg := SeeArithmeticOrUnion(t)
 	if dimg == nil {
-		return NoImage
+		return nil
 	}
 	src.Become(t)
-	return Imagine(star.Make().Merge("Peer", dimg).Grow("Valve", Name("")))
+	return Image{
+		"Peer": dimg,
+		"Valve": Name(""),
+	}
 }
 
 // seePeerValveJoin…
 func seePeerValveJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = NoImage
+			x = nil
 		}
 	}()
 	t := src.Copy()
 	peer := Identifier(t)
 	if peer == "" {
-		return NoImage
+		return nil
 	}
 	t.Match(".")
 	valve := Identifier(t)
 	if valve == "" {
-		return NoImage
+		return nil
 	}
 	src.Become(t)
-	return Imagine(star.Make().Grow("Peer", Name(peer)).Grow("Valve", Name(valve)))
+	return Image{
+		"Peer": Name(peer),
+		"Valve": Name(valve),
+	}
 }
 
 // seeValveJoin parses a single identifier as a valve name. 
@@ -112,11 +118,14 @@ func seePeerValveJoin(src *Src) (x Image) {
 func seeValveJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = NoImage
+			x = nil
 		}
 	}()
 	t := src.Copy()
 	valve := Identifier(t)
 	src.Become(t)
-	return star.Make().Grow("Peer", Name("")).Grow("Valve", Name(valve))
+	return Image{
+		"Peer": Name(""),
+		"Valve": Name(valve),
+	}
 }

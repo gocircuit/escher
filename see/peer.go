@@ -8,38 +8,39 @@ package see
 
 import (
 	// "fmt"
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
-func SeePeerOrMatching(src *Src) (name string, peer, match Image) {
-	if name, peer = SeePeer(src); peer.Lit() {
+func SeePeerOrMatching(src *Src) (x Image) {
+	if x = SeePeer(src); x != nil {
 		return
 	}
-	if match = SeeMatching(src); match.Lit() {
-		return
+	if match := SeeMatching(src); match != nil {
+		return Image{MatchingName: match}
 	}
-	return "", NoImage, NoImage
+	return nil
 }
 
-func SeePeer(src *Src) (name string, x Image) {
+func SeePeer(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = NoImage
+			x = nil
 		}
 	}()
 	t := src.Copy()
 	Space(t)
-	name = Identifier(t)
+	name := Identifier(t)
 	if len(name) == 0 {
 		panic("peer name")
 	}
 	Whitespace(t)
-	if x = SeeArithmeticOrNameOrImage(t); x == nil { // composite
-		return "", NoImage
+	p := SeeArithmeticOrNameOrUnion(t)
+	if p == nil {
+		return nil
 	}
 	if !Space(t) { // require newline at end
-		return "", NoImage
+		return nil
 	}
 	src.Become(t)
-	return
+	return Image{name: p}
 }

@@ -10,58 +10,54 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
 func SeeCircuit(src *Src) *Circuit {
 	if src.Len() == 0 {
 		return nil
 	}
-	return Circuitize(SeePeer(src))
+	for p, un := range SeePeer(src) {
+		return Circuitize(p, un.(Image))
+	}
+	return nil
 }
 
-func Circuitize(name string, x *star.Star) (cir *Circuit) {
-	if x == nil {
+func Circuitize(name string, img Image) (cir *Circuit) {
+	if img == nil {
 		return nil
 	}
-	img := x.Interface().(Image).Unwrap()
 	cir = &Circuit{
 		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
-		Match: make([]*Matching, 0, img.Down(MatchingName).Len()), // # of matchings
+		Match: make([]*Matching, 0, img.Walk(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
-	for name, v := range img.Choice() {
-		if name == star.Parent {
-			continue
-		}
+	for name, v := range img {
 		if name == MatchingName {
-			cir.seeMatching(v)
+			cir.seeMatching(v.(Image))
 			continue
 		}
 		cir.Peer = append(
 			cir.Peer,
 			&Peer{
 				Name: name,
-				Design: v.Interface().(Design),
+				Design: v,
 			},
 		)
 	}
 	return
 }
 
-func (cir *Circuit) seeMatching(s *star.Star) {
-	for w, x := range s.Choice() {
-		if string(w) == star.Parent {
-			continue
-		}
+func (cir *Circuit) seeMatching(s Image) {
+	for index, x := range s {
 		// fmt.Printf("=%s=>\n", string(w))
 		m := &Matching{}
 		for i := 0; i < 2; i++ {
-			y := x.Down(strconv.Itoa(i))
+			y := x.(Image).Walk(strconv.Itoa(i))
 			// fmt.Printf("    –%d–>\n    %s\n", i, y.Print("    ", "\t"))
 
-			v := string(y.Down("Valve").Interface().(Name))
-			switch p := y.Down("Peer").Interface().(type) {
+			v := string(y["Valve"].(Name))
+			switch p := y["Peer"].(type) {
 			case Name:
 				if string(p) == "" {
 					m.Join[i] = &ValveJoin{
@@ -73,12 +69,10 @@ func (cir *Circuit) seeMatching(s *star.Star) {
 						Valve: v,
 					}
 				}
-			case Design:
+			default:
 				m.Join[i] = &DesignJoin{
 					Design: p,
 				}
-			default:
-				panic(1) // parsing bug
 			}
 		}
 		cir.Match = append(cir.Match, m)
@@ -115,7 +109,7 @@ func (c *Circuit) Print(prefix, indent string) string {
 
 type Peer struct {
 	Name   string
-	Design Design
+	Design interface{}
 }
 
 func (p *Peer) String() string {
@@ -154,9 +148,9 @@ func (v *ValveJoin) String() string {
 
 // E.g. “12.1e3”
 type DesignJoin struct {
-	Design Design
+	Design interface{}
 }
 
 func (d *DesignJoin) String() string {
-	return d.Design.String()
+	return fmt.Sprintf("%v", d.Design)
 }

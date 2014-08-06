@@ -15,15 +15,9 @@ import (
 // Image is…
 type Image map[string]interface{}
 
-var NoImage = Image{}
-
 // Make creates a singleton node star and an eye into it.
 func Make() Image {
 	return make(Image)
-}
-
-func (x Image) Lit() bool {
-	return x != nil
 }
 
 func (x Image) Unwrap() map[string]interface{} {
@@ -64,10 +58,6 @@ func (x Image) Abandon(key string) Image {
 
 func (x Image) Walk(key string) Image {
 	return x[key].(Image)
-}
-
-func (x Image) Take(key string) interface{} {
-	return x[key]
 }
 
 func (x Image) String(key string) string {

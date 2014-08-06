@@ -10,114 +10,113 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
-	"github.com/gocircuit/escher/star"
 )
 
-// SeeArithmeticOrImage parses a built-in type (int, float, complex, string, name) into a star.
-func SeeArithmeticOrImage(src *Src) (x Image) {
-	if x = SeeArithmetic(src); x.Lit() {
+// SeeArithmeticOrUnion parses a built-in type (int, float, complex, string, name) into a star.
+func SeeArithmeticOrUnion(src *Src) (x interface{}) {
+	if x = SeeArithmetic(src); x != nil {
 		return
 	}
-	if x = SeeImage(src); x.Lit() {
+	if x = SeeUnion(src); x != nil {
 		return
 	}
-	return NoImage
+	return nil
 }
 
-func SeeArithmeticOrNameOrImage(src *Src) (x Image) {
-	if x = SeeArithmetic(src); x.Lit() {
+func SeeArithmeticOrNameOrUnion(src *Src) (x interface{}) {
+	if x = SeeArithmetic(src); x != nil {
 		return
 	}
-	if x = SeeName(src); x.Lit() {
+	if x = SeeName(src); x != nil {
 		return
 	}
-	if x = SeeImage(src); x.Lit() {
+	if x = SeeUnion(src); x != nil {
 		return
 	}
-	return NoImage
+	return nil
 }
 
-func SeeArithmetic(src *Src) (x Image) {
-	if x = SeeInt(src); x.Lit() {
+func SeeArithmetic(src *Src) (x interface{}) {
+	if x = SeeInt(src); x != nil {
 		return
 	}
-	if x = SeeFloat(src); x.Lit() {
+	if x = SeeFloat(src); x != nil {
 		return
 	}
-	if x = SeeComplex(src); x.Lit() {
+	if x = SeeComplex(src); x != nil {
 		return
 	}
-	if x = SeeBackquoteString(src); x.Lit() {
+	if x = SeeBackquoteString(src); x != nil {
 		return
 	}
-	if x = SeeDoubleQuoteString(src); x.Lit() {
+	if x = SeeDoubleQuoteString(src); x != nil {
 		return
 	}
-	return NoImage
+	return nil
 }
 
 // Name …
-func SeeName(src *Src) Image {
+func SeeName(src *Src) interface{} {
 	l := Identifier(src)
 	if l == "" {
-		return NoImage
+		return nil
 	}
 	if l[0] != '@' {
-		return Imagine(Name(l))
+		return Name(l)
 	}
-	return Imagine(RootName(l))
+	return RootName(l)
 }
 
 // Int …
-func SeeInt(src *Src) Image {
+func SeeInt(src *Src) interface{} {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return NoImage
+		return nil
 	}
 	r := bytes.NewBufferString(l)
 	var i int
 	if n, _ := fmt.Fscanf(r, "%d", &i); n != 1 || r.Len() != 0  {
-		return NoImage
+		return nil
 	}
 	src.Become(t)
-	return Imagine(i)
+	return i
 }
 
 // Float …
-func SeeFloat(src *Src) Image {
+func SeeFloat(src *Src) interface{} {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return NoImage
+		return nil
 	}
 	r := bytes.NewBufferString(l)
 	var f float64
 	if n, _ := fmt.Fscanf(r, "%g", &f); n != 1 || r.Len() != 0 {
-		return NoImage
+		return nil
 	}
 	src.Become(t)
-	return Imagine(f)
+	return f
 }
 
 // Complex …
-func SeeComplex(src *Src) Image {
+func SeeComplex(src *Src) interface{} {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return NoImage
+		return nil
 	}
 	r := bytes.NewBufferString(l)
 	var c complex128
 	if n, _ := fmt.Fscanf(r, "%g", &c); n != 1 || r.Len() != 0 {
-		return NoImage
+		return nil
 	}
 	src.Become(t)
-	return Imagine(c)
+	return c
 }
 
 // SeeBackquoteString …
-func SeeBackquoteString(src *Src) Image {
+func SeeBackquoteString(src *Src) interface{} {
 	t := src.Copy()
 	quoted, ok := DelimitBackquoteString(t)
 	if !ok {
@@ -125,7 +124,7 @@ func SeeBackquoteString(src *Src) Image {
 	}
 	str := quoted[1:len(quoted)-1]
 	src.Become(t)
-	return Imagine(str)
+	return str
 }
 
 func DelimitBackquoteString(src *Src) (string, bool) {
@@ -171,7 +170,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 }
 
 // SeeDoubleQuoteString …
-func SeeDoubleQuoteString(src *Src) Image {
+func SeeDoubleQuoteString(src *Src) interface{} {
 	t := src.Copy()
 	quoted, ok := DelimitDoubleQuoteString(t)
 	if !ok {
@@ -183,7 +182,7 @@ func SeeDoubleQuoteString(src *Src) Image {
 		return nil
 	}
 	src.Become(t)
-	return Imagine(str)
+	return str
 }
 
 func DelimitDoubleQuoteString(src *Src) (string, bool) {

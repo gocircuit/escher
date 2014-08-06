@@ -37,8 +37,6 @@ package see
 
 import (
 	"fmt"
-	"strconv"
-	"github.com/gocircuit/escher/star"
 )
 
 // Design is a type that is meant to be stored in the value of a star.
@@ -50,30 +48,12 @@ type Design interface{
 type Name string
 
 func (x Name) String() string {
-	return fmt.Sprintf("Name(%s)", strconv.Quote(string(x)))
+	return fmt.Sprintf("Name(%s)", string(x))
 }
 
 // RootName
 type RootName string
 
 func (x RootName) String() string {
-	return fmt.Sprintf("RootName(%s)", strconv.Quote(string(x)))
-}
-
-// Image
-type Image interface{}
-
-var NoImage = Image{}
-
-// Imagine wraps the value v inside a singleton image.
-func Imagine(v interface{}) Image {
-	return Image{star.Make().Show(v)}
-}
-
-func (x Image) Lit() bool {
-	return x.Star != nil
-}
-
-func (x Image) String() string {
-	return linearize(x.Star.Print("", "\t"))
+	return fmt.Sprintf("Story(%s)", string(x))
 }

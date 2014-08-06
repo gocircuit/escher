@@ -8,20 +8,20 @@ package see
 
 import (
 	"strconv"
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
-const MatchingName = "$"
+const MatchingName = "="
 
-func SeeUnion(src *Src) (y *star.Star) {
+func SeeUnion(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			y = nil
+			x = nil
 		}
 	}()
-	x := star.Make()
-	m := star.Make()
-	x.Merge(MatchingName, m)
+	x = Make()
+	m := Make()
+	x.Grow(MatchingName, m)
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
@@ -36,9 +36,9 @@ func SeeUnion(src *Src) (y *star.Star) {
 		Space(q)
 		t.Become(q)
 		if peer != nil {
-			x.Merge(name, peer)
+			x.Grow(name, peer)
 		} else {
-			m.Merge(strconv.Itoa(i), match)
+			m.Grow(strconv.Itoa(i), match)
 			i++
 		}
 	}
@@ -46,7 +46,7 @@ func SeeUnion(src *Src) (y *star.Star) {
 	t.Match("}")
 	src.Become(t)
 	if m.Len() == 1 { // no matchings
-		star.Split(x, MatchingName)
+		x.Abandon(MatchingName)
 	}
-	return Wrap(ImagineStar(x)) // enclose image in a star singleton
+	return
 }

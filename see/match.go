@@ -13,8 +13,8 @@ import (
 
 // A matching is the following syntactic structure:
 //
-//	Matching —> Join “=” Join NewLine
-//	Join —> ID “.” ID / ID / Design
+//	Matching => Join “=” Join NewLine
+//	Join => ID “.” ID / ID / Design
 //
 // The star representation of a matching is:
 //
@@ -30,22 +30,22 @@ import (
 //		}
 //	}
 //
-func SeeMatching(src *Src) (x *star.Star) {
+func SeeMatching(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			x = NoImage
 		}
 	}()
 	x = star.Make()
 	t := src.Copy()
 	Space(t)
-	x.Merge("0", SeeJoin(t))
+	x.Merge("0", SeeJoin(t).Star)
 	Whitespace(t)
 	t.Match("=")
 	Whitespace(t)
-	x.Merge("1", SeeJoin(t))
+	x.Merge("1", SeeJoin(t).Star)
 	if !Space(t) { // require newline at end
-		return nil
+		return NoImage
 	}
 	src.Become(t)
 	return
@@ -58,61 +58,61 @@ func SeeMatching(src *Src) (x *star.Star) {
 //		Valve Name("??")
 //	}
 //
-func SeeJoin(src *Src) (x *star.Star) {
-	if x = seeDesignJoin(src); x != nil { // int, string, etc.
+func SeeJoin(src *Src) (x Image) {
+	if x = seeDesignJoin(src); x.Lit() { // int, string, etc.
 		return x
 	}
-	if x = seePeerValveJoin(src); x != nil { // peer.valve
+	if x = seePeerValveJoin(src); x.Lit() { // peer.valve
 		return x
 	}
-	if x = seeValveJoin(src); x != nil { // valve (or empty string)
+	if x = seeValveJoin(src); x.Lit() { // valve (or empty string)
 		return x
 	}
-	return nil
+	return NoImage
 }
 
-func seeDesignJoin(src *Src) (x *star.Star) {
+func seeDesignJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			x = NoImage
 		}
 	}()
 	t := src.Copy()
-	d := SeeArithmeticOrImage(t)
-	if d == nil {
-		return nil
+	dimg := SeeArithmeticOrImage(t)
+	if dimg == nil {
+		return NoImage
 	}
 	src.Become(t)
-	return star.Make().Merge("Peer", d).Grow("Valve", Name(""))
+	return Imagine(star.Make().Merge("Peer", dimg).Grow("Valve", Name("")))
 }
 
 // seePeerValveJoin…
-func seePeerValveJoin(src *Src) (x *star.Star) {
+func seePeerValveJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			x = NoImage
 		}
 	}()
 	t := src.Copy()
 	peer := Identifier(t)
 	if peer == "" {
-		return nil
+		return NoImage
 	}
 	t.Match(".")
 	valve := Identifier(t)
 	if valve == "" {
-		return nil
+		return NoImage
 	}
 	src.Become(t)
-	return star.Make().Grow("Peer", Name(peer)).Grow("Valve", Name(valve))
+	return Imagine(star.Make().Grow("Peer", Name(peer)).Grow("Valve", Name(valve)))
 }
 
 // seeValveJoin parses a single identifier as a valve name. 
 // It captures the empty string.
-func seeValveJoin(src *Src) (x *star.Star) {
+func seeValveJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			x = NoImage
 		}
 	}()
 	t := src.Copy()

@@ -10,32 +10,36 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/tree"
+	"github.com/gocircuit/escher/star"
 )
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 type Eye struct {
-	synapse map[tree.Name]*think.Synapse
+	synapse map[string]*think.Synapse
 	attention EyeReCognizer
 }
 
+// ShortCognize is the cognition interface provided by the Mind's Eye (short-term memory) mechanism.
+// The short-term memory is what allows people to process a linguistic sentence with all its structure.
+type ShortCognize func(Impression)
+
 type EyeReCognizer struct {
 	cognize ShortCognize
-	recognize map[tree.Name]*think.ReCognizer
+	recognize map[string]*think.ReCognizer
 	sync.Mutex
 	age int
-	memory Memory
+	memory Impression
 }
 
-// NewEye creates a new short-term memory mechanism.
-func NewEye(valve ...tree.Name) (think.Reflex, *Eye) {
+// NewEye creates a new short-term memory mechanism, called an eye.
+func NewEye(valve ...string) (think.Reflex, *Eye) {
 	reflex := make(think.Reflex)
 	m := &Eye{
-		synapse: make(map[tree.Name]*think.Synapse),
+		synapse: make(map[string]*think.Synapse),
 		attention: EyeReCognizer{
-			recognize: make(map[tree.Name]*think.ReCognizer),
-			memory: make(Memory),
+			recognize: make(map[string]*think.ReCognizer),
+			memory: MakeImpression(),
 		},
 	}
 	for _, v := range valve {
@@ -43,21 +47,19 @@ func NewEye(valve ...tree.Name) (think.Reflex, *Eye) {
 			panic("two valves, same name")
 		}
 		reflex[v], m.synapse[v] = think.NewSynapse()
-		m.attention.memory.Grow(v, 0, nil)
 	}
 	return reflex, m
 }
 
+// Focus binds this short memory reflex to the response function cognize.
 func (m *Eye) Focus(cognize ShortCognize) *EyeReCognizer {
-	// Locking prevents individual competing Focus invocations 
-	// from initiating cogntion before all valves/synapses have been attached.
-	m.attention.Lock()
-	defer m.attention.Unlock()
+	m.attention.Lock()  // Locking prevents individual competing Focus invocations 
+	defer m.attention.Unlock()  // from initiating cognition before all valves/synapses have been attached.
 	m.attention.cognize = cognize
-	for v_, _ := range m.attention.memory {
+	for v_, _ := range m.attention.memory.Arm {
 		v := v_
 		m.attention.recognize[v] = m.synapse[v].Focus(
-			func(w interface{}) {
+			func(w *star.Star) {
 				m.attention.cognizeWith(v, w)
 			},
 		)

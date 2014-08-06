@@ -11,20 +11,20 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-func SeePeerOrMatching(src *Src) (name string, peer, match *star.Star) {
-	if name, peer = SeePeer(src); peer != nil {
+func SeePeerOrMatching(src *Src) (name string, peer, match Image) {
+	if name, peer = SeePeer(src); peer.Lit() {
 		return
 	}
-	if match = SeeMatching(src); match != nil {
+	if match = SeeMatching(src); match.Lit() {
 		return
 	}
-	return "", nil, nil
+	return "", NoImage, NoImage
 }
 
-func SeePeer(src *Src) (name string, x *star.Star) {
+func SeePeer(src *Src) (name string, x Image) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			x = NoImage
 		}
 	}()
 	t := src.Copy()
@@ -34,11 +34,11 @@ func SeePeer(src *Src) (name string, x *star.Star) {
 		panic("peer name")
 	}
 	Whitespace(t)
-	if x = SeeArithmeticOrNameOrImage(t); x == nil {
-		return "", nil
+	if x = SeeArithmeticOrNameOrImage(t); x == nil { // composite
+		return "", NoImage
 	}
 	if !Space(t) { // require newline at end
-		return "", nil
+		return "", NoImage
 	}
 	src.Become(t)
 	return

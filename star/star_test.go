@@ -12,29 +12,14 @@ import (
 
 func TestStar(t *testing.T) {
 
-	// Construct
-	s := Make()
-	s.Show(1)
-	s = s.Down("f1")
-	s.Show(2)
-	s = s.Up()
-
-	// Inverse construct
-	r := Make()
-	r.Show(1)
-	r = r.Down("f1")
-	r.Show(2)
-	r = r.Up()
+	s := Make().Grow("1", 1i).Grow("2", 2i)
+	r := Star{"1": 1i, "2": 2i}
 	if !Same(s, r) {
 		t.Errorf("mismatch")
 	}
-
-	// Criss-cross split-merge
-	x, y := Split(s, "f1")
-	a, b := Split(r, "f1")
-	x.Merge("xx", b)
-	a.Merge("xx", y)
-	if !Same(x, a) {
+	s.Abandon("1")
+	r.Abandon("1")
+	if !Same(s, r) {
 		t.Errorf("mismatch")
 	}
 }

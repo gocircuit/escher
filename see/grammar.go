@@ -41,9 +41,9 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// Wrap wraps the value v inside a singleton star.
-func Wrap(v interface{}) *star.Star {
-	return star.Make().Show(v)
+// Imagine wraps the value v inside a singleton image.
+func Imagine(v interface{}) Image {
+	return Image{star.Make().Show(v)}
 }
 
 // Design is a type that is meant to be stored in the value of a star.
@@ -51,50 +51,33 @@ type Design interface{
 	String() string
 }
 
-type (
-	Name string
-	RootName string
-	String string
-	Int int
-	Float float64
-	Complex complex128
-	Image star.Star // An image is a *star.Star structure constructed through parsing a textual representation
-)
-
-func ImagineStar(x *star.Star) Design {
-	return (*Image)(x)
-}
-
-func (x *Image) String() string {
-	return fmt.Sprintf("Image(%s)", linearize((*star.Star)(x).Print("", "\t")))
-}
-
-func (x *Image) Unwrap() *star.Star {
-	return (*star.Star)(x)
-}
-
-func (x Complex) String() string {
-	return fmt.Sprintf("Complex%g", x)
-}
-
-func (x Float) String() string {
-	return fmt.Sprintf("Float(%g)", x)
-}
-
-func (x Int) String() string {
-	return fmt.Sprintf("Int(%d)", x)
-}
+// Name
+type Name string
 
 func (x Name) String() string {
 	return fmt.Sprintf("Name(%s)", strconv.Quote(string(x)))
 }
 
+// RootName
+type RootName string
+
 func (x RootName) String() string {
 	return fmt.Sprintf("RootName(%s)", strconv.Quote(string(x)))
 }
 
-func (x String) String() string {
-	return fmt.Sprintf("String(%s)", strconv.Quote(chop(string(x))))
+// Image
+type Image struct {
+	*star.Star // An image is a *star.Star structure constructed through parsing a textual representation
+}
+
+var NoImage = Image{}
+
+func (x Image) Lit() bool {
+	return x.Star != nil
+}
+
+func (x Image) String() string {
+	return fmt.Sprintf("Image(%s)", linearize(x.Star.Print("", "\t")))
 }
 
 func chop(x string) string {

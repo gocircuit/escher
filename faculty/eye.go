@@ -7,61 +7,37 @@
 package faculty
 
 import (
-	"sort"
-
 	"github.com/gocircuit/escher/star"
 )
 
-func (attendant *EyeReCognizer) ReCognize(sentence Sentence) {
+func (attendant *EyeReCognizer) ReCognize(imp Impression) {
 	ch := make(chan struct{})
-	for _, sf_ := range sentence {
-		sf := sf_.YieldNil().(SentenceFunctional)
+	order := imp.Order()
+	for _, f := range order {
 		go func() {
-			attendant.recognize[sf.Valve()].ReCognize(sf.Value())
+			attendant.recognize[f.Valve()].ReCognize(f.Value())
 			ch <- struct{}{}
 		}()
 	}
-	for _ = range sentence {
+	for _ = range order {
 		<-ch
 	}
 }
 
-func (attendant *EyeReCognizer) cognizeWith(valve tree.Name, value tree.Meaning) {
+func (attendant *EyeReCognizer) cognizeWith(valve string, value *star.Star) {
 	attendant.Lock()
 	attendant.age++
-	attendant.memory.Grow(valve, attendant.age, value)
+	attendant.memory.Show(attendant.age, valve, value)
 	reply := attendant.formulate()
 	attendant.Unlock()
 	attendant.cognize(reply)
 }
 
-func (attendant *EyeReCognizer) formulate() Sentence {
-	var sorting impressionStrength
-	for _, mf := range attendant.memory {
-		sorting = append(sorting, mf.YieldNil().(MemoryFunctional))
+func (attendant *EyeReCognizer) formulate() Impression {
+	var sorting = attendant.memory.Order()
+	imp := MakeImpression()
+	for i, f := range sorting {
+		imp.See(i, f.Valve(), f.Value())
 	}
-	sort.Sort(sorting)
-	return sorting.Verbalize()
-}
-
-type impressionStrength []MemoryFunctional
-
-func (x impressionStrength) Verbalize() Sentence {
-	s := make(Sentence)
-	for i, mf := range x {
-		s.Grow(i, mf.Valve(), mf.Value())
-	}
-	return s
-}
-
-func (x impressionStrength) Len() int {
-	return len(x)
-}
-
-func (x impressionStrength) Less(i, j int) bool {
-	return x[i].Age() > x[j].Age()
-}
-
-func (x impressionStrength) Swap(i, j int) {
-	x[i], x[j] = x[j], x[i]
+	return imp	
 }

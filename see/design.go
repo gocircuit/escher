@@ -14,118 +14,118 @@ import (
 )
 
 // SeeArithmeticOrImage parses a built-in type (int, float, complex, string, name) into a star.
-func SeeArithmeticOrImage(src *Src) (x *star.Star) {
-	if x = SeeArithmetic(src); x != nil {
+func SeeArithmeticOrImage(src *Src) (x Image) {
+	if x = SeeArithmetic(src); x.Lit() {
 		return
 	}
-	if x = SeeImage(src); x != nil {
+	if x = SeeImage(src); x.Lit() {
 		return
 	}
-	return nil
+	return NoImage
 }
 
-func SeeArithmeticOrNameOrImage(src *Src) (x *star.Star) {
-	if x = SeeArithmetic(src); x != nil {
+func SeeArithmeticOrNameOrImage(src *Src) (x Image) {
+	if x = SeeArithmetic(src); x.Lit() {
 		return
 	}
-	if x = SeeName(src); x != nil {
+	if x = SeeName(src); x.Lit() {
 		return
 	}
-	if x = SeeImage(src); x != nil {
+	if x = SeeImage(src); x.Lit() {
 		return
 	}
-	return nil
+	return NoImage
 }
 
-func SeeArithmetic(src *Src) (x *star.Star) {
-	if x = SeeInt(src); x != nil {
+func SeeArithmetic(src *Src) (x Image) {
+	if x = SeeInt(src); x.Lit() {
 		return
 	}
-	if x = SeeFloat(src); x != nil {
+	if x = SeeFloat(src); x.Lit() {
 		return
 	}
-	if x = SeeComplex(src); x != nil {
+	if x = SeeComplex(src); x.Lit() {
 		return
 	}
-	if x = SeeBackquoteString(src); x != nil {
+	if x = SeeBackquoteString(src); x.Lit() {
 		return
 	}
-	if x = SeeDoubleQuoteString(src); x != nil {
+	if x = SeeDoubleQuoteString(src); x.Lit() {
 		return
 	}
-	return nil
+	return NoImage
 }
 
 // Name …
-func SeeName(src *Src) (x *star.Star) {
+func SeeName(src *Src) Image {
 	l := Identifier(src)
 	if l == "" {
-		return nil
+		return NoImage
 	}
 	if l[0] != '@' {
-		return Wrap(Name(l))
+		return Imagine(Name(l))
 	}
-	return Wrap(RootName(l))
+	return Imagine(RootName(l))
 }
 
 // Int …
-func SeeInt(src *Src) *star.Star {
+func SeeInt(src *Src) Image {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return nil
+		return NoImage
 	}
 	r := bytes.NewBufferString(l)
-	var i Int
+	var i int
 	if n, _ := fmt.Fscanf(r, "%d", &i); n != 1 || r.Len() != 0  {
-		return nil
+		return NoImage
 	}
 	src.Become(t)
-	return Wrap(i)
+	return Imagine(i)
 }
 
 // Float …
-func SeeFloat(src *Src) *star.Star {
+func SeeFloat(src *Src) Image {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return nil
+		return NoImage
 	}
 	r := bytes.NewBufferString(l)
-	var f Float
+	var f float64
 	if n, _ := fmt.Fscanf(r, "%g", &f); n != 1 || r.Len() != 0 {
-		return nil
+		return NoImage
 	}
 	src.Become(t)
-	return Wrap(f)
+	return Imagine(f)
 }
 
 // Complex …
-func SeeComplex(src *Src) *star.Star {
+func SeeComplex(src *Src) Image {
 	t := src.Copy()
 	l := Literal(t)
 	if l == "" {
-		return nil
+		return NoImage
 	}
 	r := bytes.NewBufferString(l)
-	var c Complex
+	var c complex128
 	if n, _ := fmt.Fscanf(r, "%g", &c); n != 1 || r.Len() != 0 {
-		return nil
+		return NoImage
 	}
 	src.Become(t)
-	return Wrap(c)
+	return Imagine(c)
 }
 
 // SeeBackquoteString …
-func SeeBackquoteString(src *Src) *star.Star {
+func SeeBackquoteString(src *Src) Image {
 	t := src.Copy()
 	quoted, ok := DelimitBackquoteString(t)
 	if !ok {
 		return nil
 	}
-	str := String(quoted[1:len(quoted)-1])
+	str := quoted[1:len(quoted)-1]
 	src.Become(t)
-	return Wrap(str)
+	return Imagine(str)
 }
 
 func DelimitBackquoteString(src *Src) (string, bool) {
@@ -171,7 +171,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 }
 
 // SeeDoubleQuoteString …
-func SeeDoubleQuoteString(src *Src) *star.Star {
+func SeeDoubleQuoteString(src *Src) Image {
 	t := src.Copy()
 	quoted, ok := DelimitDoubleQuoteString(t)
 	if !ok {
@@ -183,7 +183,7 @@ func SeeDoubleQuoteString(src *Src) *star.Star {
 		return nil
 	}
 	src.Become(t)
-	return Wrap(String(str))
+	return Imagine(str)
 }
 
 func DelimitDoubleQuoteString(src *Src) (string, bool) {

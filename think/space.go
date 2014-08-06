@@ -42,7 +42,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 			continue
 		}
 		switch t := peer.Design.(type) {
-		case see.String, see.Int , see.Float , see.Complex , *see.Image:
+		case see.String, see.Int , see.Float , see.Complex , see.Image:
 			peers[peer.Name] = NewNounReflex(see.Wrap(t)) // materialize builtin gates
 		case see.RootName:
 			peers[peer.Name] = x.Materialize(strings.Split(string(t), ".")...)
@@ -90,7 +90,7 @@ func (x Space) materializeName(within understand.Faculty, name string) Reflex {
 	parts := strings.Split(name, ".")
 	unfold := x.Lookup(within, parts[0])
 	switch t := unfold.(type) {
-	case see.String, see.Int, see.Float, see.Complex, *see.Image:
+	case see.String, see.Int, see.Float, see.Complex, see.Image:
 		if len(parts) != 1 {
 			panic("constant designs do not have sub-faculties")
 		}

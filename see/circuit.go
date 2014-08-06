@@ -24,13 +24,13 @@ func Circuitize(name string, x *star.Star) (cir *Circuit) {
 	if x == nil {
 		return nil
 	}
-	img := x.Interface().(*Image).Unwrap()
+	img := x.Interface().(Image).Unwrap()
 	cir = &Circuit{
 		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
 		Match: make([]*Matching, 0, img.Down(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
-	for name, v := range img.Arm {
+	for name, v := range img.Choice() {
 		if name == star.Parent {
 			continue
 		}
@@ -50,7 +50,7 @@ func Circuitize(name string, x *star.Star) (cir *Circuit) {
 }
 
 func (cir *Circuit) seeMatching(s *star.Star) {
-	for w, x := range s.Arm {
+	for w, x := range s.Choice() {
 		if string(w) == star.Parent {
 			continue
 		}

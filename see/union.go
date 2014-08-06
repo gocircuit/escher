@@ -13,7 +13,7 @@ import (
 
 const MatchingName = "$"
 
-func SeeImage(src *Src) (y *star.Star) {
+func SeeUnion(src *Src) (y *star.Star) {
 	defer func() {
 		if r := recover(); r != nil {
 			y = nil

@@ -97,16 +97,3 @@ func Keyword(keyword string, src *Src) {
 	}
 	Whitespace(src)
 }
-
-func linearize(s string) string {
-	x := []byte(s)
-	for i, b := range x {
-		if b == '\n' {
-			x[i] = ';'
-		}
-		if b == '\t' {
-			x[i] = ' '
-		}
-	}
-	return string(x)
-}

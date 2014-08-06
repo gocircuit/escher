@@ -4,16 +4,16 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package star
+package image
 
 import (
 	"testing"
 )
 
-func TestStar(t *testing.T) {
+func TestImage(t *testing.T) {
 
 	s := Make().Grow("1", 1i).Grow("2", 2i)
-	r := Star{"1": 1i, "2": 2i}
+	r := Image{"1": 1i, "2": 2i}
 	if !Same(s, r) {
 		t.Errorf("mismatch")
 	}

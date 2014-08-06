@@ -41,11 +41,6 @@ import (
 	"github.com/gocircuit/escher/star"
 )
 
-// Imagine wraps the value v inside a singleton image.
-func Imagine(v interface{}) Image {
-	return Image{star.Make().Show(v)}
-}
-
 // Design is a type that is meant to be stored in the value of a star.
 type Design interface{
 	String() string
@@ -66,23 +61,19 @@ func (x RootName) String() string {
 }
 
 // Image
-type Image struct {
-	*star.Star // An image is a *star.Star structure constructed through parsing a textual representation
-}
+type Image interface{}
 
 var NoImage = Image{}
+
+// Imagine wraps the value v inside a singleton image.
+func Imagine(v interface{}) Image {
+	return Image{star.Make().Show(v)}
+}
 
 func (x Image) Lit() bool {
 	return x.Star != nil
 }
 
 func (x Image) String() string {
-	return fmt.Sprintf("Image(%s)", linearize(x.Star.Print("", "\t")))
-}
-
-func chop(x string) string {
-	if len(x) < 21 {
-		return x
-	}
-	return x[:20]+"…"
+	return linearize(x.Star.Print("", "\t"))
 }

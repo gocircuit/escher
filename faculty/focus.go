@@ -46,6 +46,7 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 			panic("two valves, same name")
 		}
 		reflex[v], m.synapse[v] = think.NewSynapse()
+		m.attention.memory.Show(0, v, nil)
 	}
 	return reflex, m
 }

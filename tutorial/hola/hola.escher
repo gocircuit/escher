@@ -5,14 +5,9 @@
 // see history clearly.
 
 main {
-	r @reason
+	s @sum
 	out @show
-	r.Belief = {
-		Food: ["Tasty"]
-	}
-	r.Observation = {
-		Sense: ["eye"], 
-		What: ["x"],
-	}
-	out.Action = r.Theory
+	s.X = 1
+	s.Y = 2
+	out. = s.Sum
 }

@@ -32,6 +32,16 @@ func (imp Impression) Valve(valve string) Functional {
 	return Functional{imp.Image[valve].(Image)}
 }
 
+func (imp Impression) Index(i int) Functional {
+	for _, f_ := range imp.Image {
+		f := Functional{f_.(Image)}
+		if f.Index() == i {
+			return f
+		}
+	}
+	return Functional{}
+}
+
 func (imp Impression) Order() []Functional {
 	ff := make([]Functional, 0, imp.Image.Len())
 	for _, f := range imp.Image {

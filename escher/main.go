@@ -14,7 +14,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	_ "github.com/gocircuit/escher/faculty/basic"
-	_ "github.com/gocircuit/escher/faculty/circuit"
+	// _ "github.com/gocircuit/escher/faculty/circuit"
 )
 
 var (

@@ -6,10 +6,7 @@
 
 
 main {
-
 	in  @see
 	out @show
-
-	out.Action = in.Sensation
-
+	out. = in.
 }

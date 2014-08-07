@@ -8,6 +8,9 @@ package basic
 
 import (
 	"fmt"
+	"log"
+	"sync"
+	"time"
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
@@ -34,7 +37,7 @@ func (Scanln) Materialize() think.Reflex {
 			}
 		}()
 	}()
-	return think.Reflex{"Sensation": t}
+	return think.Reflex{"": t}
 }
 
 // Println
@@ -49,5 +52,61 @@ func (Println) Materialize() think.Reflex {
 			},
 		)
 	}()
-	return think.Reflex{"Action": t}
+	return think.Reflex{"": t}
+}
+
+// Ticker
+type Ticker struct{}
+
+func (Ticker) Materialize() think.Reflex {
+	dur1, dur2 := think.NewSynapse()
+	sig1, sig2 := think.NewSynapse()
+	go func() {
+		x := &ticker{}
+		x.re = sig1.Focus(think.DontCognize)
+		dur1.Focus(x.CognizeDuration)
+	}()
+	return think.Reflex{"Tick": sig2, "Duration": dur2}
+}
+
+type ticker struct {
+	re *think.ReCognizer
+	sync.Mutex
+	abr chan struct{}
+}
+
+func (t *ticker) CognizeDuration(v interface{}) {
+	nano, ok := v.(int)
+	if !ok {
+		log.Printf("non-integer ticker duration")
+		return
+	}
+	t.Lock()
+	defer t.Unlock()
+	if t.abr != nil {
+		close(t.abr)
+		t.abr = nil
+	}
+	if nano <= 0 {
+		return
+	}
+	t.abr = make(chan struct{})
+	go tickerLoop(time.Duration(nano), t.abr, t.re)
+}
+
+func tickerLoop(dur time.Duration, abr <-chan struct{}, re *think.ReCognizer) {
+	if dur <= 0 {
+		panic(1)
+	}
+	start := time.Now()
+	tkr := time.NewTicker(dur)
+	defer tkr.Stop()
+	for {
+		select {
+		case <-abr:
+			return
+		case t := <-tkr.C:
+			re.ReCognize(int(t.Sub(start)))
+		}
+	}
 }

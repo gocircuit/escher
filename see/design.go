@@ -64,7 +64,7 @@ func SeeName(src *Src) interface{} {
 	if l[0] != '@' {
 		return Name(l)
 	}
-	return RootName(l)
+	return RootName(l[1:])
 }
 
 // Int …

@@ -23,12 +23,12 @@ var testDesign = []string{
 
 func TestDesign(t *testing.T) {
 	for _, q := range testDesign {
-		x := SeeArithmeticOrNameOrImage(NewSrcString(q))
+		x := SeeArithmeticOrNameOrUnion(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}
-		fmt.Printf("%v\n", x.Print("", "\t"))
+		fmt.Printf("%v\n", x)
 	}
 }
 
@@ -63,7 +63,7 @@ var testPeer = []string{
 
 func TestPeer(t *testing.T) {
 	for _, q := range testPeer {
-		_, x := SeePeer(NewSrcString(q))
+		x := SeePeer(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -91,7 +91,7 @@ var testImage = []string{
 
 func TestImage(t *testing.T) {
 	for _, q := range testImage {
-		x := SeeImage(NewSrcString(q))
+		x := SeeUnion(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue

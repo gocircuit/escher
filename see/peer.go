@@ -11,14 +11,14 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-func SeePeerOrMatching(src *Src) (x Image) {
-	if x = SeePeer(src); x != nil {
+func SeePeerOrMatching(src *Src) (peer, match Image) {
+	if peer = SeePeer(src); peer != nil {
 		return
 	}
-	if match := SeeMatching(src); match != nil {
-		return Image{MatchingName: match}
+	if match = SeeMatching(src); match != nil {
+		return
 	}
-	return nil
+	return
 }
 
 func SeePeer(src *Src) (x Image) {

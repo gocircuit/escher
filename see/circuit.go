@@ -49,7 +49,7 @@ func Circuitize(name string, img Image) (cir *Circuit) {
 }
 
 func (cir *Circuit) seeMatching(s Image) {
-	for index, x := range s {
+	for _, x := range s {
 		// fmt.Printf("=%s=>\n", string(w))
 		m := &Matching{}
 		for i := 0; i < 2; i++ {

@@ -43,6 +43,16 @@ func (x Image) Len() int {
 	return len(x)
 }
 
+func (x Image) Attach(y Image) Image {
+	for key, v := range y {
+		if _, present := x[key]; present {
+			panic(1)
+		}
+		x[key] = v
+	}
+	return x
+}
+
 func (x Image) Grow(key string, v interface{}) Image {
 	if _, present := x[key]; present {
 		panic(4)

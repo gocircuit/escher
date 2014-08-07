@@ -29,14 +29,14 @@ func SeeUnion(src *Src) (x Image) {
 	for {
 		q := t.Copy()
 		Space(q)
-		name, peer, match := SeePeerOrMatching(q)
+		peer, match := SeePeerOrMatching(q)
 		if peer == nil && match == nil {
 			break
 		}
 		Space(q)
 		t.Become(q)
 		if peer != nil {
-			x.Grow(name, peer)
+			x.Attach(peer)
 		} else {
 			m.Grow(strconv.Itoa(i), match)
 			i++

@@ -46,7 +46,7 @@ func TestMatching(t *testing.T) {
 	for _, q := range testMatching {
 		x := SeeMatching(NewSrcString(q))
 		if x == nil {
-			t.Errorf("problem parsing: %s", q)
+			t.Fatalf("problem parsing: %s", q)
 			continue
 		}
 		// fmt.Printf("%v\n", x.Print("", "\t"))
@@ -72,7 +72,7 @@ func TestPeer(t *testing.T) {
 	}
 }
 
-var testImage = []string{
+var testUnion = []string{
 	`{}`,
 	`{
 		g {}
@@ -89,8 +89,8 @@ var testImage = []string{
 	}`,
 }
 
-func TestImage(t *testing.T) {
-	for _, q := range testImage {
+func TestUnion(t *testing.T) {
+	for _, q := range testUnion {
 		x := SeeUnion(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)

@@ -45,7 +45,7 @@ func SeeUnion(src *Src) (x Image) {
 	Space(t)
 	t.Match("}")
 	src.Become(t)
-	if m.Len() == 1 { // no matchings
+	if m.Len() == 0 { // no matchings
 		x.Abandon(MatchingName)
 	}
 	return

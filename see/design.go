@@ -13,12 +13,12 @@ import (
 )
 
 // SeeArithmeticOrUnion parses a built-in type (int, float, complex, string, name) into a star.
-func SeeArithmeticOrUnion(src *Src) (x interface{}) {
-	if x = SeeArithmetic(src); x != nil {
-		return
+func SeeArithmeticOrUnion(src *Src) interface{} {
+	if y := SeeArithmetic(src); y != nil {
+		return y
 	}
-	if x = SeeUnion(src); x != nil {
-		return
+	if y := SeeUnion(src); y != nil {
+		return y
 	}
 	return nil
 }

@@ -6,13 +6,9 @@
 
 package think
 
-import (
-	. "github.com/gocircuit/escher/image"
-)
+func DontCognize(interface{}) {}
 
-func DontCognize(Image) {}
-
-func NewNounReflex(v Image) Reflex {
+func NewNounReflex(v interface{}) Reflex {
 	s, t := NewSynapse()
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)

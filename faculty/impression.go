@@ -8,45 +8,34 @@ package faculty
 
 import (
 	"sort"
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
 // Impression binds time, language and meaning into one.
 type Impression struct {
-	*star.Star
+	Image
 }
 
 // MakeImpression returns a new empty imptence.
 func MakeImpression() Impression {
-	return Impression{ star.Make() }
+	return Impression{Make()}
 }
 
-func (imp Impression) Show(t int, valve string, value ??) Impression {
-	f := star.Make().
-		Grow("Index", t).
-		Grow("Valve", valve).
-		Grow("Value", value)
-	imp.Unwrap().Split(valve).Merge(valve, f)
+func (imp Impression) Show(t int, valve string, value interface{}) Impression {
+	f := Make().Grow("Index", t).Grow("Valve", valve).Grow("Value", value)
+	imp.Image.Abandon(valve).Grow(valve, f)
 	return imp
 }
 
-// Unwrap returns the star underlying this imptence.
-func (imp Impression) Unwrap() *star.Star {
-	return (*star.Star)(imp)
-}
-
 // At returns the functional stored in this impression at the given valve.
-func (imp Impression) Valve(valve string) *Functional {
-	return (*Functional)(imp.Unwrap().Down(valve))
+func (imp Impression) Valve(valve string) Functional {
+	return Functional{imp.Image[valve].(Image)}
 }
 
-func (imp Impression) Order() []*Functional {
-	ff := make([]*Functional, 0, imp.Unwrap().Len())
-	for n, f := range imp.Unwrap().Choice() {
-		if n == star.Parent {
-			continue
-		}
-		ff = append(ff, (*Functional)(f))
+func (imp Impression) Order() []Functional {
+	ff := make([]Functional, 0, imp.Image.Len())
+	for _, f := range imp.Image {
+		ff = append(ff, Functional{f.(Image)})
 	}
 	sort.Sort(fading(ff))
 	return ff
@@ -54,27 +43,23 @@ func (imp Impression) Order() []*Functional {
 
 // Functional…
 type Functional struct {
-	*star.Star
-}
-
-func (f Functional) Unwrap() *star.Star {
-	return f.Star
+	Image
 }
 
 func (f Functional) Valve() string {
-	return f.Unwrap().Down("Valve").String()
+	return f.Image["Valve"].(string)
 }
 
 func (f Functional) Value() interface{} {
-	return f.Unwrap().Down("Value").Interface()
+	return f.Image["Value"]
 }
 
 func (f Functional) Index() int {
-	return f.Unwrap().Down("Index").Int()
+	return f.Image["Index"].(int)
 }
 
 // fading sorts the functionals in ascending index
-type fading []*Functional
+type fading []Functional
 
 func (x fading) Len() int {
 	return len(x)

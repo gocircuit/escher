@@ -11,7 +11,7 @@ import (
 )
 
 // Cognize routines are called when a change in value is to be delivered to a reflex.
-type Cognize func(value Image)
+type Cognize func(value interface{})
 
 // Synapse is the “wire” connecting two reflexes.
 // It remembers the last value transmitted in order to stop propagation of same-value messages.
@@ -43,14 +43,23 @@ func Merge(m1, m2 *Synapse) {
 // The two endpoints of a Synapse are ReCognizer objects.
 type ReCognizer struct {
 	reciprocal Cognize
-	recognized Image
+	recognized interface{}
 }
 
 // ReCognize sends value to the reciprocal side of this synapse.
-func (s *ReCognizer) ReCognize(value Image) {
-	if Same(s.recognized, value) {
-		return
+func (s *ReCognizer) ReCognize(value interface{}) {
+	r, okr := s.recognized.(Image)
+	v, okv := value.(Image)
+	if okr && okv {
+		if Same(r, v) {
+			return
+		}
+		s.recognized = v.Copy()
+	} else {
+		if s.recognized == value {
+			return
+		}
+		s.recognized = value
 	}
-	s.recognized = value.Copy()
 	s.reciprocal(value)
 }

@@ -6,10 +6,6 @@
 
 package faculty
 
-import (
-	"github.com/gocircuit/escher/star"
-)
-
 func (attendant *EyeReCognizer) ReCognize(imp Impression) {
 	ch := make(chan struct{})
 	order := imp.Order()
@@ -24,7 +20,7 @@ func (attendant *EyeReCognizer) ReCognize(imp Impression) {
 	}
 }
 
-func (attendant *EyeReCognizer) cognizeWith(valve string, value *star.Star) {
+func (attendant *EyeReCognizer) cognizeWith(valve string, value interface{}) {
 	attendant.Lock()
 	attendant.age++
 	attendant.memory.Show(attendant.age, valve, value)
@@ -37,7 +33,7 @@ func (attendant *EyeReCognizer) formulate() Impression {
 	var sorting = attendant.memory.Order()
 	imp := MakeImpression()
 	for i, f := range sorting {
-		imp.See(i, f.Valve(), f.Value())
+		imp.Show(i, f.Valve(), f.Value())
 	}
 	return imp	
 }

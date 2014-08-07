@@ -9,6 +9,7 @@ package think
 import (
 	"strings"
 
+	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/understand"
 )
@@ -21,7 +22,7 @@ func (x Space) Faculty() understand.Faculty {
 }
 
 // Lookup looks up the design of a faculty-local name; name should be a single-word identifier.
-func (x Space) Lookup(within understand.Faculty, name string) (d see.Design) {
+func (x Space) Lookup(within understand.Faculty, name string) (d interface{}) {
 	if strings.Index(name, ".") >= 0 {
 		panic(7)
 	}
@@ -42,12 +43,12 @@ func (x Space) Materialize(walk ...string) Reflex {
 			continue
 		}
 		switch t := peer.Design.(type) {
-		case see.String, see.Int , see.Float , see.Complex , see.Image:
-			peers[peer.Name] = NewNounReflex(see.Wrap(t)) // materialize builtin gates
 		case see.RootName:
 			peers[peer.Name] = x.Materialize(strings.Split(string(t), ".")...)
 		case see.Name: // e.g. “hello.who.is.there”
 			peers[peer.Name] = x.materializeName(within, string(t))
+		case string, int , float64, complex128, Image:
+			peers[peer.Name] = NewNounReflex(t) // materialize builtin gates
 		default:
 			panicf("unknown design: %T/%v", t, t)
 		}
@@ -90,11 +91,8 @@ func (x Space) materializeName(within understand.Faculty, name string) Reflex {
 	parts := strings.Split(name, ".")
 	unfold := x.Lookup(within, parts[0])
 	switch t := unfold.(type) {
-	case see.String, see.Int, see.Float, see.Complex, see.Image:
-		if len(parts) != 1 {
-			panic("constant designs do not have sub-faculties")
-		}
-		return NewNounReflex(see.Wrap(unfold)) // materialize builtin gates
+	case string, int, float64, complex128, Image:
+		return NewNounReflex(t) // materialize builtin gates
 	case see.Name:
 		parts = append(strings.Split(string(t), "."), parts[1:]...)
 		return Space(within).Materialize(parts...)

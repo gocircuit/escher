@@ -10,7 +10,6 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/star"
 )
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
@@ -56,10 +55,10 @@ func (m *Eye) Focus(cognize ShortCognize) *EyeReCognizer {
 	m.attention.Lock()  // Locking prevents individual competing Focus invocations 
 	defer m.attention.Unlock()  // from initiating cognition before all valves/synapses have been attached.
 	m.attention.cognize = cognize
-	for v_, _ := range m.attention.memory.Arm {
+	for v_, _ := range m.attention.memory.Image {
 		v := v_
 		m.attention.recognize[v] = m.synapse[v].Focus(
-			func(w *star.Star) {
+			func(w interface{}) {
 				m.attention.cognizeWith(v, w)
 			},
 		)

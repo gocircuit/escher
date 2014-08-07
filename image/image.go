@@ -67,7 +67,11 @@ func (x Image) Abandon(key string) Image {
 }
 
 func (x Image) Walk(key string) Image {
-	return x[key].(Image)
+	v := x[key]
+	if v != nil {
+		return v.(Image)
+	}
+	return Image{}
 }
 
 func (x Image) String(key string) string {

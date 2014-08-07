@@ -7,12 +7,12 @@
 package think
 
 import (
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
-func DontCognize(*star.Star) {}
+func DontCognize(Image) {}
 
-func NewNounReflex(v *star.Star) Reflex {
+func NewNounReflex(v Image) Reflex {
 	s, t := NewSynapse()
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)

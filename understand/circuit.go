@@ -21,7 +21,7 @@ type Circuit struct {
 
 type Peer struct {
 	Name string
-	Design see.Design
+	Design interface{}
 	Valve map[string]*Valve
 }
 
@@ -98,7 +98,7 @@ func Understand(s *see.Circuit) *Circuit {
 	return x
 }
 
-func (x *Circuit) addPeer(name string, design see.Design) {
+func (x *Circuit) addPeer(name string, design interface{}) {
 	if _, ok := x.Peer[name]; ok {
 		panic("peer already present")
 	}

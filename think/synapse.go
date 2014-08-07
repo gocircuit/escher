@@ -7,11 +7,11 @@
 package think
 
 import (
-	"github.com/gocircuit/escher/star"
+	. "github.com/gocircuit/escher/image"
 )
 
 // Cognize routines are called when a change in value is to be delivered to a reflex.
-type Cognize func(value see.Image)
+type Cognize func(value Image)
 
 // Synapse is the “wire” connecting two reflexes.
 // It remembers the last value transmitted in order to stop propagation of same-value messages.
@@ -43,12 +43,12 @@ func Merge(m1, m2 *Synapse) {
 // The two endpoints of a Synapse are ReCognizer objects.
 type ReCognizer struct {
 	reciprocal Cognize
-	recognized *star.Star
+	recognized Image
 }
 
 // ReCognize sends value to the reciprocal side of this synapse.
-func (s *ReCognizer) ReCognize(value *star.Star) {
-	if star.Same(s.recognized, value) {
+func (s *ReCognizer) ReCognize(value Image) {
+	if Same(s.recognized, value) {
 		return
 	}
 	s.recognized = value.Copy()

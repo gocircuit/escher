@@ -5,9 +5,11 @@
 // see history clearly.
 
 main {
+	t @ticker
 	s @sum
 	out @show
-	s.X = 1
-	s.Y = 2
-	out. = s.Sum
+	t.Duration = 1e9
+	t.Tick = s.Sum
+	s.X = 5e9
+	s.Y = out.Answer
 }

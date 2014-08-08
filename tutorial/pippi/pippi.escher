@@ -4,9 +4,8 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-
 main {
 	in  @see
 	out @show
-	out. = in.
+	out.Answer = in.Question
 }

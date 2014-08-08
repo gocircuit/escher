@@ -97,6 +97,7 @@ func (fty Faculty) UnderstandFile(file string) {
 		if s == nil {
 			break
 		}
+		// println(s.Print("", "\t"))
 		fty.interpretCircuit(Understand(s))
 	}
 }

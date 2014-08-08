@@ -7,6 +7,7 @@
 package think
 
 import (
+	// "fmt"
 	"strings"
 
 	. "github.com/gocircuit/escher/image"

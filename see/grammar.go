@@ -55,5 +55,5 @@ func (x Name) String() string {
 type RootName string
 
 func (x RootName) String() string {
-	return fmt.Sprintf("Story(%s)", string(x))
+	return fmt.Sprintf("FullName(%s)", string(x))
 }

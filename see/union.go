@@ -7,21 +7,22 @@
 package see
 
 import (
+	// "fmt"
 	"strconv"
 	. "github.com/gocircuit/escher/image"
 )
 
 const MatchingName = "="
 
-func SeeUnion(src *Src) (x Image) {
+func SeeUnion(src *Src) (x interface{}) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
-	x = Make()
+	y := Make()
 	m := Make()
-	x.Grow(MatchingName, m)
+	y.Grow(MatchingName, m)
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
@@ -36,7 +37,7 @@ func SeeUnion(src *Src) (x Image) {
 		Space(q)
 		t.Become(q)
 		if peer != nil {
-			x.Attach(peer)
+			y.Attach(peer)
 		} else {
 			m.Grow(strconv.Itoa(i), match)
 			i++
@@ -46,7 +47,7 @@ func SeeUnion(src *Src) (x Image) {
 	t.Match("}")
 	src.Become(t)
 	if m.Len() == 0 { // no matchings
-		x.Abandon(MatchingName)
+		y.Abandon(MatchingName)
 	}
-	return
+	return y
 }

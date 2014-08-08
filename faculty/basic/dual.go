@@ -37,7 +37,7 @@ func (Scanln) Materialize() think.Reflex {
 			}
 		}()
 	}()
-	return think.Reflex{"": t}
+	return think.Reflex{"Question": t}
 }
 
 // Println
@@ -52,7 +52,7 @@ func (Println) Materialize() think.Reflex {
 			},
 		)
 	}()
-	return think.Reflex{"": t}
+	return think.Reflex{"Answer": t}
 }
 
 // Ticker

@@ -18,7 +18,7 @@ func SeeCircuit(src *Src) *Circuit {
 		return nil
 	}
 	for p, un := range SeePeer(src) {
-		//fmt.Printf("p=%s v=%v\n", p, un)
+		// fmt.Printf("p=%s v=%v\n", p, un)
 		return Circuitize(p, un.(Image))
 	}
 	return nil

@@ -75,7 +75,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 				qp, qv := v.Matching.Of.Name, v.Matching.Name
 				m2 := peers[qp][qv]
 				delete(peers[qp], qv)
-				Merge(m1, m2)
+				go Merge(m1, m2)
 			}
 		}
 	}

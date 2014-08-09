@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	println("Loading basic faculty")
+	// println("Loading basic faculty")
 	faculty.Root.AddTerminal("sum", Sum{})
 	faculty.Root.AddTerminal("prod", Prod{})
 }

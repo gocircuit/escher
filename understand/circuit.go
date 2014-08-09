@@ -67,7 +67,7 @@ func Understand(s *see.Circuit) *Circuit {
 			switch t := j.(type) {
 			case *see.DesignJoin: // unfold sugar
 				nsugar++
-				p := fmt.Sprintf("_sugar_%d", nsugar)
+				p := fmt.Sprintf("sugar#%d", nsugar)
 				x.addPeer(p, t.Design)
 				end[i] = x.reserveValve(p, "") // Anonymous designs have one empty-string valve
 			case *see.PeerJoin:

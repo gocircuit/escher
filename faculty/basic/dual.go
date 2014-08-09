@@ -20,6 +20,7 @@ func init() {
 	faculty.Root.AddTerminal("ignore", think.Ignore{})
 	faculty.Root.AddTerminal("show", Println{})
 	faculty.Root.AddTerminal("see", Scanln{})
+	faculty.Root.AddTerminal("ticker", Ticker{})
 }
 
 // Scanln
@@ -76,8 +77,13 @@ type ticker struct {
 }
 
 func (t *ticker) CognizeDuration(v interface{}) {
-	nano, ok := v.(int)
-	if !ok {
+	var nano int
+	switch t := v.(type) {
+	case int:
+		nano = t
+	case float64:
+		nano = int(t)
+	default:
 		log.Printf("non-integer ticker duration")
 		return
 	}

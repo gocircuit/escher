@@ -8,6 +8,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/understand"
@@ -18,6 +19,7 @@ import (
 )
 
 var (
+	flagLex  = flag.Bool("lex", false, "parse and show faculties without running")
 	flagSrc  = flag.String("src", "", "program source directory")
 )
 
@@ -26,8 +28,12 @@ func main() {
 	if *flagSrc == "" {
 		fatalf("source directory must be specified with -src")
 	}
-	think.Space(load(*flagSrc)).Materialize("main")
-	select{} // wait forever
+	if *flagLex {
+		fmt.Println(load(*flagSrc).Print("", "   "))
+	} else {
+		think.Space(load(*flagSrc)).Materialize("main")
+		select{} // wait forever
+	}
 }
 
 func load(src string) understand.Faculty {

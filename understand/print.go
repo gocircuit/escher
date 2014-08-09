@@ -9,20 +9,46 @@ package understand
 import (
 	"bytes"
 	"fmt"
-
-	// "github.com/gocircuit/escher/see"
+	"sort"
 )
+
+type printer interface {
+	Print(string, string) string
+}
+
+func (fty Faculty) Print(prefix, indent string) string {
+	var w bytes.Buffer
+	var keys []string
+	for k, _ := range fty {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		v := fty[k]
+		w.WriteString(prefix)
+		w.WriteString(indent)
+		w.WriteString(k)
+		switch t := v.(type) {
+		case Faculty:
+			w.WriteString("\n")
+			w.WriteString(t.Print(prefix + indent + indent, indent))
+		case *Circuit:
+			w.WriteString("\n")
+			w.WriteString(t.Print(prefix + indent + indent, indent))
+		default: // reflex or circuit
+			w.WriteString(fmt.Sprintf(" (%T)\n", v))
+		}
+	}
+	return w.String()
+}
 
 func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "%s%s {\n", prefix, x.Name)
 	for _, p := range x.Peer {
-		// if p.Design == nil {
-		// 	p.Design = see.Name("☻")
-		// }
 		fmt.Fprintf(&w,"%s%s%s %v\n", prefix, indent, printable(p.Name), p.Design)
 		for _, v := range p.Valve {
-			fmt.Fprintf(&w, "%s%s%s%s·%s = %s·%s\n", 
+			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n", 
 				prefix, indent, indent, 
 				printable(p.Name), printable(v.Name), 
 				printable(v.Matching.Of.Name), printable(v.Matching.Name),
@@ -37,5 +63,5 @@ func printable(s string) string {
 	if s != "" {
 		return s
 	}
-	return "•"
+	return "<e>"
 }

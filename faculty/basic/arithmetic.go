@@ -13,7 +13,6 @@ import (
 )
 
 func init() {
-	// println("Loading basic faculty")
 	faculty.Root.AddTerminal("sum", Sum{})
 	faculty.Root.AddTerminal("prod", Prod{})
 }
@@ -39,11 +38,11 @@ type sum struct {
 }
 
 func (s *sum) ShortCognize(imp faculty.Impression) {
-	// println(fmt.Sprintf("imp=%v", imp))
+	// println(fmt.Sprintf("%T %T %T", imp.Valve("X").Value(), imp.Valve("Y").Value(), imp.Valve("Sum").Value()))
 	<-s.ready
-	x, xk := imp.Valve("X").Value().(int)
-	y, yk := imp.Valve("Y").Value().(int)
-	su, sk := imp.Valve("Sum").Value().(int)
+	x, xk := AsInt(imp.Valve("X").Value())
+	y, yk := AsInt(imp.Valve("Y").Value())
+	su, sk := AsInt(imp.Valve("Sum").Value())
 	switch imp.Index(2).Valve() { // determine which valve we are computing for
 	case "X":
 		if !sk || !yk {
@@ -88,9 +87,9 @@ type prod struct {
 func (s *prod) ShortCognize(imp faculty.Impression) {
 	// println(fmt.Sprintf("imp=%v", imp))
 	<-s.ready
-	x, xk := imp.Valve("X").Value().(int)
-	y, yk := imp.Valve("Y").Value().(int)
-	pr, pk := imp.Valve("Prod").Value().(int)
+	x, xk := AsInt(imp.Valve("X").Value())
+	y, yk := AsInt(imp.Valve("Y").Value())
+	pr, pk := AsInt(imp.Valve("Prod").Value())
 	switch imp.Index(2).Valve() { // determine which valve we are computing for
 	case "X":
 		if !pk || !yk || y == 0 {

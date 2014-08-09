@@ -132,7 +132,13 @@ type Printer interface {
 func (x Image) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "{\n")
-	for key, v := range x {
+	var keys []string
+	for k, _ := range x {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		v := x[key]
 		var t string
 		switch u := v.(type) {
 		case Printer:

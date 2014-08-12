@@ -11,13 +11,14 @@ import (
 	// "fmt"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gocircuit/circuit/client"
 	"github.com/gocircuit/escher/faculty"
 )
 
-func init() {
+func Init(name string, client *client.Client) {
 	rand.Seed(time.Now().UnixNano())
 	ns := faculty.Root.Refine("circuit")
 	ns.AddTerminal("process", Process{})
@@ -25,10 +26,13 @@ func init() {
 	// ns.AddTerminal("chan", Chan{})
 	// ns.AddTerminal("subscription", Subscription{})
 
-	// program = &Program{
-	// 	Name: "???",
-	// 	Client: ???,
-	// }
+	if name = strings.TrimSpace(name); name == "" {
+		panic("Escher/Circuit program executions must have a non-empty instance name")
+	}
+	program = &Program{
+		Name: name,
+		Client: client,
+	}
 }
 
 // Program…

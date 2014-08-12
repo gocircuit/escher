@@ -10,17 +10,21 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/gocircuit/circuit/client"
+
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/understand"
 
 	"github.com/gocircuit/escher/faculty"
 	_ "github.com/gocircuit/escher/faculty/basic"
-	_ "github.com/gocircuit/escher/faculty/circuit"
+	"github.com/gocircuit/escher/faculty/circuit"
 )
 
 var (
 	flagLex  = flag.Bool("lex", false, "parse and show faculties without running")
 	flagSrc  = flag.String("src", "", "program source directory")
+	flagName = flag.String("name", "", "execution name")
+	flagDiscover = flag.String("discover", "", "multicast UDP discovery address for circuit faculty, if needed")
 )
 
 func main() {
@@ -29,14 +33,25 @@ func main() {
 		fatalf("source directory must be specified with -src")
 	}
 	if *flagLex {
-		fmt.Println(load(*flagSrc).Print("", "   "))
+		fmt.Println(compile(*flagSrc).Print("", "   "))
 	} else {
-		think.Space(load(*flagSrc)).Materialize("main")
+		loadCircuitFaculty(*flagName, *flagDiscover)
+		think.Space(compile(*flagSrc)).Materialize("main")
 		select{} // wait forever
 	}
 }
 
-func load(src string) understand.Faculty {
+func compile(src string) understand.Faculty {
 	faculty.Root.UnderstandDirectory(src)
 	return faculty.Root
+}
+
+func loadCircuitFaculty(name, discover string) {
+	if discover == "" {
+		return
+	}
+	if name == "" {
+		panic("circuit-based Escher programs must have a non-empty name")
+	}
+	circuit.Init(name, client.DialDiscover(discover, nil))
 }

@@ -4,75 +4,165 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// circuit provides Escher bindings for the circuit runtime of http://gocircuit.org
 package circuit
 
 import (
-	"fmt"
-	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/tree"
-	"github.com/gocircuit/escher/faculty"
-)
+	// "fmt"
+	"log"
+	"sync"
 
-func init() {
-	ns := faculty.Root.Refine("circuit")
-	ns.AddTerminal("proc", Process{})
-	// ns.AddTerminal("docker", Docker{})
-	// ns.AddTerminal("chan", Chan{})
-	// ns.AddTerminal("subscription", Subscription{})
-}
+	"github.com/gocircuit/circuit/client"
+	. "github.com/gocircuit/escher/image"
+	"github.com/gocircuit/escher/think"
+)
 
 // Process
 type Process struct{}
 
-func (Process) Materialize() think.Reflex {
-	reflex, eye := faculty.NewEye("config", "spawn", "exit", "io")
+func (x Process) Materialize() think.Reflex {
+	// Create reflex synapses
+	cmdEndo, cmdExo := think.NewSynapse()
+	spawnEndo, spawnExo := think.NewSynapse()
+	exitEndo, exitExo := think.NewSynapse()
+	ioEndo, ioExo := think.NewSynapse()
+	serverEndo, serverExo := think.NewSynapse()
+	//
 	go func() {
-		f := &process{
+		p := &process{
+			id: ChooseID(),
 			ready: make(chan struct{}),
+			spawn: make(chan struct{}),
 		}
-		f.x = eye.Focus(f.ShortCognize)
-		close(f.ready)
+		p.reExit = exitEndo.Focus(think.DontCognize)
+		p.reIO = ioEndo.Focus(think.DontCognize)
+		serverEndo.Focus(p.CognizeServer)
+		cmdEndo.Focus(p.CognizeCommand)
+		spawnEndo.Focus(p.CognizeSpawn)
+		p.loop()
 	}()
-	return reflex
+	//
+	return think.Reflex{
+		"Server": serverExo, // in-only
+		"Command": cmdExo, // in-only
+		"Spawn": spawnExo, // in-only
+		"Exit": exitExo, // out-only
+		"IO": ioExo, // out-only
+	}
 }
 
+// process is the materialized process reflex
 type process struct {
-	ready chan struct{}
-	x *faculty.EyeReCognizer
+	id string  // ID of this process reflex instance
+	reExit *think.ReCognizer
+	reIO *think.ReCognizer
+	arg struct {
+		sync.Mutex
+		server string // root-level anchor of the server where the process is to be started
+		cmd *client.Cmd
+	}
+	ready chan struct{} // notify loop that arguments are ready
+	spawn chan struct{} // notify loop of spawn strobes
 }
 
-func (f *process) ShortCognize(saw faculty.Sentence) {
-	println(fmt.Sprintf("saw=%v", saw))
-	<-f.ready
-	if saw.At(0).Value() == nil || saw.At(1).Value() == nil { // If either of the two most recently updated valves are nil, inaction.
+func (p *process) CognizeServer(v interface{}) {
+	a, ok := v.(string)
+	if !ok {
+		panic("process server anchor is non-string")
+	}
+	p.arg.Lock()
+	defer p.arg.Unlock()
+	if p.arg.server != "" {
+		panic("process server anchor already set")
+	}
+	p.arg.server = a
+	if p.arg.cmd != nil {
+		close(p.ready)
+	}
+}
+
+//
+//	{
+//		Env { "abc", "def", }
+//		Path "/bin/ls"
+//		Args { "/" }
+//	}
+//
+func (p *process) CognizeCommand(v interface{}) {
+	img, ok := v.(Image)
+	if !ok {
+		log.Printf("Non-image sent to Process.Command (%v)", v)
 		return
 	}
-	switch saw.At(2).Valve() { // least recently updated valve, the one being computed
-	case "Belief":
-		f.x.ReCognize(
-			faculty.MakeSentence().Grow(
-				0,
-				"Belief",
-				tree.Explain(saw.AtName("Theory").TreeValue(), saw.AtName("Observation").TreeValue()),
-			),
-		)
-	case "Observation":
-		f.x.ReCognize(
-			faculty.MakeSentence().Grow(
-				0,
-				"Observation",
-				tree.Predict(saw.AtName("Belief").TreeValue(), saw.AtName("Theory").TreeValue()),
-			),
-		)
-	case "Theory":
-		f.x.ReCognize(
-			faculty.MakeSentence().Grow(
-				0,
-				"Theory",
-				tree.Generalize(saw.AtName("Belief").TreeValue(), saw.AtName("Observation").TreeValue()),
-			),
-		)
+	p.arg.Lock()
+	defer p.arg.Unlock()
+	if p.arg.cmd != nil {
+		panic("process command already set")
 	}
-	panic(7)
+	p.arg.cmd = &client.Cmd{}
+	p.arg.cmd.Path = img.String("Path") // mandatory
+	env := img.Walk("Env")
+	for _, key := range env.Sort() {
+		p.arg.cmd.Env = append(p.arg.cmd.Env, env.String(key))
+	}
+	args := img.Walk("Args")
+	for _, key := range args.Sort() {
+		p.arg.cmd.Args = append(p.arg.cmd.Args, args.String(key))
+	}
+	if p.arg.server != "" {
+		close(p.ready)
+	}
+}
+
+func (p *process) CognizeSpawn(interface{}) {
+	p.spawn <- struct{}{}
+}
+
+func (p *process) loop() {
+	<-p.ready // make sure arguments (command and server) have been received
+	var n int
+	for {
+		<-p.spawn
+		if exit := p.spawnProcess(); exit != nil {
+			p.reExit.ReCognize(
+				Image{
+					"N": n, 
+					"Exit": 1,
+				},
+			)
+		} else {
+			p.reExit.ReCognize(
+				Image{
+					"N": n, 
+					"Exit": 0,
+				},
+			)
+		}
+		n++
+	}
+}
+
+func (p *process) spawnProcess() error {
+	p.arg.Lock()
+	server := p.arg.server
+	cmd := p.arg.cmd
+	p.arg.Unlock()
+	//
+	anchor := program.Client.Walk([]string{server, "escher", program.Name, p.id})
+	proc, err := anchor.MakeProc(*cmd)
+	if err != nil {
+		panic("invalid command argument")
+	}
+	defer anchor.Scrub()
+	p.reIO.ReCognize(
+		Image{
+			"Stdin": proc.Stdin(), 
+			"Stdout": proc.Stdout(),
+			"Stderr": proc.Stderr(),
+		},
+	)
+	stat, err := proc.Wait()
+	if err != nil {
+		panic("process wait aborted by user")
+	}
+	return stat.Exit
 }

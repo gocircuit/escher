@@ -26,7 +26,7 @@ func SeeUnion(src *Src) (x interface{}) {
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
-	var i int
+	var i, j int
 	for {
 		q := t.Copy()
 		Space(q)
@@ -37,7 +37,13 @@ func SeeUnion(src *Src) (x interface{}) {
 		Space(q)
 		t.Become(q)
 		if peer != nil {
-			y.Attach(peer)
+			keys := peer.Sort()
+			if keys[0] == "" { // if peer is nameless, this is a slice element
+				y.Grow(strconv.Itoa(j), peer[""])
+				j++
+			} else {
+				y.Attach(peer)
+			}
 		} else {
 			m.Grow(strconv.Itoa(i), match)
 			i++

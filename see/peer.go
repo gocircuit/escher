@@ -29,18 +29,25 @@ func SeePeer(src *Src) (x Image) {
 	}()
 	t := src.Copy()
 	Space(t)
-	name := Identifier(t)
-	if len(name) == 0 {
-		panic("peer name")
+	left := SeeArithmeticOrNameOrUnion(t)
+	if left == nil {
+		panic("peer")
 	}
 	Whitespace(t)
-	p := SeeArithmeticOrNameOrUnion(t)
-	if p == nil {
-		return nil
-	}
+	right := SeeArithmeticOrNameOrUnion(t)
 	if !Space(t) { // require newline at end
 		return nil
 	}
-	src.Become(t)
-	return Image{name: p}
+	if right == nil { // one term (value only)
+		src.Become(t)
+		return Image{"": left}
+	} else { // two terms (name and value)
+		name, ok := left.(Name)
+		if !ok {
+			panic("peer name")
+		}
+		src.Become(t)
+		return Image{string(name): right}
+	}
+	panic("peer")
 }

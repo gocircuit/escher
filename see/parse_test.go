@@ -59,6 +59,9 @@ var testPeer = []string{
 	`_ "abc"`,
 	`a 3.13`,
 	`a { }`,
+	`a;`,
+	`"abc"`,
+	`@ha,`,
 }
 
 func TestPeer(t *testing.T) {
@@ -87,6 +90,12 @@ var testUnion = []string{
 		 = 0-2i
 		 _ 123
 	}`,
+	`{
+		g {},
+		a = b,
+		x {};
+		y {a, b, c, "def"; }
+	}`,
 }
 
 func TestUnion(t *testing.T) {
@@ -110,6 +119,7 @@ var testCircuit = []string{
 		b "3e3"
 		n.notX=
 		{}=
+		"abcd",
 	}
 	`,
 }

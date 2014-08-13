@@ -11,7 +11,7 @@ func isNotVerbatim(r rune) bool {
 }
 
 func isNewline(r rune) bool {
-	return r == '\n' || r == '\r'
+	return r == '\n' || r == '\r' || r == ';' || r == ','
 }
 
 func isNotNewline(r rune) bool {

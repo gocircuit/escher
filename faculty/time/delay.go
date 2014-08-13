@@ -17,6 +17,7 @@ import (
 
 func init() {
 	faculty.Root.AddTerminal("delay", Delay{})
+	faculty.Root.AddTerminal("ticker", Ticker{})
 }
 
 // Delay…

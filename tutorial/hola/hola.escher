@@ -5,7 +5,7 @@
 // see history clearly.
 
 main {
-	t @ticker
+	t @time.ticker
 	s @sum
 	out @show
 	t.Duration = 1e9

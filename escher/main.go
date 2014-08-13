@@ -14,10 +14,11 @@ import (
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/understand"
-
 	"github.com/gocircuit/escher/faculty"
+
 	_ "github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
+	_ "github.com/gocircuit/escher/faculty/time"
 )
 
 var (

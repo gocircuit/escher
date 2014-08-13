@@ -20,6 +20,7 @@ import (
 
 func Init(name string, client *client.Client) {
 	rand.Seed(time.Now().UnixNano())
+
 	ns := faculty.Root.Refine("circuit")
 	ns.AddTerminal("process", Process{})
 	// ns.AddTerminal("docker", Docker{})

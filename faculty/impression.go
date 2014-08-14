@@ -16,7 +16,7 @@ type Impression struct {
 	Image
 }
 
-// MakeImpression returns a new empty imptence.
+// MakeImpression returns a new empty impression.
 func MakeImpression() Impression {
 	return Impression{Make()}
 }

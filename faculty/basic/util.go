@@ -10,6 +10,7 @@ import (
 	"math"
 )
 
+// AsInt accepts an int or float64 value and converts it to an int value.
 func AsInt(v interface{}) (int, bool) {
 	if i, ok := v.(int); ok {
 		return i, true

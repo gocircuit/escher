@@ -124,7 +124,7 @@ func (p *process) loop() {
 	<-p.ready // make sure arguments (command and server) have been received
 	for {
 		spwn := <-p.spawn
-		if exit := p.spawnProcess(); exit != nil {
+		if exit := p.spawnProcess(spwn); exit != nil {
 			p.reExit.ReCognize(
 				Image{
 					"Spawn": spwn,
@@ -142,7 +142,7 @@ func (p *process) loop() {
 	}
 }
 
-func (p *process) spawnProcess() error {
+func (p *process) spawnProcess(spwn interface{}) error {
 	p.arg.Lock()
 	server := p.arg.server
 	cmd := p.arg.cmd
@@ -156,6 +156,7 @@ func (p *process) spawnProcess() error {
 	defer anchor.Scrub()
 	p.reIO.ReCognize(
 		Image{
+			"Spawn": spwn,
 			"Stdin": proc.Stdin(), 
 			"Stdout": proc.Stdout(),
 			"Stderr": proc.Stderr(),

@@ -25,7 +25,7 @@ import (
 
 var (
 	flagLex  = flag.Bool("lex", false, "parse and show faculties without running")
-	flagDir  = flag.String("dir", "", "program source directory")
+	flagDir  = flag.String("src", "", "program source directory")
 	flagName = flag.String("name", "", "execution name")
 	flagArg = flag.String("arg", "", "program arguments")
 	flagDiscover = flag.String("discover", "", "multicast UDP discovery address for circuit faculty, if needed")

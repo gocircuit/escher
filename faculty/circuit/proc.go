@@ -31,7 +31,7 @@ func (x Process) Materialize() think.Reflex {
 		p := &process{
 			id: ChooseID(),
 			ready: make(chan struct{}),
-			spawn: make(chan struct{}),
+			spawn: make(chan interface{}),
 		}
 		p.reExit = exitEndo.Focus(think.DontCognize)
 		p.reIO = ioEndo.Focus(think.DontCognize)
@@ -61,7 +61,7 @@ type process struct {
 		cmd *client.Cmd
 	}
 	ready chan struct{} // notify loop that arguments are ready
-	spawn chan struct{} // notify loop of spawn strobes
+	spawn chan interface{} // notify loop of spawn strobes
 }
 
 func (p *process) CognizeServer(v interface{}) {
@@ -82,9 +82,12 @@ func (p *process) CognizeServer(v interface{}) {
 
 //
 //	{
-//		Env { "abc", "def", }
+//		Env { 
+//			"PATH=/abc:/bin"
+//			"LESS=less"
+//		}
 //		Path "/bin/ls"
-//		Args { "/" }
+//		Args { "-l", "/" }
 //	}
 //
 func (p *process) CognizeCommand(v interface{}) {
@@ -113,31 +116,29 @@ func (p *process) CognizeCommand(v interface{}) {
 	}
 }
 
-func (p *process) CognizeSpawn(interface{}) {
-	p.spawn <- struct{}{}
+func (p *process) CognizeSpawn(v interface{}) {
+	p.spawn <- v
 }
 
 func (p *process) loop() {
 	<-p.ready // make sure arguments (command and server) have been received
-	var n int
 	for {
-		<-p.spawn
+		spwn := <-p.spawn
 		if exit := p.spawnProcess(); exit != nil {
 			p.reExit.ReCognize(
 				Image{
-					"N": n, 
+					"Spawn": spwn,
 					"Exit": 1,
 				},
 			)
 		} else {
 			p.reExit.ReCognize(
 				Image{
-					"N": n, 
+					"Spawn": spwn,
 					"Exit": 0,
 				},
 			)
 		}
-		n++
 	}
 }
 

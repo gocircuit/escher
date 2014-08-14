@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// circuit provides Escher gates for building dynamic cloud applications using the circuit runtime of http://gocircuit.org
+// Package circuit provides Escher gates for building dynamic cloud applications using the circuit runtime of http://gocircuit.org
 package circuit
 
 import (
@@ -22,13 +22,18 @@ func Init(name string, client *client.Client) {
 	rand.Seed(time.Now().UnixNano())
 
 	ns := faculty.Root.Refine("circuit")
-	ns.AddTerminal("process", Process{})
-	// ns.AddTerminal("docker", Docker{})
-	// ns.AddTerminal("chan", Chan{})
-	// ns.AddTerminal("subscription", Subscription{})
+	ns.AddTerminal("Process", Process{})
+	// ns.AddTerminal("Docker", Docker{})
+	// ns.AddTerminal("Channel", Chan{})
+	// ns.AddTerminal("Leaving", Subscription{})
+	// ns.AddTerminal("Joining", Subscription{})
+
+	ns.AddTerminal("SplitExit", JoinExit{})
+	ns.AddTerminal("SplitStdio", JoinStdio{})
+
 
 	if name = strings.TrimSpace(name); name == "" {
-		panic("Escher/Circuit program executions must have a non-empty instance name")
+		panic("Escher/Circuit program executions must have a non-empty execution name")
 	}
 	program = &Program{
 		Name: name,

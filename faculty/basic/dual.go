@@ -13,10 +13,19 @@ import (
 	"github.com/gocircuit/escher/faculty"
 )
 
-func init() {
+func Init(n string) {
+	name = n
 	faculty.Root.AddTerminal("ignore", think.Ignore{})
 	faculty.Root.AddTerminal("show", Println{})
 	faculty.Root.AddTerminal("see", Scanln{})
+	faculty.Root.AddTerminal("name", think.NewNounReflex(name))
+}
+
+var name string
+
+// Name returns the name assigned to this program execution
+func Name() string {
+	return name
 }
 
 // Scanln

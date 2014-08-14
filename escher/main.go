@@ -16,7 +16,7 @@ import (
 	"github.com/gocircuit/escher/understand"
 	"github.com/gocircuit/escher/faculty"
 
-	_ "github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
 	facultyos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/time"
@@ -32,6 +32,7 @@ var (
 
 func main() {
 	flag.Parse()
+	basic.Init(*flagName)
 	facultyos.Init(*flagArg)
 	if *flagSrc == "" {
 		fatalf("source directory must be specified with -src")

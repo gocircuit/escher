@@ -16,8 +16,9 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("delay", Delay{})
-	faculty.Root.AddTerminal("ticker", Ticker{})
+	ns := faculty.Root.Refine("time")
+	ns.AddTerminal("Ticker", Ticker{})
+	ns.AddTerminal("Delay", Delay{})
 }
 
 // Delay…

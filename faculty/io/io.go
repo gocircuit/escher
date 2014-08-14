@@ -16,7 +16,8 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("clunk", Clunk{})
+	ns := faculty.Root.Refine("io")
+	ns.AddTerminal("Clunk", Clunk{})
 }
 
 // Clunk…

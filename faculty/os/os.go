@@ -28,8 +28,9 @@ func Init(a string) {
 		}
 		args[nv[0]] = v
 	}
-	faculty.Root.AddTerminal("arg", Arg{})
-	faculty.Root.AddTerminal("env", Env{})
+	ns := faculty.Root.Refine("os")
+	ns.AddTerminal("Arg", Arg{})
+	ns.AddTerminal("Env", Env{})
 }
 
 var args map[string]string

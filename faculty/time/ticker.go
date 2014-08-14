@@ -12,12 +12,7 @@ import (
 	"time"
 
 	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/faculty"
 )
-
-func init() {
-	faculty.Root.AddTerminal("ticker", Ticker{})
-}
 
 // Ticker
 type Ticker struct{}

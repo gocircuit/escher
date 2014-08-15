@@ -38,10 +38,10 @@ func main() {
 	if *flagDir == "" {
 		fatalf("source directory must be specified with -src")
 	}
+	loadCircuitFaculty(*flagName, *flagDiscover)
 	if *flagLex {
 		fmt.Println(compile(*flagDir).Print("", "   "))
 	} else {
-		loadCircuitFaculty(*flagName, *flagDiscover)
 		think.Space(compile(*flagDir)).Materialize("main")
 		select{} // wait forever
 	}

@@ -37,7 +37,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 		return gate.Materialize()
 	}
 	within, cir := within_.(understand.Faculty), term.(*understand.Circuit)
-	//println(cir.Print("	", "\t"))
+	// println(cir.Print("	", "\t"))
 	peers := make(map[string]Reflex)
 	for _, peer := range cir.Peer {
 		if peer.Name == "" { // skip the super peer of this circuit

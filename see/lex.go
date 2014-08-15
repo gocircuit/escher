@@ -10,8 +10,12 @@ func isNotVerbatim(r rune) bool {
 	return r != '`'
 }
 
-func isNewline(r rune) bool {
+func isCommaOrSemicolon(r rune) bool {
 	return r == '\n' || r == '\r' || r == ';' || r == ','
+}
+
+func isNewline(r rune) bool {
+	return r == '\n' || r == '\r'
 }
 
 func isNotNewline(r rune) bool {

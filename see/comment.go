@@ -25,6 +25,9 @@ func Space(src *Src) (newLine bool) {
 
 func commentAndEndOfLine(src *Src) bool {
 	Whitespace(src)
+	if len(src.Consume(isCommaOrSemicolon)) > 0 {
+		return true
+	}
 	comment(src)
 	return len(src.Consume(isNewline)) > 0
 }

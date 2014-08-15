@@ -122,6 +122,17 @@ var testCircuit = []string{
 		"abcd",
 	}
 	`,
+	`
+// Written in 2014 by Petar Maymounkov.
+//
+// It helps future understanding of past knowledge to save
+// this notice, so peers of other times and backgrounds can…
+
+main {
+	s @show
+	s.Object = "¡Hello, world!"
+}
+`,
 }
 
 func TestCircuit(t *testing.T) {

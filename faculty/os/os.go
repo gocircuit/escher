@@ -18,6 +18,9 @@ import (
 func Init(a string) {
 	args = make(map[string]string)  // n1=v1:n2=v2
 	for _, p := range strings.Split(a, ":") {
+		if p == "" {
+			continue
+		}
 		nv := strings.Split(p, "=")
 		if len(nv) != 2 {
 			panic("command-line argument syntax")

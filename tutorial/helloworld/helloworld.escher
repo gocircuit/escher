@@ -7,15 +7,8 @@
 // This tutorial prints the string “¡Hello, world!” to standard error. When
 // invoked, the Escher interpreter looks for and materializes (i.e. executes)
 // the circuit named “main”.
-//
+
 main {
-
-	// show reflexes print a textual representation of the objects they
-	// receive on the default valve to standard error.
 	s @show
-
-	// Match the default valve of the show reflex instance to a string constant reflex.
-	// Constant reflexes output a constant value on their default valve.
-	s.Answer = "¡Hello, world!"
-
+	s.Object = "¡Hello, world!"
 }

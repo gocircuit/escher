@@ -28,8 +28,8 @@ func Init(name string, client *client.Client) {
 	// ns.AddTerminal("Leaving", Subscription{})
 	// ns.AddTerminal("Joining", Subscription{})
 
-	ns.AddTerminal("SplitExit", JoinExit{})
-	ns.AddTerminal("SplitStdio", JoinStdio{})
+	ns.AddTerminal("ForkExit", ForkExit{})
+	ns.AddTerminal("ForkStdio", ForkStdio{})
 
 
 	if name = strings.TrimSpace(name); name == "" {

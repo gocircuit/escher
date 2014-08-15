@@ -86,6 +86,7 @@ func (p *process) CognizeServer(v interface{}) {
 //			"PATH=/abc:/bin"
 //			"LESS=less"
 //		}
+//		Dir "/home/petar"
 //		Path "/bin/ls"
 //		Args { "-l", "/" }
 //	}
@@ -103,6 +104,9 @@ func (p *process) CognizeCommand(v interface{}) {
 	}
 	p.arg.cmd = &client.Cmd{}
 	p.arg.cmd.Path = img.String("Path") // mandatory
+	if img.Has("Dir") {
+		p.arg.cmd.Dir = img.String("Dir")
+	}
 	env := img.Walk("Env")
 	for _, key := range env.Sort() {
 		p.arg.cmd.Env = append(p.arg.cmd.Env, env.String(key))

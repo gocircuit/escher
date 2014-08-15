@@ -74,6 +74,11 @@ func (x Image) Walk(key string) Image {
 	return Image{}
 }
 
+func (x Image) Has(key string) bool {
+	_, present := x[key]
+	return present
+}
+
 func (x Image) String(key string) string {
 	return x[key].(string)
 }

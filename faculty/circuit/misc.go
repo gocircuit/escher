@@ -12,16 +12,16 @@ import (
 	"github.com/gocircuit/escher/faculty/basic"
 )
 
-// JoinExit…
-type JoinExit struct{}
+// ForkExit…
+type ForkExit struct{}
 
-func (JoinExit) Materialize() think.Reflex {
-	return basic.MaterializeJoin("Joined", "Spawn", "Exit")
+func (ForkExit) Materialize() think.Reflex {
+	return basic.MaterializeFork("Forked", "Spawn", "Exit")
 }
 
-// JoinStdio…
-type JoinStdio struct{}
+// ForkStdio…
+type ForkStdio struct{}
 
-func (JoinStdio) Materialize() think.Reflex {
-	return basic.MaterializeJoin("Joined", "Spawn", "Stdin", "Stdout", "Stderr")
+func (ForkStdio) Materialize() think.Reflex {
+	return basic.MaterializeFork("Forked", "Spawn", "Stdin", "Stdout", "Stderr")
 }

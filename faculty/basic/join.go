@@ -13,7 +13,7 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-func MaterializeJoin(name string, parts ...string) think.Reflex {
+func MaterializeFork(name string, parts ...string) think.Reflex {
 	reflex, eye := faculty.NewEye(append(parts, name)...)
 	go func() {
 		h := &join{

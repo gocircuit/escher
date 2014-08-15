@@ -7,5 +7,5 @@
 main {
 	in  @see
 	out @show
-	out.Answer = in.Question
+	out.Object = in.Subject
 }

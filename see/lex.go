@@ -28,7 +28,7 @@ func isIdentifier(r rune) bool {
 		return true
 	case r >= '0' && r <= '9':
 		return true
-	case r == '_', r == '@', r == '?':
+	case r == '_', r == '?':
 		return true
 	}
 	return false
@@ -38,7 +38,7 @@ func isIdentifierFirst(r rune) bool {
 	switch {
 	case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z':
 		return true
-	case r == '_', r == '@', r == '?':
+	case r == '_', r == '?':
 		return true
 	}
 	return false

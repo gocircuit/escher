@@ -11,25 +11,6 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-// A matching is the following syntactic structure:
-//
-//	Matching => Join “=” Join NewLine
-//	Join => ID “.” ID / ID / Design
-//
-// The star representation of a matching is:
-//
-//	{
-//		Kind Name("Matching")
-//		0 {
-//			Peer Name(…)
-//			Valve Name(…) or Design()
-//		}
-//		1 {
-//			Peer Name(…)
-//			Valve ??
-//		}
-//	}
-//
 func SeeMatching(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -53,13 +34,6 @@ func SeeMatching(src *Src) (x Image) {
 	return
 }
 
-// Join = 3.19 | Peer.Valve | Valve
-//
-//	{
-//		Peer Name("??")
-//		Valve Name("??")
-//	}
-//
 func SeeJoin(src *Src) (x Image) {
 	if x = seeDesignJoin(src); x != nil { // int, string, etc.
 		return x
@@ -91,7 +65,6 @@ func seeDesignJoin(src *Src) (x Image) {
 	}
 }
 
-// seePeerValveJoin…
 func seePeerValveJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -115,8 +88,6 @@ func seePeerValveJoin(src *Src) (x Image) {
 	}
 }
 
-// seeValveJoin parses a single identifier as a valve name. 
-// It captures the empty string.
 func seeValveJoin(src *Src) (x Image) {
 	defer func() {
 		if r := recover(); r != nil {

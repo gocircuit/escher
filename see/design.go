@@ -23,11 +23,11 @@ func SeeArithmeticOrUnion(src *Src) interface{} {
 	return nil
 }
 
-func SeeArithmeticOrNameOrUnion(src *Src) (x interface{}) {
+func SeeArithmeticOrPathOrUnion(src *Src) (x interface{}) {
 	if x = SeeArithmetic(src); x != nil {
 		return
 	}
-	if x = SeeName(src); x != nil {
+	if x = SeePath(src); x != nil {
 		return
 	}
 	if x = SeeUnion(src); x != nil {
@@ -55,16 +55,29 @@ func SeeArithmetic(src *Src) (x interface{}) {
 	return nil
 }
 
-// Name …
-func SeeName(src *Src) interface{} {
-	l := Identifier(src)
-	if l == "" {
+// Path …
+func SeePath(src *Src) interface{} {
+	t := src.Copy()
+	root := t.TryMatch("@")
+	var x []string
+	for {
+		id := Identifier(t)
+		if id == "" {
+			return nil
+		}
+		x = append(x, id)
+		if !t.TryMatch(".") {
+			break
+		}
+	}
+	if len(x) == 0 {
 		return nil
 	}
-	if l[0] != '@' {
-		return Name(l)
+	src.Become(t)
+	if root {
+		return RootPath(x)
 	}
-	return RootName(l[1:])
+	return Path(x)
 }
 
 // Int …

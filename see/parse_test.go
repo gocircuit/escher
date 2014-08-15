@@ -23,7 +23,7 @@ var testDesign = []string{
 
 func TestDesign(t *testing.T) {
 	for _, q := range testDesign {
-		x := SeeArithmeticOrNameOrUnion(NewSrcString(q))
+		x := SeeArithmeticOrPathOrUnion(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -71,7 +71,7 @@ func TestPeer(t *testing.T) {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}
-		// fmt.Printf("%s %v\n", nm, x.Print("", "\t"))
+		fmt.Printf("%v\n", x.Print("", "\t"))
 	}
 }
 

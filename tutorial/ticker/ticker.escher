@@ -6,8 +6,8 @@
 
 main {
 	t @time.Ticker
-	s @sum
-	out @show
+	s @Sum
+	out @Show
 	t.Duration = 1e9
 	t.Tick = s.Sum
 	s.X = 5e9

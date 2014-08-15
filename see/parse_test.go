@@ -132,6 +132,22 @@ main {
 	s @show
 	s.Object = "¡Hello, world!"
 }
+`,`
+// Written in 2014 by Petar Maymounkov.
+//
+// It helps future understanding of past knowledge to save
+// this notice, so peers of other times and backgrounds can
+// see history clearly.
+
+main {
+	t @time.Ticker
+	s @sum
+	out @show
+	t.Duration = 1e9
+	t.Tick = s.Sum
+	s.X = 5e9
+	s.Y = out.Object
+}
 `,
 }
 

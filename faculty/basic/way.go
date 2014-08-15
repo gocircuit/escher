@@ -12,9 +12,9 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("3way", Way3{})
-	faculty.Root.AddTerminal("4way", Way4{})
-	faculty.Root.AddTerminal("5way", Way5{})
+	faculty.Root.AddTerminal("3Way", Way3{})
+	faculty.Root.AddTerminal("4Way", Way4{})
+	faculty.Root.AddTerminal("5Way", Way5{})
 }
 
 // Way3

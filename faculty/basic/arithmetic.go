@@ -13,8 +13,8 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("sum", Sum{})
-	faculty.Root.AddTerminal("prod", Prod{})
+	faculty.Root.AddTerminal("Sum", Sum{})
+	faculty.Root.AddTerminal("Prod", Prod{})
 }
 
 // Sum

@@ -15,10 +15,10 @@ import (
 
 func Init(n string) {
 	name = n
-	faculty.Root.AddTerminal("ignore", think.Ignore{})
-	faculty.Root.AddTerminal("show", Println{})
-	faculty.Root.AddTerminal("see", Scanln{})
-	faculty.Root.AddTerminal("name", think.NewNounReflex(name))
+	faculty.Root.AddTerminal("Ignore", think.Ignore{})
+	faculty.Root.AddTerminal("Show", Println{})
+	faculty.Root.AddTerminal("See", Scanln{})
+	faculty.Root.AddTerminal("Name", think.NewNounReflex(name))
 }
 
 var name string

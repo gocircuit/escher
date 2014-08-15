@@ -44,10 +44,10 @@ func (x Space) Materialize(walk ...string) Reflex {
 			continue
 		}
 		switch t := peer.Design.(type) {
-		case see.RootName:
-			peers[peer.Name] = x.Materialize(strings.Split(string(t), ".")...)
-		case see.Name: // e.g. “hello.who.is.there”
-			peers[peer.Name] = x.materializeName(within, string(t))
+		case see.RootPath:
+			peers[peer.Name] = x.Materialize([]string(t)...)
+		case see.Path: // e.g. “hello.who.is.there”
+			peers[peer.Name] = x.materializePath(within, []string(t))
 		case string, int , float64, complex128, Image:
 			peers[peer.Name] = NewNounReflex(t) // materialize builtin gates
 		default:
@@ -88,17 +88,16 @@ func (x Space) Materialize(walk ...string) Reflex {
 	return super
 }
 
-func (x Space) materializeName(within understand.Faculty, name string) Reflex {
-	parts := strings.Split(name, ".")
+func (x Space) materializePath(within understand.Faculty, parts []string) Reflex {
 	unfold := x.Lookup(within, parts[0])
 	switch t := unfold.(type) {
 	case string, int, float64, complex128, Image:
 		return NewNounReflex(t) // materialize builtin gates
-	case see.Name:
-		parts = append(strings.Split(string(t), "."), parts[1:]...)
+	case see.Path:
+		parts = append([]string(t), parts[1:]...)
 		return Space(within).Materialize(parts...)
-	case see.RootName:
-		parts = append(strings.Split(string(t), "."), parts[1:]...)
+	case see.RootPath:
+		parts = append([]string(t), parts[1:]...)
 		return x.Materialize(parts...)
 	case nil:
 		return nil

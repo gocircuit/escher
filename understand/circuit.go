@@ -12,7 +12,7 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
-// TODO: Eventually Circuit can be represented as a tree.Tree
+// TODO: Eventually Circuit can be represented as an image.Image
 type Circuit struct {
 	Genus []*see.Circuit // origin
 	Name string

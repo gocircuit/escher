@@ -10,6 +10,7 @@ package io
 import (
 	"io"
 	"io/ioutil"
+	"log"
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
@@ -29,11 +30,13 @@ func (Clunk) Materialize() think.Reflex {
 		ioEndo.Focus(clunk)
 	}()
 	return think.Reflex{
-		"IO": ioExo, 
+		"_": ioExo, 
 	}
 }
 
 func clunk(v interface{}) {
+	defer log.Printf("clunked %T", v)
+	log.Printf("clunking %T", v)
 	switch t := v.(type) {
 	case io.Closer:
 		t.Close()

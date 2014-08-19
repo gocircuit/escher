@@ -115,7 +115,7 @@ func (p *process) CognizeCommand(v interface{}) {
 	for _, key := range args.Sort() {
 		p.arg.cmd.Args = append(p.arg.cmd.Args, args.String(key))
 	}
-	log.Printf("circuit.Proc command:\n   %v", img.Print("   ", "  "))
+	log.Printf("circuit process command:\n%v", img.Print("", "  "))
 	if p.arg.server != "" {
 		close(p.ready)
 	}
@@ -123,27 +123,28 @@ func (p *process) CognizeCommand(v interface{}) {
 
 func (p *process) CognizeSpawn(v interface{}) {
 	p.spawn <- v
+	log.Printf("circuit process spawn:\n%v", v)
 }
 
 func (p *process) loop() {
 	<-p.ready // make sure arguments (command and server) have been received
 	for {
 		spwn := <-p.spawn
+		var x Image
 		if exit := p.spawnProcess(spwn); exit != nil {
-			p.reExit.ReCognize(
-				Image{
-					"Spawn": spwn,
-					"Exit": 1,
-				},
-			)
+			x = Image{
+				"Spawn": spwn,
+				"Exit": 1,
+			}
+			p.reExit.ReCognize(x)
 		} else {
-			p.reExit.ReCognize(
-				Image{
-					"Spawn": spwn,
-					"Exit": 0,
-				},
-			)
+			x = Image{
+				"Spawn": spwn,
+				"Exit": 0,
+			}
+			p.reExit.ReCognize(x)
 		}
+		log.Printf("circuit process exit:\n%v", x)
 	}
 }
 
@@ -159,17 +160,19 @@ func (p *process) spawnProcess(spwn interface{}) error {
 		panic("invalid command argument")
 	}
 	defer anchor.Scrub()
-	p.reIO.ReCognize(
-		Image{
-			"Spawn": spwn,
-			"Stdin": proc.Stdin(), 
-			"Stdout": proc.Stdout(),
-			"Stderr": proc.Stderr(),
-		},
-	)
+	g := Image{
+		"Spawn": spwn,
+		"Stdin": proc.Stdin(), 
+		"Stdout": proc.Stdout(),
+		"Stderr": proc.Stderr(),
+	}
+	log.Printf("circuit process io:\n%v", spwn)
+	p.reIO.ReCognize(g)
+	log.Printf("circuit process waiting:\n%v", spwn)
 	stat, err := proc.Wait()
 	if err != nil {
 		panic("process wait aborted by user")
 	}
+	log.Printf("circuit process exit:\n%v", spwn)
 	return stat.Exit
 }

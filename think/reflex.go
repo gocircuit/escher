@@ -21,5 +21,5 @@ func (Ignore) Materialize() Reflex {
 	go func() {
 		s.Focus(DontCognize)
 	}()
-	return Reflex{"Subject": t}
+	return Reflex{"_": t}
 }

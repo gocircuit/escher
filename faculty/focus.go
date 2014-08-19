@@ -31,11 +31,6 @@ type EyeNerve struct {
 	memory 
 }
 
-type ReCognizer struct {
-	sync.Mutex
-	t map[string]*think.ReCognizer
-}
-
 type memory struct {
 	sync.Mutex
 	Age int
@@ -49,14 +44,12 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 		retina: make(map[string]*think.Synapse),
 		nerve: EyeNerve{
 			connected: make(chan struct{}),
-			recognize: recognize{
-				t: make(map[string]*think.ReCognizer),
-			},
 			memory: memory{
 				Imp: MakeImpression(),
 			},
 		},
 	}
+	m.nerve.memory.Imp = MakeImpression()
 	for _, v := range valve {
 		if _, ok := reflex[v]; ok {
 			panic("two valves, same name")
@@ -77,7 +70,7 @@ func (m *Eye) Focus(cognize ShortCognize) *EyeNerve {
 		v := v_
 		println(fmt.Sprintf("memory.Image == %v", v))
 		go func() {
-			m.nerve.bind(
+			m.nerve.recognize.Bind(
 				v, 
 				m.retina[v].Focus(
 					func(w interface{}) {

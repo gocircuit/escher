@@ -110,6 +110,9 @@ type MapReCognizer struct {
 func (p *MapReCognizer) Bind(name string, re *ReCognizer) {
 	p.Lock()
 	defer p.Unlock()
+	if p.t == nil {
+		p.t = make(map[string]*ReCognizer)
+	}
 	if _, present := p.t[name]; present {
 		panic(1)
 	}

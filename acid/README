@@ -1,0 +1,3 @@
+This directory contains hierarchies of Escher faculties,
+which can be mixed into executable hierarchies, using the
+-x and -y command-line arguments.

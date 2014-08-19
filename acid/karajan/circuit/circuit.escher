@@ -1,0 +1,19 @@
+
+// ProcessIgnoreIO is similar to circuit.Process while ignoring the standard streams of the target OS process.
+ProcessIgnoreIO {
+	proc circuit.Process
+	Spawn = proc.Spawn
+	Exit = proc.Exit
+	Server = proc.Server
+	Command = proc.Command
+	yio circuit.ForkIO
+	ignoreSpawn Ignore
+	clunkIn io.Clunk
+	clunkOut io.Clunk
+	clunkErr io.Clunk
+	yio._ = proc.IO
+	yio.Spawn = ignoreSpawn._
+	yio.Stdin = clunkIn._
+	yio.Stdout = clunkOut._
+	yio.Stderr = clunkErr._
+}

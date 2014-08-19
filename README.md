@@ -134,10 +134,10 @@ That directory is represented as the root in the faculty namespace inside the Es
 Escher compiles all files ending in `.escher` and attaches the resulting circuit designs
 to the namespaces corresponding to their directory parents.
 
-To materialize (i.e. run) an Escher program, use the mandatory `-src` flag to specify the path to the local 
+To materialize (i.e. run) an Escher program, use the mandatory `-x` flag to specify the path to the local 
 source directory.
 
-	escher -src tutorial/helloworld
+	escher -x tutorial/helloworld
 
 Escher materializes the circuit design named `main` in the root source directory, e.g.
 
@@ -146,6 +146,25 @@ Escher materializes the circuit design named `main` in the root source directory
 		s @show
 		s.Action = "¡Hello, world!"
 	}
+
+### Recombining programs
+
+To facilitate different embodiments (aka implementations) of gate functionalities,
+Escher allows the mixing of two source hierarchies into a single execution.
+
+For instance, the hierarchy `acid/karajan` contains circuit definitions (in terms
+of gates or other circuits), while the hierarchy `tutorial/circuit/autorespawn` 
+contains a root `main` circuit. To execution the latter, using the former as
+a “library” available in the visisble namespace, run for instance
+
+	escher \
+		-x tutorial/circuit/autorespawn \
+		-y acid/karajan \
+		-n ExecutionName \
+		-s Server=Xa3242440007ad57b \
+		-d 228.8.8.8:22
+
+![Auto-respawn tutorial](https://github.com/gocircuit/escher/raw/master/misc/img/proc1.png)
 
 ## Basic gates
 

@@ -21,6 +21,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io"
 	facultyos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/time"
+	_ "github.com/gocircuit/escher/faculty/text"
 )
 
 var (

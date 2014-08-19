@@ -36,6 +36,10 @@ func Init(a string) {
 	ns := faculty.Root.Refine("os")
 	ns.AddTerminal("Arg", Arg{})
 	ns.AddTerminal("Env", Env{})
+	ns.AddTerminal("Exit", Exit{})
+	ns.AddTerminal("Stdin", Stdin{})
+	ns.AddTerminal("Stdout", Stdout{})
+	ns.AddTerminal("Stderr", Stderr{})
 }
 
 var args map[string]string
@@ -98,4 +102,43 @@ func (h *env) CognizeName(v interface{}) {
 	ev := os.Getenv(n)
 	log.Printf("Environment %s=%s", n, ev)
 	h.valueRe.ReCognize(ev)
+}
+
+// Exit
+type Exit struct{}
+
+func (Exit) Materialize() think.Reflex {
+	_Endo, _Exo := think.NewSynapse()
+	go func() {
+		_Endo.Focus(cognizeExit)
+	}()
+	return think.Reflex{
+		"_": _Exo,
+	}
+}
+
+func cognizeExit(v interface{}) {
+	log.Printf("Exit %v", v)
+	os.Exit(v.(int))
+}
+
+// Stdin
+type Stdin struct{}
+
+func (Stdin) Materialize() think.Reflex {
+	return think.NewNounReflex(os.Stdin)
+}
+
+// Stdout
+type Stdout struct{}
+
+func (Stdout) Materialize() think.Reflex {
+	return think.NewNounReflex(os.Stdout)
+}
+
+// Stderr
+type Stderr struct{}
+
+func (Stderr) Materialize() think.Reflex {
+	return think.NewNounReflex(os.Stderr)
 }

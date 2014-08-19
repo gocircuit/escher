@@ -122,7 +122,6 @@ func (p *process) CognizeCommand(v interface{}) {
 }
 
 func (p *process) CognizeSpawn(v interface{}) {
-	println("SPAWN WAIT!!!!!")
 	p.spawn <- v
 	log.Printf("circuit process spawn (%v)", Linearize(fmt.Sprintf("%v", v)))
 }

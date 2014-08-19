@@ -75,9 +75,7 @@ func (h *delay) CognizeX(v interface{}) {
 	h.Unlock()
 	go func() {
 		time.Sleep(dur)
-		println("x->y")
 		h.y.ReCognize(v)
-		println("x->y √")
 	}()
 }
 
@@ -89,7 +87,6 @@ func (h *delay) CognizeY(v interface{}) {
 	h.Unlock()
 	go func() {
 		time.Sleep(dur)
-		println("y->x")
 		h.x.ReCognize(v)
 	}()
 }

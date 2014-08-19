@@ -62,7 +62,6 @@ func (h *junction) copy() []*think.ReCognizer {
 
 func (h *junction) Cognize(way int, v interface{}) {
 	<-h.connected
-	println("Junction <—", way)
 	ch := make(chan struct{})
 	hh := h.copy()
 	for i, re_ := range hh {
@@ -84,5 +83,4 @@ func (h *junction) Cognize(way int, v interface{}) {
 		<-ch
 	}
 	h.Once.Do(func() { close(h.born) })
-	println("¡spark!")
 }

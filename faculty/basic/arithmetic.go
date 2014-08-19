@@ -7,7 +7,7 @@
 package basic
 
 import (
-	"fmt"
+	// "fmt"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
@@ -39,31 +39,27 @@ type sum struct {
 }
 
 func (s *sum) ShortCognize(imp faculty.Impression) {
-	println(fmt.Sprintf("summing (%v)", Linearize(imp.Print("", " "))))
+	// println(fmt.Sprintf("summing (%v)", Linearize(imp.Print("", " "))))
 	<-s.connected
 	x, xk := AsInt(imp.Valve("X").Value())
 	y, yk := AsInt(imp.Valve("Y").Value())
 	su, sk := AsInt(imp.Valve("Sum").Value())
-	println(fmt.Sprintf("SUMMING X=%v/%T Y=%v/%T Sum=%v/%T", x, x, y, y, su, su))
+	// println(fmt.Sprintf("SUMMING X=%v/%T Y=%v/%T Sum=%v/%T", x, x, y, y, su, su))
 	switch imp.Index(0).Valve() { // determine which valve was most recently updated
 	case "X":
-		println("<-------X")
 		if !sk || !yk {
 			return
 		}
 		z := faculty.MakeImpression().Show(0, "X", x).Show(1, "Y", su-x).Show(2, "Sum", x+y)
 		go s.reply.ReCognize(z)
 	case "Y":
-		println("<-------Y")
 		if !sk || !xk {
 			return
 		}
 		z := faculty.MakeImpression().Show(0, "Y", y).Show(1, "Sum", x+y).Show(2, "X", su-y)
 		go s.reply.ReCognize(z)
 	case "Sum":
-		println("<-------SUM")
 		if !xk || !yk {
-			println("SUM SKIP")
 			return
 		}
 		z := faculty.MakeImpression().Show(0, "Sum", su).Show(1, "X", su-y).Show(2, "Y", su-x)

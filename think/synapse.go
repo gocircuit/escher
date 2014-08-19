@@ -7,7 +7,7 @@
 package think
 
 import (
-	"fmt"
+	// "fmt"
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
@@ -68,13 +68,11 @@ func (s *ReCognizer) ReCognize(value interface{}) {
 	v, okv := value.(Image)
 	if okr && okv {
 		if Same(r, v) {
-			println("SAAME!!")
 			return
 		}
 		s.memory = v.Copy()
 	} else {
 		if s.memory == value {
-			println(fmt.Sprintf("rcg=%v val=%v SAAME!! 222", s.memory, value))
 			return
 		}
 		s.memory = value

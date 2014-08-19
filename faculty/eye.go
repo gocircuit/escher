@@ -13,7 +13,6 @@ func (nerve *EyeNerve) ReCognize(imp Impression) {
 	for _, f_ := range order {
 		f := f_
 		go func() {
-			println("*RECOGNIZE", f.Valve(), f.Value())
 			nerve.recognize.ReCognize(f.Valve(), f.Value())
 			ch <- struct{}{}
 		}()

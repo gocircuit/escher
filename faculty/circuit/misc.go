@@ -16,12 +16,12 @@ import (
 type ForkExit struct{}
 
 func (ForkExit) Materialize() think.Reflex {
-	return basic.MaterializeFork("Forked", "Spawn", "Exit")
+	return basic.MaterializeFork("_", "Spawn", "Exit")
 }
 
 // ForkIO…
 type ForkIO struct{}
 
 func (ForkIO) Materialize() think.Reflex {
-	return basic.MaterializeFork("Forked", "Spawn", "Stdin", "Stdout", "Stderr")
+	return basic.MaterializeFork("_", "Spawn", "Stdin", "Stdout", "Stderr")
 }

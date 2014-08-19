@@ -115,6 +115,7 @@ func (p *process) CognizeCommand(v interface{}) {
 	for _, key := range args.Sort() {
 		p.arg.cmd.Args = append(p.arg.cmd.Args, args.String(key))
 	}
+	log.Printf("circuit.Proc command:\n   %v", img.Print("   ", "  "))
 	if p.arg.server != "" {
 		close(p.ready)
 	}

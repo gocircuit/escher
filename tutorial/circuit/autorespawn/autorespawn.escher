@@ -2,10 +2,10 @@
 main {
 	proc circuit.Process
 	srv os.Arg
-	w Way3
+	j J3
 	d time.Delay
-	forkIO circuit.ForkIO
-	forkExit circuit.ForkExit
+	yio circuit.ForkIO
+	yexit circuit.ForkExit
 
 	srv.Name = "Server"
 	proc.Server = srv.Value
@@ -14,25 +14,25 @@ main {
 		Args { "escher"}
 	}
 
-	proc.IO = forkIO.Forked
+	proc.IO = yio._
 
-	clunkIn io.Clunk
-	clunkOut io.Clunk
-	clunkErr io.Clunk
-	forkIO.Stdin = clunkIn.IO
-	forkIO.Stdout = clunkOut.IO
-	forkIO.Stderr = clunkErr.IO
+	cin io.Clunk
+	cout io.Clunk
+	cerr io.Clunk
+	yio.Stdin = cin.IO
+	yio.Stdout = cout.IO
+	yio.Stderr = cerr.IO
 
-	spawnIgn Ignore
-	forkIO.Spawn = spawnIgn.Subject
+	ignoreSpawn Ignore
+	yio.Spawn = ignoreSpawn.Subject
 
-	proc.Spawn = w.A1
-	w.A0 = 1
-	w.A2 = d.X
+	proc.Spawn = j.Z
+	j.Y = 1
+	j.X = d.Y
 	d.Duration = 1e9 // 1 second
-	d.Y = forkExit.Spawn
+	d.X = yexit.Spawn
 
-	exitIgn Ignore
-	proc.Exit = forkExit.Forked
-	forkExit.Exit = exitIgn.Subject
+	ignoreExit Ignore
+	proc.Exit = yexit._
+	yexit.Exit = ignoreExit.Subject
 }

@@ -7,6 +7,7 @@
 package os
 
 import (
+	"log"
 	"net/url"
 	"os"
 	"strings"
@@ -30,6 +31,7 @@ func Init(a string) {
 			panic(err)
 		}
 		args[nv[0]] = v
+		log.Printf("Argument %s=%s", nv[0], v)
 	}
 	ns := faculty.Root.Refine("os")
 	ns.AddTerminal("Arg", Arg{})
@@ -93,5 +95,7 @@ func (h *env) CognizeName(v interface{}) {
 	if !ok {
 		panic("non-string name perceived by os.env")
 	}
-	h.valueRe.ReCognize(os.Getenv(n))
+	ev := os.Getenv(n)
+	log.Printf("Environment %s=%s", n, ev)
+	h.valueRe.ReCognize(ev)
 }

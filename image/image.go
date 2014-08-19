@@ -148,6 +148,8 @@ func (x Image) Print(prefix, indent string) string {
 		switch u := v.(type) {
 		case Printer:
 			t = u.Print(prefix+indent, indent)
+		case string:
+			t = fmt.Sprintf("%q", u)
 		default:
 			t = fmt.Sprintf("%v", v)
 		}

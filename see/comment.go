@@ -17,7 +17,7 @@ func Space(src *Src) (newLine bool) {
 	for commentAndEndOfLine(src) {
 		newLine = true
 	}
-	if src.Len() == 0 {
+	if src.Len() == 0 || src.RuneAt(0) == '}' {
 		newLine = true
 	}
 	return

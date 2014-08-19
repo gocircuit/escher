@@ -62,6 +62,7 @@ var testPeer = []string{
 	`a;`,
 	`"abc"`,
 	`@ha,`,
+	`a { "cd" }`,
 }
 
 func TestPeer(t *testing.T) {
@@ -147,6 +148,45 @@ main {
 	t.Tick = s.Sum
 	s.X = 5e9
 	s.Y = out.Object
+}
+`,
+`
+main {
+	proc @circuit.Process
+	srv @os.Arg
+	w @Way3
+	d @time.Delay
+	forkIO @circuit.ForkIO
+	forkExit @circuit.ForkExit
+
+	srv.Name = "Server"
+	proc.Server = srv.Value
+	proc.Command = {
+		Path "/usr/bin/say"
+		// Args { "escher" }
+	}
+
+	proc.IO = forkIO.Forked
+
+	clunkIn @io.Clunk
+	clunkOut @io.Clunk
+	clunkErr @io.Clunk
+	forkIO.Stdin = clunkIn.IO
+	forkIO.Stdout = clunkOut.IO
+	forkIO.Stderr = clunkErr.IO
+
+	spawnIgn @Ignore
+	forkIO.Spawn = spawnIgn.Subject
+
+	proc.Spawn = w.A1
+	w.A0 = 1
+	w.A2 = d.X
+	d.Duration = 1e9 // 1 second
+	d.Y = forkExit.Spawn
+
+	exitIgn @Ignore
+	proc.Exit = forkExit.Forked
+	forkExit.Exit = exitIgn.Subject
 }
 `,
 }

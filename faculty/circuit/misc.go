@@ -19,9 +19,9 @@ func (ForkExit) Materialize() think.Reflex {
 	return basic.MaterializeFork("Forked", "Spawn", "Exit")
 }
 
-// ForkStdio…
-type ForkStdio struct{}
+// ForkIO…
+type ForkIO struct{}
 
-func (ForkStdio) Materialize() think.Reflex {
+func (ForkIO) Materialize() think.Reflex {
 	return basic.MaterializeFork("Forked", "Spawn", "Stdin", "Stdout", "Stderr")
 }

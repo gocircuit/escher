@@ -29,7 +29,7 @@ func Init(name string, client *client.Client) {
 	// ns.AddTerminal("Joining", Subscription{})
 
 	ns.AddTerminal("ForkExit", ForkExit{})
-	ns.AddTerminal("ForkStdio", ForkStdio{})
+	ns.AddTerminal("ForkIO", ForkIO{})
 
 
 	if name = strings.TrimSpace(name); name == "" {

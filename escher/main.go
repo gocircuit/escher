@@ -26,6 +26,7 @@ import (
 var (
 	flagLex  = flag.Bool("lex", false, "parse and show faculties without running")
 	flagDir  = flag.String("src", "", "program source directory")
+	flagFac  = flag.String("fac", "", "optional source directory of additional faculties")
 	flagName = flag.String("name", "", "execution name")
 	flagArg = flag.String("arg", "", "program arguments")
 	flagDiscover = flag.String("discover", "", "multicast UDP discovery address for circuit faculty, if needed")
@@ -40,15 +41,18 @@ func main() {
 	}
 	loadCircuitFaculty(*flagName, *flagDiscover)
 	if *flagLex {
-		fmt.Println(compile(*flagDir).Print("", "   "))
+		fmt.Println(compile(*flagDir, *flagFac).Print("", "   "))
 	} else {
-		think.Space(compile(*flagDir)).Materialize("main")
+		think.Space(compile(*flagDir, *flagFac)).Materialize("main")
 		select{} // wait forever
 	}
 }
 
-func compile(src string) understand.Faculty {
+func compile(src, fac string) understand.Faculty {
 	faculty.Root.UnderstandDirectory(src)
+	if fac != "" {
+		faculty.Root.UnderstandDirectory(fac)
+	}
 	return faculty.Root
 }
 

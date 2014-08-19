@@ -12,9 +12,9 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("3Way", Way3{})
-	faculty.Root.AddTerminal("4Way", Way4{})
-	faculty.Root.AddTerminal("5Way", Way5{})
+	faculty.Root.AddTerminal("Way3", Way3{})
+	faculty.Root.AddTerminal("Way4", Way4{})
+	faculty.Root.AddTerminal("Way5", Way5{})
 }
 
 // Way3
@@ -31,9 +31,9 @@ func (Way3) Materialize() think.Reflex {
 		h.re[2] = w2Endo.Focus(func(v interface{}) { h.Cognize(2, v) })
 	}()
 	return think.Reflex{
-		"0": w0Exo, 
-		"1": w1Exo, 
-		"2": w2Exo,
+		"A0": w0Exo, 
+		"A1": w1Exo, 
+		"A2": w2Exo,
 	}
 }
 
@@ -75,10 +75,10 @@ func (Way4) Materialize() think.Reflex {
 		h.re[3] = w3Endo.Focus(func(v interface{}) { h.Cognize(3, v) })
 	}()
 	return think.Reflex{
-		"0": w0Exo, 
-		"1": w1Exo, 
-		"2": w2Exo,
-		"3": w3Exo,
+		"A0": w0Exo, 
+		"A1": w1Exo, 
+		"A2": w2Exo,
+		"A3": w3Exo,
 	}
 }
 
@@ -122,11 +122,11 @@ func (Way5) Materialize() think.Reflex {
 		h.re[4] = w4Endo.Focus(func(v interface{}) { h.Cognize(4, v) })
 	}()
 	return think.Reflex{
-		"0": w0Exo, 
-		"1": w1Exo, 
-		"2": w2Exo,
-		"3": w3Exo,
-		"4": w4Exo,
+		"A0": w0Exo, 
+		"A1": w1Exo, 
+		"A2": w2Exo,
+		"A3": w3Exo,
+		"A4": w4Exo,
 	}
 }
 

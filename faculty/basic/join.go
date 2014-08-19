@@ -19,10 +19,10 @@ func MaterializeFork(name string, parts ...string) think.Reflex {
 		h := &join{
 			name: name,
 			parts: parts,
-			ready: make(chan struct{}),
+			connected: make(chan struct{}),
 		}
 		h.reply = eye.Focus(h.ShortCognize)
-		close(h.ready)
+		close(h.connected)
 	}()
 	return reflex
 }
@@ -30,12 +30,12 @@ func MaterializeFork(name string, parts ...string) think.Reflex {
 type join struct {
 	name string
 	parts []string
-	ready chan struct{}
-	reply *faculty.EyeReCognizer
+	connected chan struct{}
+	reply *faculty.EyeNerve
 }
 
 func (h *join) ShortCognize(mem faculty.Impression) {
-	<-h.ready
+	<-h.connected
 	recent := mem.Index(0) // most-recently perceived change
 	g := faculty.MakeImpression()
 	if recent.Valve() == h.name { // if most recently updated valve is the joined image

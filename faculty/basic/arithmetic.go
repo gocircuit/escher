@@ -34,7 +34,7 @@ func (Sum) Materialize() think.Reflex {
 
 type sum struct {
 	connected chan struct{}
-	reply *faculty.EyeReCognizer
+	reply *faculty.EyeNerve
 }
 
 func (s *sum) ShortCognize(imp faculty.Impression) {
@@ -85,7 +85,7 @@ func (Prod) Materialize() think.Reflex {
 
 type prod struct {
 	connected chan struct{}
-	reply *faculty.EyeReCognizer
+	reply *faculty.EyeNerve
 }
 
 func (s *prod) ShortCognize(imp faculty.Impression) {

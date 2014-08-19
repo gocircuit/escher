@@ -6,32 +6,35 @@
 
 package faculty
 
-func (attendant *EyeReCognizer) ReCognize(imp Impression) {
-	ch := make(chan struct{})
-	order := imp.Order()
-	for _, f_ := range order {
-		f := f_
-		go func() {
-			attendant.recognize[f.Valve()].ReCognize(f.Value())
-			ch <- struct{}{}
-		}()
-	}
-	for _ = range order {
-		<-ch
-	}
+func (nerve *EyeNerve) ReCognize(imp Impression) {
+	go func() {
+		ch := make(chan struct{})
+		order := imp.Order()
+		for _, f_ := range order {
+			f := f_
+			go func() {
+				nerve.recognize[f.Valve()].ReCognize(f.Value())
+				ch <- struct{}{}
+			}()
+		}
+		for _ = range order {
+			<-ch
+		}
+	}()
 }
 
-func (attendant *EyeReCognizer) cognizeWith(valve string, value interface{}) {
-	attendant.Lock()
-	attendant.age++
-	attendant.memory.Show(attendant.age, valve, value)
-	reply := attendant.formulate()
-	attendant.Unlock()
-	attendant.cognize(reply)
+func (nerve *EyeNerve) cognizeWith(valve string, value interface{}) {
+	<-nerve.connected
+	nerve.Lock()
+	nerve.age++
+	nerve.memory.Show(nerve.age, valve, value)
+	reply := nerve.formulate()
+	nerve.Unlock()
+	nerve.cognize(reply)
 }
 
-func (attendant *EyeReCognizer) formulate() Impression {
-	var sorting = attendant.memory.Order()
+func (nerve *EyeNerve) formulate() Impression {
+	var sorting = nerve.memory.Order()
 	imp := MakeImpression()
 	for i, f := range sorting {
 		imp.Show(i, f.Valve(), f.Value())

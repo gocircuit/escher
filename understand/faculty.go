@@ -7,7 +7,7 @@
 package understand
 
 import (
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -27,7 +27,6 @@ func (fty Faculty) Walk(walk ...string) (parent, endpoint interface{}) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
-	println(fmt.Sprintf("walk> %v", walk))
 	v, ok := fty[walk[0]]
 	if !ok {
 		panic("walk broken")

@@ -10,7 +10,7 @@ main {
 	proc.Server = srv.Value
 	proc.Command = {
 		Path "/usr/bin/say"
-		Args { "escher"}
+		Args { "say hi to escher who says"}
 	}
 
 	proc.IO = yio._

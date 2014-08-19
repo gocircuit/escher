@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("J3", Junction3{})
+	faculty.Root.AddTerminal("Junction", Junction3{})
 }
 
 // Junction3
@@ -45,19 +45,25 @@ type junction3 struct {
 
 func (h *junction3) Cognize(way int, v interface{}) {
 	<-h.ready
+	println("Junction: ", way)
 	ch := make(chan struct{})
-	for i, re := range h.re {
+	for i, re_ := range h.re {
+		println("Junction: ", i, "vs", way)
 		if i == way {
 			continue
 		}
+		re := re_
 		go func() {
 			re.ReCognize(v)
+			ch <- struct{}{}
 		}()
 	}
 	for i, _ := range h.re {
+		println("Junction#: ", i, "vs", way)
 		if i == way {
 			continue
 		}
 		<-ch
 	}
+	println("¡spark!")
 }

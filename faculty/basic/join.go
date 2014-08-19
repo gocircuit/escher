@@ -40,8 +40,8 @@ func (h *join) ShortCognize(mem faculty.Impression) {
 	g := faculty.MakeImpression()
 	if recent.Valve() == h.name { // if most recently updated valve is the joined image
 		joined := recent.Value().(Image)
-		for _, part := range h.parts {
-			g.Show(0, part, joined[part])
+		for i, part := range h.parts {
+			g.Show(i, part, joined[part])
 		}
 	} else { // if the most-recently updated valve is one of the parts, update the joined image
 		x := Make()

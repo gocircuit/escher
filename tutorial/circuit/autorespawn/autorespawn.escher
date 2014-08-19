@@ -1,7 +1,7 @@
 main {
 	proc circuit.Process
 	srv os.Arg
-	back J3
+	back Junction
 	delay time.Delay
 	yio circuit.ForkIO
 	yexit circuit.ForkExit
@@ -27,7 +27,11 @@ main {
 
 	proc.Spawn = back.Z
 	back.Y = 1
-	back.X = delay.Y
+	back.X = inc.Sum
+
+	inc Sum
+	inc.Y = 1
+	inc.X = delay.Y
 	delay.Duration = 1e9 // 1 second
 	delay.X = yexit.Spawn
 

@@ -10,7 +10,7 @@ package io
 import (
 	"io"
 	"io/ioutil"
-	"log"
+	// "log"
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
@@ -25,24 +25,28 @@ func init() {
 type Clunk struct{}
 
 func (Clunk) Materialize() think.Reflex {
-	ioEndo, ioExo := think.NewSynapse()
+	_Endo, _Exo := think.NewSynapse()
 	go func() {
-		ioEndo.Focus(clunk)
+		_Endo.Focus(clunk)
 	}()
 	return think.Reflex{
-		"_": ioExo, 
+		"_": _Exo, 
 	}
 }
 
 func clunk(v interface{}) {
-	defer log.Printf("clunked %T", v)
-	log.Printf("clunking %T", v)
-	switch t := v.(type) {
-	case io.Closer:
-		t.Close()
-	case io.Reader:
-		io.Copy(ioutil.Discard, t)
-	default:
-		panic("io.clunk sees unrecognized type")
-	}
+	println("clunking")
+	go func() {
+		switch t := v.(type) {
+		case io.ReadCloser:
+			io.Copy(ioutil.Discard, t)
+			t.Close()
+		case io.Reader:
+			io.Copy(ioutil.Discard, t)
+		case io.Closer:
+			t.Close()
+		default:
+			panic("io.clunk sees unrecognized type")
+		}
+	}()
 }

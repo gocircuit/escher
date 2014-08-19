@@ -30,11 +30,17 @@ func (Delay) Materialize() think.Reflex {
 	durEndo, durExo := think.NewSynapse()
 	go func() {
 		h := &delay{
-			ready: make(chan struct{}),
+			born: make(chan struct{}),
 		}
-		h.xRe = xEndo.Focus(h.CognizeX)
-		h.yRe = yEndo.Focus(h.CognizeY)
-		durEndo.Focus(h.CognizeDuration)
+		go func() {
+			h.xRe = xEndo.Focus(h.CognizeX)
+		}()
+		go func() {
+			h.yRe = yEndo.Focus(h.CognizeY)
+		}()
+		go func() {
+			durEndo.Focus(h.CognizeDuration)
+		}()
 	}()
 	return think.Reflex{
 		"X": xExo, 
@@ -47,7 +53,7 @@ type delay struct {
 	xRe *think.ReCognizer
 	yRe *think.ReCognizer
 	sync.Once
-	ready chan struct{}
+	born chan struct{}
 	sync.Mutex
 	dur time.Duration
 }
@@ -58,23 +64,29 @@ func (h *delay) CognizeDuration(v interface{}) {
 		panic("non-numeric delay duration")
 	}
 	h.dur = time.Duration(i)
-	h.Once.Do(func() { close(h.ready) })
+	h.Once.Do(func() { close(h.born) })
 }
 
 func (h *delay) CognizeX(v interface{}) {
-	<-h.ready
+	<-h.born
 	h.Lock()
 	dur := h.dur
 	h.Unlock()
-	time.Sleep(dur)
-	h.yRe.ReCognize(v)
+	go func() {
+		time.Sleep(dur)
+		println("x->y")
+		h.yRe.ReCognize(v)
+	}()
 }
 
 func (h *delay) CognizeY(v interface{}) {
-	<-h.ready
+	<-h.born
 	h.Lock()
 	dur := h.dur
 	h.Unlock()
-	time.Sleep(dur)
-	h.xRe.ReCognize(v)
+	go func() {
+		time.Sleep(dur)
+		println("y->x")
+		h.xRe.ReCognize(v)
+	}()
 }

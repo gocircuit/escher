@@ -9,7 +9,8 @@ package faculty
 func (attendant *EyeReCognizer) ReCognize(imp Impression) {
 	ch := make(chan struct{})
 	order := imp.Order()
-	for _, f := range order {
+	for _, f_ := range order {
+		f := f_
 		go func() {
 			attendant.recognize[f.Valve()].ReCognize(f.Value())
 			ch <- struct{}{}

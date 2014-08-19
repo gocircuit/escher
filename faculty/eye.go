@@ -7,20 +7,19 @@
 package faculty
 
 func (nerve *EyeNerve) ReCognize(imp Impression) {
-	go func() {
-		ch := make(chan struct{})
-		order := imp.Order()
-		for _, f_ := range order {
-			f := f_
-			go func() {
-				nerve.recognize[f.Valve()].ReCognize(f.Value())
-				ch <- struct{}{}
-			}()
-		}
-		for _ = range order {
-			<-ch
-		}
-	}()
+	<-nerve.connected
+	ch := make(chan struct{})
+	order := imp.Order()
+	for _, f_ := range order {
+		f := f_
+		go func() {
+			nerve.recognize[f.Valve()].ReCognize(f.Value())
+			ch <- struct{}{}
+		}()
+	}
+	for _ = range order {
+		<-ch
+	}
 }
 
 func (nerve *EyeNerve) cognizeWith(valve string, value interface{}) {

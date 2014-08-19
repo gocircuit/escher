@@ -42,7 +42,7 @@ func SeePeer(src *Src) (x Image) {
 		src.Become(t)
 		return Image{"": left}
 	} else { // two terms (name and value)
-		path, ok := left.(Path)
+		path, ok := left.(RootPath)
 		if !ok {
 			panic("peer name missing")
 		}

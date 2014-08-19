@@ -50,6 +50,13 @@ func (x Path) String() string {
 // RootPath
 type RootPath []string
 
+func (x RootPath) Name() Name {
+	if len(x) != 1 {
+		panic("path not a name")
+	}
+	return Name(x[0])
+}
+
 func (x RootPath) String() string {
 	return fmt.Sprintf("RootPath(%s)", stringifySlice(x))
 }

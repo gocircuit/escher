@@ -7,6 +7,8 @@
 package basic
 
 import (
+	// "fmt"
+
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 )
@@ -24,12 +26,12 @@ func (Junction3) Materialize() think.Reflex {
 	a2Endo, a2Exo := think.NewSynapse()
 	go func() {
 		h := &junction3{
-			ready: make(chan struct{}),
+			connected: make(chan struct{}),
 		}
 		h.re[0] = a0Endo.Focus(func(v interface{}) { h.Cognize(0, v) })
 		h.re[1] = a1Endo.Focus(func(v interface{}) { h.Cognize(1, v) })
 		h.re[2] = a2Endo.Focus(func(v interface{}) { h.Cognize(2, v) })
-		close(h.ready)
+		close(h.connected)
 	}()
 	return think.Reflex{
 		"X": a0Exo, 
@@ -39,16 +41,16 @@ func (Junction3) Materialize() think.Reflex {
 }
 
 type junction3 struct {
-	ready chan struct{}
+	connected chan struct{}
 	re [3]*think.ReCognizer
 }
 
 func (h *junction3) Cognize(way int, v interface{}) {
-	<-h.ready
-	println("Junction: ", way)
+	<-h.connected
+	println("Junction <—", way)
 	ch := make(chan struct{})
 	for i, re_ := range h.re {
-		println("Junction: ", i, "vs", way)
+		// println(fmt.Sprintf("Junction *** %T vs %T", i, way))
 		if i == way {
 			continue
 		}
@@ -59,7 +61,7 @@ func (h *junction3) Cognize(way int, v interface{}) {
 		}()
 	}
 	for i, _ := range h.re {
-		println("Junction#: ", i, "vs", way)
+		// println(fmt.Sprintf("Junction <…> %#T vs %#T ", i, way))
 		if i == way {
 			continue
 		}

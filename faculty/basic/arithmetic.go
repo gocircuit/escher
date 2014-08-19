@@ -7,7 +7,7 @@
 package basic
 
 import (
-	// "fmt"
+	"fmt"
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 )
@@ -24,41 +24,45 @@ func (Sum) Materialize() think.Reflex {
 	reflex, eye := faculty.NewEye("X", "Y", "Sum")
 	go func() {
 		x := &sum{
-			ready: make(chan struct{}),
+			connected: make(chan struct{}),
 		}
 		x.reply = eye.Focus(x.ShortCognize)
-		close(x.ready)
+		close(x.connected)
 	}()
 	return reflex
 }
 
 type sum struct {
-	ready chan struct{}
+	connected chan struct{}
 	reply *faculty.EyeReCognizer
 }
 
 func (s *sum) ShortCognize(imp faculty.Impression) {
-	// println(fmt.Sprintf("%T %T %T", imp.Valve("X").Value(), imp.Valve("Y").Value(), imp.Valve("Sum").Value()))
-	<-s.ready
+	println(fmt.Sprintf("summing %v", imp.Print("", "   ")))
+	<-s.connected
 	x, xk := AsInt(imp.Valve("X").Value())
 	y, yk := AsInt(imp.Valve("Y").Value())
 	su, sk := AsInt(imp.Valve("Sum").Value())
 	switch imp.Index(2).Valve() { // determine which valve we are computing for
 	case "X":
+		println("<-------X")
 		if !sk || !yk {
 			return
 		}
-		s.reply.ReCognize(faculty.MakeImpression().Show(0, "X", su - y))
+		go s.reply.ReCognize(faculty.MakeImpression().Show(0, "X", su - y))
 	case "Y":
+		println("<-------Y")
 		if !sk || !xk {
 			return
 		}
-		s.reply.ReCognize(faculty.MakeImpression().Show(0, "Y", su - x))
+		go s.reply.ReCognize(faculty.MakeImpression().Show(0, "Y", su - x))
 	case "Sum":
+		println("<-------SUM")
 		if !xk || !yk {
+			println("SUM SKIP")
 			return
 		}
-		s.reply.ReCognize(faculty.MakeImpression().Show(0, "Sum", x + y))
+		go s.reply.ReCognize(faculty.MakeImpression().Show(0, "Sum", x + y))
 	default:
 		panic(7)
 	}
@@ -71,22 +75,22 @@ func (Prod) Materialize() think.Reflex {
 	reflex, eye := faculty.NewEye("X", "Y", "Prod")
 	go func() {
 		x := &prod{
-			ready: make(chan struct{}),
+			connected: make(chan struct{}),
 		}
 		x.reply = eye.Focus(x.ShortCognize)
-		close(x.ready)
+		close(x.connected)
 	}()
 	return reflex
 }
 
 type prod struct {
-	ready chan struct{}
+	connected chan struct{}
 	reply *faculty.EyeReCognizer
 }
 
 func (s *prod) ShortCognize(imp faculty.Impression) {
 	// println(fmt.Sprintf("imp=%v", imp))
-	<-s.ready
+	<-s.connected
 	x, xk := AsInt(imp.Valve("X").Value())
 	y, yk := AsInt(imp.Valve("Y").Value())
 	pr, pk := AsInt(imp.Valve("Prod").Value())

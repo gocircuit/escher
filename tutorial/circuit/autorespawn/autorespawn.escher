@@ -1,11 +1,11 @@
 
 main {
-	proc @circuit.Process
-	srv @os.Arg
-	w @Way3
-	d @time.Delay
-	forkIO @circuit.ForkIO
-	forkExit @circuit.ForkExit
+	proc circuit.Process
+	srv os.Arg
+	w Way3
+	d time.Delay
+	forkIO circuit.ForkIO
+	forkExit circuit.ForkExit
 
 	srv.Name = "Server"
 	proc.Server = srv.Value
@@ -16,14 +16,14 @@ main {
 
 	proc.IO = forkIO.Forked
 
-	clunkIn @io.Clunk
-	clunkOut @io.Clunk
-	clunkErr @io.Clunk
+	clunkIn io.Clunk
+	clunkOut io.Clunk
+	clunkErr io.Clunk
 	forkIO.Stdin = clunkIn.IO
 	forkIO.Stdout = clunkOut.IO
 	forkIO.Stderr = clunkErr.IO
 
-	spawnIgn @Ignore
+	spawnIgn Ignore
 	forkIO.Spawn = spawnIgn.Subject
 
 	proc.Spawn = w.A1
@@ -32,7 +32,7 @@ main {
 	d.Duration = 1e9 // 1 second
 	d.Y = forkExit.Spawn
 
-	exitIgn @Ignore
+	exitIgn Ignore
 	proc.Exit = forkExit.Forked
 	forkExit.Exit = exitIgn.Subject
 }

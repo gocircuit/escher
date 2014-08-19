@@ -31,9 +31,8 @@ func Init(name string, client *client.Client) {
 	ns.AddTerminal("ForkExit", ForkExit{})
 	ns.AddTerminal("ForkIO", ForkIO{})
 
-
-	if name = strings.TrimSpace(name); name == "" {
-		panic("Escher/Circuit program executions must have a non-empty execution name")
+	if name = strings.TrimSpace(name); name == "" || client == nil {
+		// understand-only mode
 	}
 	program = &Program{
 		Name: name,

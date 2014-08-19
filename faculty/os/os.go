@@ -16,8 +16,8 @@ import (
 )
 
 func Init(a string) {
-	args = make(map[string]string)  // n1=v1:n2=v2
-	for _, p := range strings.Split(a, ":") {
+	args = make(map[string]string)  // n1=v1,n2=v2
+	for _, p := range strings.Split(a, ",") {
 		if p == "" {
 			continue
 		}

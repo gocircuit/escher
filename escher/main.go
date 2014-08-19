@@ -24,9 +24,9 @@ import (
 )
 
 var (
-	flagLex  = flag.Bool("lex", false, "parse and show faculties without running")
-	flagDir  = flag.String("src", "", "program source directory")
-	flagFac  = flag.String("fac", "", "optional source directory of additional faculties")
+	flagUn  = flag.Bool("un", false, "understand and show source without materializing it")
+	flagX  = flag.String("x", "", "program source directory X")
+	flagY  = flag.String("y", "", "program source directory Y")
 	flagName = flag.String("name", "", "execution name")
 	flagArg = flag.String("arg", "", "program arguments")
 	flagDiscover = flag.String("discover", "", "multicast UDP discovery address for circuit faculty, if needed")
@@ -36,28 +36,29 @@ func main() {
 	flag.Parse()
 	basic.Init(*flagName)
 	facultyos.Init(*flagArg)
-	if *flagDir == "" {
-		fatalf("source directory must be specified with -src")
-	}
 	loadCircuitFaculty(*flagName, *flagDiscover)
-	if *flagLex {
-		fmt.Println(compile(*flagDir, *flagFac).Print("", "   "))
+	if *flagX == "" && *flagY == "" {
+		fatalf("at least one source directory, X or Y, must be specified with -x or -y, respectively")
+	}
+	if *flagUn {
+		fmt.Println(compile(*flagX, *flagY).Print("", "   "))
 	} else {
-		think.Space(compile(*flagDir, *flagFac)).Materialize("main")
+		think.Space(compile(*flagX, *flagY)).Materialize("main")
 		select{} // wait forever
 	}
 }
 
-func compile(src, fac string) understand.Faculty {
-	faculty.Root.UnderstandDirectory(src)
-	if fac != "" {
-		faculty.Root.UnderstandDirectory(fac)
+func compile(x, y string) understand.Faculty {
+	faculty.Root.UnderstandDirectory(x)
+	if y != "" {
+		faculty.Root.UnderstandDirectory(y)
 	}
 	return faculty.Root
 }
 
 func loadCircuitFaculty(name, discover string) {
 	if discover == "" {
+		circuit.Init(name, nil)
 		return
 	}
 	if name == "" {

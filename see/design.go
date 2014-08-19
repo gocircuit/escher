@@ -58,7 +58,7 @@ func SeeArithmetic(src *Src) (x interface{}) {
 // Path …
 func SeePath(src *Src) interface{} {
 	t := src.Copy()
-	root := t.TryMatch("@")
+	aux := t.TryMatch("@")
 	var x []string
 	for {
 		id := Identifier(t)
@@ -74,10 +74,10 @@ func SeePath(src *Src) interface{} {
 		return nil
 	}
 	src.Become(t)
-	if root {
-		return RootPath(x)
+	if aux {
+		return Path(x)
 	}
-	return Path(x)
+	return RootPath(x)
 }
 
 // Int …

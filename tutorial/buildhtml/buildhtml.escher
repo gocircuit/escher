@@ -1,0 +1,17 @@
+main {
+	h header
+	h.Title = "Hello, world!"
+	show.Object = h._
+}
+
+header {
+	merge text.Merge
+	merge.First = `
+<html><head><title>
+`
+	merge.Second = Title
+	merge.Third = `
+</title></head></html>
+`
+	_ = merge._
+}

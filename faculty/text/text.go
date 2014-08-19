@@ -29,6 +29,7 @@ func (Merge) Materialize() think.Reflex {
 	_Endo, _Exo := think.NewSynapse()
 	firstEndo, firstExo := think.NewSynapse()
 	secondEndo, secondExo := think.NewSynapse()
+	thirdEndo, thirdExo := think.NewSynapse()
 	go func() {
 		h := &merge{
 			ready: make(chan struct{}),
@@ -37,11 +38,13 @@ func (Merge) Materialize() think.Reflex {
 		close(h.ready)
 		firstEndo.Focus(func(v interface{}) { h.CognizeArm(0, v) })
 		secondEndo.Focus(func(v interface{}) { h.CognizeArm(1, v) })
+		thirdEndo.Focus(func(v interface{}) { h.CognizeArm(2, v) })
 	}()
 	return think.Reflex{
 		"_": _Exo, 
 		"First": firstExo, 
 		"Second": secondExo, 
+		"Third": thirdExo, 
 	}
 }
 
@@ -49,7 +52,7 @@ type merge struct {
 	ready chan struct{}
 	reply *think.ReCognizer
 	sync.Mutex
-	arm [2]bytes.Buffer
+	arm [3]bytes.Buffer
 }
 
 func (h *merge) CognizeArm(index int, v interface{}) {
@@ -75,5 +78,6 @@ func (h *merge) CognizeArm(index int, v interface{}) {
 	var a bytes.Buffer
 	a.Write(h.arm[0].Bytes())
 	a.Write(h.arm[1].Bytes())
+	a.Write(h.arm[2].Bytes())
 	h.reply.ReCognize(a)
 }

@@ -188,6 +188,18 @@ main {
 	proc.Exit = forkExit.Forked
 	forkExit.Exit = exitIgn.Subject
 }
+`, `
+header {
+	merge text.Merge
+	merge.First = `  + "`" + `
+<html><head><title>
+` + "`" + `
+	merge.Second = Title
+	merge.Third = ` + "`" + `
+</title></head></html>
+` + "`" + `
+	_ = merge._
+}
 `,
 }
 

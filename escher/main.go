@@ -27,9 +27,9 @@ var (
 	flagUn  = flag.Bool("un", false, "understand and show source without materializing it")
 	flagX  = flag.String("x", "", "program source directory X")
 	flagY  = flag.String("y", "", "program source directory Y")
-	flagName = flag.String("name", "", "execution name")
-	flagArg = flag.String("arg", "", "program arguments")
-	flagDiscover = flag.String("discover", "", "multicast UDP discovery address for circuit faculty, if needed")
+	flagName = flag.String("n", "", "execution name")
+	flagArg = flag.String("a", "", "program arguments")
+	flagDiscover = flag.String("d", "", "multicast UDP discovery address for circuit faculty, if needed")
 )
 
 func main() {
@@ -49,7 +49,9 @@ func main() {
 }
 
 func compile(x, y string) understand.Faculty {
-	faculty.Root.UnderstandDirectory(x)
+	if x != "" {
+		faculty.Root.UnderstandDirectory(x)
+	}
 	if y != "" {
 		faculty.Root.UnderstandDirectory(y)
 	}

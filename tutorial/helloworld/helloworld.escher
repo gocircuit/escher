@@ -9,6 +9,6 @@
 // the circuit named “main”.
 
 main {
-	s @Show
+	s Show
 	s.Object = "¡Hello, world!"
 }

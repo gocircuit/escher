@@ -1,8 +1,8 @@
 main {
 	proc circuit.Process
 	srv os.Arg
-	j J3
-	d time.Delay
+	back J3
+	delay time.Delay
 	yio circuit.ForkIO
 	yexit circuit.ForkExit
 
@@ -15,21 +15,21 @@ main {
 
 	proc.IO = yio._
 
-	cin io.Clunk
-	cout io.Clunk
-	cerr io.Clunk
-	yio.Stdin = cin._
-	yio.Stdout = cout._
-	yio.Stderr = cerr._
+	clunkIn io.Clunk
+	clunkOut io.Clunk
+	clunkErr io.Clunk
+	yio.Stdin = clunkIn._
+	yio.Stdout = clunkOut._
+	yio.Stderr = clunkErr._
 
 	ignoreSpawn Ignore
 	yio.Spawn = ignoreSpawn._
 
-	proc.Spawn = j.Z
-	j.Y = 1
-	j.X = d.Y
-	d.Duration = 1e9 // 1 second
-	d.X = yexit.Spawn
+	proc.Spawn = back.Z
+	back.Y = 1
+	back.X = delay.Y
+	delay.Duration = 1e9 // 1 second
+	delay.X = yexit.Spawn
 
 	ignoreExit Ignore
 	proc.Exit = yexit._

@@ -163,7 +163,7 @@ main {
 	proc.Server = srv.Value
 	proc.Command = {
 		Path "/usr/bin/say"
-		// Args { "escher" }
+		Args { "escher" }
 	}
 
 	proc.IO = forkIO.Forked

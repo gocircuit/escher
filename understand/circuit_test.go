@@ -74,5 +74,5 @@ func TestFaculty(t *testing.T) {
 		}
 	}()
 	ns := NewFaculty()
-	ns.UnderstandDirectory("/Users/petar/0/src/github.com/gocircuit/escher/understand/testdata")
+	ns.UnderstandDirectory("./testdata")
 }

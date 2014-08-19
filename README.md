@@ -282,8 +282,6 @@ non-obvious and/or recursive ones.
 * Code speed/space/etc optimizations reduce to a simple sub-graph
 replacement game, highly transparent to and customizable by the user.
 
-* 
-
 ## And…
 
 …if you think this language is `#KingOfMetaphor`, please, tweet to

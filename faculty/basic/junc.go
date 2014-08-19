@@ -46,6 +46,7 @@ func (Junction) Materialize() think.Reflex {
 
 type junction struct {
 	connected chan struct{}
+	sync.Once
 	born chan struct{}
 	sync.Mutex
 	reply [3]*think.ReCognizer
@@ -82,6 +83,6 @@ func (h *junction) Cognize(way int, v interface{}) {
 		}
 		<-ch
 	}
-	close(h.born) // ??
+	h.Once.Do(func() { close(h.born) })
 	println("¡spark!")
 }

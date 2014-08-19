@@ -7,7 +7,7 @@
 package circuit
 
 import (
-	// "fmt"
+	"fmt"
 	"log"
 	"sync"
 
@@ -115,7 +115,7 @@ func (p *process) CognizeCommand(v interface{}) {
 	for _, key := range args.Sort() {
 		p.arg.cmd.Args = append(p.arg.cmd.Args, args.String(key))
 	}
-	log.Printf("circuit process command:\n%v", img.Print("", "  "))
+	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t")))
 	if p.arg.server != "" {
 		close(p.ready)
 	}
@@ -124,7 +124,7 @@ func (p *process) CognizeCommand(v interface{}) {
 func (p *process) CognizeSpawn(v interface{}) {
 	println("SPAWN WAIT!!!!!")
 	p.spawn <- v
-	log.Printf("circuit process spawn:\n%v", v)
+	log.Printf("circuit process spawn (%v)", Linearize(fmt.Sprintf("%v", v)))
 }
 
 func (p *process) loop() {
@@ -145,7 +145,7 @@ func (p *process) loop() {
 			}
 			p.reExit.ReCognize(x)
 		}
-		log.Printf("circuit process exit:\n%v", x)
+		log.Printf("circuit process exit sent (%v)", Linearize(fmt.Sprintf("%v", x)))
 	}
 }
 
@@ -167,13 +167,13 @@ func (p *process) spawnProcess(spwn interface{}) error {
 		"Stdout": proc.Stdout(),
 		"Stderr": proc.Stderr(),
 	}
-	log.Printf("circuit process io:\n%v", spwn)
+	log.Printf("circuit process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	p.reIO.ReCognize(g)
-	log.Printf("circuit process waiting:\n%v", spwn)
+	log.Printf("circuit process waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	stat, err := proc.Wait()
 	if err != nil {
 		panic("process wait aborted by user")
 	}
-	log.Printf("circuit process exit:\n%v", spwn)
+	log.Printf("circuit process exit (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	return stat.Exit
 }

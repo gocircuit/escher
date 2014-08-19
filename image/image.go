@@ -159,11 +159,11 @@ func (x Image) Print(prefix, indent string) string {
 	return w.String()
 }
 
-func linearize(s string) string {
+func Linearize(s string) string {
 	x := []byte(s)
 	for i, b := range x {
 		if b == '\n' {
-			x[i] = ';'
+			x[i] = ','
 		}
 		if b == '\t' {
 			x[i] = ' '

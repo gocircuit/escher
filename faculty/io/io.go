@@ -35,7 +35,6 @@ func (Clunk) Materialize() think.Reflex {
 }
 
 func clunk(v interface{}) {
-	println("clunking")
 	go func() {
 		switch t := v.(type) {
 		case io.ReadCloser:

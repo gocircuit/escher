@@ -7,7 +7,7 @@
 package faculty
 
 import (
-	"fmt"
+	// "fmt"
 	"sync"
 
 	"github.com/gocircuit/escher/think"
@@ -68,7 +68,6 @@ func (m *Eye) Focus(cognize ShortCognize) *EyeNerve {
 	ch := make(chan struct{})
 	for v_, _ := range m.nerve.memory.Imp.Image {
 		v := v_
-		println(fmt.Sprintf("memory.Image == %v", v))
 		go func() {
 			m.nerve.recognize.Bind(
 				v, 

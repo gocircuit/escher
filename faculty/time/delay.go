@@ -34,8 +34,8 @@ func (Delay) Materialize() think.Reflex {
 			born: make(chan struct{}),
 		}
 		go func() {
-			h.xRe = xEndo.Focus(h.CognizeX)
-			h.yRe = yEndo.Focus(h.CognizeY)
+			h.x.Bind(xEndo.Focus(h.CognizeX))
+			h.y.Bind(yEndo.Focus(h.CognizeY))
 			close(h.connected)
 		}()
 		go func() {
@@ -50,8 +50,7 @@ func (Delay) Materialize() think.Reflex {
 }
 
 type delay struct {
-	xRe *think.ReCognizer
-	yRe *think.ReCognizer
+	x, y think.PtrReCognizer
 	connected chan struct{}
 	sync.Once
 	born chan struct{}
@@ -77,7 +76,7 @@ func (h *delay) CognizeX(v interface{}) {
 	go func() {
 		time.Sleep(dur)
 		println("x->y")
-		h.yRe.ReCognize(v)
+		h.y.ReCognize(v)
 		println("x->y √")
 	}()
 }
@@ -91,7 +90,6 @@ func (h *delay) CognizeY(v interface{}) {
 	go func() {
 		time.Sleep(dur)
 		println("y->x")
-		h.xRe.ReCognize(v)
-		println("y->x √")
+		h.x.ReCognize(v)
 	}()
 }

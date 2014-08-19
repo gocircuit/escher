@@ -8,6 +8,8 @@ package think
 
 import (
 	"fmt"
+	"sync"
+
 	. "github.com/gocircuit/escher/image"
 )
 
@@ -19,20 +21,30 @@ type Cognize func(value interface{})
 type Synapse struct {
 	learn <-chan Cognize
 	teach chan<- Cognize
-	recognizer ReCognizer
+	sync.Mutex
+	q *ReCognizer
 }
 
 func NewSynapse() (x, y *Synapse) {
 	xy, yx := make(chan Cognize, 1), make(chan Cognize, 1)
-	x = &Synapse{learn: xy, teach: yx}
-	y = &Synapse{learn: yx, teach: xy}
+	x = &Synapse{
+		learn: xy, 
+		teach: yx,
+	}
+	y = &Synapse{
+		learn: yx, 
+		teach: xy,
+	}
 	return
 }
 
 func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
 	m.teach <- cognize
-	m.recognizer.reciprocal = <-m.learn
-	return &m.recognizer
+	q := <-m.learn
+	m.Lock()
+	defer m.Unlock()
+	m.q = &ReCognizer{q: q}
+	return m.q
 }
 
 // Merge attaches two endpoints, of distinct memories, together.
@@ -43,26 +55,70 @@ func Merge(m1, m2 *Synapse) {
 
 // The two endpoints of a Synapse are ReCognizer objects.
 type ReCognizer struct {
-	reciprocal Cognize
-	recognized interface{}
+	q Cognize
+	sync.Mutex
+	memory interface{}
 }
 
 // ReCognize sends value to the reciprocal side of this synapse.
 func (s *ReCognizer) ReCognize(value interface{}) {
-	r, okr := s.recognized.(Image)
+	s.Lock()
+	defer s.Unlock()
+	r, okr := s.memory.(Image)
 	v, okv := value.(Image)
 	if okr && okv {
 		if Same(r, v) {
 			println("SAAME!!")
 			return
 		}
-		s.recognized = v.Copy()
+		s.memory = v.Copy()
 	} else {
-		if s.recognized == value {
-			println(fmt.Sprintf("rcg=%v val=%v SAAME!! 222", s.recognized, value))
+		if s.memory == value {
+			println(fmt.Sprintf("rcg=%v val=%v SAAME!! 222", s.memory, value))
 			return
 		}
-		s.recognized = value
+		s.memory = value
 	}
-	s.reciprocal(value)
+	s.q(value)
+}
+
+// PtrReCognizer
+type PtrReCognizer struct {
+	sync.Mutex
+	q *ReCognizer
+}
+
+func (p *PtrReCognizer) Bind(q *ReCognizer) {
+	p.Lock()
+	defer p.Unlock()
+	p.q = q
+}
+
+func (p *PtrReCognizer) ReCognize(v interface{}) {
+	p.Lock()
+	q := p.q
+	p.Unlock()
+	q.ReCognize(v)
+}
+
+// MapReCognizer
+type MapReCognizer struct {
+	sync.Mutex
+	t map[string]*ReCognizer
+}
+
+func (p *MapReCognizer) Bind(name string, re *ReCognizer) {
+	p.Lock()
+	defer p.Unlock()
+	if _, present := p.t[name]; present {
+		panic(1)
+	}
+	p.t[name] = re
+}
+
+func (p *MapReCognizer) ReCognize(name string, v interface{}) {
+	p.Lock()
+	q := p.t[name]
+	p.Unlock()
+	q.ReCognize(v)
 }

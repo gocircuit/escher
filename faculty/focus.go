@@ -27,10 +27,19 @@ type ShortCognize func(Impression)
 type EyeNerve struct {
 	cognize ShortCognize
 	connected chan struct{}
-	recognize map[string]*think.ReCognizer
+	recognize think.MapReCognizer
+	memory 
+}
+
+type ReCognizer struct {
 	sync.Mutex
-	age int
-	memory Impression
+	t map[string]*think.ReCognizer
+}
+
+type memory struct {
+	sync.Mutex
+	Age int
+	Imp Impression
 }
 
 // NewEye creates a new short-term memory mechanism, called an eye.
@@ -40,8 +49,12 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 		retina: make(map[string]*think.Synapse),
 		nerve: EyeNerve{
 			connected: make(chan struct{}),
-			recognize: make(map[string]*think.ReCognizer),
-			memory: MakeImpression(),
+			recognize: recognize{
+				t: make(map[string]*think.ReCognizer),
+			},
+			memory: memory{
+				Imp: MakeImpression(),
+			},
 		},
 	}
 	for _, v := range valve {
@@ -49,30 +62,33 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 			panic("two valves, same name")
 		}
 		reflex[v], m.retina[v] = think.NewSynapse()
-		m.nerve.memory.Show(0, v, nil)
+		m.nerve.memory.Imp.Show(0, v, nil)
 	}
 	return reflex, m
 }
 
 // Focus binds this short memory reflex to the response function cognize.
 func (m *Eye) Focus(cognize ShortCognize) *EyeNerve {
-	m.nerve.Lock()  // Locking prevents individual competing Focus invocations 
-	defer m.nerve.Unlock()  // from initiating cognition before all valves/synapses have been attached.
+	m.nerve.memory.Lock()  // Locking prevents individual competing Focus invocations 
+	defer m.nerve.memory.Unlock()  // from initiating cognition before all valves/synapses have been attached.
 	m.nerve.cognize = cognize
 	ch := make(chan struct{})
-	for v_, _ := range m.nerve.memory.Image {
+	for v_, _ := range m.nerve.memory.Imp.Image {
 		v := v_
 		println(fmt.Sprintf("memory.Image == %v", v))
 		go func() {
-			m.nerve.recognize[v] = m.retina[v].Focus(
-				func(w interface{}) {
-					m.nerve.cognizeWith(v, w)
-				},
+			m.nerve.bind(
+				v, 
+				m.retina[v].Focus(
+					func(w interface{}) {
+						m.nerve.cognizeWith(v, w)
+					},
+				),
 			)
 			ch <- struct{}{}
 		}()
 	}
-	for range m.nerve.memory.Image {
+	for range m.nerve.memory.Imp.Image {
 		<-ch
 	}
 	close(m.nerve.connected)

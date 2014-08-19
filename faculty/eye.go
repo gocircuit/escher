@@ -6,6 +6,22 @@
 
 package faculty
 
+import (
+	"github.com/gocircuit/escher/think"
+)
+
+func (nerve *EyeNerve) lookup(name string) *think.ReCognizer {
+	nerve.recognize.Lock()
+	defer nerve.recognize.Unlock()
+	return nerve.recognize.t[name]
+}
+
+func (nerve *EyeNerve) bind(name string, q *think.ReCognizer) {
+	nerve.recognize.Lock()
+	defer nerve.recognize.Unlock()
+	nerve.recognize.t[name] = q
+}
+
 func (nerve *EyeNerve) ReCognize(imp Impression) {
 	<-nerve.connected
 	ch := make(chan struct{})
@@ -13,7 +29,7 @@ func (nerve *EyeNerve) ReCognize(imp Impression) {
 	for _, f_ := range order {
 		f := f_
 		go func() {
-			nerve.recognize[f.Valve()].ReCognize(f.Value())
+			nerve.lookup(f.Valve()).ReCognize(f.Value())
 			ch <- struct{}{}
 		}()
 	}
@@ -24,16 +40,16 @@ func (nerve *EyeNerve) ReCognize(imp Impression) {
 
 func (nerve *EyeNerve) cognizeWith(valve string, value interface{}) {
 	<-nerve.connected
-	nerve.Lock()
-	nerve.age++
-	nerve.memory.Show(nerve.age, valve, value)
+	nerve.memory.Lock()
+	nerve.memory.Age++
+	nerve.memory.Imp.Show(nerve.memory.Age, valve, value)
 	reply := nerve.formulate()
-	nerve.Unlock()
+	nerve.memory.Unlock()
 	nerve.cognize(reply)
 }
 
 func (nerve *EyeNerve) formulate() Impression {
-	var sorting = nerve.memory.Order()
+	var sorting = nerve.memory.Imp.Order()
 	imp := MakeImpression()
 	for i, f := range sorting {
 		imp.Show(i, f.Valve(), f.Value())

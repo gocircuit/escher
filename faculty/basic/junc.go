@@ -8,29 +8,33 @@ package basic
 
 import (
 	// "fmt"
+	"sync"
 
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Root.AddTerminal("Junction", Junction3{})
+	faculty.Root.AddTerminal("Junction", Junction{})
 }
 
-// Junction3
-type Junction3 struct{}
+// Junction
+type Junction struct{}
 
-func (Junction3) Materialize() think.Reflex {
+func (Junction) Materialize() think.Reflex {
 	a0Endo, a0Exo := think.NewSynapse()
 	a1Endo, a1Exo := think.NewSynapse()
 	a2Endo, a2Exo := think.NewSynapse()
 	go func() {
-		h := &junction3{
+		h := &junction{
 			connected: make(chan struct{}),
+			born: make(chan struct{}),
 		}
-		h.re[0] = a0Endo.Focus(func(v interface{}) { h.Cognize(0, v) })
-		h.re[1] = a1Endo.Focus(func(v interface{}) { h.Cognize(1, v) })
-		h.re[2] = a2Endo.Focus(func(v interface{}) { h.Cognize(2, v) })
+		h.Lock()
+		defer h.Unlock()
+		h.reply[0] = a0Endo.Focus(func(v interface{}) { h.Cognize(0, v) })
+		h.reply[1] = a1Endo.Focus(func(v interface{}) { h.Cognize(1, v) })
+		h.reply[2] = a2Endo.Focus(func(v interface{}) { h.Cognize(2, v) })
 		close(h.connected)
 	}()
 	return think.Reflex{
@@ -40,16 +44,27 @@ func (Junction3) Materialize() think.Reflex {
 	}
 }
 
-type junction3 struct {
+type junction struct {
 	connected chan struct{}
-	re [3]*think.ReCognizer
+	born chan struct{}
+	sync.Mutex
+	reply [3]*think.ReCognizer
 }
 
-func (h *junction3) Cognize(way int, v interface{}) {
+func (h *junction) copy() []*think.ReCognizer {
+	h.Lock()
+	defer h.Unlock()
+	r := make([]*think.ReCognizer, 3)
+	copy(r, h.reply[:])
+	return r
+}
+
+func (h *junction) Cognize(way int, v interface{}) {
 	<-h.connected
 	println("Junction <—", way)
 	ch := make(chan struct{})
-	for i, re_ := range h.re {
+	hh := h.copy()
+	for i, re_ := range hh {
 		// println(fmt.Sprintf("Junction *** %T vs %T", i, way))
 		if i == way {
 			continue
@@ -60,12 +75,13 @@ func (h *junction3) Cognize(way int, v interface{}) {
 			ch <- struct{}{}
 		}()
 	}
-	for i, _ := range h.re {
+	for i, _ := range hh {
 		// println(fmt.Sprintf("Junction <…> %#T vs %#T ", i, way))
 		if i == way {
 			continue
 		}
 		<-ch
 	}
+	close(h.born) // ??
 	println("¡spark!")
 }

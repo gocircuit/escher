@@ -52,29 +52,33 @@ type merge struct {
 	ready chan struct{}
 	reply *think.ReCognizer
 	sync.Mutex
-	arm [3]bytes.Buffer
+	arm [3]*bytes.Buffer
 }
 
 func (h *merge) CognizeArm(index int, v interface{}) {
 	<-h.ready
 	h.Lock()
 	defer h.Unlock()
-	h.arm[index].Reset()
 	switch t := v.(type) {
 	case string:
-		h.arm[index].WriteString(t)
+		h.arm[index] = bytes.NewBufferString(t)
 	case []byte:
-		h.arm[index].Write(t)
+		h.arm[index] = bytes.NewBuffer(t)
 	case byte:
-		h.arm[index].WriteByte(t)
+		h.arm[index] = bytes.NewBuffer([]byte{t})
 	case rune:
+		h.arm[index] = bytes.NewBuffer(nil)
 		h.arm[index].WriteRune(t)
 	case io.Reader:
-		io.Copy(&h.arm[index], t)
+		h.arm[index] = bytes.NewBuffer(nil)
+		io.Copy(h.arm[index], t)
 	default:
 		panic("unsupported")
 	}
 	// merge
+	if h.arm[0] == nil || h.arm[1] == nil || h.arm[2] == nil {
+		return
+	}
 	var a bytes.Buffer
 	a.Write(h.arm[0].Bytes())
 	a.Write(h.arm[1].Bytes())

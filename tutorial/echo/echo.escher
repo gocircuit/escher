@@ -5,7 +5,7 @@
 // see history clearly.
 
 main {
-	in  @See
-	out @Show
+	in  See
+	out Show
 	out.Object = in.Subject
 }

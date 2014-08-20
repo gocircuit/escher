@@ -117,7 +117,7 @@ func (x *Circuit) addPeer(name string, design interface{}) {
 func (x *Circuit) reserveValve(peer, valve string) *Valve {
 	p, ok := x.Peer[peer]
 	if !ok {
-		panic("peer is missing")
+		panic(fmt.Sprintf("peer %v is missing", peer))
 	}
 	v, ok := p.Valve[valve]
 	if ok {

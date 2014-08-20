@@ -79,5 +79,5 @@ func (h *merge) CognizeArm(index int, v interface{}) {
 	a.Write(h.arm[0].Bytes())
 	a.Write(h.arm[1].Bytes())
 	a.Write(h.arm[2].Bytes())
-	h.reply.ReCognize(a)
+	h.reply.ReCognize(a.String())
 }

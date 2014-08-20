@@ -64,6 +64,7 @@ func (cir *Circuit) seeMatching(s Image) {
 					m.Join[i] = &ValveJoin{
 						Valve: v,
 					}
+					cir.Valve = append(cir.Valve, v)
 				} else {
 					m.Join[i] = &PeerJoin{
 						Peer: string(p),
@@ -89,7 +90,10 @@ type Circuit struct {
 
 func (c *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%s (", c.Name)
+	fmt.Fprintf(&w, "%s ", c.Name)
+	if len(c.Valve) > 0 {
+		w.WriteString("(")
+	}
 	for i, v := range c.Valve {
 		var comma = ", "
 		if i + 1 == len(c.Valve) {
@@ -97,7 +101,11 @@ func (c *Circuit) Print(prefix, indent string) string {
 		}
 		fmt.Fprintf(&w, "%s%s", v, comma)
 	}
-	w.WriteString(") {\n")
+	if len(c.Valve) > 0 {
+		w.WriteString(") {\n")
+	} else {
+		w.WriteString("{\n")
+	}
 	for _, p := range c.Peer {
 		fmt.Fprintf(&w, "%s%s%v\n", prefix, indent, p)
 	}

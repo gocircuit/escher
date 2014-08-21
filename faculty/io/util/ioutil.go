@@ -35,7 +35,7 @@ func (WriteFile) Materialize() think.Reflex {
 		contentEndo.Focus(h.CognizeContent)
 	}()
 	return think.Reflex{
-		"FileName": nameExo, 
+		"Name": nameExo, 
 		"Content": contentExo, 
 	}
 }

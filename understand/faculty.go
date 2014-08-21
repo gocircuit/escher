@@ -47,8 +47,8 @@ func (fty Faculty) Walk(walk ...string) (parent, endpoint interface{}) {
 }
 
 func (fty Faculty) Refine(name string) (child Faculty) {
-	if _, ok := fty[name]; ok {
-		panic(7)
+	if x, ok := fty[name]; ok {
+		return x.(Faculty)
 	}
 	child = NewFaculty()
 	fty[name] = child

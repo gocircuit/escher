@@ -20,7 +20,7 @@ import (
 func init() {
 	ns := faculty.Root.Refine("text")
 	ns.AddTerminal("Merge", Merge{})
-	ns.AddTerminal("Place", Place{})
+	ns.AddTerminal("Form", Form{})
 }
 
 // Merge …

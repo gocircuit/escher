@@ -15,15 +15,15 @@ import (
 	"github.com/gocircuit/escher/think"
 )
 
-// Place …
-type Place struct{}
+// Form …
+type Form struct{}
 
-func (Place) Materialize() think.Reflex {
+func (Form) Materialize() think.Reflex {
 	dataEndo, dataExo := think.NewSynapse()
 	formEndo, formExo := think.NewSynapse()
 	_Endo, _Exo := think.NewSynapse()
 	go func() {
-		h := &place{
+		h := &form{
 			formed: make(chan struct{}),
 		}
 		h.ReCognizer = _Endo.Focus(think.DontCognize)
@@ -37,14 +37,14 @@ func (Place) Materialize() think.Reflex {
 	}
 }
 
-type place struct {
+type form struct {
 	sync.Mutex
 	t *template.Template
 	formed chan struct{}
 	*think.ReCognizer
 }
 
-func (h *place) CognizeForm(v interface{}) {
+func (h *form) CognizeForm(v interface{}) {
 	h.Lock()
 	defer h.Unlock()
 	var err error
@@ -55,7 +55,7 @@ func (h *place) CognizeForm(v interface{}) {
 	close(h.formed)
 }
 
-func (h *place) CognizeData(v interface{}) {
+func (h *form) CognizeData(v interface{}) {
 	<-h.formed
 	h.Lock()
 	defer h.Unlock()

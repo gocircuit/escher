@@ -1,0 +1,9 @@
+
+// Comprehend converts language into concepts.
+Comprehend {
+	see i.See
+	understand i.Understand
+	Source = see.Source
+	see.Seen = understand.Seen
+	understand.Understood = Concept
+}

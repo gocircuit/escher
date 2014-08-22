@@ -8,7 +8,7 @@
 package i
 
 import (
-	esee "github.com/gocircuit/escher/see"
+	es "github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
@@ -17,6 +17,7 @@ import (
 func init() {
 	ns := faculty.Root.Refine("i")
 	ns.AddTerminal("See", See{})
+	ns.AddTerminal("Understand", Understand{})
 }
 
 // See
@@ -45,5 +46,5 @@ func (h *see) CognizeSource(v interface{}) {
 	if !ok {
 		panic("non-string name perceived by os.see")
 	}
-	h.seen.ReCognize(esee.SeeCircuit(esee.NewSrcString(src)))
+	h.seen.ReCognize(es.SeeCircuit(es.NewSrcString(src)))
 }

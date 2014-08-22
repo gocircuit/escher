@@ -15,19 +15,19 @@ import (
 // TODO: Eventually Circuit can be represented as an image.Image
 type Circuit struct {
 	Genus []*see.Circuit // origin
-	Name string
-	Peer map[string]*Peer // peers and self; self corresponds to the empty string
+	Name  string
+	Peer  map[string]*Peer // peers and self; self corresponds to the empty string
 }
 
 type Peer struct {
-	Name string
+	Name   string
 	Design interface{}
-	Valve map[string]*Valve
+	Valve  map[string]*Valve
 }
 
 type Valve struct {
-	Of *Peer
-	Name string
+	Of       *Peer
+	Name     string
 	Matching *Valve
 }
 
@@ -51,8 +51,8 @@ func Understand(s *see.Circuit) *Circuit {
 
 	// Add “this” circuit as the empty-string peer
 	x.Peer[""] = &Peer{
-		Name: "",
-		Valve: make(map[string]*Valve),
+		Name:   "",
+		Valve:  make(map[string]*Valve),
 		Design: nil,
 	}
 
@@ -106,8 +106,8 @@ func (x *Circuit) addPeer(name string, design interface{}) {
 		panic("peer is mising design")
 	}
 	x.Peer[name] = &Peer{
-		Name: name,
-		Valve: make(map[string]*Valve),
+		Name:   name,
+		Valve:  make(map[string]*Valve),
 		Design: design,
 	}
 }
@@ -124,8 +124,8 @@ func (x *Circuit) reserveValve(peer, valve string) *Valve {
 		return v
 	}
 	v = &Valve{
-		Of: p,
-		Name: valve,
+		Of:       p,
+		Name:     valve,
 		Matching: nil,
 	}
 	p.Valve[valve] = v

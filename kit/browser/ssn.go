@@ -19,9 +19,9 @@ import (
 
 // Session is a websocket session abstraction
 type Session struct {
-	s, r sync.Mutex
+	s, r    sync.Mutex
 	carrier *websocket.Conn
-	conn struct {
+	conn    struct {
 		sync.Mutex
 		id map[string]*Conn
 	}
@@ -43,7 +43,7 @@ func (ssn *Session) send(id string, pay string) {
 	ssn.s.Lock()
 	defer ssn.s.Unlock()
 	msg := &Msg{
-		ID: id,
+		ID:  id,
 		Pay: pay,
 	}
 	if err := websocket.JSON.Send(ssn.carrier, msg); err != nil {

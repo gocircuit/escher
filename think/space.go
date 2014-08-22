@@ -48,7 +48,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 			peers[peer.Name] = x.Materialize([]string(t)...)
 		case see.Path: // e.g. “hello.who.is.there”
 			peers[peer.Name] = x.materializePath(within, []string(t))
-		case string, int , float64, complex128, Image:
+		case string, int, float64, complex128, Image:
 			peers[peer.Name] = NewNounReflex(t) // materialize builtin gates
 		default:
 			panicf("unknown design: %T/%v", t, t)

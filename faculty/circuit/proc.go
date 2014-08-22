@@ -29,7 +29,7 @@ func (x Process) Materialize() think.Reflex {
 	//
 	go func() {
 		p := &process{
-			id: ChooseID(),
+			id:    ChooseID(),
 			ready: make(chan struct{}),
 			spawn: make(chan interface{}),
 		}
@@ -42,25 +42,25 @@ func (x Process) Materialize() think.Reflex {
 	}()
 	//
 	return think.Reflex{
-		"Server": serverExo, // in-only
-		"Command": cmdExo, // in-only
-		"Spawn": spawnExo, // in-only
-		"Exit": exitExo, // out-only
-		"IO": ioExo, // out-only
+		"Server":  serverExo, // in-only
+		"Command": cmdExo,    // in-only
+		"Spawn":   spawnExo,  // in-only
+		"Exit":    exitExo,   // out-only
+		"IO":      ioExo,     // out-only
 	}
 }
 
 // process is the materialized process reflex
 type process struct {
-	id string  // ID of this process reflex instance
+	id     string // ID of this process reflex instance
 	reExit *think.ReCognizer
-	reIO *think.ReCognizer
-	arg struct {
+	reIO   *think.ReCognizer
+	arg    struct {
 		sync.Mutex
 		server string // root-level anchor of the server where the process is to be started
-		cmd *client.Cmd
+		cmd    *client.Cmd
 	}
-	ready chan struct{} // notify loop that arguments are ready
+	ready chan struct{}    // notify loop that arguments are ready
 	spawn chan interface{} // notify loop of spawn strobes
 }
 
@@ -82,7 +82,7 @@ func (p *process) CognizeServer(v interface{}) {
 
 //
 //	{
-//		Env { 
+//		Env {
 //			"PATH=/abc:/bin"
 //			"LESS=less"
 //		}
@@ -134,13 +134,13 @@ func (p *process) loop() {
 		if exit := p.spawnProcess(spwn); exit != nil {
 			x = Image{
 				"Spawn": spwn,
-				"Exit": 1,
+				"Exit":  1,
 			}
 			p.reExit.ReCognize(x)
 		} else {
 			x = Image{
 				"Spawn": spwn,
-				"Exit": 0,
+				"Exit":  0,
 			}
 			p.reExit.ReCognize(x)
 		}
@@ -161,8 +161,8 @@ func (p *process) spawnProcess(spwn interface{}) error {
 	}
 	defer anchor.Scrub()
 	g := Image{
-		"Spawn": spwn,
-		"Stdin": proc.Stdin(), 
+		"Spawn":  spwn,
+		"Stdin":  proc.Stdin(),
 		"Stdout": proc.Stdout(),
 		"Stderr": proc.Stderr(),
 	}

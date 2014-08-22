@@ -19,7 +19,7 @@ type Src struct {
 }
 
 func NewSrcString(s string) *Src {
-	return &Src{ []byte(s) }
+	return &Src{[]byte(s)}
 }
 
 func (src *Src) Become(g *Src) {

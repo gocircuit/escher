@@ -35,7 +35,7 @@ func Init(name string, client *client.Client) {
 		// understand-only mode
 	}
 	program = &Program{
-		Name: name,
+		Name:   name,
 		Client: client,
 	}
 }

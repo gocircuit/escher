@@ -8,17 +8,17 @@ package basic
 
 import (
 	// "fmt"
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
+	"github.com/gocircuit/escher/think"
 )
 
 func MaterializeFork(name string, parts ...string) think.Reflex {
 	reflex, eye := faculty.NewEye(append(parts, name)...)
 	go func() {
 		h := &join{
-			name: name,
-			parts: parts,
+			name:      name,
+			parts:     parts,
 			connected: make(chan struct{}),
 		}
 		h.reply = eye.Focus(h.ShortCognize)
@@ -28,10 +28,10 @@ func MaterializeFork(name string, parts ...string) think.Reflex {
 }
 
 type join struct {
-	name string
-	parts []string
+	name      string
+	parts     []string
 	connected chan struct{}
-	reply *faculty.EyeNerve
+	reply     *faculty.EyeNerve
 }
 
 func (h *join) ShortCognize(mem faculty.Impression) {

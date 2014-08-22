@@ -154,7 +154,7 @@ func (p *process) spawnProcess(spwn interface{}) error {
 	cmd := p.arg.cmd
 	p.arg.Unlock()
 	//
-	anchor := program.Client.Walk([]string{server, "escher", program.Name, p.id})
+	anchor := program.Client.Walk([]string{server, "escher", program.Name, "circuit.Process", p.id})
 	proc, err := anchor.MakeProc(*cmd)
 	if err != nil {
 		panic("invalid command argument")

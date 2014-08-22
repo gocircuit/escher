@@ -7,8 +7,8 @@
 package basic
 
 import (
-	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/faculty"
+	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
 )
 
@@ -26,8 +26,8 @@ func (Merge) Materialize() think.Reflex {
 	go func() {
 		h := &merge{
 			connected: make(chan struct{}),
-			x: make(chan Image),
-			y: make(chan Image),
+			x:         make(chan Image),
+			y:         make(chan Image),
 		}
 		h.z = zEndo.Focus(think.DontCognize)
 		close(h.connected)
@@ -44,8 +44,8 @@ func (Merge) Materialize() think.Reflex {
 
 type merge struct {
 	connected chan struct{}
-	x, y chan Image
-	z *think.ReCognizer
+	x, y      chan Image
+	z         *think.ReCognizer
 }
 
 func (h *merge) CognizeX(v interface{}) {

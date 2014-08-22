@@ -7,8 +7,8 @@
 package faculty
 
 import (
-	"sort"
 	. "github.com/gocircuit/escher/image"
+	"sort"
 )
 
 // Impression binds time, language and meaning into one.

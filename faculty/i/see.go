@@ -8,10 +8,10 @@
 package i
 
 import (
-	es "github.com/gocircuit/escher/see"
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
+	es "github.com/gocircuit/escher/see"
+	"github.com/gocircuit/escher/think"
 )
 
 func init() {
@@ -34,7 +34,7 @@ func (See) Materialize() think.Reflex {
 	}()
 	return think.Reflex{
 		"Source": sourceExo,
-		"Seen": seenExo,
+		"Seen":   seenExo,
 	}
 }
 

@@ -89,7 +89,7 @@ func SeeInt(src *Src) interface{} {
 	}
 	r := bytes.NewBufferString(l)
 	var i int
-	if n, _ := fmt.Fscanf(r, "%d", &i); n != 1 || r.Len() != 0  {
+	if n, _ := fmt.Fscanf(r, "%d", &i); n != 1 || r.Len() != 0 {
 		return nil
 	}
 	src.Become(t)
@@ -135,7 +135,7 @@ func SeeBackquoteString(src *Src) interface{} {
 	if !ok {
 		return nil
 	}
-	str := quoted[1:len(quoted)-1]
+	str := quoted[1 : len(quoted)-1]
 	src.Become(t)
 	return str
 }
@@ -157,7 +157,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 			if q != 1 { // reached end without finding closing backquote
 				return "", false
 			}
-			return src.SkipString(src.Len()-buf.Len()), true
+			return src.SkipString(src.Len() - buf.Len()), true
 		}
 		switch q {
 		case 0:
@@ -168,14 +168,14 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 		case 1:
 			if r != '`' { // previous backquote was closing
 				buf.UnreadRune()
-				return src.SkipString(src.Len()-buf.Len()), true
+				return src.SkipString(src.Len() - buf.Len()), true
 			}
 			q = 2
 		case 2:
 			if r != '`' { // two consecutive backquotes and then different character
 				buf.UnreadRune()
 				buf.UnreadRune()
-				return src.SkipString(src.Len()-buf.Len()), true
+				return src.SkipString(src.Len() - buf.Len()), true
 			}
 			q = 0
 		}
@@ -221,7 +221,7 @@ func DelimitDoubleQuoteString(src *Src) (string, bool) {
 			case '\\':
 				backslash = true
 			case '"':
-				return src.SkipString(src.Len()-buf.Len()), true
+				return src.SkipString(src.Len() - buf.Len()), true
 			default:
 			}
 		}

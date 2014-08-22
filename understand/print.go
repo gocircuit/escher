@@ -31,10 +31,10 @@ func (fty Faculty) Print(prefix, indent string) string {
 		switch t := v.(type) {
 		case Faculty:
 			w.WriteString("\n")
-			w.WriteString(t.Print(prefix + indent + indent, indent))
+			w.WriteString(t.Print(prefix+indent+indent, indent))
 		case *Circuit:
 			w.WriteString("\n")
-			w.WriteString(t.Print(prefix + indent + indent, indent))
+			w.WriteString(t.Print(prefix+indent+indent, indent))
 		default: // reflex or circuit
 			w.WriteString(fmt.Sprintf(" (%T)\n", v))
 		}
@@ -46,11 +46,11 @@ func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "%s%s {\n", prefix, x.Name)
 	for _, p := range x.Peer {
-		fmt.Fprintf(&w,"%s%s%s %v\n", prefix, indent, printable(p.Name), p.Design)
+		fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(p.Name), p.Design)
 		for _, v := range p.Valve {
-			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n", 
-				prefix, indent, indent, 
-				printable(p.Name), printable(v.Name), 
+			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n",
+				prefix, indent, indent,
+				printable(p.Name), printable(v.Name),
 				printable(v.Matching.Of.Name), printable(v.Matching.Name),
 			)
 		}

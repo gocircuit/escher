@@ -60,7 +60,7 @@ func seeDesignJoin(src *Src) (x Image) {
 	}
 	src.Become(t)
 	return Image{
-		"Peer": dimg,
+		"Peer":  dimg,
 		"Valve": Name(""),
 	}
 }
@@ -83,7 +83,7 @@ func seePeerValveJoin(src *Src) (x Image) {
 	}
 	src.Become(t)
 	return Image{
-		"Peer": Name(peer),
+		"Peer":  Name(peer),
 		"Valve": Name(valve),
 	}
 }
@@ -98,7 +98,7 @@ func seeValveJoin(src *Src) (x Image) {
 	valve := Identifier(t)
 	src.Become(t)
 	return Image{
-		"Peer": Name(""),
+		"Peer":  Name(""),
 		"Valve": Name(valve),
 	}
 }

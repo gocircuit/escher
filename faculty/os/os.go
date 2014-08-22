@@ -12,12 +12,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/think"
 )
 
 func Init(a string) {
-	args = make(map[string]string)  // n1=v1,n2=v2
+	args = make(map[string]string) // n1=v1,n2=v2
 	for _, p := range strings.Split(a, ",") {
 		if p == "" {
 			continue
@@ -56,7 +56,7 @@ func (Arg) Materialize() think.Reflex {
 		nameEndo.Focus(h.CognizeName)
 	}()
 	return think.Reflex{
-		"Name": nameExo,
+		"Name":  nameExo,
 		"Value": valueExo,
 	}
 }
@@ -85,7 +85,7 @@ func (Env) Materialize() think.Reflex {
 		nameEndo.Focus(h.CognizeName)
 	}()
 	return think.Reflex{
-		"Name": nameExo,
+		"Name":  nameExo,
 		"Value": valueExo,
 	}
 }

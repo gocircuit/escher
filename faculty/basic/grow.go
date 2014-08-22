@@ -8,9 +8,9 @@ package basic
 
 import (
 	// "fmt"
+	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {

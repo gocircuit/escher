@@ -13,8 +13,8 @@ import (
 	// "log"
 	"sync"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/think"
 )
 
 func init() {
@@ -42,10 +42,10 @@ func (Merge) Materialize() think.Reflex {
 		thirdEndo.Focus(func(v interface{}) { h.CognizeArm(2, v) })
 	}()
 	return think.Reflex{
-		"_": _Exo, 
-		"First": firstExo, 
-		"Second": secondExo, 
-		"Third": thirdExo, 
+		"_":      _Exo,
+		"First":  firstExo,
+		"Second": secondExo,
+		"Third":  thirdExo,
 	}
 }
 

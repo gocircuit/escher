@@ -11,8 +11,8 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
-	eu "github.com/gocircuit/escher/understand"
 	"github.com/gocircuit/escher/think"
+	eu "github.com/gocircuit/escher/understand"
 )
 
 // Memory
@@ -26,9 +26,9 @@ func (Memory) Materialize() think.Reflex {
 	go func() {
 		h := &memory{
 			connected: make(chan struct{}),
-			focus: make(chan []string),
-			learn: make(chan *eu.Circuit),
-			recall: make(chan []string),
+			focus:     make(chan []string),
+			learn:     make(chan *eu.Circuit),
+			recall:    make(chan []string),
 		}
 		h.use = useEndo.Focus(think.DontCognize)
 		close(h.connected)
@@ -38,19 +38,19 @@ func (Memory) Materialize() think.Reflex {
 		go h.loop()
 	}()
 	return think.Reflex{
-		"Focus": focusExo, // write-only
-		"Learn": learnExo, // write-only
+		"Focus":  focusExo,  // write-only
+		"Learn":  learnExo,  // write-only
 		"Recall": recallExo, // write-only
-		"Use": useExo, // read-only
+		"Use":    useExo,    // read-only
 	}
 }
 
 type memory struct {
 	connected chan struct{}
-	focus chan []string
-	learn chan *eu.Circuit
-	recall chan []string
-	use *think.ReCognizer
+	focus     chan []string
+	learn     chan *eu.Circuit
+	recall    chan []string
+	use       *think.ReCognizer
 }
 
 func (h *memory) CognizeLearn(v interface{}) {
@@ -95,9 +95,9 @@ func (h *memory) CognizeRecall(v interface{}) {
 // attention is a “pointer” to a (parent, name, child) triplet in a root faculty name space.
 type attention struct {
 	sync.Mutex
-	root *space
+	root          *space
 	parent, child interface{}
-	walk []string // walk to child in root
+	walk          []string // walk to child in root
 }
 
 func (a *attention) name() string {

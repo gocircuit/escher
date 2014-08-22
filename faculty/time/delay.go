@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/think"
 )
 
 func init() {
@@ -31,7 +31,7 @@ func (Delay) Materialize() think.Reflex {
 	go func() {
 		h := &delay{
 			connected: make(chan struct{}),
-			born: make(chan struct{}),
+			born:      make(chan struct{}),
 		}
 		go func() {
 			h.x.Bind(xEndo.Focus(h.CognizeX))
@@ -43,14 +43,14 @@ func (Delay) Materialize() think.Reflex {
 		}()
 	}()
 	return think.Reflex{
-		"X": xExo, 
-		"Y": yExo, 
+		"X":        xExo,
+		"Y":        yExo,
 		"Duration": durExo,
 	}
 }
 
 type delay struct {
-	x, y think.PtrReCognizer
+	x, y      think.PtrReCognizer
 	connected chan struct{}
 	sync.Once
 	born chan struct{}

@@ -10,8 +10,8 @@ import (
 	// "fmt"
 	"sync"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/think"
 )
 
 func init() {
@@ -28,7 +28,7 @@ func (Junction) Materialize() think.Reflex {
 	go func() {
 		h := &junction{
 			connected: make(chan struct{}),
-			born: make(chan struct{}),
+			born:      make(chan struct{}),
 		}
 		h.Lock()
 		defer h.Unlock()
@@ -38,8 +38,8 @@ func (Junction) Materialize() think.Reflex {
 		close(h.connected)
 	}()
 	return think.Reflex{
-		"X": a0Exo, 
-		"Y": a1Exo, 
+		"X": a0Exo,
+		"Y": a1Exo,
 		"Z": a2Exo,
 	}
 }

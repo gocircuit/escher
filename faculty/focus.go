@@ -17,7 +17,7 @@ import (
 //	http://www.probablyapproximatelycorrect.com/
 type Eye struct {
 	retina map[string]*think.Synapse
-	nerve EyeNerve
+	nerve  EyeNerve
 }
 
 // ShortCognize is the cognition interface provided by the Mind's Eye (short-term memory) mechanism.
@@ -25,10 +25,10 @@ type Eye struct {
 type ShortCognize func(Impression)
 
 type EyeNerve struct {
-	cognize ShortCognize
+	cognize   ShortCognize
 	connected chan struct{}
 	recognize think.MapReCognizer
-	memory 
+	memory
 }
 
 type memory struct {
@@ -62,15 +62,15 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 
 // Focus binds this short memory reflex to the response function cognize.
 func (m *Eye) Focus(cognize ShortCognize) *EyeNerve {
-	m.nerve.memory.Lock()  // Locking prevents individual competing Focus invocations 
-	defer m.nerve.memory.Unlock()  // from initiating cognition before all valves/synapses have been attached.
+	m.nerve.memory.Lock()         // Locking prevents individual competing Focus invocations
+	defer m.nerve.memory.Unlock() // from initiating cognition before all valves/synapses have been attached.
 	m.nerve.cognize = cognize
 	ch := make(chan struct{})
 	for v_, _ := range m.nerve.memory.Imp.Image {
 		v := v_
 		go func() {
 			m.nerve.recognize.Bind(
-				v, 
+				v,
 				m.retina[v].Focus(
 					func(w interface{}) {
 						m.nerve.cognizeWith(v, w)

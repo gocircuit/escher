@@ -36,12 +36,12 @@ Nand { // comments are everywhere
 	not.N = +3.14e00 // assign constants directly to wires, only on the right side
 
 	// peer declarations are not sensitive to order within the block
-	src ` + "`" +`
+	src ` + "`" + `
 <html>
 <head><title>E.g.</title></head>
 <body>Hello world!</body>
 </html>
-` + "`" +`
+` + "`" + `
 	=5.14 // return, 
 }
 // end comment

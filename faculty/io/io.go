@@ -12,8 +12,8 @@ import (
 	"io/ioutil"
 	// "log"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/think"
 )
 
 func init() {
@@ -30,7 +30,7 @@ func (Clunk) Materialize() think.Reflex {
 		_Endo.Focus(clunk)
 	}()
 	return think.Reflex{
-		"_": _Exo, 
+		"_": _Exo,
 	}
 }
 

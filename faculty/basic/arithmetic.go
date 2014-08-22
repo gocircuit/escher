@@ -8,9 +8,9 @@ package basic
 
 import (
 	// "fmt"
+	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
@@ -35,7 +35,7 @@ func (Sum) Materialize() think.Reflex {
 
 type sum struct {
 	connected chan struct{}
-	reply *faculty.EyeNerve
+	reply     *faculty.EyeNerve
 }
 
 func (s *sum) ShortCognize(imp faculty.Impression) {

@@ -22,7 +22,7 @@ func (x Space) Faculty() understand.Faculty {
 	return understand.Faculty(x)
 }
 
-// Lookup looks up the design of a faculty-local name; name should be a single-word identifier.
+// Lookup looks up the design for a root name; name should be a textual path.
 func (x Space) Lookup(within understand.Faculty, name string) (d interface{}) {
 	if strings.Index(name, ".") >= 0 {
 		panic(7)
@@ -103,4 +103,40 @@ func (x Space) materializePath(within understand.Faculty, parts []string) Reflex
 		return nil
 	}
 	panic("unknown design")
+}
+
+func (x Space) Interpret(understood *understand.Circuit) (fresh *understand.Circuit) {
+	return x.Faculty().Interpret(understood)
+}
+
+func (x Space) Forget(name string) (forgotten interface{}) {
+	switch t := x.Faculty().Forget(name).(type) {
+	case understand.Faculty:
+		return Space(t)
+	default:
+		return t
+	}
+	panic(0)
+}
+
+func (x Space) Walk(walk ...string) (parent, child interface{}) {
+	parent, child = x.Faculty().Walk(walk...)
+	if fac, ok := parent.(understand.Faculty); ok {
+		parent = Space(fac)
+	}
+	if fac, ok := child.(understand.Faculty); ok {
+		child = Space(fac)
+	}
+	return
+}
+
+func (x Space) Roam(walk ...string) (parent, child interface{}) {
+	parent, child = x.Faculty().Roam(walk...)
+	if fac, ok := parent.(understand.Faculty); ok {
+		parent = Space(fac)
+	}
+	if fac, ok := child.(understand.Faculty); ok {
+		child = Space(fac)
+	}
+	return
 }

@@ -23,13 +23,33 @@ func NewFaculty() Faculty {
 	return make(Faculty)
 }
 
-func (fty Faculty) Walk(walk ...string) (parent, endpoint interface{}) {
+func (fty Faculty) Forget(name string) (forgotten interface{}) {
+	forgotten = fty[name]
+	delete(fty, name)
+	return
+}
+
+func (fty Faculty) Roam(walk ...string) (parent, child interface{}) {
+	if len(walk) == 0 {
+		return nil, fty
+	}
+	if parent, child = fty.Walk(walk[0]); parent == nil && child == nil { // If no child, make it
+		child = fty.Refine(walk[0])
+	}
+	fac, ok := child.(Faculty)
+	if !ok {
+		panic("overwriting")
+	}
+	return fac.Roam(walk[1:]...)
+}
+
+func (fty Faculty) Walk(walk ...string) (parent, child interface{}) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
 	v, ok := fty[walk[0]]
 	if !ok {
-		panic("walk broken")
+		return nil, nil
 	}
 	switch t := v.(type) {
 	case Faculty:
@@ -98,20 +118,21 @@ func (fty Faculty) UnderstandFile(file string) {
 			break
 		}
 		// println(s.Print("", "\t"))
-		fty.interpretCircuit(Understand(s))
+		fty.Interpret(Understand(s))
 	}
 }
 
-func (fty Faculty) interpretCircuit(cir *Circuit) {
+func (fty Faculty) Interpret(cir *Circuit) (fresh *Circuit) {
 	w, ok := fty[cir.Name]
 	if !ok {
 		fty[cir.Name] = cir
-		return
+		return cir
 	}
 	if wcir, ok := w.(*Circuit); ok {
 		wcir.Merge(cir)
-		return
+		return wcir
 	}
 	// otherwise overwrite existing design
 	fty[cir.Name] = cir
+	return cir
 }

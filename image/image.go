@@ -46,7 +46,7 @@ func (x Image) Len() int {
 func (x Image) Attach(y Image) Image {
 	for key, v := range y {
 		if _, present := x[key]; present {
-			panic(1)
+			panic(2)
 		}
 		x[key] = v
 	}

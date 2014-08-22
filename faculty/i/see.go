@@ -18,6 +18,7 @@ func init() {
 	ns := faculty.Root.Refine("i")
 	ns.AddTerminal("See", See{})
 	ns.AddTerminal("Understand", Understand{})
+	ns.AddTerminal("Memory", Memory{})
 }
 
 // See

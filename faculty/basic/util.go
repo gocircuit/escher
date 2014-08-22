@@ -7,6 +7,8 @@
 package basic
 
 import (
+	"bytes"
+	"io"
 	"math"
 )
 
@@ -22,4 +24,20 @@ func AsInt(v interface{}) (int, bool) {
 		return int(f), true
 	}
 	return 0, false
+}
+
+func AsString(v interface{}) (string, bool) {
+	switch t := v.(type) {
+	case string:
+		return t, true
+	case bytes.Buffer:
+		return t.String(), true
+	case io.Reader:
+		var w bytes.Buffer
+		io.Copy(&w, t)
+		return w.String(), true
+	case nil:
+		return "", false
+	}
+	panic(2)
 }

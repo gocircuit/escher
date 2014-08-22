@@ -18,6 +18,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
+	_ "github.com/gocircuit/escher/faculty/i"
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	facultyos "github.com/gocircuit/escher/faculty/os"

@@ -24,9 +24,9 @@ func Init(name string, client *client.Client) {
 	ns := faculty.Root.Refine("circuit")
 	ns.AddTerminal("Process", Process{})
 	ns.AddTerminal("Docker", Docker{})
+	// ns.AddTerminal("Leaving", Leaving{})
+	// ns.AddTerminal("Joining", Joining{})
 	// ns.AddTerminal("Channel", Chan{})
-	// ns.AddTerminal("Leaving", Subscription{})
-	// ns.AddTerminal("Joining", Subscription{})
 
 	ns.AddTerminal("ForkExit", ForkExit{})
 	ns.AddTerminal("ForkIO", ForkIO{})

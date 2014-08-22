@@ -12,8 +12,8 @@ import (
 	"io/ioutil"
 	// "log"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/think"
 )
 
 func init() {
@@ -35,13 +35,13 @@ func (WriteFile) Materialize() think.Reflex {
 		contentEndo.Focus(h.CognizeContent)
 	}()
 	return think.Reflex{
-		"Name": nameExo, 
-		"Content": contentExo, 
+		"Name":    nameExo,
+		"Content": contentExo,
 	}
 }
 
 type writeFile struct {
-	name string
+	name  string
 	named chan struct{}
 }
 

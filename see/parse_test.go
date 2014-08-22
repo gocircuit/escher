@@ -32,7 +32,7 @@ func TestDesign(t *testing.T) {
 	}
 }
 
-var testMatching = []string {
+var testMatching = []string{
 	`a.X = b.Y`,
 	` X = y.Z `,
 	` X = "hello"`,
@@ -133,7 +133,7 @@ main {
 	s @show
 	s.Object = "¡Hello, world!"
 }
-`,`
+`, `
 // Written in 2014 by Petar Maymounkov.
 //
 // It helps future understanding of past knowledge to save
@@ -150,7 +150,7 @@ main {
 	s.Y = out.Object
 }
 `,
-`
+	`
 main {
 	proc @circuit.Process
 	srv @os.Arg
@@ -191,7 +191,7 @@ main {
 `, `
 header {
 	merge text.Merge
-	merge.First = `  + "`" + `
+	merge.First = ` + "`" + `
 <html><head><title>
 ` + "`" + `
 	merge.Second = Title

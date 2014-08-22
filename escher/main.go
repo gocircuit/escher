@@ -12,9 +12,9 @@ import (
 
 	"github.com/gocircuit/circuit/client"
 
+	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/understand"
-	"github.com/gocircuit/escher/faculty"
 
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
@@ -22,16 +22,16 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	facultyos "github.com/gocircuit/escher/faculty/os"
-	_ "github.com/gocircuit/escher/faculty/time"
 	_ "github.com/gocircuit/escher/faculty/text"
+	_ "github.com/gocircuit/escher/faculty/time"
 )
 
 var (
-	flagUn  = flag.Bool("un", false, "understand and show source without materializing it")
-	flagX  = flag.String("x", "", "program source directory X")
-	flagY  = flag.String("y", "", "program source directory Y")
-	flagName = flag.String("n", "", "execution name")
-	flagArg = flag.String("a", "", "program arguments")
+	flagUn       = flag.Bool("un", false, "understand and show source without materializing it")
+	flagX        = flag.String("x", "", "program source directory X")
+	flagY        = flag.String("y", "", "program source directory Y")
+	flagName     = flag.String("n", "", "execution name")
+	flagArg      = flag.String("a", "", "program arguments")
 	flagDiscover = flag.String("d", "", "multicast UDP discovery address for circuit faculty, if needed")
 )
 
@@ -47,7 +47,7 @@ func main() {
 		fmt.Println(compile(*flagX, *flagY).Print("", "   "))
 	} else {
 		think.Space(compile(*flagX, *flagY)).Materialize("main")
-		select{} // wait forever
+		select {} // wait forever
 	}
 }
 

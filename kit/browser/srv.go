@@ -62,7 +62,7 @@ func (srv *Server) Add(name string, player SessionPlayer) {
 	srv.Lock()
 	defer srv.Unlock()
 	srv.http.Handler.(*http.ServeMux).Handle(
-		path.Join("/", name), 
+		path.Join("/", name),
 		playerHandler(player),
 	)
 }

@@ -39,7 +39,7 @@ func InstallCtrlCPanic() {
 func InstallGoroutineWatch() {
 	go func() {
 		for {
-			time.Sleep(3*time.Second)
+			time.Sleep(3 * time.Second)
 			println(fmt.Sprintf("goroutines=%d", runtime.NumGoroutine()))
 		}
 	}()

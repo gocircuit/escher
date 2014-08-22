@@ -38,5 +38,5 @@ func (nerve *EyeNerve) formulate() Impression {
 	for i, f := range sorting {
 		imp.Show(i, f.Valve(), f.Value())
 	}
-	return imp	
+	return imp
 }

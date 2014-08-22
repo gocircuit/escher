@@ -8,8 +8,8 @@ package see
 
 import (
 	// "fmt"
-	"strconv"
 	. "github.com/gocircuit/escher/image"
+	"strconv"
 )
 
 const MatchingName = "="

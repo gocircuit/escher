@@ -9,8 +9,8 @@ package text
 
 import (
 	"bytes"
-	"text/template"
 	"sync"
+	"text/template"
 
 	"github.com/gocircuit/escher/think"
 )
@@ -31,15 +31,15 @@ func (Form) Materialize() think.Reflex {
 		dataEndo.Focus(h.CognizeData)
 	}()
 	return think.Reflex{
-		"_": _Exo, 
-		"Form": formExo, 
-		"Data": dataExo, 
+		"_":    _Exo,
+		"Form": formExo,
+		"Data": dataExo,
 	}
 }
 
 type form struct {
 	sync.Mutex
-	t *template.Template
+	t      *template.Template
 	formed chan struct{}
 	*think.ReCognizer
 }

@@ -8,8 +8,8 @@
 package circuit
 
 import (
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/think"
 )
 
 // ForkExit…

@@ -9,8 +9,8 @@ package basic
 import (
 	"fmt"
 
-	"github.com/gocircuit/escher/think"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/think"
 )
 
 func Init(n string) {
@@ -53,7 +53,7 @@ func (Println) Materialize() think.Reflex {
 	s, t := think.NewSynapse()
 	go func() {
 		s.Focus(
-			func(v interface{}) { 
+			func(v interface{}) {
 				fmt.Printf("%v\n", v)
 			},
 		)

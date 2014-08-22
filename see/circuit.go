@@ -9,8 +9,8 @@ package see
 import (
 	"bytes"
 	"fmt"
-	"strconv"
 	. "github.com/gocircuit/escher/image"
+	"strconv"
 )
 
 func SeeCircuit(src *Src) *Circuit {
@@ -29,7 +29,7 @@ func Circuitize(name string, img Image) (cir *Circuit) {
 		return nil
 	}
 	cir = &Circuit{
-		Peer: make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
+		Peer:  make([]*Peer, 0, img.Len()),                        // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
 		Match: make([]*Matching, 0, img.Walk(MatchingName).Len()), // # of matchings
 	}
 	cir.Name = name
@@ -41,7 +41,7 @@ func Circuitize(name string, img Image) (cir *Circuit) {
 		cir.Peer = append(
 			cir.Peer,
 			&Peer{
-				Name: name,
+				Name:   name,
 				Design: v,
 			},
 		)
@@ -67,7 +67,7 @@ func (cir *Circuit) seeMatching(s Image) {
 					cir.Valve = append(cir.Valve, v)
 				} else {
 					m.Join[i] = &PeerJoin{
-						Peer: string(p),
+						Peer:  string(p),
 						Valve: v,
 					}
 				}
@@ -82,9 +82,9 @@ func (cir *Circuit) seeMatching(s Image) {
 }
 
 type Circuit struct {
-	Name string
+	Name  string
 	Valve []string
-	Peer    []*Peer
+	Peer  []*Peer
 	Match []*Matching
 }
 
@@ -96,7 +96,7 @@ func (c *Circuit) Print(prefix, indent string) string {
 	}
 	for i, v := range c.Valve {
 		var comma = ", "
-		if i + 1 == len(c.Valve) {
+		if i+1 == len(c.Valve) {
 			comma = ""
 		}
 		fmt.Fprintf(&w, "%s%s", v, comma)
@@ -138,7 +138,7 @@ type Join interface{}
 
 // E.g. “a.X”
 type PeerJoin struct {
-	Peer string
+	Peer  string
 	Valve string
 }
 

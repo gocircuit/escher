@@ -9,8 +9,8 @@ package i
 
 import (
 	es "github.com/gocircuit/escher/see"
-	eu "github.com/gocircuit/escher/understand"
 	"github.com/gocircuit/escher/think"
+	eu "github.com/gocircuit/escher/understand"
 )
 
 // Understand
@@ -25,7 +25,7 @@ func (Understand) Materialize() think.Reflex {
 		seenEndo.Focus(h.CognizeSeen)
 	}()
 	return think.Reflex{
-		"Seen": seenExo,
+		"Seen":       seenExo,
 		"Understood": understoodExo,
 	}
 }

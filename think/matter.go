@@ -24,7 +24,7 @@ func panicf(format string, arg ...interface{}) {
 	panic(fmt.Sprintf(format, arg...))
 }
 
-// Expire is a device that invokes an expiration function, 
+// Expire is a device that invokes an expiration function,
 // if a termination condition is not met in time.
 type Expire struct {
 	sync.Mutex
@@ -33,14 +33,14 @@ type Expire struct {
 
 func (w *Expire) Init(late func()) {
 	go func() {
-		time.Sleep(time.Second/3)
+		time.Sleep(time.Second / 3)
 		w.ifNotDone(late)
 	}()
 }
 
 func (w *Expire) InitString(s string) {
 	go func() {
-		time.Sleep(time.Second/3)
+		time.Sleep(time.Second / 3)
 		w.ifNotDone(func() {
 			println(s)
 		})

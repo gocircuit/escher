@@ -31,7 +31,7 @@ func (x Docker) Materialize() think.Reflex {
 	//
 	go func() {
 		p := &docker{
-			id: ChooseID(),
+			id:    ChooseID(),
 			ready: make(chan struct{}),
 			spawn: make(chan interface{}),
 		}
@@ -44,25 +44,25 @@ func (x Docker) Materialize() think.Reflex {
 	}()
 	//
 	return think.Reflex{
-		"Server": serverExo, // in-only
-		"Command": cmdExo, // in-only
-		"Spawn": spawnExo, // in-only
-		"Exit": exitExo, // out-only
-		"IO": ioExo, // out-only
+		"Server":  serverExo, // in-only
+		"Command": cmdExo,    // in-only
+		"Spawn":   spawnExo,  // in-only
+		"Exit":    exitExo,   // out-only
+		"IO":      ioExo,     // out-only
 	}
 }
 
 // docker is the materialized docker reflex
 type docker struct {
-	id string  // ID of this docker reflex instance
+	id     string // ID of this docker reflex instance
 	reExit *think.ReCognizer
-	reIO *think.ReCognizer
-	arg struct {
+	reIO   *think.ReCognizer
+	arg    struct {
 		sync.Mutex
 		server string // root-level anchor of the server where the docker is to be started
-		cmd *dkr.Run
+		cmd    *dkr.Run
 	}
-	ready chan struct{} // notify loop that arguments are ready
+	ready chan struct{}    // notify loop that arguments are ready
 	spawn chan interface{} // notify loop of spawn strobes
 }
 
@@ -96,7 +96,7 @@ func (p *docker) CognizeServer(v interface{}) {
 //			"/mnt/all"
 //		}
 //		Entry "??"
-//		Env { 
+//		Env {
 //			"PATH=/abc:/bin"
 //			"LESS=less"
 //		}
@@ -174,13 +174,13 @@ func (p *docker) loop() {
 		if exit := p.spawnDocker(spwn); exit != nil {
 			x = Image{
 				"Spawn": spwn,
-				"Exit": 1,
+				"Exit":  1,
 			}
 			p.reExit.ReCognize(x)
 		} else {
 			x = Image{
 				"Spawn": spwn,
-				"Exit": 0,
+				"Exit":  0,
 			}
 			p.reExit.ReCognize(x)
 		}
@@ -201,8 +201,8 @@ func (p *docker) spawnDocker(spwn interface{}) error {
 	}
 	defer anchor.Scrub()
 	g := Image{
-		"Spawn": spwn,
-		"Stdin": container.Stdin(), 
+		"Spawn":  spwn,
+		"Stdin":  container.Stdin(),
 		"Stdout": container.Stdout(),
 		"Stderr": container.Stderr(),
 	}

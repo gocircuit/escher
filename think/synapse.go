@@ -28,11 +28,11 @@ type Synapse struct {
 func NewSynapse() (x, y *Synapse) {
 	xy, yx := make(chan Cognize, 1), make(chan Cognize, 1)
 	x = &Synapse{
-		learn: xy, 
+		learn: xy,
 		teach: yx,
 	}
 	y = &Synapse{
-		learn: yx, 
+		learn: yx,
 		teach: xy,
 	}
 	return

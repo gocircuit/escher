@@ -11,7 +11,7 @@ import (
 	"fmt"
 )
 
-type Design interface{
+type Design interface {
 	String() string
 }
 
@@ -19,7 +19,7 @@ func stringifySlice(ss []string) string {
 	var w bytes.Buffer
 	for i, part := range ss {
 		w.WriteString(part)
-		if i + 1 < len(ss) {
+		if i+1 < len(ss) {
 			w.WriteString(".")
 		}
 	}

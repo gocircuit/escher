@@ -21,7 +21,7 @@ func init() {
 type Grow struct{}
 
 func (Grow) Materialize() think.Reflex {
-	reflex, eye := faculty.NewEye("Img", "Key", "Val", "_")
+	reflex, eye := faculty.NewEye("Img", "Key", "Value", "_")
 	go func() {
 		x := &grow{
 			connected: make(chan struct{}),
@@ -41,10 +41,11 @@ func (s *grow) ShortCognize(imp faculty.Impression) {
 	<-s.connected
 	img, ik := imp.Valve("Img").Value().(Image)
 	key, kk := imp.Valve("Key").Value().(string)
-	value := imp.Valve("Val").Value()
+	value := imp.Valve("Value").Value()
 	if !ik || !kk {
 		return
 	}
-	z := faculty.MakeImpression().Show(0, "_", img.Grow(key, value))
+	y := img.Abandon(key).Grow(key, value)
+	z := faculty.MakeImpression().Show(0, "_", y)
 	go s.ReCognize(z)
 }

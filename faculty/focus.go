@@ -80,7 +80,7 @@ func (m *Eye) Focus(cognize ShortCognize) *EyeNerve {
 			ch <- struct{}{}
 		}()
 	}
-	for range m.nerve.memory.Imp.Image {
+	for _, _ = range m.nerve.memory.Imp.Image {
 		<-ch
 	}
 	close(m.nerve.connected)

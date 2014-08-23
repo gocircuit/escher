@@ -11,6 +11,9 @@ import (
 	"io"
 	"math"
 	"strconv"
+	"sync"
+
+	"github.com/gocircuit/escher/think"
 )
 
 // AsInt accepts an int or float64 value and converts it to an int value.
@@ -58,4 +61,51 @@ func AsString(v interface{}) (string, bool) {
 		return "", false
 	}
 	panic(2)
+}
+
+// Question …
+type Question struct {
+	sync.Mutex
+	ch chan interface{}
+	value interface{}
+	ok bool
+}
+
+func NewQuestion() *Question {
+	return &Question{
+		ch: make(chan interface{}),
+	}
+}
+
+func (x *Question) Answer(v string) {
+	x.ch <- v
+}
+
+func (x *Question) String() string {
+	x.Lock()
+	defer x.Unlock()
+	var v interface{}
+	v, x.ok = <- x.ch
+	x.value = v.(string)
+	return v.(string)
+}
+
+// Connector
+type Connector struct {
+	connect chan *think.ReCognizer
+}
+
+func NewConnector() *Connector {
+	return &Connector{
+		connect: make(chan *think.ReCognizer, 1),
+	}
+}
+
+func (x *Connector) Connect(r *think.ReCognizer) {
+	x.connect <- r
+	close(x.connect)
+}
+
+func (x *Connector) Connected() *think.ReCognizer {
+	return <-x.connect
 }

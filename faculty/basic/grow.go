@@ -50,7 +50,9 @@ func (Grow) Materialize() think.Reflex {
 
 type grow struct {
 	connected       chan struct{}
-	key, img, value chan interface{}
+	key chan interface{}
+	img chan interface{}
+	value chan interface{}
 	z               *think.ReCognizer
 }
 

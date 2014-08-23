@@ -55,6 +55,7 @@ func (x Image) Attach(y Image) Image {
 
 func (x Image) Grow(key string, v interface{}) Image {
 	if _, present := x[key]; present {
+		println("key", key)
 		panic(4)
 	}
 	x[key] = v

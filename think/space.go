@@ -48,8 +48,10 @@ func (x Space) Materialize(walk ...string) Reflex {
 			peers[peer.Name] = x.Materialize([]string(t)...)
 		case see.Path: // e.g. “hello.who.is.there”
 			peers[peer.Name] = x.materializePath(within, []string(t))
-		case string, int, float64, complex128, Image:
+		case string, int, float64, complex128:
 			peers[peer.Name] = NewNounReflex(t) // materialize builtin gates
+		case Image:
+			peers[peer.Name] = NewNounReflex(t.Copy()) // materialize images
 		default:
 			panicf("unknown design: %T/%v", t, t)
 		}
@@ -91,8 +93,10 @@ func (x Space) Materialize(walk ...string) Reflex {
 func (x Space) materializePath(within understand.Faculty, parts []string) Reflex {
 	unfold := x.Lookup(within, parts[0])
 	switch t := unfold.(type) {
-	case string, int, float64, complex128, Image:
+	case string, int, float64, complex128:
 		return NewNounReflex(t) // materialize builtin gates
+	case Image:
+		return NewNounReflex(t.Copy())
 	case see.Path:
 		parts = append([]string(t), parts[1:]...)
 		return Space(within).Materialize(parts...)

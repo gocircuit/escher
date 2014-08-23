@@ -4,7 +4,8 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package basic
+// Package plumb provides bits and bobs useful in implementing gates.
+package plumb
 
 import (
 	"bytes"
@@ -13,11 +14,12 @@ import (
 	"strconv"
 	"sync"
 
+	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
 )
 
-// AsInt accepts an int or float64 value and converts it to an int value.
-func AsInt(v interface{}) (int, bool) {
+// OptionallyInt accepts an int or float64 value and converts it to an int value.
+func OptionallyInt(v interface{}) (int, bool) {
 	switch t := v.(type) {
 	case nil:
 		return 0, true
@@ -47,7 +49,7 @@ func AsInt(v interface{}) (int, bool) {
 	return 0, false
 }
 
-func AsString(v interface{}) (string, bool) {
+func OptionallyString(v interface{}) (string, bool) {
 	switch t := v.(type) {
 	case string:
 		return t, true
@@ -63,25 +65,27 @@ func AsString(v interface{}) (string, bool) {
 	panic(2)
 }
 
-// Question …
-type Question struct {
+// Condition …
+type Condition struct {
 	sync.Mutex
 	ch chan interface{}
 	value interface{}
 	ok bool
 }
 
-func NewQuestion() *Question {
-	return &Question{
-		ch: make(chan interface{}),
+func NewCondition() *Condition {
+	return &Condition{
+		ch: make(chan interface{}, 1),
 	}
 }
 
-func (x *Question) Answer(v string) {
+func (x *Condition) Determine(v interface{}) {
+	x.Lock()
+	defer x.Unlock()
 	x.ch <- v
 }
 
-func (x *Question) String() string {
+func (x *Condition) String() string {
 	x.Lock()
 	defer x.Unlock()
 	var v interface{}
@@ -90,22 +94,36 @@ func (x *Question) String() string {
 	return v.(string)
 }
 
-// Connector
-type Connector struct {
+func (x *Condition) Image() Image {
+	x.Lock()
+	defer x.Unlock()
+	var v interface{}
+	v, x.ok = <- x.ch
+	x.value = v.(Image)
+	return v.(Image)
+}
+
+// Speak
+type Speak struct {
 	connect chan *think.ReCognizer
 }
 
-func NewConnector() *Connector {
-	return &Connector{
+func NewSpeak() *Speak {
+	return &Speak{
 		connect: make(chan *think.ReCognizer, 1),
 	}
 }
 
-func (x *Connector) Connect(r *think.ReCognizer) {
+func (x *Speak) Connect(r *think.ReCognizer) {
 	x.connect <- r
 	close(x.connect)
 }
 
-func (x *Connector) Connected() *think.ReCognizer {
+func (x *Speak) Connected() *think.ReCognizer {
 	return <-x.connect
+}
+
+// Hear
+type Hear struct {
+	??
 }

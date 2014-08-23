@@ -1,3 +1,4 @@
+// autorespawn is ...
 main {
 	proc circuit.Process
 	srv os.Arg

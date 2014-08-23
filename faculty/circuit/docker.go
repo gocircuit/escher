@@ -13,7 +13,7 @@ import (
 	"sync"
 
 	dkr "github.com/gocircuit/circuit/client/docker"
-	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
 )
@@ -119,14 +119,14 @@ func (p *docker) CognizeCommand(v interface{}) {
 	p.arg.cmd = &dkr.Run{}
 	p.arg.cmd.Image = img.String("Image") // mandatory
 	if img.Has("Memory") {
-		mem, ok := basic.AsInt(img["Memory"])
+		mem, ok := plumb.OptionallyInt(img["Memory"])
 		if !ok {
 			panic("non-integral docker memory shares")
 		}
 		p.arg.cmd.Memory = int64(mem)
 	}
 	if img.Has("CpuShares") {
-		shares, ok := basic.AsInt(img["CpuShares"])
+		shares, ok := plumb.OptionallyInt(img["CpuShares"])
 		if !ok {
 			panic("non-integral docker memory shares")
 		}

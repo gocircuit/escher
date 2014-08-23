@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/kit/plumb"
 	"github.com/gocircuit/escher/think"
 )
 
@@ -59,7 +59,7 @@ type delay struct {
 }
 
 func (h *delay) CognizeDuration(v interface{}) {
-	i, ok := basic.AsInt(v)
+	i, ok := plumb.OptionallyInt(v)
 	if !ok {
 		panic("non-numeric delay duration")
 	}

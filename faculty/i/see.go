@@ -8,7 +8,7 @@ package i
 
 import (
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/kit/plumb"
 	es "github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/think"
 )
@@ -43,7 +43,7 @@ type see struct {
 }
 
 func (h *see) CognizeSource(v interface{}) {
-	src, ok := basic.AsString(v)
+	src, ok := plumb.OptionallyString(v)
 	if !ok {
 		panic("non-string name perceived by os.see")
 	}

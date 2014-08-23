@@ -11,6 +11,7 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
@@ -41,9 +42,9 @@ type sum struct {
 func (s *sum) ShortCognize(imp faculty.Impression) {
 	// println(fmt.Sprintf("summing (%v)", Linearize(imp.Print("", " "))))
 	<-s.connected
-	x, xk := AsInt(imp.Valve("X").Value())
-	y, yk := AsInt(imp.Valve("Y").Value())
-	su, sk := AsInt(imp.Valve("Sum").Value())
+	x, xk := plumb.OptionallyInt(imp.Valve("X").Value())
+	y, yk := plumb.OptionallyInt(imp.Valve("Y").Value())
+	su, sk := plumb.OptionallyInt(imp.Valve("Sum").Value())
 	// println(fmt.Sprintf("SUMMING X=%v/%T Y=%v/%T Sum=%v/%T", x, x, y, y, su, su))
 	switch imp.Index(0).Valve() { // determine which valve was most recently updated
 	case "X":

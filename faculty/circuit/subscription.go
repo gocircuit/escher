@@ -9,7 +9,7 @@ package circuit
 import (
 	"github.com/gocircuit/circuit/client"
 	"github.com/gocircuit/escher/think"
-	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Joining
@@ -33,8 +33,8 @@ func MaterializeSubscription(kind string) think.Reflex {
 		p := &subscription{
 			kind: kind,
 			id:    ChooseID(),
-			z: basic.NewConnector(),
-			server: basic.NewQuestion(),
+			z: plumb.NewSpeak(),
+			server: plumb.NewCondition(),
 		}
 		p.z.Connect(_Endo.Focus(think.DontCognize))
 		serverEndo.Focus(p.CognizeServer)
@@ -50,8 +50,8 @@ func MaterializeSubscription(kind string) think.Reflex {
 type subscription struct {
 	kind string // “Joining” or “Leaving”
 	id string
-	z *basic.Connector
-	server *basic.Question
+	z *plumb.Speak
+	server *plumb.Condition
 }
 
 func (h *subscription) CognizeServer(v interface{}) {
@@ -59,14 +59,20 @@ func (h *subscription) CognizeServer(v interface{}) {
 	if !ok {
 		panic("process server anchor is non-string")
 	}
-	h.server.Lock()
-	defer h.server.Unlock()
-	h.server.Answer(srv)
+	h.server.Determine(srv)
 }
 
 func (h *subscription) loop() {
 	z := h.z.Connected()
-	anchor := program.Client.Walk([]string{h.server.String(), "escher", program.Name, "circuit." + h.kind, h.id})
+	anchor := program.Client.Walk(
+		[]string{
+			h.server.String(), 
+			"escher", 
+			program.Name, 
+			"circuit." + h.kind, 
+			h.id,
+		},
+	)
 	var ss client.Subscription
 	var err error
 	switch h.kind {

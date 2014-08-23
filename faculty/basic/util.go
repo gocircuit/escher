@@ -10,18 +10,36 @@ import (
 	"bytes"
 	"io"
 	"math"
+	"strconv"
 )
 
 // AsInt accepts an int or float64 value and converts it to an int value.
 func AsInt(v interface{}) (int, bool) {
-	if v == nil {
+	switch t := v.(type) {
+	case nil:
 		return 0, true
-	}
-	if i, ok := v.(int); ok {
+	case int:
+		return t, true
+	case float64:
+		if math.Floor(t) == t {
+			return int(t), true
+		}
+		panic("precision")
+	case complex128:
+		if imag(t) != 0 {
+			panic("imaginary integers")
+		}
+		f := real(t)
+		if math.Floor(f) == f {
+			return int(f), true
+		}
+		panic("real precision")
+	case string:
+		i, err := strconv.Atoi(t)
+		if err != nil {
+			panic("illegible integer")
+		}
 		return i, true
-	}
-	if f, ok := v.(float64); ok && math.Floor(f) == f {
-		return int(f), true
 	}
 	return 0, false
 }

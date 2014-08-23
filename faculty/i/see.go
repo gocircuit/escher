@@ -18,7 +18,7 @@ func init() {
 	ns.AddTerminal("See", See{})
 	ns.AddTerminal("Understand", Understand{})
 	ns.AddTerminal("Memory", Memory{})
-	ns.AddTerminal("Materialize", Materialize{})
+	// ns.AddTerminal("Materialize", Materialize{})
 }
 
 // See

@@ -13,18 +13,10 @@ import (
 	"github.com/gocircuit/escher/think"
 )
 
-func init() {
-	ns := faculty.Root.Refine("i")
-	ns.AddTerminal("See", See{})
-	ns.AddTerminal("Understand", Understand{})
-	ns.AddTerminal("Memory", Memory{})
-	ns.AddTerminal("Materialize", Materialize{})
-}
+// Materialize
+type Materialize struct{}
 
-// See
-type See struct{}
-
-func (See) Materialize() think.Reflex {
+func (Materialize) Materialize() think.Reflex {
 	sourceEndo, sourceExo := think.NewSynapse()
 	seenEndo, seenExo := think.NewSynapse()
 	go func() {
@@ -34,7 +26,7 @@ func (See) Materialize() think.Reflex {
 	}()
 	return think.Reflex{
 		"Source": sourceExo,
-		"Seen":   seenExo,
+		"Materializen":   seenExo,
 	}
 }
 
@@ -47,5 +39,5 @@ func (h *see) CognizeSource(v interface{}) {
 	if !ok {
 		panic("non-string name perceived by os.see")
 	}
-	h.seen.ReCognize(es.SeeCircuit(es.NewSrcString(src)))
+	h.seen.ReCognize(es.MaterializeCircuit(es.NewSrcString(src)))
 }

@@ -4,7 +4,6 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// Package i provides reflection primitives.
 package i
 
 import (

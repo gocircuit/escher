@@ -80,12 +80,36 @@ func (x Image) Has(key string) bool {
 	return present
 }
 
+func (x Image) Interface(key string) interface{} {
+	v, ok := x[key]
+	if !ok {
+		panic(3)
+	}
+	return v
+}
+
 func (x Image) String(key string) string {
 	return x[key].(string)
 }
 
+func (x Image) OptionalString(key string) string {
+	v, ok := x[key]
+	if !ok {
+		return ""
+	}
+	return v.(string)
+}
+
 func (x Image) Int(key string) int {
 	return x[key].(int)
+}
+
+func (x Image) OptionalInt(key string) int {
+	v, ok := x[key]
+	if !ok {
+		return 0
+	}
+	return v.(int)
 }
 
 func (x Image) Float(key string) float64 {

@@ -4,21 +4,17 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// Package twitter installs a faculty for access to the Twitter API.
-package twitter
+// Package url installs a faculty for URL manipulations.
+package url
 
 import (
 	// "fmt"
 	"net/url"
-	"strconv"
-	"sync"
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
-
-	"github.com/gocircuit/escher/github.com/ChimeraCoder/anaconda"
 )
 
 func init() {
@@ -40,8 +36,8 @@ func (Client) Materialize() think.Reflex {
 			consumer: plumb.NewCondition(),
 			access: plumb.NewCondition(),
 		}
-		consumerEndo.Focus(h.consumer.Determine) // Consumer
-		accessEndo.Focus(h.access.Determine) // Access
+		consumerEndo.Focus(p.consumer.Determine) // Consumer
+		accessEndo.Focus(p.access.Determine) // Access
 		userTimelineQueryEndo.Focus(h.userTimelineQuery.Cognize) // UserTimelineQuery
 		h.userTimelineAnswer.Connect(userTimelineAnswerEndo.Focus(think.DontCognize)) // UserTimelineAnswer
 		go h.loop()
@@ -75,25 +71,5 @@ func (h *client) loop() {
 	api := anaconda.NewTwitterApi(access.String("Token"), access.String("Secret"))	
 	//
 	for {
-		select {
-		case t := <-h.userTimelineQuery.Chan():
-			q := t.(Image)
-			uv := url.Values{}
-			uv.Set("user_id", q.OptionalString("UserId"))
-			uv.Set("screen_name", q.OptionalString("ScreenName"))
-			uv.Set("since_id", strconv.Itoa(q.OptionalInt("AfterId"))) // return results indexed greater than since_id
-			uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
-			uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
-			timeline, err := api.GetUserTimeline(uv)
-			if err != nil {
-				panic(err)
-			}
-			userTimelineAnswer.ReCognize(
-				Image{
-					"Name": q.Interface("Name"),
-					"Answer": Imagine(timeline),
-				},
-			)
-		}
 	}
 }

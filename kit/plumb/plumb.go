@@ -125,5 +125,19 @@ func (x *Speak) Connected() *think.ReCognizer {
 
 // Hear
 type Hear struct {
-	??
+	flow chan interface{}
+}
+
+func NewHear() *Hear {
+	return &Hear{
+		flow: make(chan interface{}, 1),
+	}
+}
+
+func (x *Hear) Cognize(v interface{}) {
+	x.flow <- v
+}
+
+func (x *Hear) Chan() <-chan interface{} {
+	return x.flow
 }

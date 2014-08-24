@@ -119,25 +119,6 @@ func (x *Speak) Connected() *think.ReCognizer {
 	return <-x.connect
 }
 
-// Hear
-type Hear struct {
-	flow chan interface{}
-}
-
-func NewHear() *Hear {
-	return &Hear{
-		flow: make(chan interface{}, 1),
-	}
-}
-
-func (x *Hear) Cognize(v interface{}) {
-	x.flow <- v
-}
-
-func (x *Hear) Chan() <-chan interface{} {
-	return x.flow
-}
-
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 // The mind's eye is a synchronization device which sees changes as ordered
@@ -157,7 +138,7 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 	return NewEyeCognizer(nil, valve...)
 }
 
-type EyeCognizer func(valve string, value interface{})
+type EyeCognizer func(eye *Eye, valve string, value interface{})
 
 func NewEyeCognizer(cog EyeCognizer, valve ...string) (think.Reflex, *Eye) {
 	r := make(think.Reflex)
@@ -188,7 +169,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (think.Reflex, *Eye) {
 				v,
 				y.Focus(
 					func(w interface{}) {
-						cog(v, w)
+						cog(eye, v, w)
 					},
 				),
 			)

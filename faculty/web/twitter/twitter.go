@@ -34,71 +34,62 @@ func init() {
 type Client struct{}
 
 func (Client) Materialize() think.Reflex {
-	consumerEndo, consumerExo := think.NewSynapse()
-	accessEndo, accessExo := think.NewSynapse()
-	userTimelineQueryEndo, userTimelineQueryExo := think.NewSynapse()
-	userTimelineAnswerEndo, userTimelineAnswerExo := think.NewSynapse()
-	go func() {
-		h := &client{
-			userTimelineQuery: plumb.NewHear(),
-			userTimelineAnswer: plumb.NewSpeak(),
-			consumer: plumb.NewCondition(),
-			access: plumb.NewCondition(),
+	var c1, a1 sync.Once
+	api, consumer, access := make(chan *anaconda.TwitterApi), make(chan Image, 1), make(chan Image, 1)
+	go func() { // start connecting monad
+		var c, a Image
+		for i := 0; i < 2; i++ {
+			select {
+			case c = <-consumer:
+				consumer = nil
+			case a = <-access:
+				access = nil
+			}
 		}
-		consumerEndo.Focus(h.consumer.Determine) // Consumer
-		accessEndo.Focus(h.access.Determine) // Access
-		userTimelineQueryEndo.Focus(h.userTimelineQuery.Cognize) // UserTimelineQuery
-		h.userTimelineAnswer.Connect(userTimelineAnswerEndo.Focus(think.DontCognize)) // UserTimelineAnswer
-		go h.loop()
+		anaconda.SetConsumerKey(c.String("Key")) // dial API server
+		anaconda.SetConsumerSecret(c.String("Secret"))
+		y := anaconda.NewTwitterApi(a.String("Token"), a.String("Secret"))	
+		for {
+			api <- y // give out api server to all endpoint goroutines
+		}
 	}()
-	return think.Reflex{
-		"Consumer":   consumerExo, // key and secret
-		"Access":   accessExo, // access token and secret
-		"UserTimelineQuery": userTimelineQueryExo,
-		"UserTimelineAnswer": userTimelineAnswerExo,
-	}
-}
-
-type client struct {
-	sync.Mutex
-	//
-	userTimelineQuery *plumb.Hear
-	userTimelineAnswer *plumb.Speak
-	//
-	consumer *plumb.Condition
-	access *plumb.Condition
-}
-
-func (h *client) loop() {
-	userTimelineAnswer := h.userTimelineAnswer.Connected()
-	//
-	consumer := h.consumer.Image() // wait for consumer key and secret information
-	anaconda.SetConsumerKey(consumer.String("Key")) // dial API server
-	anaconda.SetConsumerSecret(consumer.String("Secret"))
-	//
-	access := h.access.Image() // wait for access token and access token secret
-	api := anaconda.NewTwitterApi(access.String("Token"), access.String("Secret"))	
-	//
-	for {
-		select {
-		case t := <-h.userTimelineQuery.Chan():
-			q := t.(Image)
+	userTimelineQuery := make(chan Image, 5)
+	reflex, eye := plumb.NewEyeCognizer(
+		func (eye *plumb.Eye, valve string, value interface{}) {
+			switch valve {
+			case "Consumer":
+				c1.Do(func () {consumer <- value.(Image)})
+			case "Access":
+				a1.Do(func() {access <- value.(Image)})
+			case "UserTimelineQuery":
+				userTimelineQuery <- value.(Image)
+ 			}
+		},
+		"Consumer", "Access", // set to start connection
+		"UserTimelineQuery", "UserTimelineResult", // UserTimeline
+	)
+	go func() { // UserTimeline loop
+		y := <-api
+		for {
+			q := <-userTimelineQuery
 			uv := url.Values{}
 			uv.Set("user_id", q.OptionalString("UserId"))
 			uv.Set("screen_name", q.OptionalString("ScreenName"))
 			uv.Set("since_id", strconv.Itoa(q.OptionalInt("AfterId"))) // return results indexed greater than since_id
 			uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
 			uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
-			timeline, err := api.GetUserTimeline(uv)
+			timeline, err := y.GetUserTimeline(uv)
 			if err != nil {
 				panic(err)
 			}
-			userTimelineAnswer.ReCognize(
+			eye.Show(
+				"UserTimelineResult",
 				Image{
 					"Name": q.Interface("Name"),
 					"Sentence": Imagine(timeline),
 				},
 			)
 		}
-	}
+	}()
+	return reflex
 }

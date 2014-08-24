@@ -1,0 +1,13 @@
+
+// nonturing 
+main {
+	twitter net.twitter.Client
+	twitter.Consumer = {
+		Key ""
+		Secret ""
+	}
+	twitter.Access = {
+		Token ""
+		Secret ""
+	}
+}

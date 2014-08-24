@@ -140,6 +140,9 @@ func (x *Hear) Chan() <-chan interface{} {
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
+// The mind's eye is a synchronization device which sees changes as ordered
+// and thus introduces the illusory perception of time (and, eventually, of the
+// higher-level concepts of cause and effect).
 type Eye struct {
 	see chan *change
 	show map[string]*nerve
@@ -151,6 +154,12 @@ type change struct {
 }
 
 func NewEye(valve ...string) (think.Reflex, *Eye) {
+	return NewEyeCognizer(nil, valve...)
+}
+
+type EyeCognizer func(valve string, value interface{})
+
+func NewEyeCognizer(cog EyeCognizer, valve ...string) (think.Reflex, *Eye) {
 	r := make(think.Reflex)
 	eye := &Eye{
 		see: make(chan *change),
@@ -165,7 +174,25 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 			ch: make(chan *think.ReCognizer),
 		}
 		eye.show[v] = n
-		go eye.connect(v, y.Focus(eye.cognizeValve(v)))
+		if cog == nil {
+			go eye.connect(
+				v,
+				y.Focus(
+					func(w interface{}) {
+						eye.cognize(v, w)
+					},
+				),
+			)
+		} else {
+			go eye.connect(
+				v,
+				y.Focus(
+					func(w interface{}) {
+						cog(v, w)
+					},
+				),
+			)
+		}
 	}
 	return r, eye
 }
@@ -194,12 +221,6 @@ func (eye *Eye) Show(valve string, v interface{}) {
 	}
 	n.Unlock()
 	r.ReCognize(v)
-}
-
-func (eye *Eye) cognizeValve(valve string) think.Cognize {
-	return func(v interface{}) {
-		eye.cognize(valve, v)
-	}
 }
 
 func (eye *Eye) cognize(valve string, v interface{}) {

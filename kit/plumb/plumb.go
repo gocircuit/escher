@@ -18,16 +18,14 @@ import (
 	"github.com/gocircuit/escher/think"
 )
 
-// OptionallyInt accepts an int or float64 value and converts it to an int value.
-func OptionallyInt(v interface{}) (int, bool) {
+// AsInt accepts an int or float64 value and converts it to an int value.
+func AsInt(v interface{}) int {
 	switch t := v.(type) {
-	case nil:
-		return 0, true
 	case int:
-		return t, true
+		return t
 	case float64:
 		if math.Floor(t) == t {
-			return int(t), true
+			return int(t)
 		}
 		panic("precision")
 	case complex128:
@@ -36,7 +34,7 @@ func OptionallyInt(v interface{}) (int, bool) {
 		}
 		f := real(t)
 		if math.Floor(f) == f {
-			return int(f), true
+			return int(f)
 		}
 		panic("real precision")
 	case string:
@@ -44,25 +42,23 @@ func OptionallyInt(v interface{}) (int, bool) {
 		if err != nil {
 			panic("illegible integer")
 		}
-		return i, true
+		return i
 	}
-	return 0, false
+	panic(4)
 }
 
-func OptionallyString(v interface{}) (string, bool) {
+func AsString(v interface{}) string {
 	switch t := v.(type) {
 	case string:
-		return t, true
+		return t
 	case bytes.Buffer:
-		return t.String(), true
+		return t.String()
 	case io.Reader:
 		var w bytes.Buffer
 		io.Copy(&w, t)
-		return w.String(), true
-	case nil:
-		return "", false
+		return w.String()
 	}
-	panic(2)
+	panic(4)
 }
 
 // Condition …
@@ -142,7 +138,8 @@ func (x *Hear) Chan() <-chan interface{} {
 	return x.flow
 }
 
-// Eye
+// Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
+//	http://www.probablyapproximatelycorrect.com/
 type Eye struct {
 	see chan *change
 	show map[string]*nerve

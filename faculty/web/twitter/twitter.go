@@ -35,7 +35,7 @@ func init() {
 type ForkAnswer struct{}
 
 func (ForkAnswer) Materialize() think.Reflex {
-	return basic.MaterializeFork("_", "Name", "Sentence")
+	return basic.MaterializeConjunction("_", "Name", "Sentence")
 }
 
 // Client ...

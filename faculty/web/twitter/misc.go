@@ -16,26 +16,26 @@ import (
 type ForkAnswer struct{}
 
 func (ForkAnswer) Materialize() think.Reflex {
-	return basic.MaterializeFork("_", "Name", "Sentence")
+	return basic.MaterializeConjunction("_", "Name", "Sentence")
 }
 
 // ForkConsumer ...
 type ForkConsumer struct{}
 
 func (ForkConsumer) Materialize() think.Reflex {
-	return basic.MaterializeFork("_", "Key", "Secret")
+	return basic.MaterializeConjunction("_", "Key", "Secret")
 }
 
 // ForkAccess ...
 type ForkAccess struct{}
 
 func (ForkAccess) Materialize() think.Reflex {
-	return basic.MaterializeFork("_", "Token", "Secret")
+	return basic.MaterializeConjunction("_", "Token", "Secret")
 }
 
 // ForkUserTimelineQuery ...
 type ForkUserTimelineQuery struct{}
 
 func (ForkUserTimelineQuery) Materialize() think.Reflex {
-	return basic.MaterializeFork("_", "UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
+	return basic.MaterializeConjunction("_", "UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
 }

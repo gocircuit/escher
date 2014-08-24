@@ -7,7 +7,6 @@
 package time
 
 import (
-	"sync"
 	"time"
 
 	"github.com/gocircuit/escher/faculty"
@@ -25,68 +24,45 @@ func init() {
 type Delay struct{}
 
 func (Delay) Materialize() think.Reflex {
-	xEndo, xExo := think.NewSynapse()
-	yEndo, yExo := think.NewSynapse()
-	durEndo, durExo := think.NewSynapse()
+	reflex, eye := plumb.NewEye("X", "Y", "Duration")
 	go func() {
-		h := &delay{
-			connected: make(chan struct{}),
-			born:      make(chan struct{}),
+		ds := make(chan time.Duration, 2)
+		dur := ds
+		xy, yx := make(chan interface{}, 1), make(chan interface{}, 1)
+		go func() {
+			d := <-dur
+			for {
+				v := <-xy
+				time.Sleep(d)
+				eye.Show("Y", v)
+			}
+		}()
+		go func() {
+			d := <-dur
+			for {
+				v := <-yx
+				time.Sleep(d)
+				eye.Show("X", v)
+			}
+		}()
+		for {
+			valve, value := eye.See()
+			switch valve {
+			case "X":
+				xy <- value
+			case "Y":
+				yx <- value
+			case "Duration":
+				if ds == nil {
+					break
+				}
+				d := time.Duration(value.(int))
+				ds <- d
+				ds <- d
+				close(ds)
+				ds = nil
+			}
 		}
-		go func() {
-			h.x.Bind(xEndo.Focus(h.CognizeX))
-			h.y.Bind(yEndo.Focus(h.CognizeY))
-			close(h.connected)
-		}()
-		go func() {
-			durEndo.Focus(h.CognizeDuration)
-		}()
 	}()
-	return think.Reflex{
-		"X":        xExo,
-		"Y":        yExo,
-		"Duration": durExo,
-	}
-}
-
-type delay struct {
-	x, y      think.PtrReCognizer
-	connected chan struct{}
-	sync.Once
-	born chan struct{}
-	sync.Mutex
-	dur time.Duration
-}
-
-func (h *delay) CognizeDuration(v interface{}) {
-	i, ok := plumb.OptionallyInt(v)
-	if !ok {
-		panic("non-numeric delay duration")
-	}
-	h.dur = time.Duration(i)
-	h.Once.Do(func() { close(h.born) })
-}
-
-func (h *delay) CognizeX(v interface{}) {
-	<-h.connected
-	<-h.born
-	h.Lock()
-	dur := h.dur
-	h.Unlock()
-	go func() {
-		time.Sleep(dur)
-		h.y.ReCognize(v)
-	}()
-}
-
-func (h *delay) CognizeY(v interface{}) {
-	<-h.connected
-	<-h.born
-	h.Lock()
-	dur := h.dur
-	h.Unlock()
-	go func() {
-		time.Sleep(dur)
-		h.x.ReCognize(v)
-	}()
+	return reflex
 }

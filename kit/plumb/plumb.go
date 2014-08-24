@@ -141,3 +141,74 @@ func (x *Hear) Cognize(v interface{}) {
 func (x *Hear) Chan() <-chan interface{} {
 	return x.flow
 }
+
+// Eye
+type Eye struct {
+	see chan *change
+	show map[string]*nerve
+}
+
+type change struct {
+	Valve string
+	Value interface{}
+}
+
+func NewEye(valve ...string) (think.Reflex, *Eye) {
+	r := make(think.Reflex)
+	eye := &Eye{
+		see: make(chan *change),
+		show: make(map[string]*nerve),
+	}
+	for i, v := range valve {
+		n := &nerve{
+			index: i,
+			ch: make(chan *think.ReCognizer),
+		}
+		eye.show[v] = n
+	}
+	return r, eye
+}
+
+func (eye *Eye) Connect(valve string, r *think.ReCognizer) {
+	ch := eye.show[valve].ch 
+	ch <- r
+	close(ch)
+}
+
+type nerve struct {
+	index int
+	ch chan *think.ReCognizer
+	sync.Mutex
+	*think.ReCognizer
+}
+
+func (eye *Eye) Show(valve string, v interface{}) {
+	n := eye.show[valve]
+	r, ok := <-n.ch
+	n.Lock()
+	if !ok {
+		r = n.ReCognizer
+	} else {
+		n.ReCognizer = r
+	}
+	n.Unlock()
+	r.ReCognize(v)
+}
+
+func (eye *Eye) CognizeValve(valve string) think.Cognize {
+	return func(v interface{}) {
+		eye.Cognize(valve, v)
+	}
+}
+
+func (eye *Eye) Cognize(valve string, v interface{}) {
+	eye.see <- &change{
+		Valve: valve,
+		Value: v,
+	}
+}
+
+func (eye *Eye) See() (valve string, value interface{}) {
+	chg := <-eye.see
+	return chg.Valve, chg.Value
+}

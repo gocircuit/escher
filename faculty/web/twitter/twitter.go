@@ -14,7 +14,6 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
@@ -29,13 +28,6 @@ func init() {
 	ns.AddTerminal("ForkConsumer", ForkConsumer{})
 	ns.AddTerminal("ForkAccess", ForkAccess{})
 	ns.AddTerminal("ForkUserTimelineQuery", ForkUserTimelineQuery{})
-}
-
-// ForkAnswer…
-type ForkAnswer struct{}
-
-func (ForkAnswer) Materialize() think.Reflex {
-	return basic.MaterializeConjunction("_", "Name", "Sentence")
 }
 
 // Client ...

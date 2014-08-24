@@ -43,9 +43,5 @@ type see struct {
 }
 
 func (h *see) CognizeSource(v interface{}) {
-	src, ok := plumb.OptionallyString(v)
-	if !ok {
-		panic("non-string name perceived by os.see")
-	}
-	h.seen.ReCognize(es.SeeCircuit(es.NewSrcString(src)))
+	h.seen.ReCognize(es.SeeCircuit(es.NewSrcString(plumb.AsString(v))))
 }

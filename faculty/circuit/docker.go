@@ -119,18 +119,10 @@ func (p *docker) CognizeCommand(v interface{}) {
 	p.arg.cmd = &dkr.Run{}
 	p.arg.cmd.Image = img.String("Image") // mandatory
 	if img.Has("Memory") {
-		mem, ok := plumb.OptionallyInt(img["Memory"])
-		if !ok {
-			panic("non-integral docker memory shares")
-		}
-		p.arg.cmd.Memory = int64(mem)
+		p.arg.cmd.Memory = int64(plumb.AsInt(img["Memory"]))
 	}
 	if img.Has("CpuShares") {
-		shares, ok := plumb.OptionallyInt(img["CpuShares"])
-		if !ok {
-			panic("non-integral docker memory shares")
-		}
-		p.arg.cmd.CpuShares = int64(shares)
+		p.arg.cmd.CpuShares = int64(plumb.AsInt(img["CpuShares"]))
 	}
 	lxc := img.Walk("Lxc")
 	for _, key := range lxc.Sort() {

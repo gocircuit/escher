@@ -14,6 +14,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
@@ -22,7 +23,19 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("Client", Client{})
+	ns := faculty.Root.Refine("web").Refine("twitter")
+	ns.AddTerminal("Client", Client{})
+	ns.AddTerminal("ForkAnswer", ForkAnswer{})
+	ns.AddTerminal("ForkConsumer", ForkConsumer{})
+	ns.AddTerminal("ForkAccess", ForkAccess{})
+	ns.AddTerminal("ForkUserTimelineQuery", ForkUserTimelineQuery{})
+}
+
+// ForkAnswer…
+type ForkAnswer struct{}
+
+func (ForkAnswer) Materialize() think.Reflex {
+	return basic.MaterializeFork("_", "Name", "Sentence")
 }
 
 // Client ...
@@ -91,7 +104,7 @@ func (h *client) loop() {
 			userTimelineAnswer.ReCognize(
 				Image{
 					"Name": q.Interface("Name"),
-					"Answer": Imagine(timeline),
+					"Sentence": Imagine(timeline),
 				},
 			)
 		}

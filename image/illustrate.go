@@ -13,5 +13,6 @@ import (
 )
 
 func Imagine(x interface{}) Image {
+	??
 	return Image{}
 }

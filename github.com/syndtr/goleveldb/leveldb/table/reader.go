@@ -14,7 +14,7 @@ import (
 	"sort"
 	"strings"
 
-	"code.google.com/p/snappy-go/snappy"
+	"github.com/gocircuit/escher/code.google.com/p/snappy-go/snappy"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/cache"
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/comparer"

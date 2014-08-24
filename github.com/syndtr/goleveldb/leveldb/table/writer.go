@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"io"
 
-	"code.google.com/p/snappy-go/snappy"
+	"github.com/gocircuit/escher/code.google.com/p/snappy-go/snappy"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/comparer"
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/filter"

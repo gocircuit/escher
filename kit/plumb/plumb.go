@@ -159,17 +159,21 @@ func NewEye(valve ...string) (think.Reflex, *Eye) {
 		see: make(chan *change),
 		show: make(map[string]*nerve),
 	}
-	for i, v := range valve {
+	for i, v_ := range valve {
+		v := v_
+		x, y := think.NewSynapse()
+		r[v] = x
 		n := &nerve{
 			index: i,
 			ch: make(chan *think.ReCognizer),
 		}
 		eye.show[v] = n
+		go eye.connect(v, y.Focus(eye.cognizeValve(v)))
 	}
 	return r, eye
 }
 
-func (eye *Eye) Connect(valve string, r *think.ReCognizer) {
+func (eye *Eye) connect(valve string, r *think.ReCognizer) {
 	ch := eye.show[valve].ch 
 	ch <- r
 	close(ch)
@@ -195,13 +199,13 @@ func (eye *Eye) Show(valve string, v interface{}) {
 	r.ReCognize(v)
 }
 
-func (eye *Eye) CognizeValve(valve string) think.Cognize {
+func (eye *Eye) cognizeValve(valve string) think.Cognize {
 	return func(v interface{}) {
-		eye.Cognize(valve, v)
+		eye.cognize(valve, v)
 	}
 }
 
-func (eye *Eye) Cognize(valve string, v interface{}) {
+func (eye *Eye) cognize(valve string, v interface{}) {
 	eye.see <- &change{
 		Valve: valve,
 		Value: v,

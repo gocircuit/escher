@@ -9,32 +9,24 @@ package basic
 import (
 	// "fmt"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/think"
 )
 
 func MaterializeFork(name string, parts ...string) think.Reflex {
-	reflex, eye := faculty.NewEye(append(parts, name)...)
+	reflex, eye := plumb.NewEye(append(parts, name)...)
 	go func() {
-		h := &join{
-			name:      name,
-			parts:     parts,
-			connected: make(chan struct{}),
+		for {
+			valve, value := eye.See()
+			if valve == name {
+				??
+			} else {
+				??
+			}
 		}
-		h.reply = eye.Focus(h.ShortCognize)
-		close(h.connected)
 	}()
 	return reflex
-}
-
-type join struct {
-	??
-}
-
-type split struct {
-	??
 }
 
 func (h *join) ShortCognize(mem faculty.Impression) {

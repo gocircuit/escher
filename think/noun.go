@@ -6,6 +6,10 @@
 
 package think
 
+import (
+	"github.com/gocircuit/escher/see"
+)
+
 func DontCognize(interface{}) {}
 
 func NewNounReflex(v interface{}) Reflex {
@@ -13,5 +17,5 @@ func NewNounReflex(v interface{}) Reflex {
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)
 	}()
-	return Reflex{"": t}
+	return Reflex{see.DefaultValve: t}
 }

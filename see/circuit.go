@@ -13,6 +13,8 @@ import (
 	"strconv"
 )
 
+const DefaultValve = "_"
+
 func SeeCircuit(src *Src) *Circuit {
 	if src.Len() == 0 {
 		return nil

@@ -90,5 +90,5 @@ func printable(s string) string {
 	if s != "" {
 		return s
 	}
-	return "ø"
+	return "@"
 }

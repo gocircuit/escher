@@ -69,7 +69,7 @@ func Understand(s *see.Circuit) *Circuit {
 				nsugar++
 				p := fmt.Sprintf("sugar#%d", nsugar)
 				x.addPeer(p, t.Design)
-				end[i] = x.reserveValve(p, "") // Anonymous designs have one empty-string valve
+				end[i] = x.reserveValve(p, see.DefaultValve)
 			case *see.PeerJoin:
 				end[i] = x.reserveValve(t.Peer, t.Valve)
 			case *see.ValveJoin:

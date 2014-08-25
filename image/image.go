@@ -55,7 +55,6 @@ func (x Image) Attach(y Image) Image {
 
 func (x Image) Grow(key string, v interface{}) Image {
 	if _, present := x[key]; present {
-		println("key", key)
 		panic(4)
 	}
 	x[key] = v
@@ -65,6 +64,12 @@ func (x Image) Grow(key string, v interface{}) Image {
 func (x Image) Abandon(key string) Image {
 	delete(x, key)
 	return x
+}
+
+func (x Image) Cut(key string) interface{} {
+	v := x[key]
+	delete(x, key)
+	return v
 }
 
 func (x Image) Walk(key string) Image {

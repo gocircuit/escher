@@ -82,7 +82,9 @@ func (Client) Materialize() think.Reflex {
 			if q.Has("NotAfterId") {
 				uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
 			}
-			uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
+			if q.Has("Count") {
+				uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
+			}
 			log.Printf("Twitter query %v", ImagineWithMaps(uv).(Image).PrintLine())
 			timeline, err := y.GetUserTimeline(uv)
 			if err != nil {

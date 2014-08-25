@@ -11,10 +11,10 @@ main {
 
 	query {
 		Name "Q1"
-		ScreenName "maymounkov"
+		ScreenName "nonturing"
+		Count 10
 		// AfterId 0
 		// NotAfterId 0
-		Count 10
 	}
 	twitter.UserTimelineQuery = query._
 

@@ -11,7 +11,13 @@ import (
 	// "fmt"
 	. "reflect"
 	"strconv"
+	"sync"
 )
+
+type MutexImage struct {
+	sync.Mutex
+	Image
+}
 
 func Imagine(x interface{}) interface{} {
 	return imagine(false, ValueOf(x)).Interface()

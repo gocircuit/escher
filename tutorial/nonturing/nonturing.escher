@@ -10,9 +10,10 @@ main {
 	twitter.Access = access._
 
 	query {
-		ScreenName "nonturing"
-		AfterId 0
-		NotAfterId 0
+		Name "Q1"
+		ScreenName "maymounkov"
+		// AfterId 0
+		// NotAfterId 0
 		Count 10
 	}
 	twitter.UserTimelineQuery = query._

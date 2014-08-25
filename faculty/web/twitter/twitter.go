@@ -76,9 +76,14 @@ func (Client) Materialize() think.Reflex {
 			uv := url.Values{}
 			uv.Set("user_id", q.OptionalString("UserId"))
 			uv.Set("screen_name", q.OptionalString("ScreenName"))
-			uv.Set("since_id", strconv.Itoa(q.OptionalInt("AfterId"))) // return results indexed greater than since_id
-			uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
+			if q.Has("AfterId") {
+				uv.Set("since_id", strconv.Itoa(q.OptionalInt("AfterId"))) // return results indexed greater than since_id
+			}
+			if q.Has("NotAfterId") {
+				uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
+			}
 			uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
+			log.Printf("Twitter query: %v", uv)
 			timeline, err := y.GetUserTimeline(uv)
 			if err != nil {
 				log.Fatalf("Problem with Twitter (%v)", err)

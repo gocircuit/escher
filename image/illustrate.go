@@ -19,8 +19,7 @@ func Imagine(x interface{}) interface{} {
 
 func imagine(v Value) Value {
 	switch v.Kind() {
-	case Map:
-		panic("unsupported")
+	// case Map:
 	case Ptr:
 		w := v.Elem()
 		switch w.Kind() {

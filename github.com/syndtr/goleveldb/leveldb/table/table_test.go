@@ -9,8 +9,8 @@ package table
 import (
 	"bytes"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	. "github.com/gocircuit/escher/github.com/onsi/ginkgo"
+	. "github.com/gocircuit/escher/github.com/onsi/gomega"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/iterator"
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/opt"

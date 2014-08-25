@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	. "github.com/onsi/gomega"
+	. "github.com/gocircuit/escher/github.com/onsi/gomega"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/iterator"
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/util"

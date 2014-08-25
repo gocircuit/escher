@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"math/rand"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	. "github.com/gocircuit/escher/github.com/onsi/ginkgo"
+	. "github.com/gocircuit/escher/github.com/onsi/gomega"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/util"
 )

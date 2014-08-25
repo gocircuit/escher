@@ -16,7 +16,7 @@ import (
 	"strings"
 	"sync"
 
-	. "github.com/onsi/gomega"
+	. "github.com/gocircuit/escher/github.com/onsi/gomega"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/storage"
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/util"

@@ -7,7 +7,7 @@
 package iterator_test
 
 import (
-	. "github.com/onsi/ginkgo"
+	. "github.com/gocircuit/escher/github.com/onsi/ginkgo"
 
 	. "github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/iterator"
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb/testutil"

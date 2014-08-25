@@ -9,6 +9,7 @@ package twitter
 
 import (
 	// "fmt"
+	"log"
 	"net/url"
 	"strconv"
 	"sync"
@@ -41,10 +42,8 @@ func (Client) Materialize() think.Reflex {
 		for i := 0; i < 2; i++ {
 			select {
 			case c = <-consumer:
-				println("got consumer", c.Print("", "\t"))
 				consumer = nil
 			case a = <-access:
-				println("got access", a.Print("", "\t"))
 				access = nil
 			}
 		}
@@ -82,7 +81,7 @@ func (Client) Materialize() think.Reflex {
 			uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
 			timeline, err := y.GetUserTimeline(uv)
 			if err != nil {
-				panic(err)
+				log.Fatalf("Problem with Twitter (%v)", err)
 			}
 			eye.Show(
 				"UserTimelineResult",

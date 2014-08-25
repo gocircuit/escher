@@ -23,6 +23,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	facultyos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/text"
+	_ "github.com/gocircuit/escher/faculty/think"
 	_ "github.com/gocircuit/escher/faculty/time"
 	_ "github.com/gocircuit/escher/faculty/web/twitter"
 )

@@ -27,71 +27,49 @@ func (x Leaving) Materialize() think.Reflex {
 }
 
 func MaterializeSubscription(kind string) think.Reflex {
-	_Endo, _Exo := think.NewSynapse()
-	serverEndo, serverExo := think.NewSynapse()
+	reflex, eye := plumb.NewEye("Server", "_")
 	go func() {
-		p := &subscription{
-			kind: kind,
-			id:    ChooseID(),
-			z: plumb.NewSpeak(),
-			server: plumb.NewCondition(),
+		var server string
+		for {
+			valve, value := eye.See()
+			if valve != "Server" || server != "" {
+				continue
+			}
+			server = value.(string)
+			go func() {
+				id := ChooseID()
+				anchor := program.Client.Walk(
+					[]string{
+						server, 
+						"escher", 
+						program.Name, 
+						"circuit." + kind, 
+						id,
+					},
+				)
+				var ss client.Subscription
+				var err error
+				switch kind {
+				case "Joining":
+					ss, err = anchor.MakeOnJoin()
+				case "Leaving":
+					ss, err = anchor.MakeOnLeave()
+				default:
+					panic(2)
+				}
+				if err != nil {
+					panic("plugging")
+				}
+				defer anchor.Scrub()
+				for {
+					v, ok := ss.Consume()
+					if !ok {
+						panic("subscription should not be closing ever")
+					}
+					eye.Show("_", v)
+				}
+			}()
 		}
-		p.z.Connect(_Endo.Focus(think.DontCognize))
-		serverEndo.Focus(p.CognizeServer)
-		p.loop()
 	}()
-	return think.Reflex{
-		"_":  _Exo,
-		"Server":  serverExo,
-	}
-}
-
-// subscription is the materialized subscription reflex
-type subscription struct {
-	kind string // “Joining” or “Leaving”
-	id string
-	z *plumb.Speak
-	server *plumb.Condition
-}
-
-func (h *subscription) CognizeServer(v interface{}) {
-	srv, ok := v.(string)
-	if !ok {
-		panic("process server anchor is non-string")
-	}
-	h.server.Determine(srv)
-}
-
-func (h *subscription) loop() {
-	z := h.z.Connected()
-	anchor := program.Client.Walk(
-		[]string{
-			h.server.String(), 
-			"escher", 
-			program.Name, 
-			"circuit." + h.kind, 
-			h.id,
-		},
-	)
-	var ss client.Subscription
-	var err error
-	switch h.kind {
-	case "Joining":
-		ss, err = anchor.MakeOnJoin()
-	case "Leaving":
-		ss, err = anchor.MakeOnLeave()
-	default:
-		panic(2)
-	}
-	if err != nil {
-		panic("plugging")
-	}
-	defer anchor.Scrub()
-	for {
-		v, ok := ss.Consume()
-		if !ok {
-			panic("subscription should not be closing ever")
-		}
-		z.ReCognize(v)
-	}
+	return reflex
 }

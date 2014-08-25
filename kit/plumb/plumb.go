@@ -61,64 +61,6 @@ func AsString(v interface{}) string {
 	panic(4)
 }
 
-// Condition …
-type Condition struct {
-	sync.Mutex
-	ch chan interface{}
-	value interface{}
-	ok bool
-}
-
-func NewCondition() *Condition {
-	return &Condition{
-		ch: make(chan interface{}, 1),
-	}
-}
-
-func (x *Condition) Determine(v interface{}) {
-	x.Lock()
-	defer x.Unlock()
-	x.ch <- v
-}
-
-func (x *Condition) String() string {
-	x.Lock()
-	defer x.Unlock()
-	var v interface{}
-	v, x.ok = <- x.ch
-	x.value = v.(string)
-	return v.(string)
-}
-
-func (x *Condition) Image() Image {
-	x.Lock()
-	defer x.Unlock()
-	var v interface{}
-	v, x.ok = <- x.ch
-	x.value = v.(Image)
-	return v.(Image)
-}
-
-// Speak
-type Speak struct {
-	connect chan *think.ReCognizer
-}
-
-func NewSpeak() *Speak {
-	return &Speak{
-		connect: make(chan *think.ReCognizer, 1),
-	}
-}
-
-func (x *Speak) Connect(r *think.ReCognizer) {
-	x.connect <- r
-	close(x.connect)
-}
-
-func (x *Speak) Connected() *think.ReCognizer {
-	return <-x.connect
-}
-
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 // The mind's eye is a synchronization device which sees changes as ordered

@@ -12,7 +12,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb"
@@ -31,7 +31,7 @@ type File struct{}
 //	Put {Key []byte, Value []byte}
 //	Query {Name interface{}, Start []byte, Limit []byte}
 //	Result {Name interface{}, Result Image}
-func (File) Materialize() think.Reflex {
+func (File) Materialize() be.Reflex {
 	reflex, eye := plumb.NewEye("File", "Put", "Query", "Result")
 	go func() { // dispatch
 		var err error

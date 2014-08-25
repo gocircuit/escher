@@ -13,7 +13,7 @@ import (
 	"github.com/gocircuit/circuit/client"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/understand"
 
 	"github.com/gocircuit/escher/faculty/basic"
@@ -23,6 +23,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	facultyos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/text"
+	_ "github.com/gocircuit/escher/faculty/shelah"
 	_ "github.com/gocircuit/escher/faculty/think"
 	_ "github.com/gocircuit/escher/faculty/time"
 	_ "github.com/gocircuit/escher/faculty/web/twitter"
@@ -48,7 +49,7 @@ func main() {
 	if *flagUn {
 		fmt.Println(compile(*flagX, *flagY).Print("", "   "))
 	} else {
-		think.Space(compile(*flagX, *flagY)).Materialize("main")
+		be.Space(compile(*flagX, *flagY)).Materialize("main")
 		select {} // wait forever
 	}
 }

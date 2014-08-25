@@ -11,14 +11,14 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Associate
 type Associate struct{}
 
-func (Associate) Materialize() think.Reflex {
+func (Associate) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", "_")
 	return reflex
 }

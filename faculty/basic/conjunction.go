@@ -11,10 +11,10 @@ import (
 
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
-func MaterializeConjunction(name string, field ...string) think.Reflex {
+func MaterializeConjunction(name string, field ...string) be.Reflex {
 	reflex, eye := plumb.NewEye(append(field, name)...)
 	go func() {
 		conj := Make()

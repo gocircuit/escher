@@ -12,7 +12,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -24,7 +24,7 @@ func init() {
 // Sum
 type Sum struct{}
 
-func (Sum) Materialize() think.Reflex {
+func (Sum) Materialize() be.Reflex {
 	x := &sum{
 		lit: Image{},
 	}

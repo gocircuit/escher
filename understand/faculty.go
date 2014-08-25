@@ -15,7 +15,7 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
-// I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
+// I see forward. I think back. I see that I be. I think that I see. Thinking and seeing are not apart.
 
 type Faculty map[string]interface{} // name -> {Faculty, *Circuit, etc}
 

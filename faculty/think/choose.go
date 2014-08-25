@@ -12,14 +12,14 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Choose
 type Choose struct{}
 
-func (Choose) Materialize() think.Reflex {
+func (Choose) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&choose{}).Cognize, "When", "From", "_")
 	return reflex
 }

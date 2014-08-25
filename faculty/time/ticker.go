@@ -10,13 +10,13 @@ import (
 	"time"
 
 	"github.com/gocircuit/escher/kit/plumb"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // Ticker
 type Ticker struct{}
 
-func (Ticker) Materialize() think.Reflex {
+func (Ticker) Materialize() be.Reflex {
 	reflex, eye := plumb.NewEye("Tick", "Duration")
 	go func() {
 		for {

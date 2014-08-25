@@ -13,19 +13,19 @@ import (
 
 	"github.com/gocircuit/circuit/client"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // Process
 type Process struct{}
 
-func (x Process) Materialize() think.Reflex {
+func (x Process) Materialize() be.Reflex {
 	// Create reflex synapses
-	cmdEndo, cmdExo := think.NewSynapse()
-	spawnEndo, spawnExo := think.NewSynapse()
-	exitEndo, exitExo := think.NewSynapse()
-	ioEndo, ioExo := think.NewSynapse()
-	serverEndo, serverExo := think.NewSynapse()
+	cmdEndo, cmdExo := be.NewSynapse()
+	spawnEndo, spawnExo := be.NewSynapse()
+	exitEndo, exitExo := be.NewSynapse()
+	ioEndo, ioExo := be.NewSynapse()
+	serverEndo, serverExo := be.NewSynapse()
 	//
 	go func() {
 		p := &process{
@@ -33,15 +33,15 @@ func (x Process) Materialize() think.Reflex {
 			ready: make(chan struct{}),
 			spawn: make(chan interface{}),
 		}
-		p.reExit = exitEndo.Focus(think.DontCognize)
-		p.reIO = ioEndo.Focus(think.DontCognize)
+		p.reExit = exitEndo.Focus(be.DontCognize)
+		p.reIO = ioEndo.Focus(be.DontCognize)
 		serverEndo.Focus(p.CognizeServer)
 		cmdEndo.Focus(p.CognizeCommand)
 		spawnEndo.Focus(p.CognizeSpawn)
 		p.loop()
 	}()
 	//
-	return think.Reflex{
+	return be.Reflex{
 		"Server":  serverExo, // in-only
 		"Command": cmdExo,    // in-only
 		"Spawn":   spawnExo,  // in-only
@@ -53,8 +53,8 @@ func (x Process) Materialize() think.Reflex {
 // process is the materialized process reflex
 type process struct {
 	id     string // ID of this process reflex instance
-	reExit *think.ReCognizer
-	reIO   *think.ReCognizer
+	reExit *be.ReCognizer
+	reIO   *be.ReCognizer
 	arg    struct {
 		sync.Mutex
 		server string // root-level anchor of the server where the process is to be started

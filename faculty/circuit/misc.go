@@ -9,19 +9,19 @@ package circuit
 
 import (
 	"github.com/gocircuit/escher/faculty/basic"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // ForkExit…
 type ForkExit struct{}
 
-func (ForkExit) Materialize() think.Reflex {
+func (ForkExit) Materialize() be.Reflex {
 	return basic.MaterializeConjunction("_", "Spawn", "Exit")
 }
 
 // ForkIO…
 type ForkIO struct{}
 
-func (ForkIO) Materialize() think.Reflex {
+func (ForkIO) Materialize() be.Reflex {
 	return basic.MaterializeConjunction("_", "Spawn", "Stdin", "Stdout", "Stderr")
 }

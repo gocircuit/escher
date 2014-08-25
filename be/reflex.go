@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package think
+package be
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
 type Reflex map[string]*Synapse

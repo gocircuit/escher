@@ -8,25 +8,25 @@ package circuit
 
 import (
 	"github.com/gocircuit/circuit/client"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Joining
 type Joining struct{}
 
-func (x Joining) Materialize() think.Reflex {
+func (x Joining) Materialize() be.Reflex {
 	return MaterializeSubscription("Joining")
 }
 
 // Leaving
 type Leaving struct{}
 
-func (x Leaving) Materialize() think.Reflex {
+func (x Leaving) Materialize() be.Reflex {
 	return MaterializeSubscription("Leaving")
 }
 
-func MaterializeSubscription(kind string) think.Reflex {
+func MaterializeSubscription(kind string) be.Reflex {
 	reflex, eye := plumb.NewEye("Server", "_")
 	go func() {
 		var server string

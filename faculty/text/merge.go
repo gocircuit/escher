@@ -14,7 +14,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -26,22 +26,22 @@ func init() {
 // Merge …
 type Merge struct{}
 
-func (Merge) Materialize() think.Reflex {
-	_Endo, _Exo := think.NewSynapse()
-	firstEndo, firstExo := think.NewSynapse()
-	secondEndo, secondExo := think.NewSynapse()
-	thirdEndo, thirdExo := think.NewSynapse()
+func (Merge) Materialize() be.Reflex {
+	_Endo, _Exo := be.NewSynapse()
+	firstEndo, firstExo := be.NewSynapse()
+	secondEndo, secondExo := be.NewSynapse()
+	thirdEndo, thirdExo := be.NewSynapse()
 	go func() {
 		h := &merge{
 			ready: make(chan struct{}),
 		}
-		h.reply = _Endo.Focus(think.DontCognize)
+		h.reply = _Endo.Focus(be.DontCognize)
 		close(h.ready)
 		firstEndo.Focus(func(v interface{}) { h.CognizeArm(0, v) })
 		secondEndo.Focus(func(v interface{}) { h.CognizeArm(1, v) })
 		thirdEndo.Focus(func(v interface{}) { h.CognizeArm(2, v) })
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"_":      _Exo,
 		"First":  firstExo,
 		"Second": secondExo,
@@ -51,7 +51,7 @@ func (Merge) Materialize() think.Reflex {
 
 type merge struct {
 	ready chan struct{}
-	reply *think.ReCognizer
+	reply *be.ReCognizer
 	sync.Mutex
 	arm [3]*bytes.Buffer
 }

@@ -12,25 +12,25 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // Form …
 type Form struct{}
 
-func (Form) Materialize() think.Reflex {
-	dataEndo, dataExo := think.NewSynapse()
-	formEndo, formExo := think.NewSynapse()
-	_Endo, _Exo := think.NewSynapse()
+func (Form) Materialize() be.Reflex {
+	dataEndo, dataExo := be.NewSynapse()
+	formEndo, formExo := be.NewSynapse()
+	_Endo, _Exo := be.NewSynapse()
 	go func() {
 		h := &form{
 			formed: make(chan struct{}),
 		}
-		h.ReCognizer = _Endo.Focus(think.DontCognize)
+		h.ReCognizer = _Endo.Focus(be.DontCognize)
 		formEndo.Focus(h.CognizeForm)
 		dataEndo.Focus(h.CognizeData)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"_":    _Exo,
 		"Form": formExo,
 		"Data": dataExo,
@@ -41,7 +41,7 @@ type form struct {
 	sync.Mutex
 	t      *template.Template
 	formed chan struct{}
-	*think.ReCognizer
+	*be.ReCognizer
 }
 
 func (h *form) CognizeForm(v interface{}) {

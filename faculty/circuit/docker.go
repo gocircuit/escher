@@ -15,19 +15,19 @@ import (
 	dkr "github.com/gocircuit/circuit/client/docker"
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // Docker
 type Docker struct{}
 
-func (x Docker) Materialize() think.Reflex {
+func (x Docker) Materialize() be.Reflex {
 	// Create reflex synapses
-	cmdEndo, cmdExo := think.NewSynapse()
-	spawnEndo, spawnExo := think.NewSynapse()
-	exitEndo, exitExo := think.NewSynapse()
-	ioEndo, ioExo := think.NewSynapse()
-	serverEndo, serverExo := think.NewSynapse()
+	cmdEndo, cmdExo := be.NewSynapse()
+	spawnEndo, spawnExo := be.NewSynapse()
+	exitEndo, exitExo := be.NewSynapse()
+	ioEndo, ioExo := be.NewSynapse()
+	serverEndo, serverExo := be.NewSynapse()
 	//
 	go func() {
 		p := &docker{
@@ -35,15 +35,15 @@ func (x Docker) Materialize() think.Reflex {
 			ready: make(chan struct{}),
 			spawn: make(chan interface{}),
 		}
-		p.reExit = exitEndo.Focus(think.DontCognize)
-		p.reIO = ioEndo.Focus(think.DontCognize)
+		p.reExit = exitEndo.Focus(be.DontCognize)
+		p.reIO = ioEndo.Focus(be.DontCognize)
 		serverEndo.Focus(p.CognizeServer)
 		cmdEndo.Focus(p.CognizeCommand)
 		spawnEndo.Focus(p.CognizeSpawn)
 		p.loop()
 	}()
 	//
-	return think.Reflex{
+	return be.Reflex{
 		"Server":  serverExo, // in-only
 		"Command": cmdExo,    // in-only
 		"Spawn":   spawnExo,  // in-only
@@ -55,8 +55,8 @@ func (x Docker) Materialize() think.Reflex {
 // docker is the materialized docker reflex
 type docker struct {
 	id     string // ID of this docker reflex instance
-	reExit *think.ReCognizer
-	reIO   *think.ReCognizer
+	reExit *be.ReCognizer
+	reIO   *be.ReCognizer
 	arg    struct {
 		sync.Mutex
 		server string // root-level anchor of the server where the docker is to be started

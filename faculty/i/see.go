@@ -10,7 +10,7 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/kit/plumb"
 	es "github.com/gocircuit/escher/see"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -24,22 +24,22 @@ func init() {
 // See
 type See struct{}
 
-func (See) Materialize() think.Reflex {
-	sourceEndo, sourceExo := think.NewSynapse()
-	seenEndo, seenExo := think.NewSynapse()
+func (See) Materialize() be.Reflex {
+	sourceEndo, sourceExo := be.NewSynapse()
+	seenEndo, seenExo := be.NewSynapse()
 	go func() {
 		h := &see{}
-		h.seen = seenEndo.Focus(think.DontCognize)
+		h.seen = seenEndo.Focus(be.DontCognize)
 		sourceEndo.Focus(h.CognizeSource)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Source": sourceExo,
 		"Seen":   seenExo,
 	}
 }
 
 type see struct {
-	seen *think.ReCognizer
+	seen *be.ReCognizer
 }
 
 func (h *see) CognizeSource(v interface{}) {

@@ -13,7 +13,7 @@ import (
 	// "log"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -24,9 +24,9 @@ func init() {
 // WriteFile …
 type WriteFile struct{}
 
-func (WriteFile) Materialize() think.Reflex {
-	nameEndo, nameExo := think.NewSynapse()
-	contentEndo, contentExo := think.NewSynapse()
+func (WriteFile) Materialize() be.Reflex {
+	nameEndo, nameExo := be.NewSynapse()
+	contentEndo, contentExo := be.NewSynapse()
 	go func() {
 		h := writeFile{
 			named: make(chan struct{}),
@@ -34,7 +34,7 @@ func (WriteFile) Materialize() think.Reflex {
 		nameEndo.Focus(h.CognizeName)
 		contentEndo.Focus(h.CognizeContent)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Name":    nameExo,
 		"Content": contentExo,
 	}

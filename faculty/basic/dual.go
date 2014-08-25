@@ -10,15 +10,15 @@ import (
 	"fmt"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func Init(n string) {
 	name = n
-	faculty.Root.AddTerminal("Ignore", think.Ignore{})
+	faculty.Root.AddTerminal("Ignore", be.Ignore{})
 	faculty.Root.AddTerminal("Show", Println{})
 	faculty.Root.AddTerminal("See", Scanln{})
-	faculty.Root.AddTerminal("Name", think.NewNounReflex(name))
+	faculty.Root.AddTerminal("Name", be.NewNounReflex(name))
 }
 
 var name string
@@ -31,10 +31,10 @@ func Name() string {
 // Scanln
 type Scanln struct{}
 
-func (Scanln) Materialize() think.Reflex {
-	s, t := think.NewSynapse()
+func (Scanln) Materialize() be.Reflex {
+	s, t := be.NewSynapse()
 	go func() {
-		r := s.Focus(think.DontCognize)
+		r := s.Focus(be.DontCognize)
 		go func() {
 			for {
 				var em string
@@ -43,14 +43,14 @@ func (Scanln) Materialize() think.Reflex {
 			}
 		}()
 	}()
-	return think.Reflex{"_": t}
+	return be.Reflex{"_": t}
 }
 
 // Println
 type Println struct{}
 
-func (Println) Materialize() think.Reflex {
-	s, t := think.NewSynapse()
+func (Println) Materialize() be.Reflex {
+	s, t := be.NewSynapse()
 	go func() {
 		s.Focus(
 			func(v interface{}) {
@@ -58,5 +58,5 @@ func (Println) Materialize() think.Reflex {
 			},
 		)
 	}()
-	return think.Reflex{"_": t}
+	return be.Reflex{"_": t}
 }

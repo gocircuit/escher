@@ -10,28 +10,28 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
 	es "github.com/gocircuit/escher/see"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // Materialize
 type Materialize struct{}
 
-func (Materialize) Materialize() think.Reflex {
-	sourceEndo, sourceExo := think.NewSynapse()
-	seenEndo, seenExo := think.NewSynapse()
+func (Materialize) Materialize() be.Reflex {
+	sourceEndo, sourceExo := be.NewSynapse()
+	seenEndo, seenExo := be.NewSynapse()
 	go func() {
 		h := &see{}
-		h.seen = seenEndo.Focus(think.DontCognize)
+		h.seen = seenEndo.Focus(be.DontCognize)
 		sourceEndo.Focus(h.CognizeSource)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Source": sourceExo,
 		"Materializen":   seenExo,
 	}
 }
 
 type see struct {
-	seen *think.ReCognizer
+	seen *be.ReCognizer
 }
 
 func (h *see) CognizeSource(v interface{}) {

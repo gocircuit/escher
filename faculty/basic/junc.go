@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -21,10 +21,10 @@ func init() {
 // Junction
 type Junction struct{}
 
-func (Junction) Materialize() think.Reflex {
-	a0Endo, a0Exo := think.NewSynapse()
-	a1Endo, a1Exo := think.NewSynapse()
-	a2Endo, a2Exo := think.NewSynapse()
+func (Junction) Materialize() be.Reflex {
+	a0Endo, a0Exo := be.NewSynapse()
+	a1Endo, a1Exo := be.NewSynapse()
+	a2Endo, a2Exo := be.NewSynapse()
 	go func() {
 		h := &junction{
 			connected: make(chan struct{}),
@@ -37,7 +37,7 @@ func (Junction) Materialize() think.Reflex {
 		h.reply[2] = a2Endo.Focus(func(v interface{}) { h.Cognize(2, v) })
 		close(h.connected)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"X": a0Exo,
 		"Y": a1Exo,
 		"Z": a2Exo,
@@ -49,13 +49,13 @@ type junction struct {
 	sync.Once
 	born chan struct{}
 	sync.Mutex
-	reply [3]*think.ReCognizer
+	reply [3]*be.ReCognizer
 }
 
-func (h *junction) copy() []*think.ReCognizer {
+func (h *junction) copy() []*be.ReCognizer {
 	h.Lock()
 	defer h.Unlock()
-	r := make([]*think.ReCognizer, 3)
+	r := make([]*be.ReCognizer, 3)
 	copy(r, h.reply[:])
 	return r
 }

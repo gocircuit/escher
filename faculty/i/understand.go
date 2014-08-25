@@ -8,29 +8,29 @@ package i
 
 import (
 	es "github.com/gocircuit/escher/see"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	eu "github.com/gocircuit/escher/understand"
 )
 
 // Understand
 type Understand struct{}
 
-func (Understand) Materialize() think.Reflex {
-	seenEndo, seenExo := think.NewSynapse()
-	understoodEndo, understoodExo := think.NewSynapse()
+func (Understand) Materialize() be.Reflex {
+	seenEndo, seenExo := be.NewSynapse()
+	understoodEndo, understoodExo := be.NewSynapse()
 	go func() {
 		h := &understand{}
-		h.understood = understoodEndo.Focus(think.DontCognize)
+		h.understood = understoodEndo.Focus(be.DontCognize)
 		seenEndo.Focus(h.CognizeSeen)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Seen":       seenExo,
 		"Understood": understoodExo,
 	}
 }
 
 type understand struct {
-	understood *think.ReCognizer
+	understood *be.ReCognizer
 }
 
 func (h *understand) CognizeSeen(v interface{}) {

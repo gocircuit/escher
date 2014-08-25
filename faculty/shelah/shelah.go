@@ -4,8 +4,8 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// Package think provides a basis of four fundamental gates for manipulating thinkable images.
-package think
+// Package shelah provides a basis of gates for choiceless circuit transformations.
+package shelah
 
 import (
 	// "fmt"
@@ -18,17 +18,8 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("think")
-	//
-	ns.AddTerminal("Associate", Associate{})
-	ns.AddTerminal("Remember", Remember{})
-	ns.AddTerminal("Choose", Choose{})
+	ns := faculty.Root.Refine("shelah")
 	ns.AddTerminal("Focus", Focus{})
-	//
-	ns.AddTerminal("A", Associate{})
-	ns.AddTerminal("R", Remember{})
-	ns.AddTerminal("C", Choose{})
-	ns.AddTerminal("F", Focus{})
 }
 
 // Focus

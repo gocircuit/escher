@@ -9,33 +9,33 @@ package twitter
 
 import (
 	"github.com/gocircuit/escher/faculty/basic"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // AnswerMaterializer ...
 type AnswerMaterializer struct{}
 
-func (AnswerMaterializer) Materialize() think.Reflex {
+func (AnswerMaterializer) Materialize() be.Reflex {
 	return basic.MaterializeConjunction("_", "Name", "Sentence")
 }
 
 // ConsumerMaterializer ...
 type ConsumerMaterializer struct{}
 
-func (ConsumerMaterializer) Materialize() think.Reflex {
+func (ConsumerMaterializer) Materialize() be.Reflex {
 	return basic.MaterializeConjunction("_", "Key", "Secret")
 }
 
 // AccessMaterializer ...
 type AccessMaterializer struct{}
 
-func (AccessMaterializer) Materialize() think.Reflex {
+func (AccessMaterializer) Materialize() be.Reflex {
 	return basic.MaterializeConjunction("_", "Token", "Secret")
 }
 
 // UserTimelineQueryMaterializer ...
 type UserTimelineQueryMaterializer struct{}
 
-func (UserTimelineQueryMaterializer) Materialize() think.Reflex {
+func (UserTimelineQueryMaterializer) Materialize() be.Reflex {
 	return basic.MaterializeConjunction("_", "UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
 }

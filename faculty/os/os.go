@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func Init(a string) {
@@ -47,22 +47,22 @@ var args map[string]string
 // Arg
 type Arg struct{}
 
-func (Arg) Materialize() think.Reflex {
-	valueEndo, valueExo := think.NewSynapse()
-	nameEndo, nameExo := think.NewSynapse()
+func (Arg) Materialize() be.Reflex {
+	valueEndo, valueExo := be.NewSynapse()
+	nameEndo, nameExo := be.NewSynapse()
 	go func() {
 		h := &arg{}
-		h.valueRe = valueEndo.Focus(think.DontCognize)
+		h.valueRe = valueEndo.Focus(be.DontCognize)
 		nameEndo.Focus(h.CognizeName)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Name":  nameExo,
 		"Value": valueExo,
 	}
 }
 
 type arg struct {
-	valueRe *think.ReCognizer
+	valueRe *be.ReCognizer
 }
 
 func (h *arg) CognizeName(v interface{}) {
@@ -76,22 +76,22 @@ func (h *arg) CognizeName(v interface{}) {
 // Env
 type Env struct{}
 
-func (Env) Materialize() think.Reflex {
-	valueEndo, valueExo := think.NewSynapse()
-	nameEndo, nameExo := think.NewSynapse()
+func (Env) Materialize() be.Reflex {
+	valueEndo, valueExo := be.NewSynapse()
+	nameEndo, nameExo := be.NewSynapse()
 	go func() {
 		h := &env{}
-		h.valueRe = valueEndo.Focus(think.DontCognize)
+		h.valueRe = valueEndo.Focus(be.DontCognize)
 		nameEndo.Focus(h.CognizeName)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Name":  nameExo,
 		"Value": valueExo,
 	}
 }
 
 type env struct {
-	valueRe *think.ReCognizer
+	valueRe *be.ReCognizer
 }
 
 func (h *env) CognizeName(v interface{}) {
@@ -107,12 +107,12 @@ func (h *env) CognizeName(v interface{}) {
 // Exit
 type Exit struct{}
 
-func (Exit) Materialize() think.Reflex {
-	_Endo, _Exo := think.NewSynapse()
+func (Exit) Materialize() be.Reflex {
+	_Endo, _Exo := be.NewSynapse()
 	go func() {
 		_Endo.Focus(cognizeExit)
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"_": _Exo,
 	}
 }
@@ -125,20 +125,20 @@ func cognizeExit(v interface{}) {
 // Stdin
 type Stdin struct{}
 
-func (Stdin) Materialize() think.Reflex {
-	return think.NewNounReflex(os.Stdin)
+func (Stdin) Materialize() be.Reflex {
+	return be.NewNounReflex(os.Stdin)
 }
 
 // Stdout
 type Stdout struct{}
 
-func (Stdout) Materialize() think.Reflex {
-	return think.NewNounReflex(os.Stdout)
+func (Stdout) Materialize() be.Reflex {
+	return be.NewNounReflex(os.Stdout)
 }
 
 // Stderr
 type Stderr struct{}
 
-func (Stderr) Materialize() think.Reflex {
-	return think.NewNounReflex(os.Stderr)
+func (Stderr) Materialize() be.Reflex {
+	return be.NewNounReflex(os.Stderr)
 }

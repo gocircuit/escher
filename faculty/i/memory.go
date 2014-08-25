@@ -11,18 +11,18 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 	eu "github.com/gocircuit/escher/understand"
 )
 
 // Memory
 type Memory struct{}
 
-func (Memory) Materialize() think.Reflex {
-	focusEndo, focusExo := think.NewSynapse()
-	learnEndo, learnExo := think.NewSynapse()
-	recallEndo, recallExo := think.NewSynapse()
-	useEndo, useExo := think.NewSynapse()
+func (Memory) Materialize() be.Reflex {
+	focusEndo, focusExo := be.NewSynapse()
+	learnEndo, learnExo := be.NewSynapse()
+	recallEndo, recallExo := be.NewSynapse()
+	useEndo, useExo := be.NewSynapse()
 	go func() {
 		h := &memory{
 			connected: make(chan struct{}),
@@ -30,14 +30,14 @@ func (Memory) Materialize() think.Reflex {
 			learn:     make(chan *eu.Circuit),
 			recall:    make(chan []string),
 		}
-		h.use = useEndo.Focus(think.DontCognize)
+		h.use = useEndo.Focus(be.DontCognize)
 		close(h.connected)
 		focusEndo.Focus(h.CognizeFocus)
 		learnEndo.Focus(h.CognizeLearn)
 		recallEndo.Focus(h.CognizeRecall)
 		go h.loop()
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Focus":  focusExo,  // write-only
 		"Learn":  learnExo,  // write-only
 		"Recall": recallExo, // write-only
@@ -50,7 +50,7 @@ type memory struct {
 	focus     chan []string
 	learn     chan *eu.Circuit
 	recall    chan []string
-	use       *think.ReCognizer
+	use       *be.ReCognizer
 }
 
 func (h *memory) CognizeLearn(v interface{}) {
@@ -116,7 +116,7 @@ func (a *attention) Point(walk ...string) {
 		a.walk = nil
 	}
 	switch a.child.(type) { // if child is non-nil, it is a subspace or a circuit design
-	case nil, think.Space, *eu.Circuit:
+	case nil, be.Space, *eu.Circuit:
 		return
 	}
 	panic(1)
@@ -130,7 +130,7 @@ func (a *attention) Remember(lesson *eu.Circuit) *Materializable {
 	}
 	a.root.Lock()
 	defer a.root.Unlock()
-	lesson = a.child.(think.Space).Interpret(lesson)
+	lesson = a.child.(be.Space).Interpret(lesson)
 	return &Materializable{
 		root: a.root,
 		walk: a.walk,
@@ -144,7 +144,7 @@ type Materializable struct {
 	walk []string
 }
 
-func (x *Materializable) Materialize() think.Reflex {
+func (x *Materializable) Materialize() be.Reflex {
 	x.root.Lock()
 	defer x.root.Unlock()
 	return x.root.Materialize(x.walk...)
@@ -153,7 +153,7 @@ func (x *Materializable) Materialize() think.Reflex {
 func (h *memory) loop() {
 	<-h.connected
 	var root = &space{
-		Space: make(think.Space),
+		Space: make(be.Space),
 	}
 	focus, recall := &attention{root: root}, &attention{root: root}
 	for {
@@ -174,7 +174,7 @@ func (h *memory) loop() {
 // space captures a reentrant version of a think space as needed by the machinery in the memory reflex.
 type space struct {
 	sync.Mutex
-	think.Space
+	be.Space
 }
 
 // Roam returns the subspace whose root path is walk as child.
@@ -185,7 +185,7 @@ func (x *space) Roam(walk ...string) (parent, child interface{}) {
 }
 
 // Materialize materializes the circuit design at path walk.
-func (x *space) Materialize(walk ...string) think.Reflex {
+func (x *space) Materialize(walk ...string) be.Reflex {
 	x.Lock()
 	defer x.Unlock()
 	return x.Space.Materialize(walk...)

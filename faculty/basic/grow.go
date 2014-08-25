@@ -11,7 +11,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -21,11 +21,11 @@ func init() {
 // Grow
 type Grow struct{}
 
-func (Grow) Materialize() think.Reflex {
-	imgEndo, imgExo := think.NewSynapse()
-	keyEndo, keyExo := think.NewSynapse()
-	valueEndo, valueExo := think.NewSynapse()
-	_Endo, _Exo := think.NewSynapse()
+func (Grow) Materialize() be.Reflex {
+	imgEndo, imgExo := be.NewSynapse()
+	keyEndo, keyExo := be.NewSynapse()
+	valueEndo, valueExo := be.NewSynapse()
+	_Endo, _Exo := be.NewSynapse()
 	go func() {
 		h := &grow{
 			connected: make(chan struct{}),
@@ -33,14 +33,14 @@ func (Grow) Materialize() think.Reflex {
 			img:       make(chan interface{}),
 			value:     make(chan interface{}),
 		}
-		h.z = _Endo.Focus(think.DontCognize)
+		h.z = _Endo.Focus(be.DontCognize)
 		close(h.connected)
 		keyEndo.Focus(h.CognizeKey)
 		imgEndo.Focus(h.CognizeImg)
 		valueEndo.Focus(h.CognizeValue)
 		go h.loop()
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"Img":   imgExo,
 		"Key":   keyExo,
 		"Value": valueExo,
@@ -53,7 +53,7 @@ type grow struct {
 	key chan interface{}
 	img chan interface{}
 	value chan interface{}
-	z               *think.ReCognizer
+	z               *be.ReCognizer
 }
 
 func (h *grow) CognizeKey(v interface{}) {

@@ -9,7 +9,7 @@ package basic
 import (
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -19,23 +19,23 @@ func init() {
 // Merge
 type Merge struct{}
 
-func (Merge) Materialize() think.Reflex {
-	xEndo, xExo := think.NewSynapse()
-	yEndo, yExo := think.NewSynapse()
-	zEndo, zExo := think.NewSynapse()
+func (Merge) Materialize() be.Reflex {
+	xEndo, xExo := be.NewSynapse()
+	yEndo, yExo := be.NewSynapse()
+	zEndo, zExo := be.NewSynapse()
 	go func() {
 		h := &merge{
 			connected: make(chan struct{}),
 			x:         make(chan Image),
 			y:         make(chan Image),
 		}
-		h.z = zEndo.Focus(think.DontCognize)
+		h.z = zEndo.Focus(be.DontCognize)
 		close(h.connected)
 		xEndo.Focus(h.CognizeX)
 		yEndo.Focus(h.CognizeY)
 		go h.xyz()
 	}()
-	return think.Reflex{
+	return be.Reflex{
 		"X": xExo, // write-only
 		"Y": yExo, // write-only
 		"_": zExo, // read-only
@@ -45,7 +45,7 @@ func (Merge) Materialize() think.Reflex {
 type merge struct {
 	connected chan struct{}
 	x, y      chan Image
-	z         *think.ReCognizer
+	z         *be.ReCognizer
 }
 
 func (h *merge) CognizeX(v interface{}) {

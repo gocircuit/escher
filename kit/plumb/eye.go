@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
@@ -29,25 +29,25 @@ type change struct {
 	Value interface{}
 }
 
-func NewEye(valve ...string) (think.Reflex, *Eye) {
+func NewEye(valve ...string) (be.Reflex, *Eye) {
 	return NewEyeCognizer(nil, valve...)
 }
 
 type EyeCognizer func(eye *Eye, valve string, value interface{})
 
-func NewEyeCognizer(cog EyeCognizer, valve ...string) (think.Reflex, *Eye) {
-	r := make(think.Reflex)
+func NewEyeCognizer(cog EyeCognizer, valve ...string) (be.Reflex, *Eye) {
+	r := make(be.Reflex)
 	eye := &Eye{
 		see: make(chan *change),
 		show: make(map[string]*nerve),
 	}
 	for i, v_ := range valve {
 		v := v_
-		x, y := think.NewSynapse()
+		x, y := be.NewSynapse()
 		r[v] = x
 		n := &nerve{
 			index: i,
-			ch: make(chan *think.ReCognizer),
+			ch: make(chan *be.ReCognizer),
 		}
 		eye.show[v] = n
 		if cog == nil {
@@ -77,7 +77,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (think.Reflex, *Eye) {
 	return r, eye
 }
 
-func (eye *Eye) connect(valve string, r *think.ReCognizer) {
+func (eye *Eye) connect(valve string, r *be.ReCognizer) {
 	ch := eye.show[valve].ch 
 	ch <- r
 	close(ch)
@@ -85,9 +85,9 @@ func (eye *Eye) connect(valve string, r *think.ReCognizer) {
 
 type nerve struct {
 	index int
-	ch chan *think.ReCognizer
+	ch chan *be.ReCognizer
 	sync.Mutex
-	*think.ReCognizer
+	*be.ReCognizer
 }
 
 func (eye *Eye) Show(valve string, v interface{}) {

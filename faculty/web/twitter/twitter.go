@@ -17,7 +17,7 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 
 	"github.com/gocircuit/escher/github.com/ChimeraCoder/anaconda"
 )
@@ -34,7 +34,7 @@ func init() {
 // Client ...
 type Client struct{}
 
-func (Client) Materialize() think.Reflex {
+func (Client) Materialize() be.Reflex {
 	var c1, a1 sync.Once
 	api, consumer, access := make(chan *anaconda.TwitterApi), make(chan Image, 1), make(chan Image, 1)
 	go func() { // start connecting monad
@@ -77,10 +77,10 @@ func (Client) Materialize() think.Reflex {
 			uv.Set("user_id", q.OptionalString("UserId"))
 			uv.Set("screen_name", q.OptionalString("ScreenName"))
 			if q.Has("AfterId") {
-				uv.Set("since_id", strconv.Itoa(q.OptionalInt("AfterId"))) // return results indexed greater than since_id
+				uv.Set("since_id", strconv.Itoa(q.OptionalInt("AfterId"))) // return results indexed greater than AfterId
 			}
 			if q.Has("NotAfterId") {
-				uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
+				uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than NotAfterId
 			}
 			if q.Has("Count") {
 				uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))

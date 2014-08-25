@@ -11,7 +11,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/kit/plumb"
-	"github.com/gocircuit/escher/think"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
@@ -23,7 +23,7 @@ func init() {
 // Delay…
 type Delay struct{}
 
-func (Delay) Materialize() think.Reflex {
+func (Delay) Materialize() be.Reflex {
 	reflex, eye := plumb.NewEye("X", "Y", "Duration")
 	go func() {
 		ds := make(chan time.Duration, 2)

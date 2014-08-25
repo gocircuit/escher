@@ -16,7 +16,7 @@ import (
 type Circuit struct {
 	Genus []*see.Circuit // origin
 	Name  string
-	Peer  map[string]*Peer // peers and self; self corresponds to the empty string
+	Peer map[string]*Peer // peers and self; self corresponds to the empty string
 }
 
 type Peer struct {

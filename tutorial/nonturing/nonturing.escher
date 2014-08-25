@@ -4,13 +4,12 @@ main {
 	twitter web.twitter.Client
 
 	consumer PetarConsumer
-	twitter.Consumer = consumer
+	twitter.Consumer = consumer._
 
 	access PetarAccess
 	twitter.Access = access._
 
-	query web.twitter.UserTimelineQuery
-	query = {
+	query {
 		ScreenName "nonturing"
 		AfterId 0
 		NotAfterId 0

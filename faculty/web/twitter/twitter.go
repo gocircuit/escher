@@ -41,8 +41,10 @@ func (Client) Materialize() think.Reflex {
 		for i := 0; i < 2; i++ {
 			select {
 			case c = <-consumer:
+				println("got consumer", c.Print("", "\t"))
 				consumer = nil
 			case a = <-access:
+				println("got access", a.Print("", "\t"))
 				access = nil
 			}
 		}

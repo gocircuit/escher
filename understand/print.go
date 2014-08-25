@@ -27,25 +27,52 @@ func (fty Faculty) Print(prefix, indent string) string {
 		v := fty[k]
 		w.WriteString(prefix)
 		w.WriteString(indent)
+		switch v.(type) {
+		case Faculty:
+		default:
+			w.WriteString("*")
+		}
 		w.WriteString(k)
 		switch t := v.(type) {
 		case Faculty:
-			w.WriteString("\n")
+			w.WriteString(":\n")
 			w.WriteString(t.Print(prefix+indent+indent, indent))
 		case *Circuit:
 			w.WriteString("\n")
 			w.WriteString(t.Print(prefix+indent+indent, indent))
 		default: // reflex or circuit
-			w.WriteString(fmt.Sprintf(" (%T)\n", v))
+			w.WriteString(fmt.Sprintf(" [%T]\n", v))
 		}
 	}
 	return w.String()
 }
 
+func (x *Circuit) printValves() string {
+	valve := x.Peer[""].Valve
+	if len(valve) == 0 {
+		return ""
+	}
+	var w bytes.Buffer
+	w.WriteString("(")
+	var i int
+	for v, _ := range valve {
+		w.WriteString(v)
+		if i + 2 < len(valve) {
+			w.WriteString(", ")
+		}
+		i++
+	}
+	w.WriteString(")")
+	return w.String()
+}
+
 func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%s%s {\n", prefix, x.Name)
+	fmt.Fprintf(&w, "%s%s%s {\n", prefix, x.Name, x.printValves())
 	for _, p := range x.Peer {
+		if p.Name == "" {
+			continue
+		}
 		fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(p.Name), p.Design)
 		for _, v := range p.Valve {
 			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n",
@@ -63,5 +90,5 @@ func printable(s string) string {
 	if s != "" {
 		return s
 	}
-	return "<e>"
+	return "ø"
 }

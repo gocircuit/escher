@@ -11,5 +11,5 @@ main {
 	t.Duration = 1e9
 	t.Tick = s.Sum
 	s.X = 5e9
-	s.Y = out.Object
+	s.Y = out._
 }

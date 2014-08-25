@@ -12,10 +12,6 @@ import (
 	"io"
 	"math"
 	"strconv"
-	"sync"
-
-	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/think"
 )
 
 // AsInt accepts an int or float64 value and converts it to an int value.
@@ -59,101 +55,4 @@ func AsString(v interface{}) string {
 		return w.String()
 	}
 	panic(4)
-}
-
-// Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
-//	http://www.probablyapproximatelycorrect.com/
-// The mind's eye is a synchronization device which sees changes as ordered
-// and thus introduces the illusory perception of time (and, eventually, of the
-// higher-level concepts of cause and effect).
-type Eye struct {
-	see chan *change
-	show map[string]*nerve
-}
-
-type change struct {
-	Valve string
-	Value interface{}
-}
-
-func NewEye(valve ...string) (think.Reflex, *Eye) {
-	return NewEyeCognizer(nil, valve...)
-}
-
-type EyeCognizer func(eye *Eye, valve string, value interface{})
-
-func NewEyeCognizer(cog EyeCognizer, valve ...string) (think.Reflex, *Eye) {
-	r := make(think.Reflex)
-	eye := &Eye{
-		see: make(chan *change),
-		show: make(map[string]*nerve),
-	}
-	for i, v_ := range valve {
-		v := v_
-		x, y := think.NewSynapse()
-		r[v] = x
-		n := &nerve{
-			index: i,
-			ch: make(chan *think.ReCognizer),
-		}
-		eye.show[v] = n
-		if cog == nil {
-			go eye.connect(
-				v,
-				y.Focus(
-					func(w interface{}) {
-						eye.cognize(v, w)
-					},
-				),
-			)
-		} else {
-			go eye.connect(
-				v,
-				y.Focus(
-					func(w interface{}) {
-						cog(eye, v, w)
-					},
-				),
-			)
-		}
-	}
-	return r, eye
-}
-
-func (eye *Eye) connect(valve string, r *think.ReCognizer) {
-	ch := eye.show[valve].ch 
-	ch <- r
-	close(ch)
-}
-
-type nerve struct {
-	index int
-	ch chan *think.ReCognizer
-	sync.Mutex
-	*think.ReCognizer
-}
-
-func (eye *Eye) Show(valve string, v interface{}) {
-	n := eye.show[valve]
-	r, ok := <-n.ch
-	n.Lock()
-	if !ok {
-		r = n.ReCognizer
-	} else {
-		n.ReCognizer = r
-	}
-	n.Unlock()
-	r.ReCognize(v)
-}
-
-func (eye *Eye) cognize(valve string, v interface{}) {
-	eye.see <- &change{
-		Valve: valve,
-		Value: v,
-	}
-}
-
-func (eye *Eye) See() (valve string, value interface{}) {
-	chg := <-eye.see
-	return chg.Valve, chg.Value
 }

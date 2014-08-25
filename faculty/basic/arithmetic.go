@@ -25,46 +25,80 @@ func init() {
 type Sum struct{}
 
 func (Sum) Materialize() think.Reflex {
-	reflex, eye := plumb.NewEye("X", "Y", "Sum")
-	go func() {
-		lit := Make() // literals
-		for {
-			dvalve, dvalue := eye.See()
-			lit[dvalve] = dvalue.(int)
-			//
-			var wg sync.WaitGroup
-			wg.Add(2)
-			switch dvalve {
-			case "X":
-				go func() {
-					eye.Show("Y", lit.Int("Sum") - lit.Int("X"))
-					wg.Done()
-				}()
-				go func() {
-					eye.Show("Sum", lit.Int("Y") + lit.Int("X"))
-					wg.Done()
-				}()
-			case "Y":
-				go func() {
-					eye.Show("X", lit.Int("Sum") - lit.Int("Y"))
-					wg.Done()
-				}()
-				go func() {
-					eye.Show("Sum", lit.Int("Y") + lit.Int("X"))
-					wg.Done()
-				}()
-			case "Sum":
-				go func() {
-					eye.Show("X", lit.Int("Sum") - lit.Int("Y"))
-					wg.Done()
-				}()
-				go func() {
-					eye.Show("Y", lit.Int("Sum") - lit.Int("X"))
-					wg.Done()
-				}()
-			}
-			wg.Wait()
-		}
-	}()
+	x := &sum{
+		lit: Image{},
+	}
+	reflex, _ := plumb.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
 	return reflex
+}
+
+type sum struct {
+	sync.Mutex
+	lit Image // literals
+}
+
+func (x *sum) save(valve string, value int) {
+	x.Lock()
+	defer x.Unlock()
+	x.lit[valve] = value
+}
+
+func (x *sum) u(valve string) int {
+	x.Lock()
+	defer x.Unlock()
+	return x.lit.OptionalInt(valve)
+}
+
+func (x *sum) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	x.save(dvalve, plumb.AsInt(dvalue))
+	var wg sync.WaitGroup
+	defer wg.Wait()
+	wg.Add(2)
+	switch dvalve {
+	case "X":
+		go func() { // Cognize
+			defer func() {
+				recover()
+			}()
+			defer wg.Done()
+			eye.Show("Y", x.u("Sum") - x.u("X"))
+		}()
+		go func() {
+			defer func() {
+				recover()
+			}()
+			defer wg.Done()
+			eye.Show("Sum", x.u("Y") + x.u("X"))
+		}()
+	case "Y":
+		go func() {
+			defer func() {
+				recover()
+			}()
+			defer wg.Done()
+			eye.Show("X", x.u("Sum") - x.u("Y"))
+		}()
+		go func() {
+			defer func() {
+				recover()
+			}()
+			defer wg.Done()
+			eye.Show("Sum", x.u("Y") + x.u("X"))
+		}()
+	case "Sum":
+		go func() {
+			defer func() {
+				recover()
+			}()
+			defer wg.Done()
+			eye.Show("X", x.u("Sum") - x.u("Y"))
+		}()
+		go func() {
+			defer func() {
+				recover()
+			}()
+			defer wg.Done()
+			eye.Show("Y", x.u("Sum") - x.u("X"))
+		}()
+	}
 }

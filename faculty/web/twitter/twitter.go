@@ -83,17 +83,19 @@ func (Client) Materialize() think.Reflex {
 				uv.Set("max_id", strconv.Itoa(q.OptionalInt("NotAfterId"))) // return results indexed no greater than max_id
 			}
 			uv.Set("count", strconv.Itoa(q.OptionalInt("Count")))
-			log.Printf("Twitter query: %v", uv)
+			log.Printf("Twitter query %v", ImagineWithMaps(uv).(Image).PrintLine())
 			timeline, err := y.GetUserTimeline(uv)
 			if err != nil {
 				log.Fatalf("Problem with Twitter (%v)", err)
 			}
 			eye.Show(
 				"UserTimelineResult",
-				Image{
-					"Name": q.Interface("Name"),
-					"Sentence": Imagine(timeline),
-				},
+				Pretty(
+					Image{
+						"Name": q.Interface("Name"),
+						"Sentence": Imagine(timeline),
+					},
+				),
 			)
 		}
 	}()

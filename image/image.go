@@ -159,6 +159,16 @@ type Printer interface {
 	Print(prefix, indent string) string
 }
 
+type Pretty Image
+
+func (x Pretty) String() string {
+	return Image(x).Print("", "\t")
+}
+
+func (x Image) PrintLine() string {
+	return Linearize(x.Print("", ""))
+}
+
 func (x Image) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "{\n")

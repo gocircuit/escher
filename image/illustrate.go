@@ -14,33 +14,45 @@ import (
 )
 
 func Imagine(x interface{}) interface{} {
-	return imagine(ValueOf(x)).Interface()
+	return imagine(false, ValueOf(x)).Interface()
 }
 
-func imagine(v Value) Value {
+func ImagineWithMaps(x interface{}) interface{} {
+	return imagine(true, ValueOf(x)).Interface()
+}
+
+func imagine(withMaps bool, v Value) Value {
 	switch v.Kind() {
-	// case Map:
+	case Map:
+		if !withMaps {
+			break
+		}
+		img := Make()
+		for _, k := range v.MapKeys() {
+			img.Grow(k.String(), imagine(withMaps, v.MapIndex(k)).Interface())
+		}
+		return ValueOf(img)
 	case Ptr:
 		w := v.Elem()
 		switch w.Kind() {
 		case Ptr:
-			return imagine(w)
+			return imagine(withMaps, w)
 		case Struct:
-			return imagine(w)
+			return imagine(withMaps, w)
 		default:
 			return v
 		}
 	case Slice:
 		img := Make()
 		for i := 0; i < v.Len(); i++ {
-			img.Grow(strconv.Itoa(i), imagine(v.Index(i)).Interface())
+			img.Grow(strconv.Itoa(i), imagine(withMaps, v.Index(i)).Interface())
 		}
 		return ValueOf(img)
 	case Struct:
 		img := Make()
 		t := v.Type()
 		for i := 0; i < v.NumField(); i++ {
-			img.Grow(t.Field(i).Name, imagine(v.Field(i)).Interface())
+			img.Grow(t.Field(i).Name, imagine(withMaps, v.Field(i)).Interface())
 		}
 		return ValueOf(img)
 	}

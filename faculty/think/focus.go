@@ -4,11 +4,11 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
+// Package think provides a basis of gates for manipulating images.
 package think
 
 import (
 	// "fmt"
-	"math/rand"
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
@@ -21,12 +21,12 @@ func init() {
 	ns := faculty.Root.Refine("think")
 	//
 	ns.AddTerminal("Associate", Associate{})
-	// ns.AddTerminal("Remember", Remember{})
+	ns.AddTerminal("Remember", Remember{})
 	ns.AddTerminal("Choose", Choose{})
 	ns.AddTerminal("Focus", Focus{})
 	//
 	ns.AddTerminal("A", Associate{})
-	// ns.AddTerminal("R", Remember{})
+	ns.AddTerminal("R", Remember{})
 	ns.AddTerminal("C", Choose{})
 	ns.AddTerminal("F", Focus{})
 }

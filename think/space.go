@@ -8,6 +8,7 @@ package think
 
 import (
 	// "fmt"
+	"log"
 	"strings"
 
 	. "github.com/gocircuit/escher/image"
@@ -32,6 +33,11 @@ func (x Space) Lookup(within understand.Faculty, name string) (d interface{}) {
 
 // Materialize creates the reflex, described by the absolute path walk.
 func (x Space) Materialize(walk ...string) Reflex {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Fatalf("Problem materializing %s (%v)", strings.Join(walk,"."), r)
+		}
+	}()
 	within_, term := x.Faculty().Walk(walk...)
 	if gate, ok := term.(Gate); ok {
 		return gate.Materialize()

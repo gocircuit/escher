@@ -2,7 +2,7 @@ main {
 	h header
 	h.Title = "Hello, world!"
 	show Show
-	show.Object = h._
+	show._ = h._
 }
 
 header {

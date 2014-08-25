@@ -43,7 +43,7 @@ func (Scanln) Materialize() think.Reflex {
 			}
 		}()
 	}()
-	return think.Reflex{"Subject": t}
+	return think.Reflex{"_": t}
 }
 
 // Println
@@ -58,5 +58,5 @@ func (Println) Materialize() think.Reflex {
 			},
 		)
 	}()
-	return think.Reflex{"Object": t}
+	return think.Reflex{"_": t}
 }

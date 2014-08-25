@@ -12,30 +12,30 @@ import (
 	"github.com/gocircuit/escher/think"
 )
 
-// ForkAnswer ...
-type ForkAnswer struct{}
+// AnswerMaterializer ...
+type AnswerMaterializer struct{}
 
-func (ForkAnswer) Materialize() think.Reflex {
+func (AnswerMaterializer) Materialize() think.Reflex {
 	return basic.MaterializeConjunction("_", "Name", "Sentence")
 }
 
-// ForkConsumer ...
-type ForkConsumer struct{}
+// ConsumerMaterializer ...
+type ConsumerMaterializer struct{}
 
-func (ForkConsumer) Materialize() think.Reflex {
+func (ConsumerMaterializer) Materialize() think.Reflex {
 	return basic.MaterializeConjunction("_", "Key", "Secret")
 }
 
-// ForkAccess ...
-type ForkAccess struct{}
+// AccessMaterializer ...
+type AccessMaterializer struct{}
 
-func (ForkAccess) Materialize() think.Reflex {
+func (AccessMaterializer) Materialize() think.Reflex {
 	return basic.MaterializeConjunction("_", "Token", "Secret")
 }
 
-// ForkUserTimelineQuery ...
-type ForkUserTimelineQuery struct{}
+// UserTimelineQueryMaterializer ...
+type UserTimelineQueryMaterializer struct{}
 
-func (ForkUserTimelineQuery) Materialize() think.Reflex {
+func (UserTimelineQueryMaterializer) Materialize() think.Reflex {
 	return basic.MaterializeConjunction("_", "UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
 }

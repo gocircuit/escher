@@ -6,30 +6,30 @@
 
 package understand
 
-import (
-	"fmt"
+// import (
+// 	"fmt"
 
-	"github.com/gocircuit/escher/see"
-)
+// 	"github.com/gocircuit/escher/see"
+// )
 
 // TODO: Eventually Circuit can be represented as an image.Image
-type Circuit struct {
-	Genus []*see.Circuit // origin
-	Name  string
-	Peer map[string]*Peer // peers and self; self corresponds to the empty string
-}
+// type Circuit struct {
+// 	Genus []*see.Circuit // origin
+// 	Name  string
+// 	Peer map[string]*Peer // peers and self; self corresponds to the empty string
+// }
 
-type Peer struct {
-	Name   string
-	Design interface{}
-	Valve  map[string]*Valve
-}
+// type Peer struct {
+// 	Name   string
+// 	Design interface{}
+// 	Valve  map[string]*Valve
+// }
 
-type Valve struct {
-	Of       *Peer
-	Name     string
-	Matching *Valve
-}
+// type Valve struct {
+// 	Of       *Peer
+// 	Name     string
+// 	Matching *Valve
+// }
 
 /*
 	circuit {

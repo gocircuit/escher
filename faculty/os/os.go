@@ -40,6 +40,10 @@ func Init(a string) {
 	ns.AddTerminal("Stdin", Stdin{})
 	ns.AddTerminal("Stdout", Stdout{})
 	ns.AddTerminal("Stderr", Stderr{})
+	//
+	ns.AddTerminal("Process", Process{})
+	ns.AddTerminal("ForkExit", ForkExit{})
+	ns.AddTerminal("ForkIO", ForkIO{})
 }
 
 var args map[string]string

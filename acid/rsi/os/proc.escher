@@ -1,0 +1,17 @@
+// ProcessIgnoreIO starts an OS process, spcified ...
+ProcessIgnoreIO {
+	proc os.Process
+	Spawn = proc.Spawn
+	Exit = proc.Exit
+	Command = proc.Command
+	yio os.IO
+	ignoreSpawn Ignore
+	clunkIn io.Clunk
+	clunkOut io.Clunk
+	clunkErr io.Clunk
+	yio._ = proc.ForkIO
+	yio.Spawn = ignoreSpawn._
+	yio.Stdin = clunkIn._
+	yio.Stdout = clunkOut._
+	yio.Stderr = clunkErr._
+}

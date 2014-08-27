@@ -1,0 +1,27 @@
+main {
+	proc os.Process
+	proc.Command = {
+		Path "/bin/ls"
+		Args { "/" }
+	}
+	proc.Spawn = 1
+
+	yio os.ForkIO
+	proc.IO = yio._
+
+	clunkIn io.Clunk
+	stdout os.Stdout // connect to stdout of this program
+	stderr os.Stderr // connect to stderr of this program
+	yio.Stdin = clunkIn._
+	yio.Stdout = stdout._
+	yio.Stderr = stderr._
+	ign Ignore
+	yio.Spawn = ign._
+
+	yexit os.ForkExit
+	proc.Exit = yexit._
+	exit os.Exit // exit this program
+	yexit.Exit = exit._
+	ignoreSpawn Ignore
+	yexit.Spawn = ignoreSpawn._
+}

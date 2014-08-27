@@ -125,24 +125,3 @@ func cognizeExit(v interface{}) {
 	log.Printf("Exit %v", v)
 	os.Exit(v.(int))
 }
-
-// Stdin
-type Stdin struct{}
-
-func (Stdin) Materialize() be.Reflex {
-	return be.NewNounReflex(os.Stdin)
-}
-
-// Stdout
-type Stdout struct{}
-
-func (Stdout) Materialize() be.Reflex {
-	return be.NewNounReflex(os.Stdout)
-}
-
-// Stderr
-type Stderr struct{}
-
-func (Stderr) Materialize() be.Reflex {
-	return be.NewNounReflex(os.Stderr)
-}

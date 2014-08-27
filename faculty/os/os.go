@@ -14,6 +14,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func Init(a string) {
@@ -37,6 +38,7 @@ func Init(a string) {
 	ns.AddTerminal("Arg", Arg{})
 	ns.AddTerminal("Env", Env{})
 	ns.AddTerminal("Exit", Exit{})
+	ns.AddTerminal("Fatal", Fatal{})
 	ns.AddTerminal("Stdin", Stdin{})
 	ns.AddTerminal("Stdout", Stdout{})
 	ns.AddTerminal("Stderr", Stderr{})
@@ -112,16 +114,24 @@ func (h *env) CognizeName(v interface{}) {
 type Exit struct{}
 
 func (Exit) Materialize() be.Reflex {
-	_Endo, _Exo := be.NewSynapse()
-	go func() {
-		_Endo.Focus(cognizeExit)
-	}()
-	return be.Reflex{
-		"_": _Exo,
-	}
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			os.Exit(value.(int))
+		}, 
+		"_",
+	)
+	return reflex
 }
 
-func cognizeExit(v interface{}) {
-	log.Printf("Exit %v", v)
-	os.Exit(v.(int))
+// Fatal
+type Fatal struct{}
+
+func (Fatal) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			log.Fatalln(value)
+		}, 
+		"_",
+	)
+	return reflex
 }

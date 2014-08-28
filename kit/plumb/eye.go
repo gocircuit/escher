@@ -10,7 +10,7 @@ package plumb
 import (
 	"sync"
 
-	. "github.com/gocircuit/escher/image"
+	// . "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 )
 

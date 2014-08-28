@@ -7,6 +7,7 @@
 package i
 
 import (
+	"github.com/gocircuit/escher/kit/plumb"
 	es "github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/be"
 	eu "github.com/gocircuit/escher/understand"
@@ -16,29 +17,18 @@ import (
 type Understand struct{}
 
 func (Understand) Materialize() be.Reflex {
-	seenEndo, seenExo := be.NewSynapse()
-	understoodEndo, understoodExo := be.NewSynapse()
-	go func() {
-		h := &understand{}
-		h.understood = understoodEndo.Focus(be.DontCognize)
-		seenEndo.Focus(h.CognizeSeen)
-	}()
-	return be.Reflex{
-		"Seen":       seenExo,
-		"Understood": understoodExo,
-	}
-}
-
-type understand struct {
-	understood *be.ReCognizer
-}
-
-func (h *understand) CognizeSeen(v interface{}) {
-	switch t := v.(type) {
-	case *es.Circuit:
-		h.understood.ReCognize(eu.Understand(t))
-	case nil:
-		h.understood.ReCognize(nil)
-	}
-	panic("seen incomprehensible")
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+			if dvalve != "Seen" {
+				return
+			}
+			switch t := dvalue.(type) {
+			case *es.Circuit:
+				eye.Show("Understood", eu.Understand(t))
+			}
+			panic("nil or unknown seen")
+		}, 
+		"Seen", "Understood",
+	)
+	return reflex
 }

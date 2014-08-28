@@ -90,5 +90,10 @@ func (h *grow) loop() {
 	<-ch
 	<-ch
 	<-ch
-	h.z.ReCognize(img.(Image).Grow(key.(string), value))
+	switch key.(type) {
+	case string, int:
+		h.z.ReCognize(img.(Image).Grow(key, value))
+	default:
+		panic("non-textual non-integral key")
+	}
 }

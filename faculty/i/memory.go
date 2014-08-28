@@ -13,44 +13,39 @@ import (
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 	eu "github.com/gocircuit/escher/understand"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Memory
 type Memory struct{}
 
 func (Memory) Materialize() be.Reflex {
-	focusEndo, focusExo := be.NewSynapse()
-	learnEndo, learnExo := be.NewSynapse()
-	recallEndo, recallExo := be.NewSynapse()
-	useEndo, useExo := be.NewSynapse()
-	go func() {
-		h := &memory{
-			connected: make(chan struct{}),
-			focus:     make(chan []string),
-			learn:     make(chan *eu.Circuit),
-			recall:    make(chan []string),
-		}
-		h.use = useEndo.Focus(be.DontCognize)
-		close(h.connected)
-		focusEndo.Focus(h.CognizeFocus)
-		learnEndo.Focus(h.CognizeLearn)
-		recallEndo.Focus(h.CognizeRecall)
-		go h.loop()
-	}()
-	return be.Reflex{
-		"Focus":  focusExo,  // write-only
-		"Learn":  learnExo,  // write-only
-		"Recall": recallExo, // write-only
-		"Use":    useExo,    // read-only
+	h := &memory{
+		focus:     make(chan []string),
+		learn:     make(chan *eu.Circuit),
+		recall:    make(chan []string),
 	}
+	reflex, eye := plumb.NewEyeCognizer(h.Cognize, "Focus", "Learn", "Recall", "Use")
+	go h.loop(eye)
+	return reflex
 }
 
 type memory struct {
-	connected chan struct{}
 	focus     chan []string
 	learn     chan *eu.Circuit
 	recall    chan []string
 	use       *be.ReCognizer
+}
+
+func (h *memory) Cognize(_ *plumb.Eye, dvalve string, dvalue interface{}) {
+	switch dvalve {
+	case "Focus":
+		h.CognizeFocus(dvalue)
+	case "Learn":
+		h.CognizeLearn(dvalue)
+	case "Recall":
+		h.CognizeRecall(dvalue)
+	}
 }
 
 func (h *memory) CognizeLearn(v interface{}) {
@@ -68,7 +63,7 @@ func (h *memory) CognizeFocus(v interface{}) {
 		h.focus <- t
 	case Image:
 		var x []string
-		for _, step := range t.Sort() {
+		for _, step := range t.Numbers() {
 			x = append(x, t.String(step))
 		}
 		h.focus <- x
@@ -83,13 +78,68 @@ func (h *memory) CognizeRecall(v interface{}) {
 		h.recall <- t
 	case Image:
 		var x []string
-		for _, step := range t.Sort() {
+		for _, step := range t.Numbers() {
 			x = append(x, t.String(step))
 		}
 		h.recall <- x
 	case nil:
 		h.recall <- nil
 	}
+}
+
+func (h *memory) loop(eye *plumb.Eye) {
+	var root = &space{
+		Space: make(be.Space),
+	}
+	focus, recall := &attention{root: root}, &attention{root: root}
+	var lesson *eu.Circuit
+	for {
+		select {
+		case lesson = <-h.learn:
+		case walk := <-h.focus:
+			focus.Point(walk...)
+			if lesson == nil {
+				break
+			}
+			eye.Show("Use", focus.Remember(lesson))
+		case walk := <-h.recall:
+			recall.Point(walk...)
+			eye.Show("Use", recall.Recall())
+		}
+	}
+}
+
+// Materializable captures a circuit space and a pointer to a specific circuit design,
+// functionaly solely able to materialize copies of the referenced circuit design.
+type Materializable struct {
+	root *space
+	walk []string
+}
+
+func (x *Materializable) Materialize() be.Reflex {
+	x.root.Lock()
+	defer x.root.Unlock()
+	return x.root.Materialize(x.walk...)
+}
+
+// space captures a reentrant version of a think space as needed by the machinery in the memory reflex.
+type space struct {
+	sync.Mutex
+	be.Space
+}
+
+// Roam returns the subspace whose root path is walk as child.
+func (x *space) Roam(walk ...string) (parent, child interface{}) {
+	x.Lock()
+	defer x.Unlock()
+	return x.Space.Roam(walk...)
+}
+
+// Materialize materializes the circuit design at path walk.
+func (x *space) Materialize(walk ...string) be.Reflex {
+	x.Lock()
+	defer x.Unlock()
+	return x.Space.Materialize(walk...)
 }
 
 // attention is a “pointer” to a (parent, name, child) triplet in a root faculty name space.
@@ -137,56 +187,19 @@ func (a *attention) Remember(lesson *eu.Circuit) *Materializable {
 	}
 }
 
-// Materializable captures a circuit space and a pointer to a specific circuit design,
-// functionaly solely able to materialize copies of the referenced circuit design.
-type Materializable struct {
-	root *space
-	walk []string
-}
-
-func (x *Materializable) Materialize() be.Reflex {
-	x.root.Lock()
-	defer x.root.Unlock()
-	return x.root.Materialize(x.walk...)
-}
-
-func (h *memory) loop() {
-	<-h.connected
-	var root = &space{
-		Space: make(be.Space),
+func (a *attention) Recall() *Materializable {
+	a.Lock()
+	defer a.Unlock()
+	switch a.child.(type) {
+	case *eu.Circuit:
+	default:
+		panic("recall path not a circuit design")
 	}
-	focus, recall := &attention{root: root}, &attention{root: root}
-	for {
-		select {
-		case lesson := <-h.learn:
-			if lesson == nil {
-				break // lessons cannot be deleted/forgotten, for debugging and self-study purposes
-			}
-			h.use.ReCognize(focus.Remember(lesson))
-		case walk := <-h.focus:
-			focus.Point(walk...)
-		case walk := <-h.recall:
-			recall.Point(walk...)
-		}
+	//
+	a.root.Lock()
+	defer a.root.Unlock()
+	return &Materializable{
+		root: a.root,
+		walk: a.walk,
 	}
-}
-
-// space captures a reentrant version of a think space as needed by the machinery in the memory reflex.
-type space struct {
-	sync.Mutex
-	be.Space
-}
-
-// Roam returns the subspace whose root path is walk as child.
-func (x *space) Roam(walk ...string) (parent, child interface{}) {
-	x.Lock()
-	defer x.Unlock()
-	return x.Space.Roam(walk...)
-}
-
-// Materialize materializes the circuit design at path walk.
-func (x *space) Materialize(walk ...string) be.Reflex {
-	x.Lock()
-	defer x.Unlock()
-	return x.Space.Materialize(walk...)
 }

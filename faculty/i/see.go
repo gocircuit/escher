@@ -25,23 +25,14 @@ func init() {
 type See struct{}
 
 func (See) Materialize() be.Reflex {
-	sourceEndo, sourceExo := be.NewSynapse()
-	seenEndo, seenExo := be.NewSynapse()
-	go func() {
-		h := &see{}
-		h.seen = seenEndo.Focus(be.DontCognize)
-		sourceEndo.Focus(h.CognizeSource)
-	}()
-	return be.Reflex{
-		"Source": sourceExo,
-		"Seen":   seenExo,
-	}
-}
-
-type see struct {
-	seen *be.ReCognizer
-}
-
-func (h *see) CognizeSource(v interface{}) {
-	h.seen.ReCognize(es.SeeCircuit(es.NewSrcString(plumb.AsString(v))))
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+			if dvalve != "Source" {
+				return
+			}
+			eye.Show("Seen", es.SeeCircuit(es.NewSrcString(plumb.AsString(dvalue))))
+		}, 
+		"Source", "Seen",
+	)
+	return reflex
 }

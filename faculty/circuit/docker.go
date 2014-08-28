@@ -125,11 +125,11 @@ func (p *docker) CognizeCommand(v interface{}) {
 		p.arg.cmd.CpuShares = int64(plumb.AsInt(img["CpuShares"]))
 	}
 	lxc := img.Walk("Lxc")
-	for _, key := range lxc.Sort() {
+	for _, key := range lxc.Numbers() {
 		p.arg.cmd.Lxc = append(p.arg.cmd.Lxc, lxc.String(key))
 	}
 	vol := img.Walk("Volume")
-	for _, key := range vol.Sort() {
+	for _, key := range vol.Numbers() {
 		p.arg.cmd.Volume = append(p.arg.cmd.Volume, vol.String(key))
 	}
 	if img.Has("Entry") {
@@ -140,11 +140,11 @@ func (p *docker) CognizeCommand(v interface{}) {
 		p.arg.cmd.Dir = img.String("Dir")
 	}
 	env := img.Walk("Env")
-	for _, key := range env.Sort() {
+	for _, key := range env.Numbers() {
 		p.arg.cmd.Env = append(p.arg.cmd.Env, env.String(key))
 	}
 	args := img.Walk("Args")
-	for _, key := range args.Sort() {
+	for _, key := range args.Numbers() {
 		p.arg.cmd.Args = append(p.arg.cmd.Args, args.String(key))
 	}
 	log.Printf("circuit docker command (%v)", Linearize(img.Print("", "t")))

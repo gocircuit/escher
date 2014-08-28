@@ -21,6 +21,7 @@ main {
 	yexit os.ForkExit
 	proc.Exit = yexit._
 	exit os.Exit // exit this program
+	//exit Ignore
 	yexit.Exit = exit._
 	ignoreSpawn Ignore
 	yexit.Spawn = ignoreSpawn._

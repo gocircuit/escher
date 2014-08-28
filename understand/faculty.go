@@ -9,6 +9,7 @@ package understand
 import (
 	// "fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 
@@ -85,12 +86,12 @@ func (fty Faculty) AddTerminal(name string, term interface{}) {
 func (fty Faculty) UnderstandDirectory(dir string) {
 	d, err := os.Open(dir)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 	defer d.Close()
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
-		panic(err)
+		log.Fatalln(err)
 	}
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())

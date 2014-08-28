@@ -20,23 +20,23 @@ import (
 type Stdin struct{}
 
 func (Stdin) Materialize() be.Reflex {
-	return MaterializeWriterOrigin(os.Stdin)
+	return MaterializeReadFrom(os.Stdin)
 }
 
 type Stdout struct{}
 
 func (Stdout) Materialize() be.Reflex {
-	return MaterializeReaderOrigin(os.Stdout)
+	return MaterializeWriteTo(os.Stdout)
 }
 
 type Stderr struct{}
 
 func (Stderr) Materialize() be.Reflex {
-	return MaterializeReaderOrigin(os.Stderr)
+	return MaterializeWriteTo(os.Stderr)
 }
 
-func MaterializeWriterOrigin(w io.Writer) be.Reflex {
-	x := &writerOrigin{
+func MaterializeWriteTo(w io.Writer) be.Reflex {
+	x := &writerTo{
 		WriteCloser: kitio.SovereignWriter(w),
 	}
 	reflex, eye := plumb.NewEyeCognizer(x.cognize, "_")
@@ -44,16 +44,20 @@ func MaterializeWriterOrigin(w io.Writer) be.Reflex {
 	return reflex
 }
 
-type writerOrigin struct{
+type writerTo struct{
 	io.WriteCloser // sovereign writer
 }
 
-func (x *writerOrigin) cognize(eye *plumb.Eye, valve string, value interface{}) {
+func (x *writerTo) cognize(eye *plumb.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
 		go func() {
-			if _, err := io.Copy(x.WriteCloser, t); err != nil {
+			_, err := io.Copy(x.WriteCloser, t)
+			if err != nil {
 				log.Printf("writer origin drain problem (%s)", err)
+			}
+			if tt, ok := t.(*os.File); ok {
+				tt.Sync()
 			}
 			if tt, ok := t.(io.Closer); ok {
 				tt.Close()
@@ -65,8 +69,8 @@ func (x *writerOrigin) cognize(eye *plumb.Eye, valve string, value interface{}) 
 	}
 }
 
-func MaterializeReaderOrigin(w io.Reader) be.Reflex {
-	x := &readerOrigin{
+func MaterializeReadFrom(w io.Reader) be.Reflex {
+	x := &readFrom{
 		ReadCloser: kitio.SovereignReader(w),
 	}
 	reflex, eye := plumb.NewEyeCognizer(x.cognize, "_")
@@ -74,11 +78,11 @@ func MaterializeReaderOrigin(w io.Reader) be.Reflex {
 	return reflex
 }
 
-type readerOrigin struct{
+type readFrom struct{
 	io.ReadCloser // sovereign writer
 }
 
-func (x *readerOrigin) cognize(eye *plumb.Eye, valve string, value interface{}) {
+func (x *readFrom) cognize(eye *plumb.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Writer:
 		go func() {

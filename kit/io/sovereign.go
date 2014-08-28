@@ -44,18 +44,6 @@ func (x *sovereignReader) Close() error {
 	return x.ReadCloser.Close()
 }
 
-func NopReadCloser(x io.Reader) io.ReadCloser {
-	return &nopReadCloser{x}
-}
-
-type nopReadCloser struct {
-	io.Reader
-}
-
-func (x *nopReadCloser) Close() error {
-	return nil
-}
-
 // SovereignWriter returns a synchronized version of the argument writer.
 func SovereignWriter(x io.Writer) io.WriteCloser {
 	switch t := x.(type) {
@@ -88,6 +76,20 @@ func (x *sovereignWriter) Close() error {
 	return x.WriteCloser.Close()
 }
 
+// NopReadCloser attaches a nop close method to x.
+func NopReadCloser(x io.Reader) io.ReadCloser {
+	return &nopReadCloser{x}
+}
+
+type nopReadCloser struct {
+	io.Reader
+}
+
+func (x *nopReadCloser) Close() error {
+	return nil
+}
+
+// NopWriteCloser attaches a nop close method to x.
 func NopWriteCloser(x io.Writer) io.WriteCloser {
 	return &nopWriteCloser{x}
 }
@@ -98,4 +100,46 @@ type nopWriteCloser struct {
 
 func (x *nopWriteCloser) Close() error {
 	return nil
+}
+
+// RunOnCloseReader returns an io.ReadCloser which 
+// executes run once, on the first call to Close.
+func RunOnCloseReader(x io.Reader, run CloseFunc) io.ReadCloser {
+	return &runOnCloseReader{run: run, Reader: x}
+}
+
+type CloseFunc func()
+
+type runOnCloseReader struct {
+	sync.Once
+	run CloseFunc
+	io.Reader
+}
+
+func (x *runOnCloseReader) Close() (err error) {
+	if t, ok := x.Reader.(io.Closer); ok {
+		err = t.Close()
+	}
+	x.Once.Do(x.run)
+	return
+}
+
+// RunOnCloseWrite returns an io.WriteCloser which 
+// executes run once, on the first call to Close.
+func RunOnCloseWriter(x io.Writer, run CloseFunc) io.WriteCloser {
+	return &runOnCloseWriter{run: run, Writer: x}
+}
+
+type runOnCloseWriter struct {
+	sync.Once
+	run CloseFunc
+	io.Writer
+}
+
+func (x *runOnCloseWriter) Close() (err error) {
+	if t, ok := x.Writer.(io.Closer); ok {
+		err = t.Close()
+	}
+	x.Once.Do(x.run)
+	return
 }

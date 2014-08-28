@@ -8,12 +8,14 @@ package os
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"os/exec"
 	"sync"
 
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	kitio "github.com/gocircuit/escher/kit/io"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -65,6 +67,7 @@ func (p *process) cognizeCommand(v interface{}) (ready bool) {
 	}
 	p.cmd = &exec.Cmd{}
 	p.cmd.Path = img.String("Path") // mandatory
+	p.cmd.Args = []string{p.cmd.Path}
 	if img.Has("Dir") {
 		p.cmd.Dir = img.String("Dir")
 	}
@@ -76,7 +79,7 @@ func (p *process) cognizeCommand(v interface{}) (ready bool) {
 	for _, key := range args.Sort() {
 		p.cmd.Args = append(p.cmd.Args, args.String(key))
 	}
-	log.Printf("os process command (%v)", Linearize(img.Print("", "t")))
+	log.Printf("os process command (%v)", Linearize(img.Print("", "")))
 	return true
 }
 
@@ -112,35 +115,46 @@ func (p *processFixed) backLoop(spawn <-chan interface{}) {
 			}
 			p.eye.Show("Exit", x)
 		}
-		log.Printf("os process exit sent (%v)", Linearize(fmt.Sprintf("%v", x)))
+		// log.Printf("os process exit sent (%v)", Linearize(x.Print("", "")))
 	}
 }
 
 func (p *processFixed) spawnProcess(spwn interface{}) (err error) {
-	stdin, err :=  p.cmd.StdinPipe()
+	var stdin io.WriteCloser
+	var stdout io.ReadCloser
+	var stderr io.ReadCloser
+	stdin, err =  p.cmd.StdinPipe()
 	if err != nil {
 		panic(err)
 	}
-	stdout, err := p.cmd.StdoutPipe()
+	stdout, err = p.cmd.StdoutPipe()
 	if err != nil {
 		panic(err)
 	}
-	stderr, err := p.cmd.StderrPipe()
+	stderr, err = p.cmd.StderrPipe()
 	if err != nil {
 		panic(err)
 	}
 	if err = p.cmd.Start(); err != nil {
 		return err
 	}
+	// We cannot call cmd.Wait before all std streams have been closed.
+	stdClose := make(chan struct{}, 3)
+	stdin = kitio.RunOnCloseWriter(stdin, func() { stdClose <- struct{}{} })
+	stdout = kitio.RunOnCloseReader(stdout, func() { stdClose <- struct{}{} })
+	stderr = kitio.RunOnCloseReader(stderr, func() { stdClose <- struct{}{} })
 	g := Image{
 		"Spawn":  spwn,
 		"Stdin":  stdin,
 		"Stdout": stdout,
 		"Stderr": stderr,
 	}
-	log.Printf("os process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	// log.Printf("os process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	p.eye.Show("IO", g)
-	log.Printf("os process waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	<-stdClose
+	<-stdClose
+	<-stdClose
+	// log.Printf("os process waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	err = p.cmd.Wait()
 	switch err.(type) {
 	case nil, *exec.ExitError:

@@ -1,3 +1,9 @@
+
+* Build Rails container
+* Fetch postgres container
+
+
+
 * Go cannot have maps for map keys, but eventually I should extend tree.Tree
 to be able to have tree.Trees as keys. Not critical for now.
 

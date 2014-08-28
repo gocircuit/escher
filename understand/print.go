@@ -38,8 +38,9 @@ func (fty Faculty) Print(prefix, indent string) string {
 			w.WriteString(":\n")
 			w.WriteString(t.Print(prefix+indent+indent, indent))
 		case *Circuit:
-			w.WriteString("\n")
-			w.WriteString(t.Print(prefix+indent+indent, indent))
+			w.WriteString(" […]\n")
+			// w.WriteString("\n")
+			// w.WriteString(t.Print(prefix+indent+indent, indent))
 		default: // reflex or circuit
 			w.WriteString(fmt.Sprintf(" [%T]\n", v))
 		}

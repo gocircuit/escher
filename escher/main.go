@@ -9,6 +9,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"strings"
 
 	"github.com/gocircuit/circuit/client"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/understand"
 
+	// Load faculties
 	"github.com/gocircuit/escher/faculty/acid"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
@@ -31,7 +33,7 @@ import (
 )
 
 var (
-	flagUn       = flag.Bool("un", false, "understand and show source without materializing it")
+	flagShow     = flag.String("show", "", "compile and display object at given path; don't run")
 	flagX        = flag.String("x", "", "program source directory X")
 	flagY        = flag.String("y", "", "program source directory Y")
 	flagName     = flag.String("n", "", "execution name")
@@ -49,9 +51,22 @@ func main() {
 	facultyos.Init(*flagArg)
 	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY)
 	//
-	if *flagUn {
-		fmt.Println(compile(*flagX, *flagY).Print("", "   "))
-	} else {
+	switch {
+	case *flagShow != "":
+		walk := strings.Split(*flagShow, ".")
+		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
+			walk = nil
+		}
+		_, cd := compile(*flagX, *flagY).Walk(walk...)
+		switch t := cd.(type) {
+		case *understand.Circuit:
+			fmt.Println(t.Print("", "   "))
+		case understand.Faculty:
+			fmt.Println(t.Print("", "   "))
+		default:
+			fmt.Printf("%T/%v\n", t, t)
+		}
+	default:
 		be.Space(compile(*flagX, *flagY)).Materialize("main")
 		select {} // wait forever
 	}

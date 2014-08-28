@@ -1,0 +1,5 @@
+
+// Before running this program, make sure that the local docker command is operational 
+// and connected to a docker image server.
+main {
+}

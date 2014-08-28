@@ -15,3 +15,26 @@ ProcessIgnoreIO {
 	yio.Stdout = clunkOut._
 	yio.Stderr = clunkErr._
 }
+
+// ProcessRun ...
+ProcessRun {
+	proc os.Process
+	Spawn = proc.Spawn
+	Exit = proc.Exit
+	Command = proc.Command
+
+	yio os.IO
+	yio._ = proc.ForkIO
+
+	ignoreSpawn Ignore
+	yio.Spawn = ignoreSpawn._
+
+	clunkIn io.Clunk
+	yio.Stdin = clunkIn._
+
+	stdout os.Stdout
+	yio.Stdout = stdout._
+
+	stderr os.Stderr
+	yio.Stderr = stderr._
+}

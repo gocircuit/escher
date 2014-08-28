@@ -72,11 +72,11 @@ func (p *process) cognizeCommand(v interface{}) (ready bool) {
 		p.cmd.Dir = img.String("Dir")
 	}
 	env := img.Walk("Env")
-	for _, key := range env.Sort() {
+	for _, key := range env.Numbers() {
 		p.cmd.Env = append(p.cmd.Env, env.String(key))
 	}
 	args := img.Walk("Args")
-	for _, key := range args.Sort() {
+	for _, key := range args.Numbers() {
 		p.cmd.Args = append(p.cmd.Args, args.String(key))
 	}
 	log.Printf("os process command (%v)", Linearize(img.Print("", "")))

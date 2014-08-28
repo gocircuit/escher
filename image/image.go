@@ -125,6 +125,14 @@ func (x Image) Complex(key interface{}) complex128 {
 	return x[key].(complex128)
 }
 
+func (x Image) Names() []interface{} {
+	names := make([]interface{}, 0, len(x))
+	for k, _ := range x {
+		names = append(names, k)
+	}
+	return names
+}
+
 // Letters returns the string keys in s in sorted order.
 func (x Image) Letters() []string {
 	lex := make([]string, 0, len(x))

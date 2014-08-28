@@ -43,7 +43,7 @@ func (x *choose) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		panic("eh")
 	}
 	j := rand.Intn(x.from.Len())
-	for i, key := range x.from.Sort() {
+	for i, key := range x.from.Names() {
 		if i != j {
 			continue
 		}

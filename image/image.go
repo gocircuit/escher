@@ -135,6 +135,13 @@ func (x Image) Sort() []string {
 	return lex
 }
 
+func (x Image) Values() (v []interface{}) {
+	for _, n := range x.Sort() {
+		v = append(v, x[n])
+	}
+	return
+}
+
 func Same(s, t Image) bool {
 	return s.Contains(t) && t.Contains(s)
 }

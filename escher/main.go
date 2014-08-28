@@ -16,6 +16,7 @@ import (
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/understand"
 
+	"github.com/gocircuit/escher/faculty/acid"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
 	_ "github.com/gocircuit/escher/faculty/i"
@@ -40,12 +41,14 @@ var (
 
 func main() {
 	flag.Parse()
-	basic.Init(*flagName)
-	facultyos.Init(*flagArg)
-	loadCircuitFaculty(*flagName, *flagDiscover)
 	if *flagX == "" && *flagY == "" {
 		fatalf("at least one source directory, X or Y, must be specified with -x or -y, respectively")
 	}
+	// Initialize faculties
+	basic.Init(*flagName)
+	facultyos.Init(*flagArg)
+	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY)
+	//
 	if *flagUn {
 		fmt.Println(compile(*flagX, *flagY).Print("", "   "))
 	} else {
@@ -64,7 +67,8 @@ func compile(x, y string) understand.Faculty {
 	return faculty.Root
 }
 
-func loadCircuitFaculty(name, discover string) {
+func loadCircuitFaculty(name, discover, x, y string) {
+	acid.Init(x, y)
 	if discover == "" {
 		circuit.Init(name, nil)
 		return

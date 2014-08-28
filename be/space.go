@@ -46,18 +46,22 @@ func (x Space) Materialize(walk ...string) Reflex {
 	// println(cir.Print("	", "\t"))
 	peers := make(map[string]Reflex)
 	for _, peer := range cir.Peer {
-		if peer.Name == "" { // skip the super peer of this circuit
+		name, ok := peer.Name.(string)
+		if !ok {
+			log.Fatalf("circuit peers cannot have non-textual names, in circuit %s at peer %v", cir.Name, peer.Name)
+		}
+		if name == "" { // skip the super peer of this circuit
 			continue
 		}
 		switch t := peer.Design.(type) {
 		case see.RootPath:
-			peers[peer.Name] = x.Materialize([]string(t)...)
+			peers[name] = x.Materialize([]string(t)...)
 		case see.Path: // e.g. “hello.who.is.there”
-			peers[peer.Name] = x.materializePath(within, []string(t))
+			peers[name] = x.materializePath(within, []string(t))
 		case string, int, float64, complex128:
-			peers[peer.Name] = NewNounReflex(t) // materialize builtin gates
+			peers[name] = NewNounReflex(t) // materialize builtin gates
 		case Image:
-			peers[peer.Name] = NewNounReflex(t.Copy()) // materialize images
+			peers[name] = NewNounReflex(t.Copy()) // materialize images
 		default:
 			panicf("unknown design: %T/%v", t, t)
 		}
@@ -65,22 +69,23 @@ func (x Space) Materialize(walk ...string) Reflex {
 	// Connect/attach all reflex memories
 	super := make(Reflex)
 	for _, p := range cir.Peer {
-		if p.Name == "" {
+		name := p.Name.(string)
+		if name == "" {
 			continue
 		}
 		for _, v := range p.Valve {
-			m1 := peers[p.Name][v.Name]
+			m1 := peers[name][v.Name]
 			if m1 == nil {
 				continue
 			}
-			delete(peers[p.Name], v.Name)
+			delete(peers[name], v.Name)
 			if v.Matching.Of.Name == "" {
 				if _, ok := super[v.Matching.Name]; ok {
 					panic(6)
 				}
 				super[v.Matching.Name] = m1
 			} else {
-				qp, qv := v.Matching.Of.Name, v.Matching.Name
+				qp, qv := v.Matching.Of.Name.(string), v.Matching.Name
 				m2 := peers[qp][qv]
 				delete(peers[qp], qv)
 				go Merge(m1, m2)

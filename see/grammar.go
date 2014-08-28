@@ -30,7 +30,7 @@ func stringifySlice(ss []string) string {
 type Name string
 
 func (x Name) String() string {
-	return fmt.Sprintf("Name(%s)", x)
+	return fmt.Sprintf("Name(%s)", string(x))
 }
 
 // Path

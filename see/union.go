@@ -9,7 +9,6 @@ package see
 import (
 	// "fmt"
 	. "github.com/gocircuit/escher/image"
-	"strconv"
 )
 
 const MatchingName = "="
@@ -37,15 +36,15 @@ func SeeUnion(src *Src) (x interface{}) {
 		Space(q)
 		t.Become(q)
 		if peer != nil {
-			keys := peer.Sort()
+			keys := peer.Letters()
 			if keys[0] == "" { // if peer is nameless, this is a slice element
-				y.Grow(strconv.Itoa(j), peer[""])
+				y.Grow(j, peer[""])
 				j++
 			} else {
 				y.Attach(peer)
 			}
 		} else {
-			m.Grow(strconv.Itoa(i), match)
+			m.Grow(i, match)
 			i++
 		}
 	}

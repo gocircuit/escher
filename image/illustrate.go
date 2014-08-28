@@ -10,7 +10,6 @@ import (
 	// "bytes"
 	// "fmt"
 	. "reflect"
-	"strconv"
 	"sync"
 )
 
@@ -51,7 +50,7 @@ func imagine(withMaps bool, v Value) Value {
 	case Slice:
 		img := Make()
 		for i := 0; i < v.Len(); i++ {
-			img.Grow(strconv.Itoa(i), imagine(withMaps, v.Index(i)).Interface())
+			img.Grow(i, imagine(withMaps, v.Index(i)).Interface())
 		}
 		return ValueOf(img)
 	case Struct:

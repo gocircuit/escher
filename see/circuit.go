@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"fmt"
 	. "github.com/gocircuit/escher/image"
-	"strconv"
 )
 
 const DefaultValve = "_"
@@ -21,7 +20,7 @@ func SeeCircuit(src *Src) *Circuit {
 	}
 	for p, un := range SeePeer(src) {
 		// fmt.Printf("p=%s v=%v\n", p, un)
-		return Circuitize(p, un.(Image))
+		return Circuitize(p.(string), un.(Image))
 	}
 	return nil
 }
@@ -56,7 +55,7 @@ func (cir *Circuit) seeMatching(s Image) {
 		// fmt.Printf("=%s=>\n", string(w))
 		m := &Matching{}
 		for i := 0; i < 2; i++ {
-			y := x.(Image).Walk(strconv.Itoa(i))
+			y := x.(Image).Walk(i)
 			// fmt.Printf("    –%d–>\n    %s\n", i, y.Print("    ", "\t"))
 
 			v := string(y["Valve"].(Name))
@@ -119,12 +118,12 @@ func (c *Circuit) Print(prefix, indent string) string {
 }
 
 type Peer struct {
-	Name   string
+	Name   interface{}
 	Design interface{}
 }
 
 func (p *Peer) String() string {
-	return fmt.Sprintf("%s %v", p.Name, p.Design)
+	return fmt.Sprintf("%v %v", p.Name, p.Design)
 }
 
 type Matching struct {

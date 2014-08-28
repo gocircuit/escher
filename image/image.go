@@ -234,7 +234,7 @@ func (x Image) Print(prefix, indent string) string {
 		default:
 			t = fmt.Sprintf("%v", v)
 		}
-		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, key, t)
+		fmt.Fprintf(&w, "%s%s#%v %s\n", prefix, indent, key, t)
 	}
 	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()

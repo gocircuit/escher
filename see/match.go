@@ -21,12 +21,12 @@ func SeeMatching(src *Src) (x Image) {
 	t := src.Copy()
 	Space(t)
 	j0 := SeeJoin(t)
-	x.Grow("0", j0)
+	x.Grow(0, j0)
 	Whitespace(t)
 	t.Match("=")
 	Whitespace(t)
 	j1 := SeeJoin(t)
-	x.Grow("1", j1)
+	x.Grow(1, j1)
 	if !Space(t) { // require newline at end
 		return nil
 	}

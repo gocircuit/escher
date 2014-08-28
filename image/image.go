@@ -12,16 +12,16 @@ import (
 	"sort"
 )
 
-// Image is…
-type Image map[string]interface{}
+// Image is ...
+type Image map[interface{}]interface{}
 
 // Make creates a singleton node star and an eye into it.
 func Make() Image {
 	return make(Image)
 }
 
-func (x Image) Unwrap() map[string]interface{} {
-	return (map[string]interface{})(x)
+func (x Image) Unwrap() map[interface{}]interface{} {
+	return (map[interface{}]interface{})(x)
 }
 
 // Copy returns a Image-recursive (non-Image children are not recursed into) copy of the star.
@@ -53,7 +53,7 @@ func (x Image) Attach(y Image) Image {
 	return x
 }
 
-func (x Image) Grow(key string, v interface{}) Image {
+func (x Image) Grow(key interface{}, v interface{}) Image {
 	if _, present := x[key]; present {
 		panic(4)
 	}
@@ -61,18 +61,18 @@ func (x Image) Grow(key string, v interface{}) Image {
 	return x
 }
 
-func (x Image) Abandon(key string) Image {
+func (x Image) Abandon(key interface{}) Image {
 	delete(x, key)
 	return x
 }
 
-func (x Image) Cut(key string) interface{} {
+func (x Image) Cut(key interface{}) interface{} {
 	v := x[key]
 	delete(x, key)
 	return v
 }
 
-func (x Image) Walk(key string) Image {
+func (x Image) Walk(key interface{}) Image {
 	v := x[key]
 	if v != nil {
 		return v.(Image)
@@ -80,12 +80,12 @@ func (x Image) Walk(key string) Image {
 	return Image{}
 }
 
-func (x Image) Has(key string) bool {
+func (x Image) Has(key interface{}) bool {
 	_, present := x[key]
 	return present
 }
 
-func (x Image) Interface(key string) interface{} {
+func (x Image) Interface(key interface{}) interface{} {
 	v, ok := x[key]
 	if !ok {
 		panic(3)
@@ -93,11 +93,11 @@ func (x Image) Interface(key string) interface{} {
 	return v
 }
 
-func (x Image) String(key string) string {
+func (x Image) String(key interface{}) string {
 	return x[key].(string)
 }
 
-func (x Image) OptionalString(key string) string {
+func (x Image) OptionalString(key interface{}) string {
 	v, ok := x[key]
 	if !ok {
 		return ""
@@ -105,11 +105,11 @@ func (x Image) OptionalString(key string) string {
 	return v.(string)
 }
 
-func (x Image) Int(key string) int {
+func (x Image) Int(key interface{}) int {
 	return x[key].(int)
 }
 
-func (x Image) OptionalInt(key string) int {
+func (x Image) OptionalInt(key interface{}) int {
 	v, ok := x[key]
 	if !ok {
 		return 0
@@ -117,26 +117,50 @@ func (x Image) OptionalInt(key string) int {
 	return v.(int)
 }
 
-func (x Image) Float(key string) float64 {
+func (x Image) Float(key interface{}) float64 {
 	return x[key].(float64)
 }
 
-func (x Image) Complex(key string) complex128 {
+func (x Image) Complex(key interface{}) complex128 {
 	return x[key].(complex128)
 }
 
-// Sort returns the keys in s in sorted order.
-func (x Image) Sort() []string {
+// Letters returns the string keys in s in sorted order.
+func (x Image) Letters() []string {
 	lex := make([]string, 0, len(x))
 	for key, _ := range x {
-		lex = append(lex, key)
+		k, ok := key.(string)
+		if !ok {
+			continue
+		}
+		lex = append(lex, k)
 	}
 	sort.Strings(lex)
 	return lex
 }
 
-func (x Image) Values() (v []interface{}) {
-	for _, n := range x.Sort() {
+func (x Image) Numbers() []int {
+	series := make([]int, 0, len(x))
+	for key, _ := range x {
+		k, ok := key.(int)
+		if !ok {
+			continue
+		}
+		series = append(series, k)
+	}
+	sort.Ints(series)
+	return series
+}
+
+func (x Image) LetterValues() (v []interface{}) {
+	for _, n := range x.Letters() {
+		v = append(v, x[n])
+	}
+	return
+}
+
+func (x Image) NumberValues() (v []interface{}) {
+	for _, n := range x.Numbers() {
 		v = append(v, x[n])
 	}
 	return
@@ -184,12 +208,22 @@ func (x Image) PrintLine() string {
 func (x Image) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "{\n")
-	var keys []string
-	for k, _ := range x {
-		keys = append(keys, k)
+	fmt.Fprintf(&w, "%s%s// letters\n", prefix, indent)
+	for _, key := range x.Letters() {
+		v := x[key]
+		var t string
+		switch u := v.(type) {
+		case Printer:
+			t = u.Print(prefix+indent, indent)
+		case string:
+			t = fmt.Sprintf("%q", u)
+		default:
+			t = fmt.Sprintf("%v", v)
+		}
+		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, key, t)
 	}
-	sort.Strings(keys)
-	for _, key := range keys {
+	fmt.Fprintf(&w, "%s%s// numbers\n", prefix, indent)
+	for _, key := range x.Numbers() {
 		v := x[key]
 		var t string
 		switch u := v.(type) {

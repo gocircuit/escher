@@ -69,19 +69,36 @@ func (x *Circuit) printValves() string {
 func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "%s%s%s {\n", prefix, x.Name, x.printValves())
+	// string-named peers
 	for _, p := range x.Peer {
-		if p.Name == "" {
+		name, ok := p.Name.(string)
+		if !ok {
 			continue
 		}
-		fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(p.Name), p.Design)
+		if name == "" {
+			continue
+		}
+		fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(name), p.Design)
 		for _, v := range p.Valve {
 			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n",
 				prefix, indent, indent,
-				printable(p.Name), printable(v.Name),
-				printable(v.Matching.Of.Name), printable(v.Matching.Name),
+				printable(name), printable(v.Name),
+				printable(v.Matching.Of.Name.(string)), printable(v.Matching.Name),
 			)
 		}
 	}
+	// int-named peers
+	for _, p := range x.Peer {
+		name, ok := p.Name.(int)
+		if !ok {
+			continue
+		}
+		fmt.Fprintf(&w, "%s%s#%d %v\n", prefix, indent, name, p.Design)
+		for range p.Valve {
+			panic(1)
+		}
+	}
+	//
 	fmt.Fprintf(&w, "%s}\n", prefix)
 	return w.String()
 }

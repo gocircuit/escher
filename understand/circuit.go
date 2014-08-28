@@ -16,11 +16,11 @@ import (
 type Circuit struct {
 	Genus []*see.Circuit // origin
 	Name  string
-	Peer map[string]*Peer // peers and self; self corresponds to the empty string
+	Peer map[interface{}]*Peer // peers and self; self corresponds to the empty string
 }
 
 type Peer struct {
-	Name   string
+	Name   interface{}
 	Design interface{}
 	Valve  map[string]*Valve
 }
@@ -44,7 +44,7 @@ func (x *Circuit) Merge(y *Circuit) {
 
 func Understand(s *see.Circuit) *Circuit {
 	x := &Circuit{
-		Peer: make(map[string]*Peer),
+		Peer: make(map[interface{}]*Peer),
 	}
 	x.Genus = []*see.Circuit{s}
 	x.Name = s.Name
@@ -98,12 +98,12 @@ func Understand(s *see.Circuit) *Circuit {
 	return x
 }
 
-func (x *Circuit) addPeer(name string, design interface{}) {
+func (x *Circuit) addPeer(name interface{}, design interface{}) {
 	if _, ok := x.Peer[name]; ok {
 		panic("peer already present")
 	}
 	if design == nil {
-		panic("peer is mising design")
+		panic("peer is missing design")
 	}
 	x.Peer[name] = &Peer{
 		Name:   name,
@@ -112,8 +112,8 @@ func (x *Circuit) addPeer(name string, design interface{}) {
 	}
 }
 
-// reserveValve returns the addressed valve, making it if necessary.
-// Making is prohibited solely for the empty-string peer, corresponding to this circuit.
+// reserveValve returns the addressed valve, creating it if necessary.
+// Creating is prohibited solely for the empty-string peer, corresponding to this circuit.
 func (x *Circuit) reserveValve(peer, valve string) *Valve {
 	p, ok := x.Peer[peer]
 	if !ok {

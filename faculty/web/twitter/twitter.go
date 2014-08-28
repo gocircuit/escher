@@ -81,7 +81,7 @@ func (Client) Materialize() be.Reflex {
 			y := <-api
 			for {
 				g := <-query
-				q := g.Sort()[0]
+				q := g.Letters()[0]
 				x := g[q].(Image)
 				uv := urlize(x)
 				log.Printf("Twitter %s query %v", q, ImagineWithMaps(uv).(Image).PrintLine())

@@ -11,7 +11,11 @@ main {
 	cmd.Path = look._
 	look.Name = "docker"
 
-	cmd.Dir = "/Users/petar/0/src/github.com/gocircuit/escher/acid/chooyu/build/app/Dockerfile"
+	dir path.Join
+	cmd.Dir = dir._
+	dir.Head = "/Users/petar/0/src/github.com/gocircuit/escher/acid/chooyu/build/app"
+	dir.Tail = "Dockerfile"
+
 	cmd.Env = {}
 	cmd.Args = {
 		"build" // Build a Docker image

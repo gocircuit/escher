@@ -6,55 +6,51 @@
 
 package path
 
-// import (
-// 	// "fmt"
-// 	"sync"
+import (
+	// "fmt"
+	"path"
+	"sync"
 
-// 	. "github.com/gocircuit/escher/image"
-// 	"github.com/gocircuit/escher/be"
-// 	"github.com/gocircuit/escher/faculty"
-// 	"github.com/gocircuit/escher/kit/plumb"
-// )
+	. "github.com/gocircuit/escher/image"
+	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/kit/plumb"
+)
 
-// func init() {
-// 	ns := faculty.Root.Refine("path")
-// 	ns.AddTerminal("Lookup", Lookup{})
-// }
+func init() {
+	ns := faculty.Root.Refine("path")
+	ns.AddTerminal("Join", Join{})
+}
 
-// // Lookup
-// type Lookup struct{}
+// Join
+type Join struct{}
 
-// func (Lookup) Materialize() be.Reflex {
-// 	reflex, _ := plumb.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", "_")
-// 	return reflex
-// }
+func (Join) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer((&join{}).Cognize, "_", "Head", "Tail")
+	return reflex
+}
 
-// type association struct {
-// 	sync.Mutex
-// 	name string
-// 	with interface{}
-// 	when interface{}
-// }
+type join struct {
+	sync.Mutex
+	head *string
+	tail *string
+}
 
-// func (x *association) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
-// 	x.Lock()
-// 	defer x.Unlock()
-// 	switch dvalve {
-// 	case "Name":
-// 		x.name = dvalue.(string)
-// 	case "With":
-// 		x.with = dvalue
-// 	case "When":
-// 		x.when = dvalue
-// 	case "_":
-// 	default:
-// 		panic("eh")
-// 	}
-// 	eye.Show(
-// 		"_", 
-// 		Image{
-// 			x.name: x.with,
-// 			"When": x.when,
-// 		},
-// 	)
-// }
+func (x *join) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	x.Lock()
+	defer x.Unlock()
+	switch dvalve {
+	case "Head":
+		head := dvalue.(string)
+		x.head = &head
+	case "Tail":
+		tail := dvalue.(string)
+		x.tail = &tail
+	default:
+		return
+	}
+	if x.head == nil || x.tail == nil {
+		return
+	}
+	eye.Show("_", path.Join(*x.head, *x.tail))
+}

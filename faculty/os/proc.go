@@ -9,7 +9,7 @@ package os
 import (
 	"fmt"
 	"io"
-	"log"
+	// "log"
 	"os/exec"
 	"sync"
 
@@ -44,7 +44,7 @@ func (p *process) cognize(eye *plumb.Eye, valve string, value interface{}) {
 		}
 	case "Spawn":
 		p.spawn <- value
-		log.Printf("os process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
+		// log.Printf("os process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
 	}
 }
 
@@ -57,7 +57,7 @@ func (p *process) cognize(eye *plumb.Eye, valve string, value interface{}) {
 func (p *process) cognizeCommand(v interface{}) (ready bool) {
 	img, ok := v.(Image)
 	if !ok {
-		log.Printf("Non-image sent to Process.Command (%v)", v)
+		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 		return false
 	}
 	p.Lock()
@@ -79,7 +79,7 @@ func (p *process) cognizeCommand(v interface{}) (ready bool) {
 	for _, key := range args.Numbers() {
 		p.cmd.Args = append(p.cmd.Args, args.String(key))
 	}
-	log.Printf("os process command (%v)", Linearize(img.Print("", "")))
+	// log.Printf("os process command (%v)", Linearize(img.Print("", "")))
 	return true
 }
 
@@ -161,6 +161,6 @@ func (p *processFixed) spawnProcess(spwn interface{}) (err error) {
 	default:
 		panic(err)
 	}
-	log.Printf("os process exit (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	// log.Printf("os process exit (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	return err
 }

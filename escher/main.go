@@ -60,9 +60,9 @@ func main() {
 		_, cd := compile(*flagX, *flagY).Walk(walk...)
 		switch t := cd.(type) {
 		case *understand.Circuit:
-			fmt.Println(t.Print("", "   "))
+			fmt.Println(t.Print("", "\t"))
 		case understand.Faculty:
-			fmt.Println(t.Print("", "   "))
+			fmt.Println(t.Print("", "\t"))
 		default:
 			fmt.Printf("%T/%v\n", t, t)
 		}

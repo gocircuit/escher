@@ -23,8 +23,8 @@ ProcessRun {
 	Exit = proc.Exit
 	Command = proc.Command
 
-	yio os.IO
-	yio._ = proc.ForkIO
+	yio os.ForkIO
+	yio._ = proc.IO
 
 	ignoreSpawn Ignore
 	yio.Spawn = ignoreSpawn._

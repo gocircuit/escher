@@ -10,6 +10,8 @@ import (
 	"bytes"
 	"fmt"
 	"sort"
+
+	. "github.com/gocircuit/escher/image"
 )
 
 type printer interface {
@@ -58,10 +60,10 @@ func (x *Circuit) printValves() string {
 	var i int
 	for v, _ := range valve {
 		w.WriteString(v)
-		if i + 2 < len(valve) {
+		i++
+		if i < len(valve) {
 			w.WriteString(", ")
 		}
-		i++
 	}
 	w.WriteString(")")
 	return w.String()
@@ -69,7 +71,7 @@ func (x *Circuit) printValves() string {
 
 func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%s%s%s {\n", prefix, x.Name, x.printValves())
+	fmt.Fprintf(&w, "%s%s {\n", x.Name, x.printValves())
 	// string-named peers
 	for _, p := range x.Peer {
 		name, ok := p.Name.(string)
@@ -79,7 +81,11 @@ func (x *Circuit) Print(prefix, indent string) string {
 		if name == "" {
 			continue
 		}
-		fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(name), p.Design)
+		if pp, ok := p.Design.(Printer); ok {
+			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(name), pp.Print(prefix + indent, indent))
+		} else {
+			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(name), p.Design)
+		}
 		for _, v := range p.Valve {
 			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n",
 				prefix, indent, indent,

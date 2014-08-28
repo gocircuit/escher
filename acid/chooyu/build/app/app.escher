@@ -2,4 +2,25 @@
 // Before running this program, make sure that the local docker command is operational 
 // and connected to a docker image server.
 main {
+	build os.ProcessRun
+	build.Command = {
+		Path "/usr/local/bin/docker"
+		Dir "/Users/petar/0/src/github.com/gocircuit/escher/acid/chooyu/build/app/Dockerfile"
+		Args { 
+			"build" // Build a Docker image
+			"--tag" // Apply a tag to the resulting image
+			"_test_app_build" // Tag name in Docker server repo for the resulting image
+			"." // Working directory has Dockerfile
+		}
+	}
+	build.Spawn = 0
+
+	yexit os.ForkExit
+	yexit._ = build.Exit
+
+	ignoreSpawn Ignore
+	yexit.Spawn = ignoreSpawn._
+
+	exit os.Exit
+	yexit.Exit = exit._
 }

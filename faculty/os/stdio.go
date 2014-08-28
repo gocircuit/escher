@@ -51,21 +51,29 @@ type writerTo struct{
 func (x *writerTo) cognize(eye *plumb.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
-		go func() {
-			_, err := io.Copy(x.WriteCloser, t)
-			if err != nil {
-				log.Printf("writer origin drain problem (%s)", err)
-			}
-			if tt, ok := t.(*os.File); ok {
-				tt.Sync()
-			}
-			if tt, ok := t.(io.Closer); ok {
-				tt.Close()
-			}
-			// We don't close the writer so it can be reused.
-		}()
+		go Copy(x.WriteCloser, t, false, true)
 	default:
 		log.Printf("unexpected type at writer origin (%T)", t)
+	}
+}
+
+func Copy(w io.Writer, r io.Reader, closeWriter, closeReader bool) {
+	_, err := io.Copy(w, r)
+	if err != nil {
+		log.Printf("draining problem (%s)", err)
+	}
+	if tt, ok := w.(*os.File); ok {
+		tt.Sync()
+	}
+	if closeReader {
+		if tt, ok := r.(io.Closer); ok {
+			tt.Close()
+		}
+	}
+	if closeWriter {
+		if tt, ok := w.(io.Closer); ok {
+			tt.Close()
+		}
 	}
 }
 
@@ -85,15 +93,7 @@ type readFrom struct{
 func (x *readFrom) cognize(eye *plumb.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Writer:
-		go func() {
-			if _, err := io.Copy(t, x.ReadCloser); err != nil {
-				log.Printf("reader origin drain problem (%s)", err)
-			}
-			if tt, ok := t.(io.Closer); ok {
-				tt.Close()
-			}
-			// We don't close the reader so it can be reused.
-		}()
+		go Copy(t, x.ReadCloser, true, false)
 	default:
 		log.Printf("unexpected type at reader origin (%T)", t)
 	}

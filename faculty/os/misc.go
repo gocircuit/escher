@@ -11,6 +11,13 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
+// ForkCommand…
+type ForkCommand struct{}
+
+func (ForkCommand) Materialize() be.Reflex {
+	return basic.MaterializeConjunction("_", "Path", "Dir", "Args", "Env")
+}
+
 // ForkIO…
 type ForkIO struct{}
 

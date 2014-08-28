@@ -25,6 +25,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	facultyos "github.com/gocircuit/escher/faculty/os"
+	_ "github.com/gocircuit/escher/faculty/path"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/shelah"
 	_ "github.com/gocircuit/escher/faculty/think"

@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/gocircuit/escher/faculty"
@@ -43,7 +44,9 @@ func Init(a string) {
 	ns.AddTerminal("Stdout", Stdout{})
 	ns.AddTerminal("Stderr", Stderr{})
 	//
+	ns.AddTerminal("LookPath", LookPath{})
 	ns.AddTerminal("Process", Process{})
+	ns.AddTerminal("ForkCommand", ForkCommand{})
 	ns.AddTerminal("ForkExit", ForkExit{})
 	ns.AddTerminal("ForkIO", ForkIO{})
 }
@@ -132,6 +135,26 @@ func (Fatal) Materialize() be.Reflex {
 			log.Fatalln(value)
 		}, 
 		"_",
+	)
+	return reflex
+}
+
+// LookPath
+type LookPath struct{}
+
+func (LookPath) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			if valve != "Name" {
+				return
+			}
+			p, err := exec.LookPath(value.(string))
+			if err != nil {
+				log.Fatalf("no file path to %s", value.(string))
+			}
+			eye.Show("_", p)
+		},
+		"Name", "_",
 	)
 	return reflex
 }

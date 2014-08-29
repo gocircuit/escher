@@ -49,6 +49,7 @@ func Init(a string) {
 	ns.AddTerminal("ForkCommand", ForkCommand{})
 	ns.AddTerminal("ForkExit", ForkExit{})
 	ns.AddTerminal("ForkIO", ForkIO{})
+	//
 }
 
 var args map[string]string

@@ -23,8 +23,9 @@ func init() {
 type CircuitDesignDir struct{}
 
 func (CircuitDesignDir) Materialize(super *be.Super) be.Reflex {
-	if super.Faculty.Genus == nil {
-		panic("citcuit not from source directory")
-	}
-	return be.NewNounReflex(super.Faculty.Genus().Dir)
+	panic(1)
+	// if super.Faculty.Genus == nil {
+	// 	panic("citcuit not from source directory")
+	// }
+	// return be.NewNounReflex(super.Faculty.Genus().Dir)
 }

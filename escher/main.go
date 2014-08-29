@@ -76,10 +76,10 @@ func main() {
 
 func compile(x, y string) understand.Faculty {
 	if x != "" {
-		faculty.Root.UnderstandDirectory(x)
+		faculty.Root.UnderstandDirectory("X", x)
 	}
 	if y != "" {
-		faculty.Root.UnderstandDirectory(y)
+		faculty.Root.UnderstandDirectory("Y", y)
 	}
 	return faculty.Root
 }

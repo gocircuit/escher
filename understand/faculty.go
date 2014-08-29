@@ -23,7 +23,7 @@ type Faculty Image // name -> {Faculty, *Circuit, etc}
 
 func NewFaculty() Faculty {
 	f := make(Faculty)
-	f[Genus{}] = &FacultyGenus{}
+	f[Genus{}] = NewFacultyGenus()
 	return f
 }
 
@@ -93,32 +93,24 @@ type Genus struct{}
 
 type FacultyGenus struct {
 	Walk []string // walk to this faculty from root
-	Dir string // source directory
+	SourceDir Image // source directoroy (acid) name to directory path
+}
+
+func NewFacultyGenus() *FacultyGenus {
+	return &FacultyGenus{SourceDir: Make()}
 }
 
 func (fty Faculty) Genus() *FacultyGenus {
-	g, ok := fty[Genus{}].(*FacultyGenus)
-	if !ok {
-		return &FacultyGenus{}
-	}
-	return g
+	return fty[Genus{}].(*FacultyGenus)
 }
 
-func (fty Faculty) SourceDir() string {
-	g, ok := fty[Genus{}].(*FacultyGenus)
-	if !ok {
-		return ""
-	}
-	return g.Dir
-}
-
-func (fty Faculty) UnderstandDirectory(dir string) {
+func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
-	fty.Genus().Dir = dir
+	fty.Genus().SourceDir.Grow(acid, dir)
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
 		log.Fatalln(err)
@@ -126,7 +118,7 @@ func (fty Faculty) UnderstandDirectory(dir string) {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() {
-			fty.Refine(fileInfo.Name()).UnderstandDirectory(filePath)
+			fty.Refine(fileInfo.Name()).UnderstandDirectory(acid, filePath)
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" {

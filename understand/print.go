@@ -19,31 +19,40 @@ type printer interface {
 
 func (fty Faculty) Print(prefix, indent string) string {
 	var w bytes.Buffer
+	sd := fty.Genus().SourceDir
+	w.WriteString("{ ")
+	for _, acid := range sd.Letters() {
+		w.WriteString(acid)
+		w.WriteString("=")
+		w.WriteString(sd.String(acid))
+		w.WriteString(" ")
+	}
+	w.WriteString("}")
 	keys := Image(fty).Letters()
 	for _, k := range keys {
 		v := fty[k]
-		w.WriteString(prefix)
-		w.WriteString(indent)
+		w.WriteString("\n" + prefix + indent)
+		//
 		switch v.(type) {
-		case Faculty:
-		default:
+		case *Circuit:
 			w.WriteString("*")
 		}
 		w.WriteString(k)
+		switch v.(type) {
+		case Faculty:
+			// w.WriteString(":")
+		}
+		//
 		switch t := v.(type) {
 		case Faculty:
-			if sd := fty.SourceDir(); sd != "" {
-				w.WriteString(": [" + sd + "]\n")
-			} else {
-				w.WriteString(":\n")
-			}
-			w.WriteString(t.Print(prefix+indent+indent, indent))
+			w.WriteString(" ")
+			w.WriteString(t.Print(prefix + indent, indent))
 		case *Circuit:
-			w.WriteString(" […]\n")
+			w.WriteString(" (…)")
 			// w.WriteString("\n")
 			// w.WriteString(t.Print(prefix+indent+indent, indent))
 		default: // reflex or circuit
-			w.WriteString(fmt.Sprintf(" [%T]\n", v))
+			w.WriteString(fmt.Sprintf(" [%T]", v))
 		}
 	}
 	return w.String()
@@ -105,7 +114,7 @@ func (x *Circuit) Print(prefix, indent string) string {
 		}
 	}
 	//
-	fmt.Fprintf(&w, "%s}\n", prefix)
+	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()
 }
 

@@ -9,7 +9,6 @@ package understand
 import (
 	"bytes"
 	"fmt"
-	"sort"
 
 	. "github.com/gocircuit/escher/image"
 )
@@ -20,11 +19,7 @@ type printer interface {
 
 func (fty Faculty) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	var keys []string
-	for k, _ := range fty {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
+	keys := Image(fty).Letters()
 	for _, k := range keys {
 		v := fty[k]
 		w.WriteString(prefix)
@@ -37,7 +32,11 @@ func (fty Faculty) Print(prefix, indent string) string {
 		w.WriteString(k)
 		switch t := v.(type) {
 		case Faculty:
-			w.WriteString(":\n")
+			if sd := fty.SourceDir(); sd != "" {
+				w.WriteString(": [" + sd + "]\n")
+			} else {
+				w.WriteString(":\n")
+			}
 			w.WriteString(t.Print(prefix+indent+indent, indent))
 		case *Circuit:
 			w.WriteString(" […]\n")

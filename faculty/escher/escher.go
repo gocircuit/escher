@@ -12,24 +12,19 @@ import (
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
 	ns := faculty.Root.Refine("escher")
-	ns.AddTerminal("CircuitDesignDir", Builtin{})
+	ns.AddTerminal("CircuitDesignDir", CircuitDesignDir{})
 }
 
-// Builtin
-type Builtin struct{}
+// CircuitDesignDir
+type CircuitDesignDir struct{}
 
-func (Builtin) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer((&builtin{}).Cognize, "_")
-	return reflex
-}
-
-type builtin struct {}
-
-func (x *builtin) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
-	panic("placeholder for compile-time builtin circuit")
+func (CircuitDesignDir) Materialize(super *be.Super) be.Reflex {
+	if super.Faculty.Genus == nil {
+		panic("citcuit not from source directory")
+	}
+	return be.NewNounReflex(super.Faculty.Genus().Dir)
 }

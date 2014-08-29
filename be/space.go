@@ -31,18 +31,42 @@ func (x Space) Lookup(within understand.Faculty, name string) (d interface{}) {
 	return within[""].(*understand.Circuit).Peer[name].Design
 }
 
+// Super describes the circuit that commissioned the present materialization.
+type Super struct {
+	Circuit *understand.Circuit
+	Faculty understand.Faculty
+	Super *Super
+}
+
 // Materialize creates the reflex, described by the absolute path walk.
 func (x Space) Materialize(walk ...string) Reflex {
+	return x.materialize(nil, walk...)
+}
+
+func (x Space) materialize(super *Super, walk ...string) Reflex {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Fatalf("Problem materializing %s (%v)", strings.Join(walk,"."), r)
 		}
 	}()
-	within_, term := x.Faculty().Walk(walk...)
-	if gate, ok := term.(Gate); ok {
-		return gate.Materialize()
+	within, term := x.Faculty().Walk(walk...)
+	switch t := term.(type) {
+	case Builtin:
+		return t.Materialize(super)
+	case Gate:
+		return t.Materialize()
+	case *understand.Circuit:
+		return x.materializeCircuit(super, within.(understand.Faculty), t)
 	}
-	within, cir := within_.(understand.Faculty), term.(*understand.Circuit)
+	panic(1)
+}
+
+func (x Space) materializeCircuit(super *Super, withinFac understand.Faculty, cir *understand.Circuit) Reflex {
+	super = &Super{
+		Circuit: cir,
+		Faculty: withinFac,
+		Super: super,
+	}
 	// println(cir.Print("	", "\t"))
 	peers := make(map[string]Reflex)
 	for _, peer := range cir.Peer {
@@ -55,9 +79,9 @@ func (x Space) Materialize(walk ...string) Reflex {
 		}
 		switch t := peer.Design.(type) {
 		case see.RootPath:
-			peers[name] = x.Materialize([]string(t)...)
+			peers[name] = x.materialize(super, []string(t)...)
 		case see.Path: // e.g. “hello.who.is.there”
-			peers[name] = x.materializePath(within, []string(t))
+			peers[name] = x.materializePath(super, withinFac, []string(t))
 		case string, int, float64, complex128:
 			peers[name] = NewNounReflex(t) // materialize builtin gates
 		case Image:
@@ -67,7 +91,7 @@ func (x Space) Materialize(walk ...string) Reflex {
 		}
 	}
 	// Connect/attach all reflex memories
-	super := make(Reflex)
+	exo := make(Reflex)
 	for _, p := range cir.Peer {
 		name := p.Name.(string)
 		if name == "" {
@@ -81,10 +105,10 @@ func (x Space) Materialize(walk ...string) Reflex {
 			}
 			delete(peers[name], v.Name)
 			if v.Matching.Of.Name == "" {
-				if _, ok := super[v.Matching.Name]; ok {
+				if _, ok := exo[v.Matching.Name]; ok {
 					panic(6)
 				}
-				super[v.Matching.Name] = m1
+				exo[v.Matching.Name] = m1
 			} else {
 				// ap, av := name, v.Name
 				qp, qv := v.Matching.Of.Name.(string), v.Matching.Name
@@ -104,10 +128,10 @@ func (x Space) Materialize(walk ...string) Reflex {
 			panicf("%s.%s not matched", pname, vname)
 		}
 	}
-	return super
+	return exo
 }
 
-func (x Space) materializePath(within understand.Faculty, parts []string) Reflex {
+func (x Space) materializePath(super *Super, within understand.Faculty, parts []string) Reflex {
 	unfold := x.Lookup(within, parts[0])
 	switch t := unfold.(type) {
 	case string, int, float64, complex128:
@@ -116,10 +140,10 @@ func (x Space) materializePath(within understand.Faculty, parts []string) Reflex
 		return NewNounReflex(t.Copy())
 	case see.Path:
 		parts = append([]string(t), parts[1:]...)
-		return Space(within).Materialize(parts...)
+		return Space(within).materialize(super, parts...)
 	case see.RootPath:
 		parts = append([]string(t), parts[1:]...)
-		return x.Materialize(parts...)
+		return x.materialize(super, parts...)
 	case nil:
 		return nil
 	}

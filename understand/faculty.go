@@ -13,17 +13,21 @@ import (
 	"os"
 	"path"
 
+	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/see"
 )
 
-// I see forward. I think back. I see that I be. I think that I see. Thinking and seeing are not apart.
+// I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
 
-type Faculty map[string]interface{} // name -> {Faculty, *Circuit, etc}
+type Faculty Image // name -> {Faculty, *Circuit, etc}
 
 func NewFaculty() Faculty {
-	return make(Faculty)
+	f := make(Faculty)
+	f[Genus{}] = &FacultyGenus{}
+	return f
 }
 
+// Forget does not allow removal of non-string keys.
 func (fty Faculty) Forget(name string) (forgotten interface{}) {
 	forgotten = fty[name]
 	delete(fty, name)
@@ -72,6 +76,7 @@ func (fty Faculty) Refine(name string) (child Faculty) {
 		return x.(Faculty)
 	}
 	child = NewFaculty()
+	child.Genus().Walk = append(fty.Genus().Walk, name)
 	fty[name] = child
 	return
 }
@@ -83,12 +88,37 @@ func (fty Faculty) AddTerminal(name string, term interface{}) {
 	fty[name] = term
 }
 
+// Genus is a name type used as a map key to mark the genus structure of a faculty.
+type Genus struct{}
+
+type FacultyGenus struct {
+	Walk []string // walk to this faculty from root
+	Dir string // source directory
+}
+
+func (fty Faculty) Genus() *FacultyGenus {
+	g, ok := fty[Genus{}].(*FacultyGenus)
+	if !ok {
+		return &FacultyGenus{}
+	}
+	return g
+}
+
+func (fty Faculty) SourceDir() string {
+	g, ok := fty[Genus{}].(*FacultyGenus)
+	if !ok {
+		return ""
+	}
+	return g.Dir
+}
+
 func (fty Faculty) UnderstandDirectory(dir string) {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
+	fty.Genus().Dir = dir
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
 		log.Fatalln(err)

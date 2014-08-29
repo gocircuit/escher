@@ -14,6 +14,7 @@ import (
 
 // TODO: Eventually Circuit can be represented as an image.Image
 type Circuit struct {
+	SourceDir string
 	Genus []*see.Circuit // origin
 	Name  string
 	Peer map[interface{}]*Peer // peers and self; self corresponds to the empty string

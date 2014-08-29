@@ -9,7 +9,7 @@ package os
 import (
 	"fmt"
 	"io"
-	// "log"
+	"log"
 	"os/exec"
 	"sync"
 
@@ -26,7 +26,7 @@ func (x Process) Materialize() be.Reflex {
 	p := &process{
 		spawn: make(chan interface{}),
 	}
-	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
+	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "When", "Exit", "IO")
 	return reflex
 }
 
@@ -42,7 +42,7 @@ func (p *process) cognize(eye *plumb.Eye, valve string, value interface{}) {
 		if p.cognizeCommand(value) {
 			p.startBack(eye)
 		}
-	case "Spawn":
+	case "When":
 		p.spawn <- value
 		// log.Printf("os process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
 	}
@@ -100,17 +100,17 @@ type processFixed struct {
 
 func (p *processFixed) backLoop(spawn <-chan interface{}) {
 	for {
-		spwn := <-spawn
+		when := <-spawn
 		var x Image
-		if exit := p.spawnProcess(spwn); exit != nil {
+		if exit := p.spawnProcess(when); exit != nil {
 			x = Image{
-				"Spawn": spwn,
+				"When": when,
 				"Exit":  1,
 			}
 			p.eye.Show("Exit", x)
 		} else {
 			x = Image{
-				"Spawn": spwn,
+				"When": when,
 				"Exit":  0,
 			}
 			p.eye.Show("Exit", x)
@@ -119,7 +119,7 @@ func (p *processFixed) backLoop(spawn <-chan interface{}) {
 	}
 }
 
-func (p *processFixed) spawnProcess(spwn interface{}) (err error) {
+func (p *processFixed) spawnProcess(when interface{}) (err error) {
 	var stdin io.WriteCloser
 	var stdout io.ReadCloser
 	var stderr io.ReadCloser
@@ -136,6 +136,7 @@ func (p *processFixed) spawnProcess(spwn interface{}) (err error) {
 		panic(err)
 	}
 	if err = p.cmd.Start(); err != nil {
+		log.Fatalf("Problem starting %s (%v)", p.cmd.Path, err)
 		return err
 	}
 	// We cannot call cmd.Wait before all std streams have been closed.
@@ -144,23 +145,23 @@ func (p *processFixed) spawnProcess(spwn interface{}) (err error) {
 	stdout = kitio.RunOnCloseReader(stdout, func() { stdClose <- struct{}{} })
 	stderr = kitio.RunOnCloseReader(stderr, func() { stdClose <- struct{}{} })
 	g := Image{
-		"Spawn":  spwn,
+		"When":  when,
 		"Stdin":  stdin,
 		"Stdout": stdout,
 		"Stderr": stderr,
 	}
-	// log.Printf("os process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	// log.Printf("os process io (%v)", Linearize(fmt.Sprintf("%v", when)))
 	p.eye.Show("IO", g)
 	<-stdClose
 	<-stdClose
 	<-stdClose
-	// log.Printf("os process waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	// log.Printf("os process waiting (%v)", Linearize(fmt.Sprintf("%v", when)))
 	err = p.cmd.Wait()
 	switch err.(type) {
 	case nil, *exec.ExitError:
 	default:
 		panic(err)
 	}
-	// log.Printf("os process exit (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	// log.Printf("os process exit (%v)", Linearize(fmt.Sprintf("%v", when)))
 	return err
 }

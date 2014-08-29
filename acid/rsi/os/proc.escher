@@ -1,16 +1,16 @@
 // ProcessIgnoreIO starts an OS process, spcified ...
 ProcessIgnoreIO {
 	proc os.Process
-	Spawn = proc.Spawn
+	When = proc.When
 	Exit = proc.Exit
 	Command = proc.Command
 	yio os.IO
-	ignoreSpawn Ignore
+	ignoreWhen Ignore
 	clunkIn io.Clunk
 	clunkOut io.Clunk
 	clunkErr io.Clunk
 	yio._ = proc.ForkIO
-	yio.Spawn = ignoreSpawn._
+	yio.When = ignoreWhen._
 	yio.Stdin = clunkIn._
 	yio.Stdout = clunkOut._
 	yio.Stderr = clunkErr._
@@ -19,15 +19,15 @@ ProcessIgnoreIO {
 // ProcessRun ...
 ProcessRun {
 	proc os.Process
-	Spawn = proc.Spawn
+	When = proc.When
 	Exit = proc.Exit
 	Command = proc.Command
 
 	yio os.ForkIO
 	yio._ = proc.IO
 
-	ignoreSpawn Ignore
-	yio.Spawn = ignoreSpawn._
+	ignoreWhen Ignore
+	yio.When = ignoreWhen._
 
 	clunkIn io.Clunk
 	yio.Stdin = clunkIn._

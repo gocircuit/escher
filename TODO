@@ -1,7 +1,7 @@
 
 * Build Rails container
 * Fetch postgres container
-
+* End-to-end tests via Escher programs whose result is checked by the go test.
 
 
 * Go cannot have maps for map keys, but eventually I should extend tree.Tree

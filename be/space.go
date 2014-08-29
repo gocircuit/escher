@@ -110,14 +110,12 @@ func (x Space) materializeCircuit(super *Super, withinFac understand.Faculty, ci
 				}
 				exo[v.Matching.Name] = m1
 			} else {
-				// ap, av := name, v.Name
 				qp, qv := v.Matching.Of.Name.(string), v.Matching.Name
 				m2 := peers[qp][qv]
 				delete(peers[qp], qv)
-				// go func() {
-				// 	println(fmt.Sprintf("%s·%s/%v and %s·%s/%v", ap, av, m1, qp, qv, m2))
-				// 	Merge(m1, m2)
-				// }()
+				if m1 == nil || m2 == nil {
+					log.Fatalf("No matching valve: %s·%s/%v <=> %s·%s/%v", name, v.Name, m1, qp, qv, m2)
+				}
 				go Merge(m1, m2)
 			}
 		}

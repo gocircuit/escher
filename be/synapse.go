@@ -38,6 +38,13 @@ func NewSynapse() (x, y *Synapse) {
 	return
 }
 
+func (m *Synapse) String() string {
+	if m == nil {
+		return "<nil>"
+	}
+	return "Synapse"
+}
+
 func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
 	m.teach <- cognize
 	q := <-m.learn

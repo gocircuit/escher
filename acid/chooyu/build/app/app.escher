@@ -1,39 +1,45 @@
 
-// Before running this program, make sure that the local docker command is operational 
+// Before running this program, make sure that the "docker" command is operational 
 // and connected to a docker image server.
+
 main {
+	buildApp BuildAppImage
+	buildApp.When = 0
+
+	yexit os.ForkExit
+	yexit._ = buildApp._
+	ignoreWhen Ignore
+	yexit.When = ignoreWhen._
+
+	exit os.Exit
+	exit._ = yexit.Exit
+}
+
+BuildAppImage {
 	build os.ProcessRun
 
 	cmd os.ForkCommand
 	build.Command = cmd._
 
-	look os.LookPath
 	cmd.Path = look._
+	look os.LookPath
 	look.Name = "docker"
 
 	dir path.Join
 	cmd.Dir = dir._
 
 	home escher.CircuitDesignDir
-	dir.Head = home._ // "/Users/petar/0/src/github.com/gocircuit/escher/acid/chooyu/build/app"
+	dir.Head = home._
 	dir.Tail = "Dockerfile"
 
 	cmd.Env = {}
 	cmd.Args = {
 		"build" // Build a Docker image
 		"--tag" // Apply a tag to the resulting image
-		"_test_app_build" // Tag name in Docker server repo for the resulting image
+		"chooyu_app" // Tag name in Docker server repo for the resulting image
 		"." // Working directory has Dockerfile
 	}
 
-	build.Spawn = 0
-
-	yexit os.ForkExit
-	yexit._ = build.Exit
-
-	ignoreSpawn Ignore
-	yexit.Spawn = ignoreSpawn._
-
-	exit os.Exit
-	yexit.Exit = exit._
+	build.When = When
+	_ = build.Exit
 }

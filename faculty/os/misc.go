@@ -22,12 +22,12 @@ func (ForkCommand) Materialize() be.Reflex {
 type ForkIO struct{}
 
 func (ForkIO) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Spawn", "Stdin", "Stdout", "Stderr")
+	return basic.MaterializeConjunction("_", "When", "Stdin", "Stdout", "Stderr")
 }
 
 // ForkExit…
 type ForkExit struct{}
 
 func (ForkExit) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Spawn", "Exit")
+	return basic.MaterializeConjunction("_", "When", "Exit")
 }

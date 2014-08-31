@@ -3,11 +3,14 @@
 // and connected to a docker image server.
 
 main {
-	buildApp BuildAppImage
-	buildApp.When = 0
+	buildImage BuildImage
+	buildImage.When = 0
+
+	configImage ConfigureImage
+	configImage.When = buildImage._
 
 	yexit os.ForkExit
-	yexit._ = buildApp._
+	yexit._ = configImage._
 	ignoreWhen Ignore
 	yexit.When = ignoreWhen._
 
@@ -15,7 +18,18 @@ main {
 	exit._ = yexit.Exit
 }
 
-BuildAppImage {
+ConfigureImage { // (When, _)
+	??
+	inscript = `#!/bin/sh
+rails new . --force --database=postgresql --skip-bundle && \
+sed "s/# gem 'therubyracer'/gem 'therubyracer'/" < Gemfile > Gemfile2 && \
+rm Gemfile
+mv Gemfile2 Gemfile
+cp database.yml.genus config/database.yml
+`
+}
+
+BuildImage { // (When, _)
 	build os.ProcessRun
 
 	cmd os.ForkCommand

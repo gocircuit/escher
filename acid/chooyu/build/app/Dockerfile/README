@@ -1,0 +1,2 @@
+
+docker run -t -i -v /inside:/outside chooyu_app /bin/bash

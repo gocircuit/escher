@@ -19,7 +19,7 @@ main {
 }
 
 ConfigureImage { // (When, _)
-	??
+	_ = inscript._ // TODO: Finish this circuit
 	inscript = `#!/bin/sh
 rails new . --force --database=postgresql --skip-bundle && \
 sed "s/# gem 'therubyracer'/gem 'therubyracer'/" < Gemfile > Gemfile2 && \

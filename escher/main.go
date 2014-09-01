@@ -21,6 +21,7 @@ import (
 	"github.com/gocircuit/escher/faculty/acid"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
+	"github.com/gocircuit/escher/faculty/draw"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/i"
 	_ "github.com/gocircuit/escher/faculty/io"
@@ -35,7 +36,8 @@ import (
 )
 
 var (
-	flagShow     = flag.String("show", "", "compile and display object at given path; don't run")
+	flagShow     = flag.String("show", "", "print out an object at a given path; don't run")
+	flagSvg     = flag.String("svg", "", "display a circuit as SVG; don't run")
 	flagX        = flag.String("x", "", "program source directory X")
 	flagY        = flag.String("y", "", "program source directory Y")
 	flagName     = flag.String("n", "", "execution name")
@@ -54,6 +56,18 @@ func main() {
 	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY)
 	//
 	switch {
+	case *flagSvg != "":
+		walk := strings.Split(*flagSvg, ".")
+		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
+			walk = nil
+		}
+		_, cd := compile(*flagX, *flagY).Walk(walk...)
+		switch t := cd.(type) {
+		case *understand.Circuit:
+			fmt.Println(draw.Draw(t))
+		default:
+			println(fmt.Sprintf("SVG display available only for circuits (%T)", t))
+		}
 	case *flagShow != "":
 		walk := strings.Split(*flagShow, ".")
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .

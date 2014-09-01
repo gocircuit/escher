@@ -12,7 +12,7 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
-// TODO: Eventually Circuit can be represented as an image.Image
+// TODO: Circuit could be represented as an image.Image
 type Circuit struct {
 	SourceDir string
 	Genus []*see.Circuit // origin

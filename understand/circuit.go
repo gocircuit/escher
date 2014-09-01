@@ -20,7 +20,7 @@ type Circuit struct {
 	Peer map[interface{}]*Peer // peers and self; self corresponds to the empty string
 }
 
-type Peer struct {
+type Peer struct { // TODO: Add order in definition.
 	Name   interface{}
 	Design interface{}
 	Valve  map[string]*Valve

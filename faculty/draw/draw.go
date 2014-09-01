@@ -32,9 +32,9 @@ type Vector struct {
 type Peer struct {
 	ID string
 	Name, Design string
-	Degree float64
+	Weight float64
+	Anchor Vector
 	Angle float64 // Angle of origin-center line in [0,2*Pi]
-	DegAngle, NegDegAngle float64
 	Radius float64 // Radius of reflex circle
 }
 
@@ -49,32 +49,30 @@ func Compute(uc *understand.Circuit) *Circuit {
 	c := &Circuit{Name: uc.Name}
 
 	// Peers
-	var w float64
+	var z float64 // Total weight
 	var i int
 	inv := make(map[*understand.Peer]int)
 	for _, p := range uc.Peer {
 		inv[p] = i
-		deg := float64(len(p.Valve))
-		w += deg
+		// weight := float64(len(p.Valve))
+		z += 1
 		c.Peer = append(c.Peer,
 			&Peer{
 				ID: fmt.Sprintf("peer-%s", p.Name),
 				Name: template.HTMLEscapeString(fmt.Sprintf("%v", p.Name)),
 				Design: template.HTMLEscapeString(fmt.Sprintf("%v", p.Design)),
-				Degree: deg,
+				Weight: 1, //weight,
 			},
 		)
 		i++
 	}
 	var u float64
-	const MaxRadius = 0.5
+	const MaxRadius = 0.9
 	for _, p := range c.Peer {
-		uw := u / w
-		p.Angle = 2 * math.Pi * uw
-		p.DegAngle = 360 * uw
-		p.NegDegAngle = -p.DegAngle
-		p.Radius = MaxRadius * p.Degree / w
-		u += p.Degree
+		p.Angle = 2 * math.Pi * (u + p.Weight / 2) / z
+		p.Anchor = CirclePointOfAngle(p.Angle)
+		p.Radius = MaxRadius * p.Weight / z
+		u += p.Weight
 	}
 
 	// Matchings
@@ -82,8 +80,8 @@ func Compute(uc *understand.Circuit) *Circuit {
 		pp := c.Peer[inv[p]]
 		for _, v := range p.Valve { // To
 			qq := c.Peer[inv[v.Matching.Of]]
-			x := CirclePointOfAngle(pp.Angle)
-			y := CirclePointOfAngle(qq.Angle)
+			x := pp.Anchor
+			y := qq.Anchor
 			c.Match = append(c.Match,
 				&Match{
 					ID: fmt.Sprintf("match-%s-%s", pp.Name, v.Name),

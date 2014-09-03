@@ -31,7 +31,7 @@ type File struct{}
 //	Put {Key []byte, Value []byte}
 //	Query {Name interface{}, Start []byte, Limit []byte}
 //	Result {Name interface{}, Result Image}
-func (File) Materialize() be.Reflex {
+func (File) Materialize(*be.Matter) be.Reflex {
 	reflex, eye := plumb.NewEye("File", "Put", "Query", "Result")
 	go func() { // dispatch
 		var err error

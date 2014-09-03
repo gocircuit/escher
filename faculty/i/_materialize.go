@@ -16,7 +16,7 @@ import (
 // Materialize
 type Materialize struct{}
 
-func (Materialize) Materialize() be.Reflex {
+func (Materialize) Materialize(*be.Matter) be.Reflex {
 	sourceEndo, sourceExo := be.NewSynapse()
 	seenEndo, seenExo := be.NewSynapse()
 	go func() {

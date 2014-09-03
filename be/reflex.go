@@ -6,6 +6,10 @@
 
 package be
 
+import (
+	"github.com/gocircuit/escher/understand"
+)
+
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
 type Reflex map[string]*Synapse
 
@@ -13,10 +17,27 @@ type Gate interface {
 	Materialize() Reflex
 }
 
+type GateWithMatter interface {
+	Materialize(*Matter) Reflex
+}
+
 // Ignore gates ignore their empty-string valve
 type Ignore struct{}
 
-func (Ignore) Materialize() Reflex {
+// Matter describes the circuit context that commissioned the present materialization.
+type Matter struct {
+	Name []string // Full name of this circuit instance materialization in the space of all possible materializations
+	Design []string // Full name of this circuit design within the program memory/faculties namespace
+	Circuit *understand.Circuit // Circuit design of this reflex
+	Faculty understand.Faculty // Faculty within which this circuit design is implemented
+	Super *Matter // Matter of the circuit that recalled this reflex as a peer
+}
+
+func (m *Matter) LastName() string {
+	return m.Name[len(m.Name)-1]
+}
+
+func (Ignore) Materialize(*Matter) Reflex {
 	s, t := NewSynapse()
 	go func() {
 		s.Focus(DontCognize)

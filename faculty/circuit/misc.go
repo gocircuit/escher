@@ -15,13 +15,20 @@ import (
 // ForkExit…
 type ForkExit struct{}
 
-func (ForkExit) Materialize() be.Reflex {
+func (ForkExit) Materialize(*be.Matter) be.Reflex {
 	return basic.MaterializeConjunction("_", "Spawn", "Exit")
 }
 
 // ForkIO…
 type ForkIO struct{}
 
-func (ForkIO) Materialize() be.Reflex {
+func (ForkIO) Materialize(*be.Matter) be.Reflex {
 	return basic.MaterializeConjunction("_", "Spawn", "Stdin", "Stdout", "Stderr")
+}
+
+// ForkSpawn…
+type ForkSpawn struct{}
+
+func (ForkSpawn) Materialize(*be.Matter) be.Reflex {
+	return basic.MaterializeConjunction("_", "Name", "Server")
 }

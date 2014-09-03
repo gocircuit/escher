@@ -22,6 +22,6 @@ func init() {
 // CircuitDesignDir
 type CircuitDesignDir struct{}
 
-func (CircuitDesignDir) Materialize(super *be.Super) be.Reflex {
-	return be.NewNounReflex(super.Circuit.SourceDir)
+func (CircuitDesignDir) Materialize(matter *be.Matter) be.Reflex {
+	return be.NewNounReflex(matter.Circuit.SourceDir)
 }

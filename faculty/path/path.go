@@ -25,7 +25,7 @@ func init() {
 // Join
 type Join struct{}
 
-func (Join) Materialize() be.Reflex {
+func (Join) Materialize(*be.Matter) be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&join{}).Cognize, "_", "Head", "Tail")
 	return reflex
 }

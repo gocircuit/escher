@@ -24,7 +24,7 @@ func init() {
 // See
 type See struct{}
 
-func (See) Materialize() be.Reflex {
+func (See) Materialize(*be.Matter) be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer(
 		func(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 			if dvalve != "Source" {

@@ -18,7 +18,7 @@ import (
 // Remember
 type Remember struct{}
 
-func (Remember) Materialize() be.Reflex {
+func (Remember) Materialize(*be.Matter) be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&remember{}).Cognize, "From", "What", "When", "_")
 	return reflex
 }

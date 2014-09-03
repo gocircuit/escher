@@ -34,7 +34,7 @@ func init() {
 // Focus
 type Focus struct{}
 
-func (Focus) Materialize() be.Reflex {
+func (Focus) Materialize(*be.Matter) be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&focus{}).Cognize, "From", "On", "When", "_")
 	return reflex
 }

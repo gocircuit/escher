@@ -16,7 +16,7 @@ import (
 // Understand
 type Understand struct{}
 
-func (Understand) Materialize() be.Reflex {
+func (Understand) Materialize(*be.Matter) be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer(
 		func(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 			if dvalve != "Seen" {

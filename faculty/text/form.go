@@ -18,7 +18,7 @@ import (
 // Form …
 type Form struct{}
 
-func (Form) Materialize() be.Reflex {
+func (Form) Materialize(*be.Matter) be.Reflex {
 	dataEndo, dataExo := be.NewSynapse()
 	formEndo, formExo := be.NewSynapse()
 	_Endo, _Exo := be.NewSynapse()

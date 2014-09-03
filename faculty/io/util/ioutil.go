@@ -24,7 +24,7 @@ func init() {
 // WriteFile …
 type WriteFile struct{}
 
-func (WriteFile) Materialize() be.Reflex {
+func (WriteFile) Materialize(*be.Matter) be.Reflex {
 	nameEndo, nameExo := be.NewSynapse()
 	contentEndo, contentExo := be.NewSynapse()
 	go func() {

@@ -27,7 +27,7 @@ type Dir struct{
 	dir string
 }
 
-func (d Dir) Materialize() be.Reflex {
+func (d Dir) Materialize(*be.Matter) be.Reflex {
 	x := dir(d.dir)
 	reflex, _ := plumb.NewEyeCognizer(x.Cognize, "Path", "_")
 	return reflex

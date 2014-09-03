@@ -24,7 +24,7 @@ func init() {
 // Sum
 type Sum struct{}
 
-func (Sum) Materialize() be.Reflex {
+func (Sum) Materialize(*be.Matter) be.Reflex {
 	x := &sum{
 		lit: Image{},
 	}

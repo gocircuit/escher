@@ -21,7 +21,7 @@ func init() {
 // Junction
 type Junction struct{}
 
-func (Junction) Materialize() be.Reflex {
+func (Junction) Materialize(*be.Matter) be.Reflex {
 	a0Endo, a0Exo := be.NewSynapse()
 	a1Endo, a1Exo := be.NewSynapse()
 	a2Endo, a2Exo := be.NewSynapse()

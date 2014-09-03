@@ -19,7 +19,7 @@ import (
 // Memory
 type Memory struct{}
 
-func (Memory) Materialize() be.Reflex {
+func (Memory) Materialize(*be.Matter) be.Reflex {
 	h := &memory{
 		focus:     make(chan []string),
 		learn:     make(chan *eu.Circuit),
@@ -116,7 +116,7 @@ type Materializable struct {
 	walk []string
 }
 
-func (x *Materializable) Materialize() be.Reflex {
+func (x *Materializable) Materialize(*be.Matter) be.Reflex {
 	x.root.Lock()
 	defer x.root.Unlock()
 	return x.root.Materialize(x.walk...)

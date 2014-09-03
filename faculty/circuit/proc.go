@@ -20,7 +20,7 @@ import (
 // Process
 type Process struct{}
 
-func (x Process) Materialize() be.Reflex {
+func (x Process) Materialize(*be.Matter) be.Reflex {
 	p := &process{
 		id: ChooseID(),
 		spawn: make(chan interface{}),
@@ -104,7 +104,7 @@ func (p *process) cognizeCommand(v interface{}) (ready bool) {
 func (p *process) startBack(eye *plumb.Eye) {
 	p.Lock()
 	defer p.Unlock()
-	f := &processFixed{
+	f := &processBack{
 		id: p.id,
 		eye: eye,
 		server: p.server,
@@ -113,14 +113,14 @@ func (p *process) startBack(eye *plumb.Eye) {
 	go f.backLoop(p.spawn)
 }
 
-type processFixed struct {
+type processBack struct {
 	id string
 	eye *plumb.Eye
 	server *string
 	cmd *client.Cmd
 }
 
-func (p *processFixed) backLoop(spawn <-chan interface{}) {
+func (p *processBack) backLoop(spawn <-chan interface{}) {
 	for {
 		spwn := <-spawn
 		var x Image
@@ -137,11 +137,11 @@ func (p *processFixed) backLoop(spawn <-chan interface{}) {
 			}
 			p.eye.Show("Exit", x)
 		}
-		log.Printf("circuit process exit sent (%v)", Linearize(fmt.Sprintf("%v", x)))
+		log.Printf("circuit process exit meme sent (%v)", Linearize(fmt.Sprintf("%v", x)))
 	}
 }
 
-func (p *processFixed) spawnProcess(spwn interface{}) error {
+func (p *processBack) spawnProcess(spwn interface{}) error {
 	anchor := program.Client.Walk([]string{*p.server, "escher", program.Name, "circuit.Process", p.id})
 	proc, err := anchor.MakeProc(*p.cmd)
 	if err != nil {
@@ -161,6 +161,9 @@ func (p *processFixed) spawnProcess(spwn interface{}) error {
 	if err != nil {
 		panic("process wait aborted by user")
 	}
-	log.Printf("circuit process exit (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	log.Printf("circuit process (%v) exited", Linearize(fmt.Sprintf("%v", spwn)))
+	if stat.Exit != nil {
+		log.Printf("circuit process exit error: %v", stat.Exit)
+	}
 	return stat.Exit
 }

@@ -21,7 +21,7 @@ func init() {
 // Grow
 type Grow struct{}
 
-func (Grow) Materialize() be.Reflex {
+func (Grow) Materialize(*be.Matter) be.Reflex {
 	imgEndo, imgExo := be.NewSynapse()
 	keyEndo, keyExo := be.NewSynapse()
 	valueEndo, valueExo := be.NewSynapse()

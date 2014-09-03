@@ -31,7 +31,7 @@ func Name() string {
 // Scanln
 type Scanln struct{}
 
-func (Scanln) Materialize(*be.Matter) be.Reflex {
+func (Scanln) Materialize() be.Reflex {
 	s, t := be.NewSynapse()
 	go func() {
 		r := s.Focus(be.DontCognize)
@@ -49,7 +49,7 @@ func (Scanln) Materialize(*be.Matter) be.Reflex {
 // Println
 type Println struct{}
 
-func (Println) Materialize(*be.Matter) be.Reflex {
+func (Println) Materialize() be.Reflex {
 	s, t := be.NewSynapse()
 	go func() {
 		s.Focus(

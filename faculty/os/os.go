@@ -57,7 +57,7 @@ var args map[string]string
 // Arg
 type Arg struct{}
 
-func (Arg) Materialize(*be.Matter) be.Reflex {
+func (Arg) Materialize() be.Reflex {
 	valueEndo, valueExo := be.NewSynapse()
 	nameEndo, nameExo := be.NewSynapse()
 	go func() {
@@ -86,7 +86,7 @@ func (h *arg) CognizeName(v interface{}) {
 // Env
 type Env struct{}
 
-func (Env) Materialize(*be.Matter) be.Reflex {
+func (Env) Materialize() be.Reflex {
 	valueEndo, valueExo := be.NewSynapse()
 	nameEndo, nameExo := be.NewSynapse()
 	go func() {
@@ -117,7 +117,7 @@ func (h *env) CognizeName(v interface{}) {
 // Exit
 type Exit struct{}
 
-func (Exit) Materialize(*be.Matter) be.Reflex {
+func (Exit) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer(
 		func(eye *plumb.Eye, valve string, value interface{}) {
 			os.Exit(value.(int))
@@ -130,7 +130,7 @@ func (Exit) Materialize(*be.Matter) be.Reflex {
 // Fatal
 type Fatal struct{}
 
-func (Fatal) Materialize(*be.Matter) be.Reflex {
+func (Fatal) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer(
 		func(eye *plumb.Eye, valve string, value interface{}) {
 			log.Fatalln(value)
@@ -143,7 +143,7 @@ func (Fatal) Materialize(*be.Matter) be.Reflex {
 // LookPath
 type LookPath struct{}
 
-func (LookPath) Materialize(*be.Matter) be.Reflex {
+func (LookPath) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer(
 		func(eye *plumb.Eye, valve string, value interface{}) {
 			if valve != "Name" {

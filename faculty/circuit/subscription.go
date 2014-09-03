@@ -15,14 +15,14 @@ import (
 // Joining
 type Joining struct{}
 
-func (x Joining) Materialize(*be.Matter) be.Reflex {
+func (x Joining) Materialize() be.Reflex {
 	return MaterializeSubscription("Joining")
 }
 
 // Leaving
 type Leaving struct{}
 
-func (x Leaving) Materialize(*be.Matter) be.Reflex {
+func (x Leaving) Materialize() be.Reflex {
 	return MaterializeSubscription("Leaving")
 }
 

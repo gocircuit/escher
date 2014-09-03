@@ -26,7 +26,7 @@ func init() {
 // Merge …
 type Merge struct{}
 
-func (Merge) Materialize(*be.Matter) be.Reflex {
+func (Merge) Materialize() be.Reflex {
 	_Endo, _Exo := be.NewSynapse()
 	firstEndo, firstExo := be.NewSynapse()
 	secondEndo, secondExo := be.NewSynapse()

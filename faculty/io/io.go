@@ -24,7 +24,7 @@ func init() {
 // Clunk…
 type Clunk struct{}
 
-func (Clunk) Materialize(*be.Matter) be.Reflex {
+func (Clunk) Materialize() be.Reflex {
 	_Endo, _Exo := be.NewSynapse()
 	go func() {
 		_Endo.Focus(clunk)

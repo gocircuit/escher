@@ -18,7 +18,7 @@ import (
 // Associate
 type Associate struct{}
 
-func (Associate) Materialize(*be.Matter) be.Reflex {
+func (Associate) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", "_")
 	return reflex
 }

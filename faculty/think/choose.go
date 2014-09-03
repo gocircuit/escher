@@ -19,7 +19,7 @@ import (
 // Choose
 type Choose struct{}
 
-func (Choose) Materialize(*be.Matter) be.Reflex {
+func (Choose) Materialize() be.Reflex {
 	reflex, _ := plumb.NewEyeCognizer((&choose{}).Cognize, "When", "From", "_")
 	return reflex
 }

@@ -34,7 +34,7 @@ func init() {
 // Client ...
 type Client struct{}
 
-func (Client) Materialize(*be.Matter) be.Reflex {
+func (Client) Materialize() be.Reflex {
 	var c1, a1 sync.Once
 	api, consumer, access := make(chan *anaconda.TwitterApi), make(chan Image, 1), make(chan Image, 1)
 	go func() { // start connecting monad

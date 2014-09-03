@@ -22,49 +22,39 @@ type Process struct{}
 
 func (x Process) Materialize(matter *be.Matter) be.Reflex {
 	p := &process{
-		id: ChooseID(),
+		name: matter.LastName(),
 		spawn: make(chan interface{}),
 	}
-	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Server", "Command", "Spawn", "Exit", "IO")
+	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
 	return reflex
 }
 
 type process struct{
-	id string  // ID of this process reflex instance
-	spawn chan interface{}
+	name string
+	sync.Once // start backloop once
+	spawn chan interface{} // notify loop of spawn memes
 	sync.Mutex
-	server *string // root-level anchor of the server where the process is to be started
 	cmd *client.Cmd
 }
 
-func (p *process) cognize(eye *plumb.Eye, valve string, value interface{}) {
-	switch valve {
-	case "Server":
-		if p.cognizeServer(value) {
-			p.startBack(eye)
-		}
+func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	switch dvalve {
 	case "Command":
-		if p.cognizeCommand(value) {
-			p.startBack(eye)
-		}
+		p.Once.Do(
+			func() {
+				back := &processBack{
+					name: p.name,
+					eye: eye, 
+					cmd: cognizeProcessCommand(dvalue), 
+					spawn: p.spawn,
+				}
+				go back.loop()
+			},
+		)
 	case "Spawn":
-		p.spawn <- value
-		log.Printf("circuit process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
+		p.spawn <- dvalue
+		log.Printf("circuit process spawning (%v)", Linearize(fmt.Sprintf("%v", dvalue)))
 	}
-}
-
-func (p *process) cognizeServer(v interface{}) (ready bool) {
-	a, ok := v.(string)
-	if !ok {
-		panic("process server anchor is non-string")
-	}
-	p.Lock()
-	defer p.Unlock()
-	if p.server != nil {
-		panic("process server anchor already set")
-	}
-	p.server = &a
-	return p.cmd != nil
 }
 
 //	{
@@ -73,56 +63,38 @@ func (p *process) cognizeServer(v interface{}) (ready bool) {
 //		Path "/bin/ls"
 //		Args { "-l", "/" }
 //	}
-func (p *process) cognizeCommand(v interface{}) (ready bool) {
+func cognizeProcessCommand(v interface{}) *client.Cmd {
 	img, ok := v.(Image)
 	if !ok {
-		log.Printf("Non-image sent to Process.Command (%v)", v)
-		return
+		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 	}
-	p.Lock()
-	defer p.Unlock()
-	if p.cmd != nil {
-		panic("process command already set")
-	}
-	p.cmd = &client.Cmd{}
-	p.cmd.Path = img.String("Path") // mandatory
+	cmd := &client.Cmd{}
+	cmd.Path = img.String("Path") // mandatory
 	if img.Has("Dir") {
-		p.cmd.Dir = img.String("Dir")
+		cmd.Dir = img.String("Dir")
 	}
 	env := img.Walk("Env")
 	for _, key := range env.Numbers() {
-		p.cmd.Env = append(p.cmd.Env, env.String(key))
+		cmd.Env = append(cmd.Env, env.String(key))
 	}
 	args := img.Walk("Args")
 	for _, key := range args.Numbers() {
-		p.cmd.Args = append(p.cmd.Args, args.String(key))
+		cmd.Args = append(cmd.Args, args.String(key))
 	}
 	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t")))
-	return p.server != nil
-}
-
-func (p *process) startBack(eye *plumb.Eye) {
-	p.Lock()
-	defer p.Unlock()
-	f := &processBack{
-		id: p.id,
-		eye: eye,
-		server: p.server,
-		cmd: p.cmd,
-	}
-	go f.backLoop(p.spawn)
+	return cmd
 }
 
 type processBack struct {
-	id string
+	name string
 	eye *plumb.Eye
-	server *string
 	cmd *client.Cmd
+	spawn <-chan interface{}
 }
 
-func (p *processBack) backLoop(spawn <-chan interface{}) {
+func (p *processBack) loop() {
 	for {
-		spwn := <-spawn
+		spwn := <-p.spawn
 		var x Image
 		if exit := p.spawnProcess(spwn); exit != nil {
 			x = Image{
@@ -142,7 +114,21 @@ func (p *processBack) backLoop(spawn <-chan interface{}) {
 }
 
 func (p *processBack) spawnProcess(spwn interface{}) error {
-	anchor := program.Client.Walk([]string{*p.server, "escher", program.Name, "circuit.Process", p.id})
+	// anchor determination
+	s := spwn.(Image)
+	if s.String("Name") == "" {
+		panic("circuit process execution name required")
+	}
+	if s.String("Server") == "" {
+		panic("circuit process server required")
+	}
+	anchor := program.Client.Walk(
+		[]string{
+			s.String("Server"), // server name
+			p.name, // reflex' unique materialization name
+			s.String("Name"), // (dynamic) execution name
+		})
+	//
 	proc, err := anchor.MakeProc(*p.cmd)
 	if err != nil {
 		panic("invalid command argument")

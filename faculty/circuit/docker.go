@@ -47,7 +47,7 @@ func (p *docker) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 				back := &dockerBack{
 					name: p.name,
 					eye: eye, 
-					cmd: understandCommand(dvalue), 
+					cmd: cognizeDockerCommand(dvalue), 
 					spawn: p.spawn,
 				}
 				go back.loop()
@@ -80,7 +80,7 @@ func (p *docker) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 //			Args { "-l", "/" }
 //		}
 //
-func understandCommand(v interface{}) *dkr.Run {
+func cognizeDockerCommand(v interface{}) *dkr.Run {
 	img, ok := v.(Image)
 	if !ok {
 		panic(fmt.Sprintf("non-image sent as circuit container command (%v)", v))
@@ -149,6 +149,7 @@ func (p *dockerBack) loop() {
 }
 
 func (p *dockerBack) spawnDocker(spwn interface{}) error {
+	// anchor determination
 	s := spwn.(Image)
 	if s.String("Name") == "" {
 		panic("container execution name cannot be empty")
@@ -159,6 +160,7 @@ func (p *dockerBack) spawnDocker(spwn interface{}) error {
 			p.name, // reflex' unique materialization name
 			s.String("Name"), // (dynamic) execution name
 		})
+	//
 	container, err := anchor.MakeDocker(*p.cmd)
 	if err != nil {
 		log.Fatalf("container spawn error (%v)", err)

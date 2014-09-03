@@ -28,6 +28,7 @@ func Init(name string, client *client.Client) {
 	ns.AddTerminal("Joining", Joining{})
 	// ns.AddTerminal("Channel", Chan{})
 
+	ns.AddTerminal("ForkSpawn", ForkSpawn{})
 	ns.AddTerminal("ForkExit", ForkExit{})
 	ns.AddTerminal("ForkIO", ForkIO{})
 

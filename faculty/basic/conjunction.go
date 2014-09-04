@@ -29,7 +29,7 @@ func MaterializeConjunction(name string, field ...string) be.Reflex {
 						y <- struct{}{}
 					}()
 				}
-				for range field {
+				for _ = range field {
 					<-y
 				}
 			} else { // field updated

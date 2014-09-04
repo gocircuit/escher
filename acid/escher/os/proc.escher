@@ -1,5 +1,5 @@
-// ProcessIgnoreIO starts an OS process, spcified ...
-ProcessIgnoreIO {
+// ProcessIgnoreIO starts an OS process and ignores/discards its standard streams.
+ProcessIgnoreIO { // Command, When, Exit
 	proc os.Process
 	When = proc.When
 	Exit = proc.Exit
@@ -17,7 +17,7 @@ ProcessIgnoreIO {
 }
 
 // ProcessRun ...
-ProcessRun {
+ProcessRun { // Command, When, Exit
 	proc os.Process
 	When = proc.When
 	Exit = proc.Exit

@@ -1,0 +1,20 @@
+// This is the source of the Escher Language Handbook.
+
+TableOfContents {
+	Kind TOC
+	ch1  Chapter1
+	ch2  Chapter2
+}
+
+Chapter1 {
+	Kind     Chapter
+	Synopsis "¡Hello,..."
+}
+
+Chapter2 {
+	Kind     Chapter
+	Synopsis "...world!"
+	Body `
+This is the substance of the chapter. The actual text.
+`	
+}

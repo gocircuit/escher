@@ -109,7 +109,7 @@ func (x *Circuit) Print(prefix, indent string) string {
 			continue
 		}
 		fmt.Fprintf(&w, "%s%s#%d %v\n", prefix, indent, name, p.Design)
-		for range p.Valve {
+		for _ = range p.Valve {
 			panic(1)
 		}
 	}

@@ -16,10 +16,11 @@ import (
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
-func Init(x, y string) {
+func Init(x, y, z string) {
 	ns := faculty.Root.Refine("acid")
 	ns.AddTerminal("XDir", Dir{x})
 	ns.AddTerminal("YDir", Dir{y})
+	ns.AddTerminal("ZDir", Dir{z})
 }
 
 // Dir

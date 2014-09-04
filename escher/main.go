@@ -40,6 +40,7 @@ var (
 	flagSvg     = flag.String("svg", "", "display a circuit as SVG; don't run")
 	flagX        = flag.String("x", "", "program source directory X")
 	flagY        = flag.String("y", "", "program source directory Y")
+	flagZ        = flag.String("z", "", "program source directory Z")
 	flagName     = flag.String("n", "", "execution name")
 	flagArg      = flag.String("a", "", "program arguments")
 	flagDiscover = flag.String("d", "", "multicast UDP discovery address for circuit faculty, if needed")
@@ -47,13 +48,13 @@ var (
 
 func main() {
 	flag.Parse()
-	if *flagX == "" && *flagY == "" {
-		fatalf("at least one source directory, X or Y, must be specified with -x or -y, respectively")
+	if *flagX == "" && *flagY == "" && *flagZ == "" {
+		fatalf("at least one source directory, X, Y or Z, must be specified with -x, -y or -z, respectively")
 	}
 	// Initialize faculties
 	basic.Init(*flagName)
 	facultyos.Init(*flagArg)
-	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY)
+	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY, *flagZ)
 	//
 	switch {
 	case *flagSvg != "":
@@ -61,7 +62,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
 			walk = nil
 		}
-		_, cd := compile(*flagX, *flagY).Walk(walk...)
+		_, cd := compile(*flagX, *flagY, *flagZ).Walk(walk...)
 		switch t := cd.(type) {
 		case *understand.Circuit:
 			fmt.Println(draw.Draw(t))
@@ -73,7 +74,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
 			walk = nil
 		}
-		_, cd := compile(*flagX, *flagY).Walk(walk...)
+		_, cd := compile(*flagX, *flagY, *flagZ).Walk(walk...)
 		switch t := cd.(type) {
 		case *understand.Circuit:
 			fmt.Println(t.Print("", "\t"))
@@ -83,23 +84,26 @@ func main() {
 			fmt.Printf("%T/%v\n", t, t)
 		}
 	default:
-		be.Space(compile(*flagX, *flagY)).Materialize("main")
+		be.Space(compile(*flagX, *flagY, *flagZ)).Materialize("main")
 		select {} // wait forever
 	}
 }
 
-func compile(x, y string) understand.Faculty {
+func compile(x, y, z string) understand.Faculty {
 	if x != "" {
 		faculty.Root.UnderstandDirectory("X", x)
 	}
 	if y != "" {
 		faculty.Root.UnderstandDirectory("Y", y)
 	}
+	if z != "" {
+		faculty.Root.UnderstandDirectory("Z", z)
+	}
 	return faculty.Root
 }
 
-func loadCircuitFaculty(name, discover, x, y string) {
-	acid.Init(x, y)
+func loadCircuitFaculty(name, discover, x, y, z string) {
+	acid.Init(x, y, z)
 	if discover == "" {
 		circuit.Init(name, nil)
 		return

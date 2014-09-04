@@ -35,8 +35,6 @@ type docker struct {
 	name string // unique--with respect to materializations--name of this reflex
 	sync.Once // start backloop once
 	spawn chan interface{} // notify loop of spawn memes
-	sync.Mutex
-	cmd *dkr.Run
 }
 
 func (p *docker) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {

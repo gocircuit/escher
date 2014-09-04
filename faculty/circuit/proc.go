@@ -33,8 +33,6 @@ type process struct{
 	name string
 	sync.Once // start backloop once
 	spawn chan interface{} // notify loop of spawn memes
-	sync.Mutex
-	cmd *client.Cmd
 }
 
 func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
@@ -63,6 +61,7 @@ func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 //		Path "/bin/ls"
 //		Args { "-l", "/" }
 //	}
+//
 func cognizeProcessCommand(v interface{}) *client.Cmd {
 	img, ok := v.(Image)
 	if !ok {

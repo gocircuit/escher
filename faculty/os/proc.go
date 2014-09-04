@@ -32,19 +32,25 @@ func (x Process) Materialize() be.Reflex {
 
 type process struct{
 	spawn chan interface{}
-	sync.Mutex
-	cmd *exec.Cmd
+	sync.Once // start backloop once
 }
 
-func (p *process) cognize(eye *plumb.Eye, valve string, value interface{}) {
-	switch valve {
+func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	switch dvalve {
 	case "Command":
-		if p.cognizeCommand(value) {
-			p.startBack(eye)
-		}
+		p.Once.Do(
+			func() {
+				back := &processBack{
+					eye: eye, 
+					cmd: cognizeCommand(dvalue), 
+					spawn: p.spawn,
+				}
+				go back.loop()
+			},
+		)
 	case "When":
-		p.spawn <- value
-		// log.Printf("os process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
+		p.spawn <- dvalue
+		// log.Printf("OS process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
 	}
 }
 
@@ -54,53 +60,39 @@ func (p *process) cognize(eye *plumb.Eye, valve string, value interface{}) {
 //		Path "/bin/ls"
 //		Args { "-l", "/" }
 //	}
-func (p *process) cognizeCommand(v interface{}) (ready bool) {
+//
+func cognizeCommand(v interface{}) *exec.Cmd {
 	img, ok := v.(Image)
 	if !ok {
 		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
-		return false
 	}
-	p.Lock()
-	defer p.Unlock()
-	if p.cmd != nil {
-		panic("process command already set")
-	}
-	p.cmd = &exec.Cmd{}
-	p.cmd.Path = img.String("Path") // mandatory
-	p.cmd.Args = []string{p.cmd.Path}
+	cmd := &exec.Cmd{}
+	cmd.Path = img.String("Path") // mandatory
+	cmd.Args = []string{cmd.Path}
 	if img.Has("Dir") {
-		p.cmd.Dir = img.String("Dir")
+		cmd.Dir = img.String("Dir")
 	}
 	env := img.Walk("Env")
 	for _, key := range env.Numbers() {
-		p.cmd.Env = append(p.cmd.Env, env.String(key))
+		cmd.Env = append(cmd.Env, env.String(key))
 	}
 	args := img.Walk("Args")
 	for _, key := range args.Numbers() {
-		p.cmd.Args = append(p.cmd.Args, args.String(key))
+		cmd.Args = append(cmd.Args, args.String(key))
 	}
 	// log.Printf("os process command (%v)", Linearize(img.Print("", "")))
-	return true
+	return cmd
 }
 
-func (p *process) startBack(eye *plumb.Eye) {
-	p.Lock()
-	defer p.Unlock()
-	f := &processFixed{
-		eye: eye,
-		cmd: p.cmd,
-	}
-	go f.backLoop(p.spawn)
-}
-
-type processFixed struct {
+type processBack struct {
 	eye *plumb.Eye
 	cmd *exec.Cmd
+	spawn <-chan interface{}
 }
 
-func (p *processFixed) backLoop(spawn <-chan interface{}) {
+func (p *processBack) loop() {
 	for {
-		when := <-spawn
+		when := <-p.spawn
 		var x Image
 		if exit := p.spawnProcess(when); exit != nil {
 			x = Image{
@@ -119,7 +111,7 @@ func (p *processFixed) backLoop(spawn <-chan interface{}) {
 	}
 }
 
-func (p *processFixed) spawnProcess(when interface{}) (err error) {
+func (p *processBack) spawnProcess(when interface{}) (err error) {
 	var stdin io.WriteCloser
 	var stdout io.ReadCloser
 	var stderr io.ReadCloser

@@ -93,6 +93,10 @@ func (x Image) Interface(key interface{}) interface{} {
 	return v
 }
 
+func (x Image) OptionalInterface(key interface{}) interface{} {
+	return x[key]
+}
+
 func (x Image) String(key interface{}) string {
 	return x[key].(string)
 }

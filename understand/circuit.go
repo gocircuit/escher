@@ -7,128 +7,83 @@
 package understand
 
 import (
-	"fmt"
+	// "fmt"
 
 	"github.com/gocircuit/escher/see"
+	. "github.com/gocircuit/escher/image"
 )
 
-// TODO: Circuit could be represented as an image.Image
+// Circuit ...
 type Circuit struct {
-	SourceDir string
-	Genus []*see.Circuit // origin
-	Name  string
-	Peer map[interface{}]*Peer // peers and self; self corresponds to the empty string
+	name  string // Name of the circuit design
+	sourceDir string // Host source directory where this circuit's source implementation was found
+	genus []*see.Circuit // Stack of syntactic circuits embodied in this semantic circuit
+	// Union of name-to-peer and index-to-peer maps.
+	// This is like packing a map[string]*Peer and a map[int]*Peer into one map[interface{}]*Peer
+	// The map includes the super peer, whose name is the empty-string and whose index is zero
+	peer Image // peer name to peer structure
+	index int
 }
 
-type Peer struct { // TODO: Add order in definition.
-	Name   interface{}
-	Design interface{}
-	Valve  map[string]*Valve
+func (c *Circuit) Name() string {
+	return c.name
 }
 
-type Valve struct {
-	Of       *Peer
-	Name     string
-	Matching *Valve
+func (c *Circuit) SourceDir() string {
+	return c.sourceDir
 }
 
-func (x *Circuit) Merge(y *Circuit) {
-	x.Genus = append(x.Genus, y.Genus[0])
-	for name, p := range y.Peer {
-		println(x.Name, "		merging peer", name)
-		if _, ok := x.Peer[name]; ok {
-			panicf("collision adding peer %s in circuit %s", name, x.Name)
-		}
-		x.Peer[name] = p
-	}
+func (c *Circuit) PeerNames() []interface{} {
+	return c.peer.Names()
 }
 
-func Understand(s *see.Circuit) *Circuit {
-	x := &Circuit{
-		Peer: make(map[interface{}]*Peer),
-	}
-	x.Genus = []*see.Circuit{s}
-	x.Name = s.Name
-
-	// Add “this” circuit as the empty-string peer
-	x.Peer[""] = &Peer{
-		Name:   "",
-		Valve:  make(map[string]*Valve),
-		Design: nil,
-	}
-
-	// Add peers from circuit definition, valves are not added on this pass
-	for _, p := range s.Peer {
-		x.addPeer(p.Name, p.Design)
-	}
-	var nsugar int // Counter for generating names of desugared peer definitions
-	for _, m := range s.Match {
-		var end [2]*Valve // reciprocal
-		for i, j := range m.Join {
-			switch t := j.(type) {
-			case *see.DesignJoin: // unfold sugar
-				nsugar++
-				p := fmt.Sprintf("sugar#%d", nsugar)
-				x.addPeer(p, t.Design)
-				end[i] = x.reserveValve(p, see.DefaultValve)
-			case *see.PeerJoin:
-				end[i] = x.reserveValve(t.Peer, t.Valve)
-			case *see.ValveJoin:
-				end[i] = x.reserveValve("", t.Valve)
-			case nil: // match other argument to empty-string valve of this circuit
-				end[i] = x.reserveValve("", "")
-			default:
-				panic(fmt.Sprintf("unknown or missing matching endpoint: %T·%v", j, j))
-			}
-		}
-		// Link two ends
-		if end[0].Matching != nil || end[1].Matching != nil {
-			panic("reuse of valve")
-		}
-		end[0].Matching, end[1].Matching = end[1], end[0]
-	}
-
-	// Verify no unmatched valves remain
-	// for _, peer := range x.Peer {
-	// 	for _, v := range peer.Valve {
-	// 		if v.Matching == nil {
-	// 			panic("unmatched valve")
-	// 		}
-	// 	}
-	// }
-	return x
+func (c *Circuit) PeerByName(name interface{}) *Peer {
+	p, _ := c.peer.OptionalInterface(name).(*Peer)
+	return p
 }
 
-func (x *Circuit) addPeer(name interface{}, design interface{}) {
-	if _, ok := x.Peer[name]; ok {
-		panic("peer already present")
-	}
-	if design == nil {
-		panic("peer is missing design")
-	}
-	x.Peer[name] = &Peer{
-		Name:   name,
-		Valve:  make(map[string]*Valve),
-		Design: design,
-	}
+// Peer ...
+type Peer struct {
+	name interface{}
+	index int
+	design interface{}
+	valve Image // Valve name to valve structure
 }
 
-// reserveValve returns the addressed valve, creating it if necessary.
-// Creating is prohibited solely for the empty-string peer, corresponding to this circuit.
-func (x *Circuit) reserveValve(peer, valve string) *Valve {
-	p, ok := x.Peer[peer]
-	if !ok {
-		panic(fmt.Sprintf("peer %v is missing", peer))
-	}
-	v, ok := p.Valve[valve]
-	if ok {
-		return v
-	}
-	v = &Valve{
-		Of:       p,
-		Name:     valve,
-		Matching: nil,
-	}
-	p.Valve[valve] = v
+func (p *Peer) Copy() *Peer {
+	var q Peer = *p
+	return &q
+}
+
+func (p *Peer) Name() interface{} {
+	return p.name
+}
+
+// Index returns the ordinal index of the clause containing the definition of this peer
+// within the circuit's syntactic implementation
+func (p *Peer) Index() int {
+	return p.index
+}
+
+func (p *Peer) Design() interface{} {
+	return p.design
+}
+
+func (p *Peer) ValveNames() []string {
+	return p.valve.Letters()
+}
+
+func (p *Peer) ValveByName(name string) *Valve {
+	v, _ := p.valve.OptionalInterface(name).(*Valve)
 	return v
+}
+
+// Valve ...
+type Valve struct {
+	Of *Peer
+	Name string
+	// Ordinal index of the clause containing the valve's first occurence (in a matching)
+	// within the circuit's syntactic implementation
+	Index int
+	Matching *Valve
 }

@@ -114,3 +114,9 @@ func (eye *Eye) See() (valve string, value interface{}) {
 	chg := <-eye.see
 	return chg.Valve, chg.Value
 }
+
+func (eye *Eye) Drain() {
+	for {
+		eye.See()
+	}
+}

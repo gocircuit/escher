@@ -1,4 +1,0 @@
-This directory is an Escher program that generates the Escher Language Handbook.
-You can invoke it with:
-
-	escher -x . -a Dest=<DestinationDirectory>

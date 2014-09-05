@@ -74,5 +74,5 @@ func TestFaculty(t *testing.T) {
 		}
 	}()
 	ns := NewFaculty()
-	ns.UnderstandDirectory("./testdata")
+	ns.UnderstandDirectory("X", "./testdata")
 }

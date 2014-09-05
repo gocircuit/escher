@@ -1,0 +1,7 @@
+//	This directory is an Escher program that generates the Escher Language Handbook.
+//	You can invoke it with:
+//
+//	escher -x . -y ../acid/escher -a OutDir=<OutputDirectory>
+//
+main {
+}

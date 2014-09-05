@@ -140,15 +140,15 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 			break
 		}
 		t := Understand(s)
-		t.SourceDir = dir
+		t.sourceDir = dir
 		fty.Interpret(t)
 	}
 }
 
 func (fty Faculty) Interpret(cir *Circuit) (fresh *Circuit) {
-	w, ok := fty[cir.Name]
+	w, ok := fty[cir.Name()]
 	if !ok {
-		fty[cir.Name] = cir
+		fty[cir.Name()] = cir
 		return cir
 	}
 	if wcir, ok := w.(*Circuit); ok {
@@ -156,6 +156,6 @@ func (fty Faculty) Interpret(cir *Circuit) (fresh *Circuit) {
 		return wcir
 	}
 	// otherwise overwrite existing design
-	fty[cir.Name] = cir
+	fty[cir.Name()] = cir
 	return cir
 }

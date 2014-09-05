@@ -1,20 +1,24 @@
 // This is the source of the Escher Language Handbook.
 
 TableOfContents {
-	Kind TOC
-	ch1  Chapter1
-	ch2  Chapter2
+	c1  Chapter1
+	c2  Chapter2
 }
 
 Chapter1 {
-	Kind     Chapter
-	Synopsis "¡Hello,..."
+	Title = "C1"
+	Synopsis = "¡Hello,..."
+	c11 ChapterX
+	c12 ChapterX
+}
+
+ChapterX {
 }
 
 Chapter2 {
-	Kind     Chapter
-	Synopsis "...world!"
-	Body `
+	Title = "Chap2"
+	Synopsis = "...world!"
+	Body = `
 This is the substance of the chapter. The actual text.
 `	
 }

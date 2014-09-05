@@ -1,0 +1,22 @@
+// ExploreInDepth...
+//
+// Valves:
+//
+//	When interface{}
+//	Charge *understand.Circuit
+//	Sequence {
+//		When interface{}
+//		Index int
+//		Charge *understand.Circuit
+//	}
+//
+ExploreInDepth {
+	explore model.ExploreInDepthOnStrobe
+
+	explore.Strobe = strobe.Strobe
+	strobe basic.Strobe
+	strobe.When = When
+	strobe.Charge = Charge
+
+	Sequence = explore.Sequence
+}

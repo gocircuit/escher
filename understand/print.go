@@ -59,17 +59,18 @@ func (fty Faculty) Print(prefix, indent string) string {
 }
 
 func (x *Circuit) printValves() string {
-	valve := x.Peer[""].Valve
-	if len(valve) == 0 {
+	sup := x.PeerByName("")
+	vnames := sup.ValveNames()
+	if len(vnames) == 0 {
 		return ""
 	}
 	var w bytes.Buffer
 	w.WriteString("(")
 	var i int
-	for v, _ := range valve {
-		w.WriteString(v)
+	for _, vn := range vnames {
+		w.WriteString(vn)
 		i++
-		if i < len(valve) {
+		if i < len(vnames) {
 			w.WriteString(", ")
 		}
 	}
@@ -79,46 +80,49 @@ func (x *Circuit) printValves() string {
 
 func (x *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%s%s {\n", x.Name, x.printValves())
+	fmt.Fprintf(&w, "%s%s {\n", x.Name(), x.printValves())
 	// string-named peers
-	for _, p := range x.Peer {
-		name, ok := p.Name.(string)
-		if !ok {
+	for _, name_ := range x.PeerNames() {
+		p := x.PeerByName(name_)
+		if name_ == "" {
 			continue
 		}
-		if name == "" {
-			continue
-		}
-		if pp, ok := p.Design.(Printer); ok {
-			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(name), pp.Print(prefix + indent, indent))
+		name := nonemptify(print(name_))
+		if pp, ok := p.Design().(Printer); ok {
+			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, name, pp.Print(prefix + indent, indent))
 		} else {
-			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, printable(name), p.Design)
+			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, name, p.Design())
 		}
-		for _, v := range p.Valve {
+		for _, vn := range p.ValveNames() {
+			v := p.ValveByName(vn)
 			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n",
 				prefix, indent, indent,
-				printable(name), printable(v.Name),
-				printable(v.Matching.Of.Name.(string)), printable(v.Matching.Name),
+				name, nonemptify(vn),
+				nonemptify(print(v.Matching.Of.Name())), nonemptify(v.Matching.Name),
 			)
 		}
 	}
 	// int-named peers
-	for _, p := range x.Peer {
-		name, ok := p.Name.(int)
-		if !ok {
-			continue
-		}
-		fmt.Fprintf(&w, "%s%s#%d %v\n", prefix, indent, name, p.Design)
-		for _ = range p.Valve {
-			panic(1)
-		}
-	}
+	// for _, p := range x.Peer {
+	// 	name, ok := p.Name.(int)
+	// 	if !ok {
+	// 		continue
+	// 	}
+	// 	fmt.Fprintf(&w, "%s%s#%d %v\n", prefix, indent, name, p.Design)
+	// 	for _ = range p.Valve {
+	// 		panic(1)
+	// 	}
+	// }
 	//
 	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()
 }
 
-func printable(s string) string {
+func print(v interface{}) string {
+	return fmt.Sprintf("%v", v)
+}
+
+func nonemptify(s string) string {
 	if s != "" {
 		return s
 	}

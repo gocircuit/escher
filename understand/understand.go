@@ -13,19 +13,22 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
+// Super is a symbol for the peer name of the point-of-view peer
+type Super struct{}
+
 func Understand(s *see.Circuit) *Circuit {
 	x := &Circuit{peer: Make()}
 	x.genus = []*see.Circuit{s}
 	x.name = s.Name
 
-	// Add “this” circuit as the empty-string peer
+	// Add the super peer
 	sup := &Peer{
-		name: "",
+		name: Super{},
 		index: 0,
 		valve: Make(),
 		design: nil,
 	}
-	x.peer[""] = sup
+	x.peer[Super{}] = sup
 	x.index = 1
 
 	// Add peers from circuit definition, valves are not added on this pass
@@ -49,10 +52,10 @@ func Understand(s *see.Circuit) *Circuit {
 				end[i] = x.reserveValve(t.Peer, t.Valve, x.index)
 				x.index++
 			case *see.ValveJoin:
-				end[i] = x.reserveValve("", t.Valve, x.index)
+				end[i] = x.reserveValve(Super{}, t.Valve, x.index)
 				x.index++
 			case nil: // match other argument to empty-string valve of this circuit
-				end[i] = x.reserveValve("", "", x.index)
+				end[i] = x.reserveValve(Super{}, "", x.index)
 				x.index++
 			default:
 				panic(fmt.Sprintf("unknown or missing matching endpoint: %T·%v", j, j))
@@ -80,7 +83,7 @@ func Understand(s *see.Circuit) *Circuit {
 
 func (x *Circuit) Merge(y *Circuit) {
 	if len(y.genus) != 1 {
-		panic("?")
+		panic(1)
 	}
 	x.genus = append(x.genus, y.genus[0])
 	var m int // track max index
@@ -131,7 +134,7 @@ func (x *Circuit) addPeer(name interface{}, index int, design interface{}) {
 
 // reserveValve returns the addressed valve, creating it if necessary.
 // Creating is prohibited solely for the empty-string peer, corresponding to this circuit.
-func (x *Circuit) reserveValve(peer, valve string, index int) *Valve {
+func (x *Circuit) reserveValve(peer interface{}, valve string, index int) *Valve {
 	p := x.PeerByName(peer)
 	if p == nil {
 		panic(fmt.Sprintf("peer %v is missing", peer))

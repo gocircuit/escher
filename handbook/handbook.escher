@@ -3,6 +3,9 @@
 TableOfContents {
 	c1  Chapter1
 	c2  Chapter2
+	? = c1.Back
+	c1.Forth = c2.Back
+	c2.Forth = ?
 }
 
 Chapter1 {

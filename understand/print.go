@@ -28,6 +28,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 		w.WriteString(" ")
 	}
 	w.WriteString("}")
+	//
 	keys := Image(fty).Letters()
 	for _, k := range keys {
 		v := fty[k]
@@ -59,7 +60,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 }
 
 func (x *Circuit) printValves() string {
-	sup := x.PeerByName("")
+	sup := x.PeerByName(Super{})
 	vnames := sup.ValveNames()
 	if len(vnames) == 0 {
 		return ""
@@ -83,10 +84,10 @@ func (x *Circuit) Print(prefix, indent string) string {
 	fmt.Fprintf(&w, "%s%s {\n", x.Name(), x.printValves())
 	// string-named peers
 	for _, name_ := range x.PeerNames() {
-		p := x.PeerByName(name_)
-		if name_ == "" {
+		if _, ok := name_.(Super); ok {
 			continue
 		}
+		p := x.PeerByName(name_)
 		name := nonemptify(print(name_))
 		if pp, ok := p.Design().(Printer); ok {
 			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, name, pp.Print(prefix + indent, indent))

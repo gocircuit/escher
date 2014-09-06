@@ -15,7 +15,7 @@ import (
 
 // Circuit ...
 type Circuit struct {
-	name  string // Name of the circuit design
+	name  interface{} // Name of the circuit design
 	sourceDir string // Host source directory where this circuit's source implementation was found
 	genus []*see.Circuit // Stack of syntactic circuits embodied in this semantic circuit
 	// Union of name-to-peer and index-to-peer maps.
@@ -25,7 +25,7 @@ type Circuit struct {
 	index int
 }
 
-func (c *Circuit) Name() string {
+func (c *Circuit) Name() interface{} {
 	return c.name
 }
 

@@ -15,37 +15,88 @@ import (
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/understand"
 )
 
 func init() {
 	ns := faculty.Root.Refine("model")
-	ns.AddTerminal("ExploreInDepthOnStrobe", ExploreInDepthOnStrobe{})
-	// ns.AddTerminal("ExploreInBreadthOnStrobe", ExploreInBreadthOnStrobe{})
+	ns.AddTerminal("ExploreOnStrobe", ExploreOnStrobe{})
 }
 
-// ExploreInDepthOnStrobe traverses the hierarchy of circuits induced by a given top-level/valveless circuit.
+// ExploreOnStrobe traverses the hierarchy of circuits induced by a given top-level/valveless circuit.
 //
 //	Strobe = {
 //		When interface{}
-//		Charge *understand.Circuit
+//		Charge {
+//			Circuit *understand.Circuit
+//			Peer interface{} // Start peer name
+//			Valve string // Start valve name
+//		}
 //	}
+//
 // 	Sequence = {
 //		When interface{} // When value that sparked this sequence
 //		Index int // Index of this circuit within exploration sequence, 0-based
-//		Charge *understand.Circuit // Current circuit in the exploration sequence
+//		Charge {
+//			Circuit *understand.Circuit // Current circuit in the exploration sequence
+//			Peer interface{} // Point-of-view peer
+//			Valve string // Point-of-view valve of pov peer
+//		}
 //	}
 //
-type ExploreInDepthOnStrobe struct{}
+type ExploreOnStrobe struct{}
 
-func (ExploreInDepthOnStrobe) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(CognizeExploreInDepthOnStrobe, "Strobe", "Sequence")
+func (ExploreOnStrobe) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer(CognizeExploreOnStrobe, "Strobe", "Sequence")
 	return reflex
 }
 
-func CognizeExploreInDepthOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	if dvalve != "Strobe" {
 		return
 	}
-	cir := dvalue.(Image).Interface("Charge")
-	for ??
+	img := dvalue.(Image)
+	charge := img.Image("Charge")
+	//
+	var start = view{
+		Circuit: charge.Interface("Circuit").(*understand.Circuit),
+		Peer: charge.Interface("Peer"),
+		Valve: charge.String("Valve"),
+	}
+	var v = start
+	var n int // Number of steps
+	for {
+		???
+		eye.Show( // yield
+			"Sequence", 
+			Image{
+				"When": img.Interface("When")),
+				"Index": n,
+				"Charge": Image{
+					"Circuit": v.Circuit,
+					"Peer": v.Peer,
+					"Valve": v.Valve,
+				},
+			},
+		)
+		n++
+		// transition
+		designPath := v.Circuit.PeerByName(v.Peer).Design().(see.RootPath) // gates are not allowed
+		_, recall := faculty.Root.Walk(designPath)
+		v.Circuit = recall.(*understand.Circuit) // cannot jump to gates
+		v.Peer = v.Circuit.PeerByName("").ValveByName(v.Valve).Matching.Of.Name()
+		v.Valve = ??
+
+
+		if v == start {
+			break
+		}
+	}
+}
+
+// view ...
+type view struct {
+	Circuit *understand.Circuit // Ambient circuit
+	Peer interface{} // Focus peer
+	Valve string // Focus valve
 }

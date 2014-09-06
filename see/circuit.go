@@ -25,6 +25,64 @@ func SeeCircuit(src *Src) *Circuit {
 	return nil
 }
 
+// Circuit
+type Circuit struct {
+	Name  string
+	Valve []string
+	Peer  []*Peer
+	Match []*Matching
+}
+
+// Peer
+type Peer struct {
+	Name   interface{}
+	Design interface{}
+}
+
+func (p *Peer) String() string {
+	return fmt.Sprintf("%v %v", p.Name, p.Design)
+}
+
+// Matching
+type Matching struct {
+	Join [2]Join
+}
+
+func (m *Matching) String() string {
+	return fmt.Sprintf("%v=%v", m.Join[0], m.Join[1])
+}
+
+// Join is one of PeerJoin, ValveJoin or DesignJoin.
+type Join interface{}
+
+// E.g. “a.X”
+type PeerJoin struct {
+	Peer  string
+	Valve string
+}
+
+func (p *PeerJoin) String() string {
+	return fmt.Sprintf("%s.%s", p.Peer, p.Valve)
+}
+
+// E.g. “Y”
+type ValveJoin struct {
+	Valve string
+}
+
+func (v *ValveJoin) String() string {
+	return v.Valve
+}
+
+// E.g. “12.1e3”
+type DesignJoin struct {
+	Design interface{}
+}
+
+func (d *DesignJoin) String() string {
+	return fmt.Sprintf("%v", d.Design)
+}
+
 func Circuitize(name string, img Image) (cir *Circuit) {
 	if img == nil {
 		return nil
@@ -82,13 +140,6 @@ func (cir *Circuit) seeMatching(s Image) {
 	}
 }
 
-type Circuit struct {
-	Name  string
-	Valve []string
-	Peer  []*Peer
-	Match []*Matching
-}
-
 func (c *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "%s ", c.Name)
@@ -115,52 +166,4 @@ func (c *Circuit) Print(prefix, indent string) string {
 	}
 	fmt.Fprintf(&w, "%s}\n", prefix)
 	return w.String()
-}
-
-type Peer struct {
-	Name   interface{}
-	Design interface{}
-}
-
-func (p *Peer) String() string {
-	return fmt.Sprintf("%v %v", p.Name, p.Design)
-}
-
-type Matching struct {
-	Join [2]Join
-}
-
-func (m *Matching) String() string {
-	return fmt.Sprintf("%v=%v", m.Join[0], m.Join[1])
-}
-
-// Join is one of PeerJoin, ValveJoin or DesignJoin.
-type Join interface{}
-
-// E.g. “a.X”
-type PeerJoin struct {
-	Peer  string
-	Valve string
-}
-
-func (p *PeerJoin) String() string {
-	return fmt.Sprintf("%s.%s", p.Peer, p.Valve)
-}
-
-// E.g. “Y”
-type ValveJoin struct {
-	Valve string
-}
-
-func (v *ValveJoin) String() string {
-	return v.Valve
-}
-
-// E.g. “12.1e3”
-type DesignJoin struct {
-	Design interface{}
-}
-
-func (d *DesignJoin) String() string {
-	return fmt.Sprintf("%v", d.Design)
 }

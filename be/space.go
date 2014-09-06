@@ -23,14 +23,6 @@ func (x Space) Faculty() understand.Faculty {
 	return understand.Faculty(x)
 }
 
-// Lookup looks up the design for a root name; name should be a textual path.
-func (x Space) Lookup(within understand.Faculty, name string) (d interface{}) {
-	if strings.Index(name, ".") >= 0 {
-		panic(7)
-	}
-	return within[""].(*understand.Circuit).Peer[name].Design
-}
-
 // Materialize creates the reflex, described by the absolute path walk.
 func (x Space) Materialize(walk ...string) Reflex {
 	return x.materialize(
@@ -69,20 +61,18 @@ func (x Space) materialize(matter *Matter, walk ...string) Reflex {
 
 func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, cir *understand.Circuit) Reflex {
 	// println(cir.Print("	", "\t"))
-	peers := make(map[string]Reflex)
-	for _, peer := range cir.Peer {
-		name, ok := peer.Name.(string)
-		if !ok {
-			log.Fatalf("circuit peers cannot have non-textual names, in circuit %s at peer %v", cir.Name, peer.Name)
-		}
-		if name == "" { // skip the super peer of this circuit
+	peers := make(map[interface{}]Reflex)
+	for _, name := range cir.PeerNames() {
+		peer := cir.PeerByName(name)
+		if _, ok := name.(understand.Super); ok { // skip the super peer of this circuit
 			continue
 		}
-		switch t := peer.Design.(type) {
+		switch t := peer.Design().(type) {
 		case see.RootPath:
 			peers[name] = x.materialize(matter, []string(t)...)
 		case see.Path: // e.g. “hello.who.is.there”
-			peers[name] = x.materializePath(matter, withinFac, []string(t))
+			panic("relative addressing not implemented")
+			// peers[name] = x.materializePath(matter, withinFac, []string(t))
 		case string, int, float64, complex128:
 			peers[name] = NewNounReflex(t) // materialize builtin gates
 		case Image:
@@ -93,61 +83,62 @@ func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, 
 	}
 	// Connect/attach all reflex memories
 	exo := make(Reflex)
-	for _, p := range cir.Peer {
-		name := p.Name.(string)
-		if name == "" {
+	for _, name := range cir.PeerNames() {
+		if _, ok := name.(understand.Super); ok { // skip the super peer of this circuit
 			continue
 		}
-		for _, v := range p.Valve {
+		p := cir.PeerByName(name)
+		for _, vn := range p.ValveNames() {
+			v := p.ValveByName(vn)
 			// println(fmt.Sprintf("%s·%s", name, v.Name))
 			m1 := peers[name][v.Name]
 			if m1 == nil {
 				continue
 			}
 			delete(peers[name], v.Name)
-			if v.Matching.Of.Name == "" {
-				if _, ok := exo[v.Matching.Name]; ok {
+			if _, ok := v.Matching.Of.Name().(understand.Super); ok {
+				if _, ok = exo[v.Matching.Name]; ok {
 					panic(6)
 				}
 				exo[v.Matching.Name] = m1
 			} else {
-				qp, qv := v.Matching.Of.Name.(string), v.Matching.Name
+				qp, qv := v.Matching.Of.Name(), v.Matching.Name
 				m2 := peers[qp][qv]
 				delete(peers[qp], qv)
 				if m1 == nil || m2 == nil {
-					log.Fatalf("No matching valve: %s·%s/%v <=> %s·%s/%v", name, v.Name, m1, qp, qv, m2)
+					log.Fatalf("No matching valve: %v·%s/%v <=> %v·%s/%v", name, v.Name, m1, qp, qv, m2)
 				}
 				go Merge(m1, m2)
 			}
 		}
 	}
 	// Check for unmatched valves
-	for pname, p := range peers {
+	for pn, p := range peers {
 		for vname, _ := range p {
-			panicf("%s.%s not matched", pname, vname)
+			panicf("%s.%s not matched", pn, vname)
 		}
 	}
 	return exo
 }
 
-func (x Space) materializePath(matter *Matter, within understand.Faculty, parts []string) Reflex {
-	unfold := x.Lookup(within, parts[0])
-	switch t := unfold.(type) {
-	case string, int, float64, complex128:
-		return NewNounReflex(t) // materialize builtin gates
-	case Image:
-		return NewNounReflex(t.Copy())
-	case see.Path:
-		parts = append([]string(t), parts[1:]...)
-		return Space(within).materialize(matter, parts...)
-	case see.RootPath:
-		parts = append([]string(t), parts[1:]...)
-		return x.materialize(matter, parts...)
-	case nil:
-		return nil
-	}
-	panic("unknown design")
-}
+// func (x Space) materializePath(matter *Matter, within understand.Faculty, parts []string) Reflex {
+// 	unfold := x.Lookup(within, parts[0])
+// 	switch t := unfold.(type) {
+// 	case string, int, float64, complex128:
+// 		return NewNounReflex(t) // materialize builtin gates
+// 	case Image:
+// 		return NewNounReflex(t.Copy())
+// 	case see.Path:
+// 		parts = append([]string(t), parts[1:]...)
+// 		return Space(within).materialize(matter, parts...)
+// 	case see.RootPath:
+// 		parts = append([]string(t), parts[1:]...)
+// 		return x.materialize(matter, parts...)
+// 	case nil:
+// 		return nil
+// 	}
+// 	panic("unknown design")
+// }
 
 func (x Space) Interpret(understood *understand.Circuit) (fresh *understand.Circuit) {
 	return x.Faculty().Interpret(understood)

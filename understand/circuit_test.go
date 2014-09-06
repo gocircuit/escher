@@ -46,16 +46,29 @@ Nand { // comments are everywhere
 }
 // end comment
 `,
-// 	`
-// namarupa{
-// 	nama Name
-// 	rupa 123
-// }`,
-// 	`
-// circuit {
-// 	circuit._ ="123"
-// }
-// `,
+	`
+namarupa{
+	nama Name
+	rupa 123
+}`,
+	`
+circuit {
+	circuit._ ="123"
+}
+`,
+`
+header {
+	merge text.Merge
+	merge:X = ` + "`\n" + 
+`<html><head><title>` + "\n`\n" +
+`
+	merge:Y = header:Title
+	merge:Z = `  + "`\n" + 
+`</title></head></html>` + "\n`\n" +
+`
+	header:_ = merge:_
+}
+`,
 }
 
 func TestUnderstand(t *testing.T) {

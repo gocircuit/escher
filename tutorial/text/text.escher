@@ -1,0 +1,21 @@
+//
+//	escher -x tutorial/text -y acid/escher
+//
+main {
+	h header
+	h:Title = "Hello, world!"
+	show Show
+	show:_ = h:_
+}
+
+header {
+	merge text.Merge
+	merge:X = `
+<html><head><title>
+`
+	merge:Y = header:Title
+	merge:Z = `
+</title></head></html>
+`
+	header:_ = merge:_
+}

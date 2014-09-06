@@ -49,7 +49,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 			w.WriteString(" ")
 			w.WriteString(t.Print(prefix + indent, indent))
 		case *Circuit:
-			w.WriteString(" (…)")
+			w.WriteString(" {…}")
 			// w.WriteString("\n")
 			// w.WriteString(t.Print(prefix+indent+indent, indent))
 		default: // reflex or circuit

@@ -69,11 +69,11 @@ func (p *Peer) Design() interface{} {
 	return p.design
 }
 
-func (p *Peer) ValveNames() []string {
-	return p.valve.Letters()
+func (p *Peer) ValveNames() []interface{} {
+	return p.valve.Names()
 }
 
-func (p *Peer) ValveByName(name string) *Valve {
+func (p *Peer) ValveByName(name interface{}) *Valve {
 	v, _ := p.valve.OptionalInterface(name).(*Valve)
 	return v
 }
@@ -81,7 +81,7 @@ func (p *Peer) ValveByName(name string) *Valve {
 // Valve ...
 type Valve struct {
 	Of *Peer
-	Name string
+	Name interface{}
 	// Ordinal index of the clause containing the valve's first occurence (in a matching)
 	// within the circuit's syntactic implementation
 	Index int

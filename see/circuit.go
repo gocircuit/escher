@@ -13,7 +13,7 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-const DefaultValve = "_"
+const DefaultValve = Name("_")
 
 func SeeCircuit(src *Src) *Circuit {
 	if src.Len() == 0 {
@@ -93,15 +93,15 @@ func Circuitize(name interface{}, img Image) (cir *Circuit) {
 		Match: make([]*Matching, 0, img.Walk(Matchings{}).Len()), // # of matchings
 	}
 	cir.Name = name
-	for name, v := range img {
-		if _, ok := name.(Matchings); ok {
-			cir.seeMatching(name, v.(Image))
+	for nm, v := range img {
+		if _, ok := nm.(Matchings); ok {
+			cir.seeMatching(cir.Name, v.(Image))
 			continue
 		}
 		cir.Peer = append(
 			cir.Peer,
 			&Peer{
-				Name: name,
+				Name: nm,
 				Design: v,
 			},
 		)

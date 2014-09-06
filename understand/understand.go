@@ -16,6 +16,13 @@ import (
 // Super is a symbol for the peer name of the point-of-view peer
 type Super struct{}
 
+// Sugar is a valve name for auto-generated peers
+type Sugar int
+
+func (s Sugar) String() string {
+	return fmt.Sprintf("Sugar<%d>", s)
+}
+
 func Understand(s *see.Circuit) *Circuit {
 	x := &Circuit{peer: Make()}
 	x.genus = []*see.Circuit{s}
@@ -33,17 +40,17 @@ func Understand(s *see.Circuit) *Circuit {
 
 	// Add peers from circuit definition, valves are not added on this pass
 	for _, p := range s.Peer {
-		x.addPeer(p.Name.(string), x.index, p.Design) // all peer names in a syntactic (can be seen) circuit are strings
+		x.addPeer(p.Name, x.index, p.Design)
 		x.index++
 	}
 	var nsugar int // Counter for generating names of desugared peer definitions
 	for _, m := range s.Match {
 		var end [2]*Valve // reciprocals
-		for i, j := range m.Join {
-			switch t := j.(type) {
+		for i, join := range m.Join {
+			switch t := join.(type) {
 			case *see.DesignJoin: // unfold sugar
 				nsugar++
-				p := fmt.Sprintf("sugar#%d", nsugar)
+				p := Sugar(nsugar)
 				x.addPeer(p, x.index, t.Design)
 				x.index++
 				end[i] = x.reserveValve(p, see.DefaultValve, x.index)
@@ -54,11 +61,8 @@ func Understand(s *see.Circuit) *Circuit {
 			case *see.ValveJoin:
 				end[i] = x.reserveValve(Super{}, t.Valve, x.index)
 				x.index++
-			case nil: // match other argument to empty-string valve of this circuit
-				end[i] = x.reserveValve(Super{}, "", x.index)
-				x.index++
 			default:
-				panic(fmt.Sprintf("unknown or missing matching endpoint: %T·%v", j, j))
+				panic(fmt.Sprintf("unknown or missing matching endpoint: %T·%v", t, t))
 			}
 		}
 		// Link two ends
@@ -134,7 +138,7 @@ func (x *Circuit) addPeer(name interface{}, index int, design interface{}) {
 
 // reserveValve returns the addressed valve, creating it if necessary.
 // Creating is prohibited solely for the empty-string peer, corresponding to this circuit.
-func (x *Circuit) reserveValve(peer interface{}, valve string, index int) *Valve {
+func (x *Circuit) reserveValve(peer, valve interface{}, index int) *Valve {
 	p := x.PeerByName(peer)
 	if p == nil {
 		panic(fmt.Sprintf("peer %v is missing", peer))

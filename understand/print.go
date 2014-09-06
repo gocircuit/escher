@@ -69,7 +69,7 @@ func (x *Circuit) printValves() string {
 	w.WriteString("(")
 	var i int
 	for _, vn := range vnames {
-		w.WriteString(vn)
+		fmt.Fprintf(&w, "%v", vn)
 		i++
 		if i < len(vnames) {
 			w.WriteString(", ")
@@ -96,10 +96,10 @@ func (x *Circuit) Print(prefix, indent string) string {
 		}
 		for _, vn := range p.ValveNames() {
 			v := p.ValveByName(vn)
-			fmt.Fprintf(&w, "%s%s%s%s.%s = %s.%s\n",
+			fmt.Fprintf(&w, "%s%s%s%s:%s = %s:%s\n",
 				prefix, indent, indent,
-				name, nonemptify(vn),
-				nonemptify(print(v.Matching.Of.Name())), nonemptify(v.Matching.Name),
+				name, nonemptify(print(vn)),
+				nonemptify(print(v.Matching.Of.Name())), nonemptify(print(v.Matching.Name)),
 			)
 		}
 	}

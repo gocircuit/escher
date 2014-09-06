@@ -9,6 +9,7 @@ package see
 import (
 	"bytes"
 	"fmt"
+	"strings"
 )
 
 type Design interface {
@@ -26,28 +27,13 @@ func stringifySlice(ss []string) string {
 	return w.String()
 }
 
-// Path
-type Path struct {
-	walk []string
+// Name
+type Name string
+
+func NewName(walk []string) Name {
+	return Name(strings.Join(walk, "."))
 }
 
-func NewPath(walk []string) *Path {
-	return &Path{walk}
-}
-
-func (x *Path) String() string {
-	return fmt.Sprintf("Path(%s)", stringifySlice(x.walk))
-}
-
-// RootPath
-type RootPath struct {
-	walk []string
-}
-
-func NewRootPath(walk []string) *RootPath {
-	return &RootPath{walk}
-}
-
-func (x RootPath) String() string {
-	return fmt.Sprintf("RootPath(%s)", stringifySlice(x.walk))
+func (x Name) String() string {
+	return fmt.Sprintf("Name(%s)", string(x))
 }

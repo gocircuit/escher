@@ -66,9 +66,9 @@ func SeePath(src *Src) interface{} {
 	}
 	src.Become(t)
 	if aux {
-		return NewPath(x)
+		return NewName(append([]string{"@"}, x...))
 	}
-	return NewRootPath(x)
+	return NewName(x)
 }
 
 // Int …

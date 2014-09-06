@@ -27,13 +27,13 @@ Nand { // comments are everywhere
 		num 12.3e5 // number
 	} // string
 
-	A = and.A // matching
-	Y = and.Y
-	not.X = X
-	and.W = not.U
-	and.D = not.V
-	msg.Src = msg.A
-	not.N = +3.14e00 // assign constants directly to wires, only on the right side
+	Nand:A = and:A // matching
+	Nand:Y = and:Y
+	not:X = Nand:X
+	and:W = not:U
+	and:D = not:V
+	msg:Src = msg:A
+	not:N = +3.14e00 // assign constants directly to wires, only on the right side
 
 	// peer declarations are not sensitive to order within the block
 	src ` + "`" + `
@@ -42,20 +42,20 @@ Nand { // comments are everywhere
 <body>Hello world!</body>
 </html>
 ` + "`" + `
-	=5.14 // return, 
+	Nand:_=5.14 // return, 
 }
 // end comment
 `,
-	`
-namarupa{
-	nama Name
-	rupa 123
-}`,
-	`
-circuit {
-	="123"
-}
-`,
+// 	`
+// namarupa{
+// 	nama Name
+// 	rupa 123
+// }`,
+// 	`
+// circuit {
+// 	circuit._ ="123"
+// }
+// `,
 }
 
 func TestUnderstand(t *testing.T) {
@@ -64,6 +64,7 @@ func TestUnderstand(t *testing.T) {
 		s := see.SeeCircuit(see.NewSrcString(r))
 		t := Understand(s)
 		printf2(t.Print("", "\t"))
+		printf2("\n")
 	}
 }
 

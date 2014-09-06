@@ -12,11 +12,12 @@ import (
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Root.AddTerminal("Strobe", Strobe{})
+	faculty.Root.AddTerminal(see.Name("Strobe"), Strobe{})
 }
 
 // Strobe ...

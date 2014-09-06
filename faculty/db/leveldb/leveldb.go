@@ -13,6 +13,7 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/kit/plumb"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb"
@@ -21,7 +22,7 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("db").Refine("leveldb")
-	ns.AddTerminal("File", File{})
+	ns.AddTerminal(see.Name("File"), File{})
 }
 
 // File

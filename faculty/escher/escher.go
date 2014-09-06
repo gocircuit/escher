@@ -11,12 +11,13 @@ import (
 
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
 	ns := faculty.Root.Refine("escher")
-	ns.AddTerminal("CircuitDesignDir", CircuitDesignDir{})
+	ns.AddTerminal(see.Name("CircuitDesignDir"), CircuitDesignDir{})
 }
 
 // CircuitDesignDir

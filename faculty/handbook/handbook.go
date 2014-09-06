@@ -13,13 +13,14 @@ import (
 
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
 	ns := faculty.Root.Refine("handbook")
-	ns.AddTerminal("Join", Join{}) ??
+	ns.AddTerminal(see.Name("Join"), Join{}) ??
 }
 
 // Join

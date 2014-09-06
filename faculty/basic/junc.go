@@ -12,75 +12,41 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 func init() {
-	faculty.Root.AddTerminal("Junction", Junction{})
+	faculty.Root.AddTerminal(see.Name("Junction"), Junction{})
 }
 
 // Junction
 type Junction struct{}
 
 func (Junction) Materialize() be.Reflex {
-	a0Endo, a0Exo := be.NewSynapse()
-	a1Endo, a1Exo := be.NewSynapse()
-	a2Endo, a2Exo := be.NewSynapse()
-	go func() {
-		h := &junction{
-			connected: make(chan struct{}),
-			born:      make(chan struct{}),
-		}
-		h.Lock()
-		defer h.Unlock()
-		h.reply[0] = a0Endo.Focus(func(v interface{}) { h.Cognize(0, v) })
-		h.reply[1] = a1Endo.Focus(func(v interface{}) { h.Cognize(1, v) })
-		h.reply[2] = a2Endo.Focus(func(v interface{}) { h.Cognize(2, v) })
-		close(h.connected)
-	}()
-	return be.Reflex{
-		"X": a0Exo,
-		"Y": a1Exo,
-		"Z": a2Exo,
-	}
+	reflex, _ := plumb.NewEyeCognizer(cognizeJunction, "X", "Y", "Z")
+	return reflex
 }
 
-type junction struct {
-	connected chan struct{}
-	sync.Once
-	born chan struct{}
-	sync.Mutex
-	reply [3]*be.ReCognizer
+func cognizeJunction(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	ch := make(sparkChan, 2)
+	switch dvalve {
+	case "X":
+		go spark(ch, eye, "Y", dvalue)
+		go spark(ch, eye, "Z", dvalue)
+	case "Y":
+		go spark(ch, eye, "X", dvalue)
+		go spark(ch, eye, "Z", dvalue)
+	case "Z":
+		go spark(ch, eye, "X", dvalue)
+		go spark(ch, eye, "Y", dvalue)
+	}
+	<-ch
+	<-ch
 }
 
-func (h *junction) copy() []*be.ReCognizer {
-	h.Lock()
-	defer h.Unlock()
-	r := make([]*be.ReCognizer, 3)
-	copy(r, h.reply[:])
-	return r
-}
+type sparkChan chan<- struct{}
 
-func (h *junction) Cognize(way int, v interface{}) {
-	<-h.connected
-	ch := make(chan struct{})
-	hh := h.copy()
-	for i, re_ := range hh {
-		// println(fmt.Sprintf("Junction *** %T vs %T", i, way))
-		if i == way {
-			continue
-		}
-		re := re_
-		go func() {
-			re.ReCognize(v)
-			ch <- struct{}{}
-		}()
-	}
-	for i, _ := range hh {
-		// println(fmt.Sprintf("Junction <…> %#T vs %#T ", i, way))
-		if i == way {
-			continue
-		}
-		<-ch
-	}
-	h.Once.Do(func() { close(h.born) })
-}
+func spark(ch sparkChan, eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	eye.Show(dvalve, dvalue)
+	ch <- struct{}{}
+}()

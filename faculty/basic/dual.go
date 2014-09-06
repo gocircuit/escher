@@ -11,14 +11,15 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 func Init(n string) {
 	name = n
-	faculty.Root.AddTerminal("Ignore", be.Ignore{})
-	faculty.Root.AddTerminal("Show", Println{})
-	faculty.Root.AddTerminal("See", Scanln{})
-	faculty.Root.AddTerminal("Name", be.NewNounReflex(name))
+	faculty.Root.AddTerminal(see.Name("Ignore"), be.Ignore{})
+	faculty.Root.AddTerminal(see.Name("Show"), Println{})
+	faculty.Root.AddTerminal(see.Name("See"), Scanln{})
+	faculty.Root.AddTerminal(see.Name("Name"), be.NewNounReflex(name))
 }
 
 var name string

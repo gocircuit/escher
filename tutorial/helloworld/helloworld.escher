@@ -10,5 +10,5 @@
 
 main {
 	s Show
-	s._ = "¡Hello, world!"
+	s:_ = "¡Hello, world!"
 }

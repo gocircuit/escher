@@ -40,14 +40,14 @@ func SeeSymbolNoUnion(src *Src) (x interface{}) {
 	if x = SeeUnion(src); x != nil {
 		return
 	}
-	if x = SeePath(src); x != nil {
+	if x = SeeName(src); x != nil {
 		return
 	}
 	return nil
 }
 
 // Path …
-func SeePath(src *Src) interface{} {
+func SeeName(src *Src) interface{} {
 	t := src.Copy()
 	aux := t.TryMatch("@")
 	var x []string

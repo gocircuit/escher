@@ -15,6 +15,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -36,19 +37,19 @@ func Init(a string) {
 		log.Printf("Argument %s=%s", nv[0], v)
 	}
 	ns := faculty.Root.Refine("os")
-	ns.AddTerminal("Arg", Arg{})
-	ns.AddTerminal("Env", Env{})
-	ns.AddTerminal("Exit", Exit{})
-	ns.AddTerminal("Fatal", Fatal{})
-	ns.AddTerminal("Stdin", Stdin{})
-	ns.AddTerminal("Stdout", Stdout{})
-	ns.AddTerminal("Stderr", Stderr{})
+	ns.AddTerminal(see.Name("Arg"), Arg{})
+	ns.AddTerminal(see.Name("Env"), Env{})
+	ns.AddTerminal(see.Name("Exit"), Exit{})
+	ns.AddTerminal(see.Name("Fatal"), Fatal{})
+	ns.AddTerminal(see.Name("Stdin"), Stdin{})
+	ns.AddTerminal(see.Name("Stdout"), Stdout{})
+	ns.AddTerminal(see.Name("Stderr"), Stderr{})
 	//
-	ns.AddTerminal("LookPath", LookPath{})
-	ns.AddTerminal("Process", Process{})
-	ns.AddTerminal("ForkCommand", ForkCommand{})
-	ns.AddTerminal("ForkExit", ForkExit{})
-	ns.AddTerminal("ForkIO", ForkIO{})
+	ns.AddTerminal(see.Name("LookPath"), LookPath{})
+	ns.AddTerminal(see.Name("Process"), Process{})
+	ns.AddTerminal(see.Name("ForkCommand"), ForkCommand{})
+	ns.AddTerminal(see.Name("ForkExit"), ForkExit{})
+	ns.AddTerminal(see.Name("ForkIO"), ForkIO{})
 	//
 }
 

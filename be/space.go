@@ -26,7 +26,7 @@ func (x Space) Faculty() understand.Faculty {
 func (x Space) Materialize(walk ...interface{}) Reflex {
 	return x.materialize(
 		&Matter{
-			Name: []string{ChainKey("escher", []interface{}{"main"})},
+			Name: []string{ChainKey("escher", []interface{}{see.Name("!spaek¡")})},
 		}, 
 		walk...)
 }
@@ -54,6 +54,10 @@ func (x Space) materialize(matter *Matter, walk ...interface{}) Reflex {
 			}, 
 			within.(understand.Faculty), 
 			t)
+	case nil:
+		log.Fatalf("Not found %v", walk)
+	default:
+		log.Fatalf("Not knowing how to materialize %v/%T", t, t)
 	}
 	panic(1)
 }

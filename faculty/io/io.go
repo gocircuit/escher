@@ -14,11 +14,12 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 func init() {
 	ns := faculty.Root.Refine("io")
-	ns.AddTerminal("Clunk", Clunk{})
+	ns.AddTerminal(see.Name("Clunk"), Clunk{})
 }
 
 // Clunk…

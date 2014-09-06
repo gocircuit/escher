@@ -15,6 +15,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/understand"
 
 	// Load faculties
@@ -88,7 +89,7 @@ func main() {
 		}
 
 	default:
-		be.Space(compile(*flagX, *flagY, *flagZ)).Materialize("main")
+		be.Space(compile(*flagX, *flagY, *flagZ)).Materialize(see.Name("main"))
 		select {} // wait forever
 	}
 }

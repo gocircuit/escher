@@ -11,78 +11,66 @@ import (
 	"bytes"
 	"io"
 	// "log"
-	"sync"
 
+	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
 	ns := faculty.Root.Refine("text")
-	ns.AddTerminal("Merge", Merge{})
-	ns.AddTerminal("Form", Form{})
+	ns.AddTerminal("ForkMerge", ForkMerge{})
+	ns.AddTerminal("MergeBlend", MergeBlend{})
+	ns.AddTerminal("ForkForm", ForkForm{})
+	ns.AddTerminal("FormBlend", FormBlend{})
 }
 
-// Merge …
-type Merge struct{}
+// ForkMerge…
+type ForkMerge struct{}
 
-func (Merge) Materialize() be.Reflex {
-	_Endo, _Exo := be.NewSynapse()
-	firstEndo, firstExo := be.NewSynapse()
-	secondEndo, secondExo := be.NewSynapse()
-	thirdEndo, thirdExo := be.NewSynapse()
-	go func() {
-		h := &merge{
-			ready: make(chan struct{}),
-		}
-		h.reply = _Endo.Focus(be.DontCognize)
-		close(h.ready)
-		firstEndo.Focus(func(v interface{}) { h.CognizeArm(0, v) })
-		secondEndo.Focus(func(v interface{}) { h.CognizeArm(1, v) })
-		thirdEndo.Focus(func(v interface{}) { h.CognizeArm(2, v) })
-	}()
-	return be.Reflex{
-		"_":      _Exo,
-		"First":  firstExo,
-		"Second": secondExo,
-		"Third":  thirdExo,
-	}
+func (ForkMerge) Materialize() be.Reflex {
+	return basic.MaterializeUnion("_", "X", "Y", "Z")
 }
 
-type merge struct {
-	ready chan struct{}
-	reply *be.ReCognizer
-	sync.Mutex
-	arm [3]*bytes.Buffer
+// MergeBlend …
+type MergeBlend struct{}
+
+func (MergeBlend) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			if valve != "XYZ" {
+				return
+			}
+			img := value.(Image)
+			var w bytes.Buffer
+			w.WriteString(flatten(img.Interface("X")))
+			w.WriteString(flatten(img.Interface("Y")))
+			w.WriteString(flatten(img.Interface("Z")))
+			eye.Show("_", w.String())
+		}, 
+		"XYZ", "_",
+	)
+	return reflex
 }
 
-func (h *merge) CognizeArm(index int, v interface{}) {
-	<-h.ready
-	h.Lock()
-	defer h.Unlock()
+func flatten(v interface{}) string {
 	switch t := v.(type) {
 	case string:
-		h.arm[index] = bytes.NewBufferString(t)
+		return t
 	case []byte:
-		h.arm[index] = bytes.NewBuffer(t)
+		return string(t)
 	case byte:
-		h.arm[index] = bytes.NewBuffer([]byte{t})
+		return string(t)
 	case rune:
-		h.arm[index] = bytes.NewBuffer(nil)
-		h.arm[index].WriteRune(t)
+		return string(t)
 	case io.Reader:
-		h.arm[index] = bytes.NewBuffer(nil)
-		io.Copy(h.arm[index], t)
-	default:
-		panic("unsupported")
+		var w bytes.Buffer 
+		io.Copy(&w, t)
+		return w.String()
+	case nil:
+		return ""
 	}
-	// merge
-	if h.arm[0] == nil || h.arm[1] == nil || h.arm[2] == nil {
-		return
-	}
-	var a bytes.Buffer
-	a.Write(h.arm[0].Bytes())
-	a.Write(h.arm[1].Bytes())
-	a.Write(h.arm[2].Bytes())
-	h.reply.ReCognize(a.String())
+	panic("unsupported")
 }

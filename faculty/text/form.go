@@ -9,59 +9,42 @@ package text
 
 import (
 	"bytes"
-	"sync"
 	"text/template"
 
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/image"
+	"github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
-// Form …
-type Form struct{}
+// ForkForm…
+type ForkForm struct{}
 
-func (Form) Materialize() be.Reflex {
-	dataEndo, dataExo := be.NewSynapse()
-	formEndo, formExo := be.NewSynapse()
-	_Endo, _Exo := be.NewSynapse()
-	go func() {
-		h := &form{
-			formed: make(chan struct{}),
-		}
-		h.ReCognizer = _Endo.Focus(be.DontCognize)
-		formEndo.Focus(h.CognizeForm)
-		dataEndo.Focus(h.CognizeData)
-	}()
-	return be.Reflex{
-		"_":    _Exo,
-		"Form": formExo,
-		"Data": dataExo,
-	}
+func (ForkForm) Materialize() be.Reflex {
+	return basic.MaterializeUnion("_", "Form", "Data")
 }
 
-type form struct {
-	sync.Mutex
-	t      *template.Template
-	formed chan struct{}
-	*be.ReCognizer
-}
+// FormBlend …
+type FormBlend struct{}
 
-func (h *form) CognizeForm(v interface{}) {
-	h.Lock()
-	defer h.Unlock()
-	var err error
-	h.t, err = template.New("").Parse(v.(string))
-	if err != nil {
-		panic(err)
-	}
-	close(h.formed)
-}
-
-func (h *form) CognizeData(v interface{}) {
-	<-h.formed
-	h.Lock()
-	defer h.Unlock()
-	var w bytes.Buffer
-	if err := h.t.Execute(&w, v); err != nil {
-		panic(err)
-	}
-	h.ReCognizer.ReCognize(w.String())
+func (FormBlend) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			if valve != "FormData" {
+				return
+			}
+			img := value.(Image)
+			t, err := template.New("").Parse(img.String("Form"))
+			if err != nil {
+				panic(err)
+			}
+			var w bytes.Buffer
+			if err = t.Execute(&w, img.Interface("Data")); err != nil {
+				panic(err)
+			}
+			eye.Show("_", w.String())
+		}, 
+		"FormData", "_",
+	)
+	return reflex
 }

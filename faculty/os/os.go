@@ -58,60 +58,42 @@ var args map[string]string
 type Arg struct{}
 
 func (Arg) Materialize() be.Reflex {
-	valueEndo, valueExo := be.NewSynapse()
-	nameEndo, nameExo := be.NewSynapse()
-	go func() {
-		h := &arg{}
-		h.valueRe = valueEndo.Focus(be.DontCognize)
-		nameEndo.Focus(h.CognizeName)
-	}()
-	return be.Reflex{
-		"Name":  nameExo,
-		"Value": valueExo,
-	}
-}
-
-type arg struct {
-	valueRe *be.ReCognizer
-}
-
-func (h *arg) CognizeName(v interface{}) {
-	n, ok := v.(string)
-	if !ok {
-		panic("non-string name perceived by os.arg")
-	}
-	h.valueRe.ReCognize(args[n])
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			if valve != "Name" {
+				return
+			}
+			n, ok := value.(string)
+			if !ok {
+				panic("non-string name perceived by os.arg")
+			}
+			eye.Show("Value", args[n])
+		}, 
+		"Name", "Value",
+	)
+	return reflex
 }
 
 // Env
 type Env struct{}
 
 func (Env) Materialize() be.Reflex {
-	valueEndo, valueExo := be.NewSynapse()
-	nameEndo, nameExo := be.NewSynapse()
-	go func() {
-		h := &env{}
-		h.valueRe = valueEndo.Focus(be.DontCognize)
-		nameEndo.Focus(h.CognizeName)
-	}()
-	return be.Reflex{
-		"Name":  nameExo,
-		"Value": valueExo,
-	}
-}
-
-type env struct {
-	valueRe *be.ReCognizer
-}
-
-func (h *env) CognizeName(v interface{}) {
-	n, ok := v.(string)
-	if !ok {
-		panic("non-string name perceived by os.env")
-	}
-	ev := os.Getenv(n)
-	log.Printf("Environment %s=%s", n, ev)
-	h.valueRe.ReCognize(ev)
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, valve string, value interface{}) {
+			if valve != "Name" {
+				return
+			}
+			n, ok := value.(string)
+			if !ok {
+				panic("non-string name perceived by os.env")
+			}
+			ev := os.Getenv(n)
+			log.Printf("Environment %s=%s", n, ev)
+			eye.Show("Value", ev)
+		},
+		"Name", "Value",
+	)
+	return reflex
 }
 
 // Exit

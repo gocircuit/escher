@@ -16,19 +16,19 @@ import (
 type ForkExit struct{}
 
 func (ForkExit) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Spawn", "Exit")
+	return basic.MaterializeUnion("_", "Spawn", "Exit")
 }
 
 // ForkIO…
 type ForkIO struct{}
 
 func (ForkIO) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Spawn", "Stdin", "Stdout", "Stderr")
+	return basic.MaterializeUnion("_", "Spawn", "Stdin", "Stdout", "Stderr")
 }
 
 // ForkSpawn…
 type ForkSpawn struct{}
 
 func (ForkSpawn) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Name", "Server")
+	return basic.MaterializeUnion("_", "Name", "Server")
 }

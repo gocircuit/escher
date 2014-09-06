@@ -44,7 +44,7 @@ func (Scanln) Materialize() be.Reflex {
 			}
 		}()
 	}()
-	return be.Reflex{"_": t}
+	return be.Reflex{see.Name("_"): t}
 }
 
 // Println

@@ -15,19 +15,19 @@ import (
 type ForkCommand struct{}
 
 func (ForkCommand) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Path", "Dir", "Args", "Env")
+	return basic.MaterializeUnion("_", "Path", "Dir", "Args", "Env")
 }
 
 // ForkIO…
 type ForkIO struct{}
 
 func (ForkIO) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "When", "Stdin", "Stdout", "Stderr")
+	return basic.MaterializeUnion("_", "When", "Stdin", "Stdout", "Stderr")
 }
 
 // ForkExit…
 type ForkExit struct{}
 
 func (ForkExit) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "When", "Exit")
+	return basic.MaterializeUnion("_", "When", "Exit")
 }

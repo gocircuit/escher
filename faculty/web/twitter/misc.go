@@ -16,26 +16,26 @@ import (
 type AnswerMaterializer struct{}
 
 func (AnswerMaterializer) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Name", "Sentence")
+	return basic.MaterializeUnion("_", "Name", "Sentence")
 }
 
 // ConsumerMaterializer ...
 type ConsumerMaterializer struct{}
 
 func (ConsumerMaterializer) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Key", "Secret")
+	return basic.MaterializeUnion("_", "Key", "Secret")
 }
 
 // AccessMaterializer ...
 type AccessMaterializer struct{}
 
 func (AccessMaterializer) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "Token", "Secret")
+	return basic.MaterializeUnion("_", "Token", "Secret")
 }
 
 // UserTimelineQueryMaterializer ...
 type UserTimelineQueryMaterializer struct{}
 
 func (UserTimelineQueryMaterializer) Materialize() be.Reflex {
-	return basic.MaterializeConjunction("_", "UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
+	return basic.MaterializeUnion("_", "UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
 }

@@ -7,6 +7,7 @@
 package be
 
 import (
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/understand"
 )
 
@@ -18,7 +19,7 @@ func (Ignore) Materialize(*Matter) Reflex {
 	go func() {
 		s.Focus(DontCognize)
 	}()
-	return Reflex{understand.Default{}: t}
+	return Reflex{see.Name("_"): t}
 }
 
 func DontCognize(interface{}) {}

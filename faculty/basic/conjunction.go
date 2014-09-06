@@ -14,7 +14,7 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
-func MaterializeConjunction(name string, field ...string) be.Reflex {
+func MaterializeUnion(name string, field ...string) be.Reflex {
 	reflex, eye := plumb.NewEye(append(field, name)...)
 	go func() {
 		conj := Make()

@@ -29,9 +29,7 @@ func (Clunk) Materialize() be.Reflex {
 	go func() {
 		_Endo.Focus(clunk)
 	}()
-	return be.Reflex{
-		"_": _Exo,
-	}
+	return be.Reflex{see.Name("_"): _Exo}
 }
 
 func clunk(v interface{}) {

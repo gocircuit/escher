@@ -7,7 +7,6 @@
 package be
 
 import (
-	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/understand"
 )
 

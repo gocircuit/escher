@@ -34,8 +34,11 @@ func NewName(walk []string) Name {
 	return Name(strings.Join(walk, "."))
 }
 
-func (x Name) Walk() []string {
-	return strings.Split(string(x), ".")
+func (x Name) AsWalk() (walk []interface{}) {
+	for _, w := range strings.Split(string(x), ".") {
+		walk = append(walk, Name(w))
+	}
+	return
 }
 
 func (x Name) String() string {

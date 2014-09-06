@@ -9,7 +9,6 @@ package be
 import (
 	// "fmt"
 	"log"
-	"strings"
 
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/see"
@@ -24,18 +23,18 @@ func (x Space) Faculty() understand.Faculty {
 }
 
 // Materialize creates the reflex, described by the absolute path walk.
-func (x Space) Materialize(walk ...string) Reflex {
+func (x Space) Materialize(walk ...interface{}) Reflex {
 	return x.materialize(
 		&Matter{
-			Name: []string{ChainKey("escher", []string{"main"})},
+			Name: []string{ChainKey("escher", []interface{}{"main"})},
 		}, 
 		walk...)
 }
 
-func (x Space) materialize(matter *Matter, walk ...string) Reflex {
+func (x Space) materialize(matter *Matter, walk ...interface{}) Reflex {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Fatalf("Problem materializing %s (%v)", strings.Join(walk,"."), r)
+			log.Fatalf("Problem materializing %s (%v)", walk, r)
 		}
 	}()
 	within, term := x.Faculty().Walk(walk...)
@@ -68,11 +67,8 @@ func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, 
 			continue
 		}
 		switch t := peer.Design().(type) {
-		case see.RootPath:
-			peers[name] = x.materialize(matter, []string(t)...)
-		case see.Path: // e.g. “hello.who.is.there”
-			panic("relative addressing not implemented")
-			// peers[name] = x.materializePath(matter, withinFac, []string(t))
+		case see.Name:
+			peers[name] = x.materialize(matter, t.AsWalk()...)
 		case string, int, float64, complex128:
 			peers[name] = NewNounReflex(t) // materialize builtin gates
 		case Image:
@@ -106,7 +102,7 @@ func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, 
 				m2 := peers[qp][qv]
 				delete(peers[qp], qv)
 				if m1 == nil || m2 == nil {
-					log.Fatalf("No matching valve: %v·%s/%v <=> %v·%s/%v", name, v.Name, m1, qp, qv, m2)
+					log.Fatalf("No matching valve: %v:%v/%v <=> %v:%v/%v", name, v.Name, m1, qp, qv, m2)
 				}
 				go Merge(m1, m2)
 			}
@@ -115,36 +111,17 @@ func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, 
 	// Check for unmatched valves
 	for pn, p := range peers {
 		for vname, _ := range p {
-			panicf("%s.%s not matched", pn, vname)
+			panicf("%s:%s not matched", pn, vname)
 		}
 	}
 	return exo
 }
 
-// func (x Space) materializePath(matter *Matter, within understand.Faculty, parts []string) Reflex {
-// 	unfold := x.Lookup(within, parts[0])
-// 	switch t := unfold.(type) {
-// 	case string, int, float64, complex128:
-// 		return NewNounReflex(t) // materialize builtin gates
-// 	case Image:
-// 		return NewNounReflex(t.Copy())
-// 	case see.Path:
-// 		parts = append([]string(t), parts[1:]...)
-// 		return Space(within).materialize(matter, parts...)
-// 	case see.RootPath:
-// 		parts = append([]string(t), parts[1:]...)
-// 		return x.materialize(matter, parts...)
-// 	case nil:
-// 		return nil
-// 	}
-// 	panic("unknown design")
-// }
-
 func (x Space) Interpret(understood *understand.Circuit) (fresh *understand.Circuit) {
 	return x.Faculty().Interpret(understood)
 }
 
-func (x Space) Forget(name string) (forgotten interface{}) {
+func (x Space) Forget(name interface{}) (forgotten interface{}) {
 	switch t := x.Faculty().Forget(name).(type) {
 	case understand.Faculty:
 		return Space(t)
@@ -154,7 +131,7 @@ func (x Space) Forget(name string) (forgotten interface{}) {
 	panic(0)
 }
 
-func (x Space) Walk(walk ...string) (parent, child interface{}) {
+func (x Space) Walk(walk ...interface{}) (parent, child interface{}) {
 	parent, child = x.Faculty().Walk(walk...)
 	if fac, ok := parent.(understand.Faculty); ok {
 		parent = Space(fac)
@@ -165,7 +142,7 @@ func (x Space) Walk(walk ...string) (parent, child interface{}) {
 	return
 }
 
-func (x Space) Roam(walk ...string) (parent, child interface{}) {
+func (x Space) Roam(walk ...interface{}) (parent, child interface{}) {
 	parent, child = x.Faculty().Roam(walk...)
 	if fac, ok := parent.(understand.Faculty); ok {
 		parent = Space(fac)

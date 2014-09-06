@@ -27,14 +27,13 @@ func NewFaculty() Faculty {
 	return f
 }
 
-// Forget does not allow removal of non-string keys.
-func (fty Faculty) Forget(name string) (forgotten interface{}) {
+func (fty Faculty) Forget(name interface{}) (forgotten interface{}) {
 	forgotten = fty[name]
 	delete(fty, name)
 	return
 }
 
-func (fty Faculty) Roam(walk ...string) (parent, child interface{}) {
+func (fty Faculty) Roam(walk ...interface{}) (parent, child interface{}) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
@@ -48,7 +47,7 @@ func (fty Faculty) Roam(walk ...string) (parent, child interface{}) {
 	return fac.Roam(walk[1:]...)
 }
 
-func (fty Faculty) Walk(walk ...string) (parent, child interface{}) {
+func (fty Faculty) Walk(walk ...interface{}) (parent, child interface{}) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
@@ -71,7 +70,7 @@ func (fty Faculty) Walk(walk ...string) (parent, child interface{}) {
 	panic(7)
 }
 
-func (fty Faculty) Refine(name string) (child Faculty) {
+func (fty Faculty) Refine(name interface{}) (child Faculty) {
 	if x, ok := fty[name]; ok {
 		return x.(Faculty)
 	}
@@ -81,7 +80,7 @@ func (fty Faculty) Refine(name string) (child Faculty) {
 	return
 }
 
-func (fty Faculty) AddTerminal(name string, term interface{}) {
+func (fty Faculty) AddTerminal(name, term interface{}) {
 	if _, ok := fty[name]; ok {
 		panic(7)
 	}
@@ -92,7 +91,7 @@ func (fty Faculty) AddTerminal(name string, term interface{}) {
 type Genus struct{}
 
 type FacultyGenus struct {
-	Walk []string // walk to this faculty from root
+	Walk []interface{} // walk to this faculty from root
 	SourceDir Image // source directoroy (acid) name to directory path
 }
 
@@ -104,12 +103,14 @@ func (fty Faculty) Genus() *FacultyGenus {
 	return fty[Genus{}].(*FacultyGenus)
 }
 
+// Un
 func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
+	//
 	fty.Genus().SourceDir.Grow(acid, dir)
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
@@ -118,17 +119,17 @@ func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() {
-			fty.Refine(fileInfo.Name()).UnderstandDirectory(acid, filePath)
+			fty.Refine(see.Name(fileInfo.Name())).UnderstandDirectory(acid, filePath)
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" {
 			continue
 		}
-		fty.UnderstandFile(dir, filePath)
+		fty.UnderstandFile(filePath)
 	}
 }
 
-func (fty Faculty) UnderstandFile(dir, filePath string) {
+func (fty Faculty) UnderstandFile(filePath string) {
 	text, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", filePath, err)
@@ -140,7 +141,7 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 			break
 		}
 		t := Understand(s)
-		t.sourceDir = dir
+		t.sourceFile = filePath
 		fty.Interpret(t)
 	}
 }

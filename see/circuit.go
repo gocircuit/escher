@@ -96,6 +96,9 @@ func Circuitize(name interface{}, img Image) (cir *Circuit) {
 			cir.seeMatching(cir.Name, v.(Image))
 			continue
 		}
+		if nm == cir.Name {
+			panic("peer duplicates name with super peer")
+		}
 		cir.Peer = append(
 			cir.Peer,
 			&Peer{

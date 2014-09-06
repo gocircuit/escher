@@ -16,7 +16,7 @@ import (
 // Circuit ...
 type Circuit struct {
 	name  interface{} // Name of the circuit design
-	sourceDir string // Host source directory where this circuit's source implementation was found
+	sourceFile string // Host source directory where this circuit's source implementation was found
 	genus []*see.Circuit // Stack of syntactic circuits embodied in this semantic circuit
 	// Union of name-to-peer and index-to-peer maps.
 	// This is like packing a map[string]*Peer and a map[int]*Peer into one map[interface{}]*Peer
@@ -29,8 +29,8 @@ func (c *Circuit) Name() interface{} {
 	return c.name
 }
 
-func (c *Circuit) SourceDir() string {
-	return c.sourceDir
+func (c *Circuit) SourceFile() string {
+	return c.sourceFile
 }
 
 func (c *Circuit) PeerNames() []interface{} {

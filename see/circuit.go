@@ -9,6 +9,7 @@ package see
 import (
 	"bytes"
 	"fmt"
+
 	. "github.com/gocircuit/escher/image"
 )
 
@@ -20,15 +21,15 @@ func SeeCircuit(src *Src) *Circuit {
 	}
 	for p, un := range SeePeer(src) {
 		// fmt.Printf("p=%s v=%v\n", p, un)
-		return Circuitize(p.(string), un.(Image))
+		return Circuitize(p, un.(Image))
 	}
 	return nil
 }
 
 // Circuit
 type Circuit struct {
-	Name  string
-	Valve []string
+	Name  interface{}
+	Valve []interface{}
 	Peer  []*Peer
 	Match []*Matching
 }
@@ -55,26 +56,17 @@ func (m *Matching) String() string {
 // Join is one of PeerJoin, ValveJoin or DesignJoin.
 type Join interface{}
 
-// E.g. “a.X”
+// PeerJoin
 type PeerJoin struct {
-	Peer  string
-	Valve string
+	Peer  interface{}
+	Valve interface{}
 }
 
 func (p *PeerJoin) String() string {
-	return fmt.Sprintf("%s.%s", p.Peer, p.Valve)
+	return fmt.Sprintf("%v:%v", p.Peer, p.Valve)
 }
 
-// E.g. “Y”
-type ValveJoin struct {
-	Valve string
-}
-
-func (v *ValveJoin) String() string {
-	return v.Valve
-}
-
-// E.g. “12.1e3”
+// DesignJoin
 type DesignJoin struct {
 	Design interface{}
 }
@@ -83,24 +75,33 @@ func (d *DesignJoin) String() string {
 	return fmt.Sprintf("%v", d.Design)
 }
 
-func Circuitize(name string, img Image) (cir *Circuit) {
+// ValveJoin
+type ValveJoin struct {
+	Valve interface{}
+}
+
+func (v *ValveJoin) String() string {
+	return fmt.Sprintf("%v", v.Valve)
+}
+
+func Circuitize(name interface{}, img Image) (cir *Circuit) {
 	if img == nil {
 		return nil
 	}
 	cir = &Circuit{
-		Peer:  make([]*Peer, 0, img.Len()),                        // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
-		Match: make([]*Matching, 0, img.Walk(MatchingName).Len()), // # of matchings
+		Peer:  make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
+		Match: make([]*Matching, 0, img.Walk(Matchings{}).Len()), // # of matchings
 	}
 	cir.Name = name
 	for name, v := range img {
-		if name == MatchingName {
-			cir.seeMatching(v.(Image))
+		if _, ok := name.(Matchings); ok {
+			cir.seeMatching(name, v.(Image))
 			continue
 		}
 		cir.Peer = append(
 			cir.Peer,
 			&Peer{
-				Name:   name,
+				Name: name,
 				Design: v,
 			},
 		)
@@ -108,31 +109,22 @@ func Circuitize(name string, img Image) (cir *Circuit) {
 	return
 }
 
-func (cir *Circuit) seeMatching(s Image) {
+func (cir *Circuit) seeMatching(name interface{}, s Image) {
 	for _, x := range s {
 		// fmt.Printf("=%s=>\n", string(w))
 		m := &Matching{}
 		for i := 0; i < 2; i++ {
 			y := x.(Image).Walk(i)
 			// fmt.Printf("    –%d–>\n    %s\n", i, y.Print("    ", "\t"))
-
-			v := string(y["Valve"].(Name))
-			switch p := y["Peer"].(type) {
-			case Name:
-				if string(p) == "" {
-					m.Join[i] = &ValveJoin{
-						Valve: v,
-					}
+			if y.Has("Design") {
+				m.Join[i] = &DesignJoin{Design: y.Interface("Design")}
+			} else {
+				p, v := y["Peer"], y["Valve"]
+				if p == name {
+					m.Join[i] = &ValveJoin{Valve: v}
 					cir.Valve = append(cir.Valve, v)
 				} else {
-					m.Join[i] = &PeerJoin{
-						Peer:  string(p),
-						Valve: v,
-					}
-				}
-			default:
-				m.Join[i] = &DesignJoin{
-					Design: p,
+					m.Join[i] = &PeerJoin{Peer:  p, Valve: v}
 				}
 			}
 		}
@@ -142,7 +134,7 @@ func (cir *Circuit) seeMatching(s Image) {
 
 func (c *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%s ", c.Name)
+	fmt.Fprintf(&w, "%v ", c.Name)
 	if len(c.Valve) > 0 {
 		w.WriteString("(")
 	}
@@ -151,7 +143,7 @@ func (c *Circuit) Print(prefix, indent string) string {
 		if i+1 == len(c.Valve) {
 			comma = ""
 		}
-		fmt.Fprintf(&w, "%s%s", v, comma)
+		fmt.Fprintf(&w, "%v%s", v, comma)
 	}
 	if len(c.Valve) > 0 {
 		w.WriteString(") {\n")

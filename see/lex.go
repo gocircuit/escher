@@ -64,14 +64,16 @@ func isOperator(r rune) bool {
 	return false
 }
 
+const ValveSelector = ':'
+
 // isLiteral returns true iff r is not a whitespace and not a newline and not a comment character.
 func isLiteral(r rune) bool {
-	return !isWhitespace(r) && !isNewline(r) && r != '/' && !isDelimiter(r)
+	return r != ValveSelector && !isWhitespace(r) && !isNewline(r) && r != '/' && !isDelimiter(r)
 }
 
 func isDelimiter(r rune) bool {
 	switch r {
-	case '{', '}', '[', ']', '(', ')':
+	case '{', '}', '[', ']', '(', ')', ',', ';':
 		return true
 	}
 	return false

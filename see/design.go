@@ -11,32 +11,17 @@ import (
 	"fmt"
 	"strconv"
 )
-
-// SeeArithmeticOrUnion parses a built-in type (int, float, complex, string, name) into a star.
-func SeeArithmeticOrUnion(src *Src) interface{} {
-	if y := SeeArithmetic(src); y != nil {
-		return y
-	}
-	if y := SeeUnion(src); y != nil {
-		return y
-	}
-	return nil
-}
-
-func SeeArithmeticOrPathOrUnion(src *Src) (x interface{}) {
-	if x = SeeArithmetic(src); x != nil {
-		return
-	}
-	if x = SeePath(src); x != nil {
-		return
-	}
+func SeeSymbol(src *Src) (x interface{}) {
 	if x = SeeUnion(src); x != nil {
 		return
 	}
+	if x = SeeSymbolNoUnion(src); x != nil {
+		return
+	}
 	return nil
 }
 
-func SeeArithmetic(src *Src) (x interface{}) {
+func SeeSymbolNoUnion(src *Src) (x interface{}) {
 	if x = SeeInt(src); x != nil {
 		return
 	}
@@ -50,6 +35,12 @@ func SeeArithmetic(src *Src) (x interface{}) {
 		return
 	}
 	if x = SeeDoubleQuoteString(src); x != nil {
+		return
+	}
+	if x = SeeUnion(src); x != nil {
+		return
+	}
+	if x = SeePath(src); x != nil {
 		return
 	}
 	return nil
@@ -75,9 +66,9 @@ func SeePath(src *Src) interface{} {
 	}
 	src.Become(t)
 	if aux {
-		return Path(x)
+		return NewPath(x)
 	}
-	return RootPath(x)
+	return NewRootPath(x)
 }
 
 // Int …

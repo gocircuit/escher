@@ -18,12 +18,13 @@ var testDesign = []string{
 	"`la` ",
 	`1-2i`,
 	`name`,
+	`name.family`,
 	`@root`,
 }
 
 func TestDesign(t *testing.T) {
 	for _, q := range testDesign {
-		x := SeeArithmeticOrPathOrUnion(NewSrcString(q))
+		x := SeeSymbol(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
@@ -33,13 +34,11 @@ func TestDesign(t *testing.T) {
 }
 
 var testMatching = []string{
-	`a.X = b.Y`,
-	` X = y.Z `,
+	`a:X = b:Y`,
+	` X = y:Z `,
 	` X = "hello"`,
-	`123 =`,
-	`=`,
-	`X=`,
-	`X.y=`,
+	`123 = "a"`,
+	`X:y = a:1`,
 }
 
 func TestMatching(t *testing.T) {
@@ -80,7 +79,7 @@ var testUnion = []string{
 	`{}`,
 	`{
 		g {}
-		a = b
+		a:3 = b:"a"
 		x {}
 	}`,
 	`{
@@ -88,12 +87,12 @@ var testUnion = []string{
 		c @d
 		e 1.23
 		f "123"
-		 = 0-2i
-		 _ 123
+		a:1 = 0-2i
+		_ 123
 	}`,
 	`{
 		g {},
-		a = b,
+		a:1 = b:2,
 		x {};
 		y {a, b, c, "def"; }
 	}`,
@@ -114,12 +113,12 @@ var testCircuit = []string{
 	`nand {
 		a and
 		n not
-		X=a.X
-		Y=a.Y
-		n.X=a.XandY
+		nand:X=a:X
+		nand:Y=a:Y
+		n:X=a:XandY
 		b "3e3"
-		n.notX=
-		{}=
+		n:notX=nand:_
+		X=nand:1,
 		"abcd",
 	}
 	`,
@@ -131,7 +130,7 @@ var testCircuit = []string{
 
 main {
 	s @show
-	s.Object = "¡Hello, world!"
+	s:Object = "¡Hello, world!"
 }
 `, `
 // Written in 2014 by Petar Maymounkov.
@@ -144,10 +143,10 @@ main {
 	t @time.Ticker
 	s @sum
 	out @show
-	t.Duration = 1e9
-	t.Tick = s.Sum
-	s.X = 5e9
-	s.Y = out.Object
+	t:Duration = 1e9
+	t:Tick = s:Sum
+	s:X = 5e9
+	s:Y = out:Object
 }
 `,
 	`
@@ -159,46 +158,47 @@ main {
 	forkIO @circuit.ForkIO
 	forkExit @circuit.ForkExit
 
-	srv.Name = "Server"
-	proc.Server = srv.Value
-	proc.Command = {
+	srv:Name = "Server"
+	proc:Server = srv:Value
+	proc:Command = {
 		Path "/usr/bin/say"
 		Args { "escher" }
 	}
 
-	proc.IO = forkIO.Forked
+	proc:IO = forkIO:Forked
 
 	clunkIn @io.Clunk
 	clunkOut @io.Clunk
 	clunkErr @io.Clunk
-	forkIO.Stdin = clunkIn.IO
-	forkIO.Stdout = clunkOut.IO
-	forkIO.Stderr = clunkErr.IO
+	forkIO:Stdin = clunkIn:IO
+	forkIO:Stdout = clunkOut:IO
+	forkIO:Stderr = clunkErr:IO
 
 	spawnIgn @Ignore
-	forkIO.Spawn = spawnIgn.Subject
+	forkIO:Spawn = spawnIgn:Subject
 
-	proc.Spawn = w.A1
-	w.A0 = 1
-	w.A2 = d.X
-	d.Duration = 1e9 // 1 second
-	d.Y = forkExit.Spawn
+	proc:Spawn = w:A1
+	w:A0 = 1
+	w:A2 = d:X
+	d:Duration = 1e9 // 1 second
+	d:Y = forkExit:Spawn
 
 	exitIgn @Ignore
-	proc.Exit = forkExit.Forked
-	forkExit.Exit = exitIgn.Subject
+	proc:Exit = forkExit:Forked
+	forkExit:Exit = exitIgn:Subject
 }
-`, `
+`, 
+`
 header {
 	merge text.Merge
-	merge.First = ` + "`" + `
+	merge:First = ` + "`" + `
 <html><head><title>
 ` + "`" + `
-	merge.Second = Title
-	merge.Third = ` + "`" + `
+	merge:Second = Title
+	merge:Third = ` + "`" + `
 </title></head></html>
 ` + "`" + `
-	_ = merge._
+	header:_ = merge:_
 }
 `,
 }

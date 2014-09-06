@@ -5,41 +5,41 @@
 main {
 	?? pause!!
 	explore model.Explore
-	explore.When = 0
-	explore.Charge = charge._
-	explore.Sequence = sequence._
+	explore:When = 0
+	explore:Charge = charge:_
+	explore:Sequence = sequence:_
 
 	charge model.ForkCharge
-	charge.Circuit = ?
-	charge.Peer = "b"
-	charge.Valve = ?
+	charge:Circuit = ?
+	charge:Peer = "b"
+	charge:Valve = ?
 
 	sequence model.ForkSequence
-	sequence.When = ?
-	sequence.Index = ?
-	sequence.Charge = ?
+	sequence:When = ?
+	sequence:Index = ?
+	sequence:Charge = ?
 }
 
 // Circuits A, B, C and D describe a complete system.
 A {
 	b B
-	b.X = b.Y
+	b:X = b:Y
 }
 
 B {
 	c1 C
 	c2 C
-	X = c1.X
-	c1.Y = c2.X
-	c2.Y = Y
+	X = c1:X
+	c1:Y = c2:X
+	c2:Y = Y
 }
 
 C {
 	d1 D
 	d2 D
-	X = d1.X
-	d1.Y = d2.X
-	d2.Y = Y
+	X = d1:X
+	d1:Y = d2:X
+	d2:Y = Y
 }
 
 D {

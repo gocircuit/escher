@@ -11,7 +11,7 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-const MatchingName = "="
+type Matchings struct{}
 
 func SeeUnion(src *Src) (x interface{}) {
 	defer func() {
@@ -21,7 +21,7 @@ func SeeUnion(src *Src) (x interface{}) {
 	}()
 	y := Make()
 	m := Make()
-	y.Grow(MatchingName, m)
+	y.Grow(Matchings{}, m)
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
@@ -36,9 +36,9 @@ func SeeUnion(src *Src) (x interface{}) {
 		Space(q)
 		t.Become(q)
 		if peer != nil {
-			keys := peer.Letters()
-			if keys[0] == "" { // if peer is nameless, this is a slice element
-				y.Grow(j, peer[""])
+			keys := peer.Names()
+			if _, noname := keys[0].(nameless); noname { // if peer is nameless, this is a slice element
+				y.Grow(j, peer[nameless{}])
 				j++
 			} else {
 				y.Attach(peer)
@@ -52,7 +52,7 @@ func SeeUnion(src *Src) (x interface{}) {
 	t.Match("}")
 	src.Become(t)
 	if m.Len() == 0 { // no matchings
-		y.Abandon(MatchingName)
+		y.Abandon(Matchings{})
 	}
 	return y
 }

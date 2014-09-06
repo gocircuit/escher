@@ -26,37 +26,28 @@ func stringifySlice(ss []string) string {
 	return w.String()
 }
 
-// Name
-type Name string
-
-func (x Name) String() string {
-	return fmt.Sprintf("Name(%s)", string(x))
-}
-
 // Path
-type Path []string
-
-func (x Path) Name() Name {
-	if len(x) != 1 {
-		panic("path not a name")
-	}
-	return Name(x[0])
+type Path struct {
+	walk []string
 }
 
-func (x Path) String() string {
-	return fmt.Sprintf("Path(%s)", stringifySlice(x))
+func NewPath(walk []string) *Path {
+	return &Path{walk}
+}
+
+func (x *Path) String() string {
+	return fmt.Sprintf("Path(%s)", stringifySlice(x.walk))
 }
 
 // RootPath
-type RootPath []string
+type RootPath struct {
+	walk []string
+}
 
-func (x RootPath) Name() Name {
-	if len(x) != 1 {
-		panic("path not a name")
-	}
-	return Name(x[0])
+func NewRootPath(walk []string) *RootPath {
+	return &RootPath{walk}
 }
 
 func (x RootPath) String() string {
-	return fmt.Sprintf("RootPath(%s)", stringifySlice(x))
+	return fmt.Sprintf("RootPath(%s)", stringifySlice(x.walk))
 }

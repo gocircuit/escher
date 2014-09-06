@@ -35,13 +35,10 @@ func SeeMatching(src *Src) (x Image) {
 }
 
 func SeeJoin(src *Src) (x Image) {
+	if x = seePeerValveJoin(src); x != nil { // valve (or empty string)
+		return x
+	}
 	if x = seeDesignJoin(src); x != nil { // int, string, etc.
-		return x
-	}
-	if x = seePeerValveJoin(src); x != nil { // peer.valve
-		return x
-	}
-	if x = seeValveJoin(src); x != nil { // valve (or empty string)
 		return x
 	}
 	panic(1)
@@ -54,14 +51,13 @@ func seeDesignJoin(src *Src) (x Image) {
 		}
 	}()
 	t := src.Copy()
-	dimg := SeeArithmeticOrUnion(t)
-	if dimg == nil {
+	dsgn := SeeSymbol(t)
+	if dsgn == nil {
 		return nil
 	}
 	src.Become(t)
 	return Image{
-		"Peer":  dimg,
-		"Valve": Name(""),
+		"Design":  dsgn,
 	}
 }
 
@@ -72,33 +68,18 @@ func seePeerValveJoin(src *Src) (x Image) {
 		}
 	}()
 	t := src.Copy()
-	peer := Identifier(t)
-	if peer == "" {
+	peer := SeeSymbolNoUnion(t)
+	if peer == nil {
 		return nil
 	}
-	t.Match(".")
-	valve := Identifier(t)
-	if valve == "" {
+	t.Match(string(ValveSelector))
+	valve := SeeSymbolNoUnion(t)
+	if valve == nil {
 		return nil
 	}
 	src.Become(t)
 	return Image{
-		"Peer":  Name(peer),
-		"Valve": Name(valve),
-	}
-}
-
-func seeValveJoin(src *Src) (x Image) {
-	defer func() {
-		if r := recover(); r != nil {
-			x = nil
-		}
-	}()
-	t := src.Copy()
-	valve := Identifier(t)
-	src.Become(t)
-	return Image{
-		"Peer":  Name(""),
-		"Valve": Name(valve),
+		"Peer":  peer,
+		"Valve": valve,
 	}
 }

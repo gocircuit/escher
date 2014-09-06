@@ -221,32 +221,15 @@ func (x Image) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "{\n")
 	// fmt.Fprintf(&w, "%s%s// letters\n", prefix, indent)
-	for _, key := range x.Letters() {
-		v := x[key]
+	for key, v := range x {
 		var t string
 		switch u := v.(type) {
 		case Printer:
 			t = u.Print(prefix+indent, indent)
 		case string:
 			t = fmt.Sprintf("%q", u)
-		default:
-			t = fmt.Sprintf("%v", v)
 		}
-		fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, key, t)
-	}
-	// fmt.Fprintf(&w, "%s%s// numbers\n", prefix, indent)
-	for _, key := range x.Numbers() {
-		v := x[key]
-		var t string
-		switch u := v.(type) {
-		case Printer:
-			t = u.Print(prefix+indent, indent)
-		case string:
-			t = fmt.Sprintf("%q", u)
-		default:
-			t = fmt.Sprintf("%v", v)
-		}
-		fmt.Fprintf(&w, "%s%s#%v %s\n", prefix, indent, key, t)
+		fmt.Fprintf(&w, "%s%s%v %v\n", prefix, indent, key, t)
 	}
 	fmt.Fprintf(&w, "%s}", prefix)
 	return w.String()

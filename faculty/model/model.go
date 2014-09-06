@@ -22,9 +22,9 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("model")
-	ns.AddTerminal(see.Name("ExploreOnStrobe"), ExploreOnStrobe{})
-	ns.AddTerminal(see.Name("ForkCharge"), ForkCharge{})
-	ns.AddTerminal(see.Name("ForkSequence"), ForkSequence{})
+	ns.AddTerminal("ExploreOnStrobe", ExploreOnStrobe{})
+	ns.AddTerminal("ForkCharge", ForkCharge{})
+	ns.AddTerminal("ForkSequence", ForkSequence{})
 }
 
 // ForkCharge…

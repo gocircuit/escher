@@ -13,13 +13,12 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
-	faculty.Root.AddTerminal(see.Name("Sum"), Sum{})
-	// faculty.Root.AddTerminal(see.Name("Prod"), Prod{})
+	faculty.Root.AddTerminal("Sum", Sum{})
+	// faculty.Root.AddTerminal("Prod", Prod{})
 }
 
 // Sum

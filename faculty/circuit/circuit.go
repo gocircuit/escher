@@ -16,22 +16,21 @@ import (
 
 	"github.com/gocircuit/circuit/client"
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/see"
 )
 
 func Init(name string, client *client.Client) {
 	rand.Seed(time.Now().UnixNano())
 
 	ns := faculty.Root.Refine("circuit")
-	ns.AddTerminal(see.Name("Process"), Process{})
-	ns.AddTerminal(see.Name("Docker"), Docker{})
-	ns.AddTerminal(see.Name("Leaving"), Leaving{})
-	ns.AddTerminal(see.Name("Joining"), Joining{})
-	// ns.AddTerminal(see.Name("Channel"), Chan{})
+	ns.AddTerminal("Process", Process{})
+	ns.AddTerminal("Docker", Docker{})
+	ns.AddTerminal("Leaving", Leaving{})
+	ns.AddTerminal("Joining", Joining{})
+	// ns.AddTerminal("Channel", Chan{})
 
-	ns.AddTerminal(see.Name("ForkSpawn"), ForkSpawn{})
-	ns.AddTerminal(see.Name("ForkExit"), ForkExit{})
-	ns.AddTerminal(see.Name("ForkIO"), ForkIO{})
+	ns.AddTerminal("ForkSpawn", ForkSpawn{})
+	ns.AddTerminal("ForkExit", ForkExit{})
+	ns.AddTerminal("ForkIO", ForkIO{})
 
 	if name = strings.TrimSpace(name); name == "" || client == nil {
 		// understand-only mode

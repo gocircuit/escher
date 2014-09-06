@@ -12,16 +12,15 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 	// . "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func Init(x, y, z string) {
 	ns := faculty.Root.Refine("acid")
-	ns.AddTerminal(see.Name("XDir"), Dir{x})
-	ns.AddTerminal(see.Name("YDir"), Dir{y})
-	ns.AddTerminal(see.Name("ZDir"), Dir{z})
+	ns.AddTerminal("XDir", Dir{x})
+	ns.AddTerminal("YDir", Dir{y})
+	ns.AddTerminal("ZDir", Dir{z})
 }
 
 // Dir

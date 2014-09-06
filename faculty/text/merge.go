@@ -15,13 +15,12 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 )
 
 func init() {
 	ns := faculty.Root.Refine("text")
-	ns.AddTerminal(see.Name("Merge"), Merge{})
-	ns.AddTerminal(see.Name("Form"), Form{})
+	ns.AddTerminal("Merge", Merge{})
+	ns.AddTerminal("Form", Form{})
 }
 
 // Merge …

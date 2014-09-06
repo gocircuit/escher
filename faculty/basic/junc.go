@@ -8,15 +8,14 @@ package basic
 
 import (
 	// "fmt"
-	"sync"
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
-	faculty.Root.AddTerminal(see.Name("Junction"), Junction{})
+	faculty.Root.AddTerminal("Junction", Junction{})
 }
 
 // Junction
@@ -44,9 +43,9 @@ func cognizeJunction(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	<-ch
 }
 
-type sparkChan chan<- struct{}
+type sparkChan chan struct{}
 
 func spark(ch sparkChan, eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	eye.Show(dvalve, dvalue)
 	ch <- struct{}{}
-}()
+}

@@ -80,7 +80,11 @@ func (fty Faculty) Refine(name interface{}) (child Faculty) {
 	return
 }
 
-func (fty Faculty) AddTerminal(name, term interface{}) {
+func (fty Faculty) AddTerminal(name string, term interface{}) {
+	fty.AddTerminalSymbol(see.Name(name), term)
+}
+
+func (fty Faculty) AddTerminalSymbol(name, term interface{}) {
 	if _, ok := fty[name]; ok {
 		panic(7)
 	}

@@ -14,22 +14,21 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
 	ns := faculty.Root.Refine("think")
 	//
-	ns.AddTerminal(see.Name("Associate"), Associate{})
-	ns.AddTerminal(see.Name("Remember"), Remember{})
-	ns.AddTerminal(see.Name("Choose"), Choose{})
-	ns.AddTerminal(see.Name("Focus"), Focus{})
+	ns.AddTerminal("Associate", Associate{})
+	ns.AddTerminal("Remember", Remember{})
+	ns.AddTerminal("Choose", Choose{})
+	ns.AddTerminal("Focus", Focus{})
 	//
-	ns.AddTerminal(see.Name("A"), Associate{})
-	ns.AddTerminal(see.Name("R"), Remember{})
-	ns.AddTerminal(see.Name("C"), Choose{})
-	ns.AddTerminal(see.Name("F"), Focus{})
+	ns.AddTerminal("A", Associate{})
+	ns.AddTerminal("R", Remember{})
+	ns.AddTerminal("C", Choose{})
+	ns.AddTerminal("F", Focus{})
 }
 
 // Focus

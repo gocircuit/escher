@@ -1,30 +1,29 @@
-// ExploreInDepth...
+// Explore...
 //
 // Valves:
 //
 //	When interface{}
-//	Charge *understand.Circuit
+//
+//	Charge {
+//		Circuit *understand.Circuit
+//		Peer interface{} // Start peer name
+//		Valve string // Start valve name
+//	}
+//
 //	Sequence {
 //		When interface{}
 //		Index int
-//		Charge *understand.Circuit
+//		Charge {
+//			Circuit *understand.Circuit
+//			Peer interface{} // Start peer name
+//			Valve string // Start valve name
+//		}
 //	}
 //
-ExploreInDepth {
-	explore model.ExploreInDepthOnStrobe
+Explore {
+	explore model.ExploreOnStrobe
 	explore.Strobe = strobe.Strobe
 
-	strobe basic.Strobe
-	strobe.When = When
-	strobe.Charge = Charge
-
-	Sequence = explore.Sequence
-}
-
-ExploreInBreadth {
-	explore model.ExploreInBreadthOnStrobe
-	explore.Strobe = strobe.Strobe
-	
 	strobe basic.Strobe
 	strobe.When = When
 	strobe.Charge = Charge

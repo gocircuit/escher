@@ -8,13 +8,14 @@
 package model
 
 import (
+	"container/list"
 	// "fmt"
-	"sync"
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/understand"
 )
 
@@ -56,21 +57,21 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		return
 	}
 	img := dvalue.(Image)
-	charge := img.Image("Charge")
+	charge := img.Walk("Charge")
 	//
 	var start = view{
 		Circuit: charge.Interface("Circuit").(*understand.Circuit),
 		Peer: charge.Interface("Peer"),
 		Valve: charge.String("Valve"),
 	}
+	var memory list.List
 	var v = start
 	var n int // Number of steps
 	for {
-		???
-		eye.Show( // yield
+		eye.Show( // yield current view
 			"Sequence", 
 			Image{
-				"When": img.Interface("When")),
+				"When": img.Interface("When"),
 				"Index": n,
 				"Charge": Image{
 					"Circuit": v.Circuit,
@@ -81,13 +82,27 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		)
 		n++
 		// transition
-		designPath := v.Circuit.PeerByName(v.Peer).Design().(see.RootPath) // gates are not allowed
-		_, recall := faculty.Root.Walk(designPath)
-		v.Circuit = recall.(*understand.Circuit) // cannot jump to gates
-		v.Peer = v.Circuit.PeerByName("").ValveByName(v.Valve).Matching.Of.Name()
-		v.Valve = ??
-
-
+		if _, up := v.Peer.(understand.Super); up {
+			back := memory.Remove(memory.Back()).(view)
+			//
+			v.Circuit = back.Circuit
+			//
+			from := v.Circuit.PeerByName(back.Peer).ValveByName(v.Valve)
+			to := from.Matching
+			v.Peer = to.Of.Name()
+			v.Valve = to.Name
+		} else { // down
+			memory.PushBack(v) // leave bread crumbs behind us
+			//
+			designPath := v.Circuit.PeerByName(v.Peer).Design().(see.RootPath) // gates are not allowed
+			_, recall := faculty.Root.Walk([]string(designPath)...)
+			v.Circuit = recall.(*understand.Circuit) // cannot transition into gates
+			//
+			from := v.Circuit.PeerByName(understand.Super{}).ValveByName(v.Valve)
+			to := from.Matching
+			v.Peer = to.Of.Name()
+			v.Valve = to.Name
+		}
 		if v == start {
 			break
 		}

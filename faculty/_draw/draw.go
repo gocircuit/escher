@@ -46,7 +46,7 @@ type Match struct {
 }
 
 func Compute(uc *understand.Circuit) *Circuit {
-	c := &Circuit{Name: uc.Name}
+	c := &Circuit{Name: uc.Name()}
 
 	// Peers
 	var z float64 // Total weight

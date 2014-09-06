@@ -21,9 +21,9 @@ import (
 	"github.com/gocircuit/escher/faculty/acid"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/faculty/circuit"
-	"github.com/gocircuit/escher/faculty/draw"
+	// "github.com/gocircuit/escher/faculty/draw"
 	_ "github.com/gocircuit/escher/faculty/escher"
-	_ "github.com/gocircuit/escher/faculty/handbook"
+	// _ "github.com/gocircuit/escher/faculty/handbook"
 	_ "github.com/gocircuit/escher/faculty/i"
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
@@ -66,7 +66,8 @@ func main() {
 		_, cd := compile(*flagX, *flagY, *flagZ).Walk(walk...)
 		switch t := cd.(type) {
 		case *understand.Circuit:
-			fmt.Println(draw.Draw(t))
+			println("drawing not supported")
+			// fmt.Println(draw.Draw(t))
 		default:
 			println(fmt.Sprintf("SVG display available only for circuits (%T)", t))
 		}

@@ -12,17 +12,21 @@ import (
 	"os"
 	"runtime/pprof"
 	"strconv"
-	"strings"
 	"sync"
 	"time"
+
+	"github.com/gocircuit/escher/see"
 )
 
 func ChainKey(superKey string, fullName []interface{}) string {
 	h := fnv.New32a()
 	h.Write([]byte(superKey))
 	h.Write([]byte("·"))
-	h.Write([]byte(????))
-	return strconv.FormatUint(uint64(h.Sum32()), 36) + ":" + fullName[len(fullName)-1]
+	for _, x := range fullName {
+		h.Write([]byte(string(x.(see.Name))))
+		h.Write([]byte("."))
+	}
+	return strconv.FormatUint(uint64(h.Sum32()), 36) + ":" + string(fullName[len(fullName)-1].(see.Name))
 }
 
 func stk() {

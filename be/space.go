@@ -47,7 +47,7 @@ func (x Space) materialize(matter *Matter, walk ...interface{}) Reflex {
 		return x.materializeCircuit(
 			&Matter{
 				Name: append(matter.Name, ChainKey(matter.LastName(), walk)),
-				Design: walk,
+				Source: walk,
 				Circuit: t,
 				Faculty: within.(understand.Faculty),
 				Super: matter,

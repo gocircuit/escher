@@ -14,6 +14,8 @@ import (
 	"runtime"
 	"runtime/pprof"
 	"time"
+	
+	"github.com/gocircuit/escher/see"
 )
 
 func init() {
@@ -59,7 +61,7 @@ func stack() {
 
 func interfacify(in []string) (out []interface{}) {
 	for _, x := range in {
-		out = append(out, x)
+		out = append(out, see.Name(x))
 	}
 	return
 }

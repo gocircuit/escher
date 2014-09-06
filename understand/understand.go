@@ -31,7 +31,7 @@ func (s Sugar) String() string {
 type Default struct{}
 
 func (s Default) String() string {
-	return ""
+	return "^"
 }
 
 func Understand(s *see.Circuit) *Circuit {

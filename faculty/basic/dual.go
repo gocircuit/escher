@@ -11,6 +11,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 func Init(n string) {
@@ -58,5 +59,5 @@ func (Println) Materialize() be.Reflex {
 			},
 		)
 	}()
-	return be.Reflex{"_": t}
+	return be.Reflex{see.Name("_"): t}
 }

@@ -22,6 +22,22 @@ import (
 func init() {
 	ns := faculty.Root.Refine("model")
 	ns.AddTerminal("ExploreOnStrobe", ExploreOnStrobe{})
+	ns.AddTerminal("ForkCharge", ForkCharge{})
+	ns.AddTerminal("ForkSequence", ForkSequence{})
+}
+
+// ForkCharge…
+type ForkCharge struct{}
+
+func (ForkCharge) Materialize() be.Reflex {
+	return basic.MaterializeConjunction("_", "Circuit", "Peer", "Valve")
+}
+
+// ForkSequence…
+type ForkSequence struct{}
+
+func (ForkSequence) Materialize() be.Reflex {
+	return basic.MaterializeConjunction("_", "When", "Index", "Charge")
 }
 
 // ExploreOnStrobe traverses the hierarchy of circuits induced by a given top-level/valveless circuit.

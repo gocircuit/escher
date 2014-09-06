@@ -29,7 +29,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 	}
 	w.WriteString("}")
 	//
-	keys := Image(fty).Letters()
+	keys := Image(fty).Names()
 	for _, k := range keys {
 		v := fty[k]
 		w.WriteString("\n" + prefix + indent)
@@ -38,7 +38,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 		case *Circuit:
 			w.WriteString("*")
 		}
-		w.WriteString(k)
+		w.WriteString(fmt.Sprintf("%v", k))
 		switch v.(type) {
 		case Faculty:
 			// w.WriteString(":")

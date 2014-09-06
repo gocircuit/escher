@@ -8,8 +8,8 @@ main {
 	t time.Ticker
 	s Sum
 	out Show
-	t.Duration = 1e9
-	t.Tick = s.Sum
-	s.X = 5e9
-	s.Y = out._
+	t:Duration = 1e9
+	t:Tick = s:Sum
+	s:X = 5e9
+	s:Y = out:_
 }

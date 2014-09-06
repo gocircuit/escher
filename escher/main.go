@@ -61,7 +61,7 @@ func main() {
 	switch {
 	case *flagSvg != "":
 		walk := interfacify(strings.Split(*flagSvg, "."))
-		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
+		if len(walk) == 2 && walk[0] == see.Name("") && walk[1] == see.Name("") { // -svg .
 			walk = nil
 		}
 		_, cd := compile(*flagX, *flagY, *flagZ).Walk(walk...)
@@ -75,7 +75,7 @@ func main() {
 
 	case *flagShow != "":
 		walk := interfacify(strings.Split(*flagShow, "."))
-		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
+		if len(walk) == 2 && walk[0] == see.Name("") && walk[1] == see.Name("") { // -show .
 			walk = nil
 		}
 		_, cd := compile(*flagX, *flagY, *flagZ).Walk(walk...)

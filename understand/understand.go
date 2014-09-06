@@ -16,11 +16,15 @@ import (
 // Super is a symbol for the peer name of the point-of-view peer
 type Super struct{}
 
+func (s Super) String() string {
+	return "*"
+}
+
 // Sugar is a valve name for auto-generated peers
 type Sugar int
 
 func (s Sugar) String() string {
-	return fmt.Sprintf("Sugar<%d>", s)
+	return fmt.Sprintf("sugar#%d", s)
 }
 
 func Understand(s *see.Circuit) *Circuit {

@@ -8,7 +8,7 @@ package see
 
 import (
 	"bytes"
-	"fmt"
+	// "fmt"
 	"strings"
 )
 
@@ -35,5 +35,5 @@ func NewName(walk []string) Name {
 }
 
 func (x Name) String() string {
-	return fmt.Sprintf("Name(%s)", string(x))
+	return string(x)
 }

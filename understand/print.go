@@ -92,7 +92,13 @@ func (x *Circuit) Print(prefix, indent string) string {
 		if pp, ok := p.Design().(Printer); ok {
 			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, name, pp.Print(prefix + indent, indent))
 		} else {
-			fmt.Fprintf(&w, "%s%s%s %v\n", prefix, indent, name, p.Design())
+			var dsgn string
+			if s, ok := p.Design().(string); ok {
+				dsgn = fmt.Sprintf("%q", s)
+			} else {
+				dsgn = print(p.Design())
+			}
+			fmt.Fprintf(&w, "%s%s%s %s\n", prefix, indent, name, dsgn)
 		}
 		for _, vn := range p.ValveNames() {
 			v := p.ValveByName(vn)

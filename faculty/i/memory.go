@@ -12,6 +12,7 @@ import (
 
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	eu "github.com/gocircuit/escher/understand"
 	"github.com/gocircuit/escher/kit/plumb"
 )
@@ -21,9 +22,9 @@ type Memory struct{}
 
 func (Memory) Materialize() be.Reflex {
 	h := &memory{
-		focus:     make(chan []string),
+		focus:     make(chan []interface{}),
 		learn:     make(chan *eu.Circuit),
-		recall:    make(chan []string),
+		recall:    make(chan []interface{}),
 	}
 	reflex, eye := plumb.NewEyeCognizer(h.Cognize, "Focus", "Learn", "Recall", "Use")
 	go h.loop(eye)
@@ -31,9 +32,9 @@ func (Memory) Materialize() be.Reflex {
 }
 
 type memory struct {
-	focus     chan []string
+	focus     chan []interface{}
 	learn     chan *eu.Circuit
-	recall    chan []string
+	recall    chan []interface{}
 	use       *be.ReCognizer
 }
 
@@ -59,10 +60,12 @@ func (h *memory) CognizeLearn(v interface{}) {
 
 func (h *memory) CognizeFocus(v interface{}) {
 	switch t := v.(type) {
-	case []string:
+	case see.Name:
+		h.focus <- t.AsWalk()
+	case []interface{}:
 		h.focus <- t
 	case Image:
-		var x []string
+		var x []interface{}
 		for _, step := range t.Numbers() {
 			x = append(x, t.String(step))
 		}
@@ -74,10 +77,12 @@ func (h *memory) CognizeFocus(v interface{}) {
 
 func (h *memory) CognizeRecall(v interface{}) {
 	switch t := v.(type) {
-	case []string:
+	case see.Name:
+		h.focus <- t.AsWalk()
+	case []interface{}:
 		h.recall <- t
 	case Image:
-		var x []string
+		var x []interface{}
 		for _, step := range t.Numbers() {
 			x = append(x, t.String(step))
 		}
@@ -113,7 +118,7 @@ func (h *memory) loop(eye *plumb.Eye) {
 // functionaly solely able to materialize copies of the referenced circuit design.
 type Materializable struct {
 	root *space
-	walk []string
+	walk []interface{}
 }
 
 func (x *Materializable) Materialize() be.Reflex {
@@ -129,14 +134,14 @@ type space struct {
 }
 
 // Roam returns the subspace whose root path is walk as child.
-func (x *space) Roam(walk ...string) (parent, child interface{}) {
+func (x *space) Roam(walk ...interface{}) (parent, child interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	return x.Space.Roam(walk...)
 }
 
 // Materialize materializes the circuit design at path walk.
-func (x *space) Materialize(walk ...string) be.Reflex {
+func (x *space) Materialize(walk ...interface{}) be.Reflex {
 	x.Lock()
 	defer x.Unlock()
 	return x.Space.Materialize(walk...)
@@ -147,17 +152,17 @@ type attention struct {
 	sync.Mutex
 	root          *space
 	parent, child interface{}
-	walk          []string // walk to child in root
+	walk          []interface{} // walk to child in root
 }
 
-func (a *attention) name() string {
+func (a *attention) name() interface{} {
 	if len(a.walk) > 0 {
 		return a.walk[len(a.walk)-1]
 	}
 	return ""
 }
 
-func (a *attention) Point(walk ...string) {
+func (a *attention) Point(walk ...interface{}) {
 	a.Lock()
 	defer a.Unlock()
 	if a.parent, a.child = a.root.Roam(walk...); a.parent != nil { // if parent is non-nil, child is not root

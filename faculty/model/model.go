@@ -12,6 +12,7 @@ import (
 	// "fmt"
 
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/faculty/basic"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
@@ -78,7 +79,7 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	var start = view{
 		Circuit: charge.Interface("Circuit").(*understand.Circuit),
 		Peer: charge.Interface("Peer"),
-		Valve: charge.String("Valve"),
+		Valve: charge.Interface("Valve"),
 	}
 	var memory list.List
 	var v = start
@@ -110,8 +111,8 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		} else { // down
 			memory.PushBack(v) // leave bread crumbs behind us
 			//
-			designPath := v.Circuit.PeerByName(v.Peer).Design().(see.RootPath) // gates are not allowed
-			_, recall := faculty.Root.Walk([]string(designPath)...)
+			lookup := v.Circuit.PeerByName(v.Peer).Design().(see.Name) // gates are not allowed
+			_, recall := faculty.Root.Walk(lookup.AsWalk()...)
 			v.Circuit = recall.(*understand.Circuit) // cannot transition into gates
 			//
 			from := v.Circuit.PeerByName(understand.Super{}).ValveByName(v.Valve)
@@ -129,5 +130,5 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 type view struct {
 	Circuit *understand.Circuit // Ambient circuit
 	Peer interface{} // Focus peer
-	Valve string // Focus valve
+	Valve interface{} // Focus valve
 }

@@ -125,11 +125,11 @@ func (fty Faculty) UnderstandDirectory(acid, dir string) {
 		if path.Ext(fileInfo.Name()) != ".escher" {
 			continue
 		}
-		fty.UnderstandFile(filePath)
+		fty.UnderstandFile(dir, filePath)
 	}
 }
 
-func (fty Faculty) UnderstandFile(filePath string) {
+func (fty Faculty) UnderstandFile(dir, filePath string) {
 	text, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", filePath, err)
@@ -141,7 +141,7 @@ func (fty Faculty) UnderstandFile(filePath string) {
 			break
 		}
 		t := Understand(s)
-		t.sourceFile = filePath
+		t.sourceDir, t.sourceFile = dir, filePath
 		fty.Interpret(t)
 	}
 }

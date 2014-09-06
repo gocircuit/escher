@@ -59,7 +59,7 @@ func main() {
 	//
 	switch {
 	case *flagSvg != "":
-		walk := strings.Split(*flagSvg, ".")
+		walk := interfacify(strings.Split(*flagSvg, "."))
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
 			walk = nil
 		}
@@ -71,8 +71,9 @@ func main() {
 		default:
 			println(fmt.Sprintf("SVG display available only for circuits (%T)", t))
 		}
+
 	case *flagShow != "":
-		walk := strings.Split(*flagShow, ".")
+		walk := interfacify(strings.Split(*flagShow, "."))
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
 			walk = nil
 		}
@@ -85,6 +86,7 @@ func main() {
 		default:
 			fmt.Printf("%T/%v\n", t, t)
 		}
+
 	default:
 		be.Space(compile(*flagX, *flagY, *flagZ)).Materialize("main")
 		select {} // wait forever

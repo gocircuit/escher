@@ -13,8 +13,6 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-const DefaultValve = Name("_")
-
 func SeeCircuit(src *Src) *Circuit {
 	if src.Len() == 0 {
 		return nil

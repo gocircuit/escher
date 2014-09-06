@@ -34,6 +34,10 @@ func NewName(walk []string) Name {
 	return Name(strings.Join(walk, "."))
 }
 
+func (x Name) Walk() []string {
+	return strings.Split(string(x), ".")
+}
+
 func (x Name) String() string {
 	return string(x)
 }

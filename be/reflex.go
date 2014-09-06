@@ -11,7 +11,7 @@ import (
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
-type Reflex map[string]*Synapse
+type Reflex map[interface{}]*Synapse
 
 type Gate interface {
 	Materialize() Reflex
@@ -20,9 +20,6 @@ type Gate interface {
 type GateWithMatter interface {
 	Materialize(*Matter) Reflex
 }
-
-// Ignore gates ignore their empty-string valve
-type Ignore struct{}
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
@@ -35,12 +32,4 @@ type Matter struct {
 
 func (m *Matter) LastName() string {
 	return m.Name[len(m.Name)-1]
-}
-
-func (Ignore) Materialize(*Matter) Reflex {
-	s, t := NewSynapse()
-	go func() {
-		s.Focus(DontCognize)
-	}()
-	return Reflex{"_": t}
 }

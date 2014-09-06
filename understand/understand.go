@@ -27,6 +27,13 @@ func (s Sugar) String() string {
 	return fmt.Sprintf("sugar#%d", s)
 }
 
+// Default is the default valve's name
+type Default struct{}
+
+func (s Default) String() string {
+	return ""
+}
+
 func Understand(s *see.Circuit) *Circuit {
 	x := &Circuit{peer: Make()}
 	x.genus = []*see.Circuit{s}
@@ -57,7 +64,7 @@ func Understand(s *see.Circuit) *Circuit {
 				p := Sugar(nsugar)
 				x.addPeer(p, x.index, t.Design)
 				x.index++
-				end[i] = x.reserveValve(p, see.DefaultValve, x.index)
+				end[i] = x.reserveValve(p, Default{}, x.index)
 				x.index++
 			case *see.PeerJoin:
 				end[i] = x.reserveValve(t.Peer, t.Valve, x.index)

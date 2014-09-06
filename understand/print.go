@@ -38,7 +38,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 		case *Circuit:
 			w.WriteString("*")
 		}
-		w.WriteString(fmt.Sprintf("%v", k))
+		w.WriteString(fmt.Sprintf("%v/%T", k, k))
 		switch v.(type) {
 		case Faculty:
 			// w.WriteString(":")

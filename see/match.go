@@ -52,7 +52,8 @@ func seeDesignJoin(src *Src) (x Image) {
 	}()
 	t := src.Copy()
 	dsgn := SeeSymbol(t)
-	if dsgn == nil {
+	switch dsgn.(type) {
+	case nil, Name, Address:
 		return nil
 	}
 	src.Become(t)
@@ -68,18 +69,18 @@ func seePeerValveJoin(src *Src) (x Image) {
 		}
 	}()
 	t := src.Copy()
-	peer := SeeSymbolNoUnion(t)
+	peer := SeeName(t)
 	if peer == nil {
 		return nil
 	}
 	t.Match(string(ValveSelector))
-	valve := SeeSymbolNoUnion(t)
+	valve := SeeName(t)
 	if valve == nil {
 		return nil
 	}
 	src.Become(t)
 	return Image{
-		"Peer":  peer,
-		"Valve": valve,
+		"Peer":  string(peer.(Name)),
+		"Valve": string(valve.(Name)),
 	}
 }

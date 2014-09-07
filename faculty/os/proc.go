@@ -67,17 +67,17 @@ func cognizeCommand(v interface{}) *exec.Cmd {
 		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 	}
 	cmd := &exec.Cmd{}
-	cmd.Path = img.String("Path") // mandatory
+	cmd.Path = img.String(see.Name("Path")) // mandatory
 	cmd.Args = []string{cmd.Path}
-	if img.Has("Dir") {
-		cmd.Dir = img.String("Dir")
+	if img.Has(see.Name("Dir")) {
+		cmd.Dir = img.String(see.Name("Dir"))
 	}
-	env := img.Walk("Env")
-	for _, key := range env.Numbers() {
+	env := img.Walk(see.Name("Env"))
+	for _, key := range see.Numbers(env) {
 		cmd.Env = append(cmd.Env, env.String(key))
 	}
-	args := img.Walk("Args")
-	for _, key := range args.Numbers() {
+	args := img.Walk(see.Name("Args"))
+	for _, key := range see.Numbers(args) {
 		cmd.Args = append(cmd.Args, args.String(key))
 	}
 	// log.Printf("os process command (%v)", Linearize(img.Print("", "")))
@@ -96,14 +96,14 @@ func (p *processBack) loop() {
 		var x Image
 		if exit := p.spawnProcess(when); exit != nil {
 			x = Image{
-				"When": when,
-				"Exit":  1,
+				see.Name("When"): when,
+				see.Name("Exit"):  1,
 			}
 			p.eye.Show("Exit", x)
 		} else {
 			x = Image{
-				"When": when,
-				"Exit":  0,
+				see.Name("When"): when,
+				see.Name("Exit"):  0,
 			}
 			p.eye.Show("Exit", x)
 		}
@@ -137,10 +137,10 @@ func (p *processBack) spawnProcess(when interface{}) (err error) {
 	stdout = kitio.RunOnCloseReader(stdout, func() { stdClose <- struct{}{} })
 	stderr = kitio.RunOnCloseReader(stderr, func() { stdClose <- struct{}{} })
 	g := Image{
-		"When":  when,
-		"Stdin":  stdin,
-		"Stdout": stdout,
-		"Stderr": stderr,
+		see.Name("When"):  when,
+		see.Name("Stdin"):  stdin,
+		see.Name("Stdout"): stdout,
+		see.Name("Stderr"): stderr,
 	}
 	// log.Printf("os process io (%v)", Linearize(fmt.Sprintf("%v", when)))
 	p.eye.Show("IO", g)

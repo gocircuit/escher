@@ -35,10 +35,10 @@ func TestDesign(t *testing.T) {
 
 var testMatching = []string{
 	`a:X = b:Y`,
-	` X = y:Z `,
-	` X = "hello"`,
+	` X:a = y:Z `,
+	` X:_ = "hello"`,
 	`123 = "a"`,
-	`X:y = a:1`,
+	`X:y = a:_`,
 }
 
 func TestMatching(t *testing.T) {
@@ -79,7 +79,7 @@ var testUnion = []string{
 	`{}`,
 	`{
 		g {}
-		a:3 = b:"a"
+		a:y = b:z
 		x {}
 	}`,
 	`{
@@ -87,12 +87,12 @@ var testUnion = []string{
 		c @d
 		e 1.23
 		f "123"
-		a:1 = 0-2i
+		a:_ = 0-2i
 		_ 123
 	}`,
 	`{
 		g {},
-		a:1 = b:2,
+		a:q = b:p,
 		x {};
 		y {a, b, c, "def"; }
 	}`,
@@ -118,8 +118,8 @@ var testCircuit = []string{
 		n:X=a:XandY
 		b "3e3"
 		n:notX=nand:_
-		X=nand:1,
-		"abcd",
+		X:_=nand:a1,
+		w "abcd",
 	}
 	`,
 	`
@@ -192,13 +192,9 @@ main {
 `
 header {
 	merge text.Merge
-	merge:First = ` + "`" + `
-<html><head><title>
-` + "`" + `
-	merge:Second = Title
-	merge:Third = ` + "`" + `
-</title></head></html>
-` + "`" + `
+	merge:First = ""
+	merge:Second = Title:_
+	merge:Third = ""
 	header:_ = merge:_
 }
 `,

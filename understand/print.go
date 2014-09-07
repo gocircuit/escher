@@ -22,7 +22,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 	sd := fty.Genus().SourceDir
 	w.WriteString("{ ")
 	for _, acid := range sd.Names() {
-		w.WriteString(acid)
+		w.WriteString(print(acid))
 		w.WriteString("=")
 		w.WriteString(sd.String(acid))
 		w.WriteString(" ")

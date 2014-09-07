@@ -34,12 +34,12 @@ func (FormBlend) Materialize() be.Reflex {
 				return
 			}
 			img := value.(Image)
-			t, err := template.New("").Parse(img.String("Form"))
+			t, err := template.New("").Parse(img.String(see.Name("Form")))
 			if err != nil {
 				panic(err)
 			}
 			var w bytes.Buffer
-			if err = t.Execute(&w, img.Interface("Data")); err != nil {
+			if err = t.Execute(&w, img.Interface(see.Name("Data"))); err != nil {
 				panic(err)
 			}
 			eye.Show("_", w.String())

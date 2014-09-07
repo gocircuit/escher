@@ -26,7 +26,7 @@ func (x Space) Faculty() understand.Faculty {
 func (x Space) Materialize(walk ...interface{}) Reflex {
 	return x.materialize(
 		&Matter{
-			Name: []string{ChainKey("escher", []interface{}{see.Name("!spaek¡")})},
+			Name: []string{ChainKey("escher", []interface{}{"!spaek¡"})},
 		}, 
 		walk...)
 }
@@ -71,7 +71,7 @@ func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, 
 			continue
 		}
 		switch t := peer.Design().(type) {
-		case see.Name:
+		case see.Name: ??? cannot distinguish string from link!!!
 			peers[name] = x.materialize(matter, t.AsWalk()...)
 		case string, int, float64, complex128:
 			peers[name] = NewNounReflex(t) // materialize builtin gates

@@ -74,12 +74,12 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		return
 	}
 	img := dvalue.(Image)
-	charge := img.Walk("Charge")
+	charge := img.Walk(see.Name("Charge"))
 	//
 	var start = view{
-		Circuit: charge.Interface("Circuit").(*understand.Circuit),
-		Peer: charge.Interface("Peer"),
-		Valve: charge.Interface("Valve"),
+		Circuit: charge.Interface(see.Name("Circuit")).(*understand.Circuit),
+		Peer: charge.Interface(see.Name("Peer")),
+		Valve: charge.Interface(see.Name("Valve")),
 	}
 	var memory list.List
 	var v = start
@@ -88,12 +88,12 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		eye.Show( // yield current view
 			"Sequence", 
 			Image{
-				"When": img.Interface("When"),
-				"Index": n,
-				"Charge": Image{
-					"Circuit": v.Circuit,
-					"Peer": v.Peer,
-					"Valve": v.Valve,
+				see.Name("When"): img.Interface(see.Name("When")),
+				see.Name("Index"): n,
+				see.Name("Charge"): Image{
+					see.Name("Circuit"): v.Circuit,
+					see.Name("Peer"): v.Peer,
+					see.Name("Valve"): v.Valve,
 				},
 			},
 		)

@@ -39,7 +39,7 @@ func SeeUnion(src *Src) (x interface{}) {
 		if peer != nil {
 			keys := peer.Names()
 			if _, noname := keys[0].(nameless); noname { // if peer is nameless, this is a slice element
-				y.Grow(Number(j), peer[nameless{}])
+				y.Grow(j, peer[nameless{}])
 				j++
 			} else {
 				y.Attach(peer)

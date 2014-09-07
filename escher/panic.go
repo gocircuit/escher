@@ -58,10 +58,3 @@ func stack() {
 	p.WriteTo(&w, 1)
 	println(w.String())
 }
-
-func interfacify(in []string) (out []interface{}) {
-	for _, x := range in {
-		out = append(out, see.Name(x))
-	}
-	return
-}

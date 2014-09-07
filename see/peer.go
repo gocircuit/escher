@@ -43,7 +43,7 @@ func SeePeer(src *Src) (x Image) {
 		return Image{nameless{}: left}
 	} else { // two terms (name and value)
 		src.Become(t)
-		return Image{left: right}
+		return Image{string(left.(Name)): right}
 	}
 	panic("peer")
 }

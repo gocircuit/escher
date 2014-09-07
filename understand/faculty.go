@@ -38,7 +38,7 @@ func (fty Faculty) Roam(walk ...interface{}) (parent, child interface{}) {
 		return nil, fty
 	}
 	if parent, child = fty.Walk(walk[0]); parent == nil && child == nil { // If no child, make it
-		child = fty.RefineSymbol(walk[0])
+		child = fty.Refine(walk[0])
 	}
 	fac, ok := child.(Faculty)
 	if !ok {
@@ -70,11 +70,7 @@ func (fty Faculty) Walk(walk ...interface{}) (parent, child interface{}) {
 	panic(7)
 }
 
-func (fty Faculty) Refine(name string) (child Faculty) {
-	return fty.RefineSymbol(see.Name(name))
-}
-
-func (fty Faculty) RefineSymbol(name interface{}) (child Faculty) {
+func (fty Faculty) Refine(name interface{}) (child Faculty) {
 	if x, ok := fty[name]; ok {
 		return x.(Faculty)
 	}
@@ -84,11 +80,7 @@ func (fty Faculty) RefineSymbol(name interface{}) (child Faculty) {
 	return
 }
 
-func (fty Faculty) AddTerminal(name string, term interface{}) {
-	fty.AddTerminalSymbol(see.Name(name), term)
-}
-
-func (fty Faculty) AddTerminalSymbol(name, term interface{}) {
+func (fty Faculty) AddTerminal(name, term interface{}) {
 	if _, ok := fty[name]; ok {
 		panic(7)
 	}

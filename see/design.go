@@ -10,7 +10,9 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
+	"strings"
 )
+
 func SeeSymbol(src *Src) (x interface{}) {
 	if x = SeeUnion(src); x != nil {
 		return
@@ -46,11 +48,17 @@ func SeeSymbolNoUnion(src *Src) (x interface{}) {
 	return nil
 }
 
-// Path …
+// Name ...
+type Name string
+
+// Address ...
+type Address string
+
+// Name ...
 func SeeName(src *Src) interface{} {
 	t := src.Copy()
-	aux := t.TryMatch("@")
 	var x []string
+	aux := t.TryMatch("@")
 	for {
 		id := Identifier(t)
 		if id == "" {
@@ -66,9 +74,9 @@ func SeeName(src *Src) interface{} {
 	}
 	src.Become(t)
 	if aux {
-		return NewName(append([]string{"@"}, x...))
+		return Address(strings.Join(x, "."))
 	}
-	return NewName(x)
+	return Name(strings.Join(x, "."))
 }
 
 // Int …

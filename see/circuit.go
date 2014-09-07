@@ -19,27 +19,27 @@ func SeeCircuit(src *Src) *Circuit {
 	}
 	for p, un := range SeePeer(src) {
 		// fmt.Printf("p=%s v=%v\n", p, un)
-		return Circuitize(p, un.(Image))
+		return Circuitize(p.(string), un.(Image))
 	}
 	return nil
 }
 
 // Circuit
 type Circuit struct {
-	Name  interface{}
-	Valve []interface{}
+	Name string
+	Valve []string
 	Peer  []*Peer
 	Match []*Matching
 }
 
 // Peer
 type Peer struct {
-	Name   interface{}
+	Name   string
 	Design interface{}
 }
 
 func (p *Peer) String() string {
-	return fmt.Sprintf("%v %v", p.Name, p.Design)
+	return fmt.Sprintf("%s %v", p.Name, p.Design)
 }
 
 // Matching
@@ -56,12 +56,12 @@ type Join interface{}
 
 // PeerJoin
 type PeerJoin struct {
-	Peer  interface{}
-	Valve interface{}
+	Peer  string
+	Valve string
 }
 
 func (p *PeerJoin) String() string {
-	return fmt.Sprintf("%v:%v", p.Peer, p.Valve)
+	return fmt.Sprintf("%s:%s", p.Peer, p.Valve)
 }
 
 // DesignJoin
@@ -75,14 +75,14 @@ func (d *DesignJoin) String() string {
 
 // ValveJoin
 type ValveJoin struct {
-	Valve interface{}
+	Valve string
 }
 
 func (v *ValveJoin) String() string {
-	return fmt.Sprintf("%v", v.Valve)
+	return fmt.Sprintf("%s", v.Valve)
 }
 
-func Circuitize(name interface{}, img Image) (cir *Circuit) {
+func Circuitize(name string, img Image) (cir *Circuit) {
 	if img == nil {
 		return nil
 	}
@@ -96,13 +96,13 @@ func Circuitize(name interface{}, img Image) (cir *Circuit) {
 			cir.seeMatching(cir.Name, v.(Image))
 			continue
 		}
-		if nm == cir.Name {
+		if nm.(string) == cir.Name {
 			panic("peer duplicates name with super peer")
 		}
 		cir.Peer = append(
 			cir.Peer,
 			&Peer{
-				Name: nm,
+				Name: nm.(string),
 				Design: v,
 			},
 		)
@@ -110,7 +110,7 @@ func Circuitize(name interface{}, img Image) (cir *Circuit) {
 	return
 }
 
-func (cir *Circuit) seeMatching(name interface{}, s Image) {
+func (cir *Circuit) seeMatching(name string, s Image) {
 	for _, x := range s {
 		// fmt.Printf("=%s=>\n", string(w))
 		m := &Matching{}
@@ -120,7 +120,7 @@ func (cir *Circuit) seeMatching(name interface{}, s Image) {
 			if y.Has("Design") {
 				m.Join[i] = &DesignJoin{Design: y.Interface("Design")}
 			} else {
-				p, v := y["Peer"], y["Valve"]
+				p, v := y.String("Peer"), y.String("Valve")
 				if p == name {
 					m.Join[i] = &ValveJoin{Valve: v}
 					cir.Valve = append(cir.Valve, v)
@@ -135,7 +135,7 @@ func (cir *Circuit) seeMatching(name interface{}, s Image) {
 
 func (c *Circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "%v ", c.Name)
+	fmt.Fprintf(&w, "%s ", c.Name)
 	if len(c.Valve) > 0 {
 		w.WriteString("(")
 	}
@@ -144,7 +144,7 @@ func (c *Circuit) Print(prefix, indent string) string {
 		if i+1 == len(c.Valve) {
 			comma = ""
 		}
-		fmt.Fprintf(&w, "%v%s", v, comma)
+		fmt.Fprintf(&w, "%s%s", v, comma)
 	}
 	if len(c.Valve) > 0 {
 		w.WriteString(") {\n")

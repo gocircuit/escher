@@ -137,6 +137,32 @@ func (x Image) Names() []interface{} {
 	return names
 }
 
+func (x Image) Letters() []string {
+	series := make([]string, 0, len(x))
+	for key, _ := range x {
+		k, ok := key.(string)
+		if !ok {
+			continue
+		}
+		series = append(series, k)
+	}
+	sort.Strings(series)
+	return series
+}
+
+func (x Image) Numbers() []int {
+	series := make([]int, 0, len(x))
+	for key, _ := range x {
+		k, ok := key.(int)
+		if !ok {
+			continue
+		}
+		series = append(series, k)
+	}
+	sort.Ints(series)
+	return series
+}
+
 func Same(s, t Image) bool {
 	return s.Contains(t) && t.Contains(s)
 }

@@ -83,40 +83,42 @@ func (v *ValveJoin) String() string {
 }
 
 func Circuitize(name string, img Image) (cir *Circuit) {
+	// println(img.Print("", "  "))
 	if img == nil {
 		return nil
 	}
+	if len(img.Letters()) != len(img.Numbers()) {
+		panic(1)
+	}
 	cir = &Circuit{
-		Peer:  make([]*Peer, 0, img.Len()), // # explicit peers + 1 (redundant) = # of src children = # peers + child for "$"
-		Match: make([]*Matching, 0, img.Walk(Matchings{}).Len()), // # of matchings
+		Peer:  make([]*Peer, len(img.Letters())), // # of peers
+		Match: make([]*Matching, img.Walk(Matchings{}).Len()), // # of matchings
 	}
 	cir.Name = name
-	for nm, v := range img {
-		if _, ok := nm.(Matchings); ok {
-			cir.seeMatching(cir.Name, v.(Image))
-			continue
-		}
-		if nm.(string) == cir.Name {
+	for _, index := range img.Numbers() { // list peers in order of definition, by sorted int name
+		pn := img.String(index) // lookup string name (of peer)
+		pv := img.Interface(pn) // lookup value of peer
+		if pn == cir.Name {
 			panic("peer duplicates name with super peer")
 		}
-		cir.Peer = append(
-			cir.Peer,
-			&Peer{
-				Name: nm.(string),
-				Design: v,
-			},
-		)
+		cir.Peer[index] = &Peer{
+			Name: pn,
+			Design: pv,
+		}
 	}
+	cir.seeMatching(cir.Name, img.OptionalImage(Matchings{}))
 	return
 }
 
 func (cir *Circuit) seeMatching(name string, s Image) {
-	for _, x := range s {
-		// fmt.Printf("=%s=>\n", string(w))
+	if s == nil { // no matchings section
+		return
+	}
+	for _, xn := range s.Numbers() {
+		x := s.Image(xn)
 		m := &Matching{}
 		for i := 0; i < 2; i++ {
-			y := x.(Image).Walk(i)
-			// fmt.Printf("    –%d–>\n    %s\n", i, y.Print("    ", "\t"))
+			y := x.Image(i)
 			if y.Has("Design") {
 				m.Join[i] = &DesignJoin{Design: y.Interface("Design")}
 			} else {
@@ -129,7 +131,7 @@ func (cir *Circuit) seeMatching(name string, s Image) {
 				}
 			}
 		}
-		cir.Match = append(cir.Match, m)
+		cir.Match[xn] = m
 	}
 }
 

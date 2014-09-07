@@ -80,6 +80,22 @@ func (x Image) Walk(key interface{}) Image {
 	return Image{}
 }
 
+func (x Image) Image(key interface{}) Image {
+	v, ok := x[key]
+	if !ok {
+		panic("key missing")
+	}
+	return v.(Image)
+}
+
+func (x Image) OptionalImage(key interface{}) Image {
+	v, ok := x[key]
+	if !ok {
+		return nil
+	}
+	return v.(Image)
+}
+
 func (x Image) Has(key interface{}) bool {
 	_, present := x[key]
 	return present

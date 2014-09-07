@@ -13,26 +13,8 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
-// Super is a symbol for the peer name of the point-of-view peer
-type Super struct{}
-
-func (s Super) String() string {
-	return "*"
-}
-
-// Sugar is a valve name for auto-generated peers
-type Sugar int
-
-func (s Sugar) String() string {
-	return fmt.Sprintf("sugar#%d", s)
-}
-
-// Default is the default valve's name
-type Default struct{}
-
-func (s Default) String() string {
-	return "^"
-}
+// SugarValve is the default valve name, for sugar gates
+const SugarValve = "_"
 
 func Understand(s *see.Circuit) *Circuit {
 	x := &Circuit{peer: Make()}
@@ -41,12 +23,12 @@ func Understand(s *see.Circuit) *Circuit {
 
 	// Add the super peer
 	sup := &Peer{
-		name: Super{},
+		name: s.Name,
 		index: 0,
 		valve: Make(),
-		design: nil,
+		design: nil, // indicates super
 	}
-	x.peer[Super{}] = sup
+	x.peer[s.Name] = sup
 	x.index = 1
 
 	// Add peers from circuit definition, valves are not added on this pass
@@ -61,10 +43,10 @@ func Understand(s *see.Circuit) *Circuit {
 			switch t := join.(type) {
 			case *see.DesignJoin: // unfold sugar
 				nsugar++
-				p := Sugar(nsugar)
+				p := fmt.Sprintf("sugar#%d", nsugar)
 				x.addPeer(p, x.index, t.Design)
 				x.index++
-				end[i] = x.reserveValve(p, Default{}, x.index)
+				end[i] = x.reserveValve(p, SugarValve, x.index)
 				x.index++
 			case *see.PeerJoin:
 				end[i] = x.reserveValve(t.Peer, t.Valve, x.index)

@@ -38,7 +38,7 @@ func SeePeer(src *Src) (x Image) {
 	if !Space(t) { // require newline at end
 		return nil
 	}
-	if right == nil { // one term (a value in a union)
+	if right == nil { // one term (a value)
 		src.Become(t)
 		return Image{nameless{}: left}
 	} else { // two terms (name and value)

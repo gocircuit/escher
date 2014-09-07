@@ -20,13 +20,12 @@ func SeeUnion(src *Src) (x interface{}) {
 			x = nil
 		}
 	}()
-	y := Make()
-	m := Make()
+	y, m := Make(), Make()
 	y.Grow(Matchings{}, m)
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
-	var i, j int
+	var l, i, j int
 	for {
 		q := t.Copy()
 		Space(q)
@@ -38,10 +37,12 @@ func SeeUnion(src *Src) (x interface{}) {
 		t.Become(q)
 		if peer != nil {
 			keys := peer.Names()
-			if _, noname := keys[0].(nameless); noname { // if peer is nameless, this is a slice element
+			if _, ok := keys[0].(nameless); ok { // if peer is nameless, this is a slice element
 				y.Grow(j, peer[nameless{}])
 				j++
 			} else {
+				y.Grow(l, keys[0]) // record the order of definition in the same namespace but with number keys
+				l++
 				y.Attach(peer)
 			}
 		} else {

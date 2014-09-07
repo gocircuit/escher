@@ -15,18 +15,15 @@ import (
 
 // Circuit ...
 type Circuit struct {
-	name  interface{} // Name of the circuit design
+	name  string // Name of the circuit design
 	sourceDir string // Host source directory where this circuit's source implementation was found
 	sourceFile string // File name
-	genus []*see.Circuit // Stack of syntactic circuits embodied in this semantic circuit
-	// Union of name-to-peer and index-to-peer maps.
-	// This is like packing a map[string]*Peer and a map[int]*Peer into one map[interface{}]*Peer
-	// The map includes the super peer, whose name is the empty-string and whose index is zero
-	peer Image // peer name to peer structure
+	genus []*see.Circuit // Union of syntactic circuits embodied in this semantic circuit
+	peer Image // Peer name to peer structure; this circuit's super-peer participates with its name
 	index int
 }
 
-func (c *Circuit) Name() interface{} {
+func (c *Circuit) Name() string {
 	return c.name
 }
 
@@ -38,18 +35,18 @@ func (c *Circuit) SourceFile() string {
 	return c.sourceFile
 }
 
-func (c *Circuit) PeerNames() []interface{} {
-	return c.peer.Names()
+func (c *Circuit) PeerNames() []string {
+	return c.peer.Letters()
 }
 
-func (c *Circuit) PeerByName(name interface{}) *Peer {
+func (c *Circuit) PeerByName(name string) *Peer {
 	p, _ := c.peer.OptionalInterface(name).(*Peer)
 	return p
 }
 
 // Peer ...
 type Peer struct {
-	name interface{}
+	name string
 	index int
 	design interface{}
 	valve Image // Valve name to valve structure
@@ -60,7 +57,7 @@ func (p *Peer) Copy() *Peer {
 	return &q
 }
 
-func (p *Peer) Name() interface{} {
+func (p *Peer) Name() string {
 	return p.name
 }
 
@@ -74,11 +71,11 @@ func (p *Peer) Design() interface{} {
 	return p.design
 }
 
-func (p *Peer) ValveNames() []interface{} {
-	return p.valve.Names()
+func (p *Peer) ValveNames() []string {
+	return p.valve.Letters()
 }
 
-func (p *Peer) ValveByName(name interface{}) *Valve {
+func (p *Peer) ValveByName(name string) *Valve {
 	v, _ := p.valve.OptionalInterface(name).(*Valve)
 	return v
 }
@@ -86,7 +83,7 @@ func (p *Peer) ValveByName(name interface{}) *Valve {
 // Valve ...
 type Valve struct {
 	Of *Peer
-	Name interface{}
+	Name string
 	// Ordinal index of the clause containing the valve's first occurence (in a matching)
 	// within the circuit's syntactic implementation
 	Index int

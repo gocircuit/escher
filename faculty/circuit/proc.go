@@ -68,16 +68,16 @@ func cognizeProcessCommand(v interface{}) *client.Cmd {
 		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 	}
 	cmd := &client.Cmd{}
-	cmd.Path = img.String("Path") // mandatory
-	if img.Has("Dir") {
-		cmd.Dir = img.String("Dir")
+	cmd.Path = img.String(see.Name("Path")) // mandatory
+	if img.Has(see.Name("Dir")) {
+		cmd.Dir = img.String(see.Name("Dir"))
 	}
-	env := img.Walk("Env")
-	for _, key := range env.Numbers() {
+	env := img.Walk(see.Name("Env"))
+	for _, key := range see.Numbers(env) {
 		cmd.Env = append(cmd.Env, env.String(key))
 	}
-	args := img.Walk("Args")
-	for _, key := range args.Numbers() {
+	args := img.Walk(see.Name("Args"))
+	for _, key := range see.Numbers(args) {
 		cmd.Args = append(cmd.Args, args.String(key))
 	}
 	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t")))
@@ -97,14 +97,14 @@ func (p *processBack) loop() {
 		var x Image
 		if exit := p.spawnProcess(spwn); exit != nil {
 			x = Image{
-				"Spawn": spwn,
-				"Exit":  1,
+				see.Name("Spawn"): spwn,
+				see.Name("Exit"):  1,
 			}
 			p.eye.Show("Exit", x)
 		} else {
 			x = Image{
-				"Spawn": spwn,
-				"Exit":  0,
+				see.Name("Spawn"): spwn,
+				see.Name("Exit"):  0,
 			}
 			p.eye.Show("Exit", x)
 		}
@@ -115,17 +115,17 @@ func (p *processBack) loop() {
 func (p *processBack) spawnProcess(spwn interface{}) error {
 	// anchor determination
 	s := spwn.(Image)
-	if s.String("Name") == "" {
+	if s.String(see.Name("Name")) == "" {
 		panic("circuit process execution name required")
 	}
-	if s.String("Server") == "" {
+	if s.String(see.Name("Server")) == "" {
 		panic("circuit process server required")
 	}
 	anchor := program.Client.Walk(
 		[]string{
-			s.String("Server"), // server name
+			s.String(see.Name("Server")), // server name
 			p.name, // reflex' unique materialization name
-			s.String("Name"), // (dynamic) execution name
+			s.String(see.Name("Name")), // (dynamic) execution name
 		})
 	//
 	proc, err := anchor.MakeProc(*p.cmd)
@@ -134,10 +134,10 @@ func (p *processBack) spawnProcess(spwn interface{}) error {
 	}
 	defer anchor.Scrub()
 	g := Image{
-		"Spawn":  spwn,
-		"Stdin":  proc.Stdin(),
-		"Stdout": proc.Stdout(),
-		"Stderr": proc.Stderr(),
+		see.Name("Spawn"):  spwn,
+		see.Name("Stdin"):  proc.Stdin(),
+		see.Name("Stdout"): proc.Stdout(),
+		see.Name("Stderr"): proc.Stderr(),
 	}
 	log.Printf("circuit process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	p.eye.Show("IO", g)

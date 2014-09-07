@@ -16,6 +16,7 @@ import (
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 // Docker
@@ -84,34 +85,34 @@ func cognizeDockerCommand(v interface{}) *dkr.Run {
 		panic(fmt.Sprintf("non-image sent as circuit container command (%v)", v))
 	}
 	cmd := &dkr.Run{}
-	cmd.Image = img.String("Image") // mandatory
-	if img.Has("Memory") {
-		cmd.Memory = int64(plumb.AsInt(img["Memory"]))
+	cmd.Image = img.String(see.Name("Image")) // mandatory
+	if img.Has(see.Name("Memory")) {
+		cmd.Memory = int64(plumb.AsInt(img[see.Name("Memory")]))
 	}
-	if img.Has("CpuShares") {
-		cmd.CpuShares = int64(plumb.AsInt(img["CpuShares"]))
+	if img.Has(see.Name("CpuShares")) {
+		cmd.CpuShares = int64(plumb.AsInt(img[see.Name("CpuShares")]))
 	}
-	lxc := img.Walk("Lxc")
-	for _, key := range lxc.Numbers() {
+	lxc := img.Walk(see.Name("Lxc"))
+	for _, key := range see.Numbers(lxc) {
 		cmd.Lxc = append(cmd.Lxc, lxc.String(key))
 	}
-	vol := img.Walk("Volume")
-	for _, key := range vol.Numbers() {
+	vol := img.Walk(see.Name("Volume"))
+	for _, key := range see.Numbers(vol) {
 		cmd.Volume = append(cmd.Volume, vol.String(key))
 	}
-	if img.Has("Entry") {
-		cmd.Entry = img.String("Entry")
+	if img.Has(see.Name("Entry")) {
+		cmd.Entry = img.String(see.Name("Entry"))
 	}
-	cmd.Path = img.String("Path") // mandatory
-	if img.Has("Dir") {
-		cmd.Dir = img.String("Dir")
+	cmd.Path = img.String(see.Name("Path")) // mandatory
+	if img.Has(see.Name("Dir")) {
+		cmd.Dir = img.String(see.Name("Dir"))
 	}
-	env := img.Walk("Env")
-	for _, key := range env.Numbers() {
+	env := img.Walk(see.Name("Env"))
+	for _, key := range see.Numbers(env) {
 		cmd.Env = append(cmd.Env, env.String(key))
 	}
-	args := img.Walk("Args")
-	for _, key := range args.Numbers() {
+	args := img.Walk(see.Name("Args"))
+	for _, key := range see.Numbers(args) {
 		cmd.Args = append(cmd.Args, args.String(key))
 	}
 	log.Printf("circuit docker command (%v)", Linearize(img.Print("", "t")))
@@ -131,14 +132,14 @@ func (p *dockerBack) loop() {
 		var x Image
 		if exit := p.spawnDocker(spwn); exit != nil {
 			x = Image{
-				"Spawn": spwn,
-				"Exit":  1,
+				see.Name("Spawn"): spwn,
+				see.Name("Exit"):  1,
 			}
 			p.eye.Show("Exit", x)
 		} else {
 			x = Image{
-				"Spawn": spwn,
-				"Exit":  0,
+				see.Name("Spawn"): spwn,
+				see.Name("Exit"):  0,
 			}
 			p.eye.Show("Exit", x)
 		}
@@ -149,14 +150,14 @@ func (p *dockerBack) loop() {
 func (p *dockerBack) spawnDocker(spwn interface{}) error {
 	// anchor determination
 	s := spwn.(Image)
-	if s.String("Name") == "" {
+	if s.String(see.Name("Name")) == "" {
 		panic("container execution name cannot be empty")
 	}
 	anchor := program.Client.Walk(
 		[]string{
-			s.String("Server"), // server name
+			s.String(see.Name("Server")), // server name
 			p.name, // reflex' unique materialization name
-			s.String("Name"), // (dynamic) execution name
+			s.String(see.Name("Name")), // (dynamic) execution name
 		})
 	//
 	container, err := anchor.MakeDocker(*p.cmd)
@@ -165,10 +166,10 @@ func (p *dockerBack) spawnDocker(spwn interface{}) error {
 	}
 	defer anchor.Scrub() // Anchor will be scrubbed before the exit meme is sent out
 	g := Image{
-		"Spawn":  spwn,
-		"Stdin":  container.Stdin(),
-		"Stdout": container.Stdout(),
-		"Stderr": container.Stderr(),
+		see.Name("Spawn"):  spwn,
+		see.Name("Stdin"):  container.Stdin(),
+		see.Name("Stdout"): container.Stdout(),
+		see.Name("Stderr"): container.Stderr(),
 	}
 	log.Printf("circuit docker io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	p.eye.Show("IO", g)

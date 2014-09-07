@@ -21,7 +21,7 @@ func (fty Faculty) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	sd := fty.Genus().SourceDir
 	w.WriteString("{ ")
-	for _, acid := range sd.Letters() {
+	for _, acid := range sd.Names() {
 		w.WriteString(acid)
 		w.WriteString("=")
 		w.WriteString(sd.String(acid))

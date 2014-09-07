@@ -8,11 +8,11 @@ package basic
 
 import (
 	// "fmt"
-	"strconv"
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/kit/plumb"
 
 	"github.com/gocircuit/escher/github.com/syndtr/goleveldb/leveldb"
@@ -41,7 +41,7 @@ func (File) Materialize() be.Reflex {
 			<-connected // wait for db connection
 			for {
 				p := <-put
-				if err := db.Put(p["Key"].([]byte), p["Value"].([]byte), nil); err != nil {
+				if err := db.Put(p[see.Name("Key")].([]byte), p[see.Name("Value")].([]byte), nil); err != nil {
 					panic(err)
 				}
 			}
@@ -52,8 +52,8 @@ func (File) Materialize() be.Reflex {
 				q := <-query
 				iter := db.NewIterator(
 					&util.Range{
-						Start: q["Start"].([]byte), 
-						Limit: q["Limit"].([]byte),
+						Start: q[see.Name("Start")].([]byte), 
+						Limit: q[see.Name("Limit")].([]byte),
 					},
 					nil,
 				)
@@ -64,10 +64,10 @@ func (File) Materialize() be.Reflex {
 							panic(err)
 						}
 						slice.Grow(
-							strconv.Itoa(i),
+							see.Number(i),
 							Image{
-								"Key": iter.Key(),
-								"Value": iter.Value(),
+								see.Name("Key"): iter.Key(),
+								see.Name("Value"): iter.Value(),
 							},
 						)
 						if !iter.Next() {
@@ -75,7 +75,7 @@ func (File) Materialize() be.Reflex {
 						}
 					}
 				}
-				eye.Show("Result", Make().Grow("Name", q["Name"]).Grow("Slice", slice))
+				eye.Show("Result", Make().Grow(see.Name("Name"), q[see.Name("Name")]).Grow(see.Name("Slice"), slice))
 			}
 		}()
 		for {

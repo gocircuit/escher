@@ -12,6 +12,7 @@ import (
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 // Fix creates a gate that waits until all fix valves are set and
@@ -25,7 +26,7 @@ func MaterializeFix(fwd string, fix ...string) be.Reflex {
 			if dvalve == fwd { // conjunction updated
 				continue // ignore upstream updates
 			} else { // field updated
-				conj.Abandon(dvalve).Grow(dvalve, dvalue)
+				conj.Abandon(see.Name(dvalve)).Grow(see.Name(dvalve), dvalue)
 				if conj.Len() == len(fix) {
 					eye.Show(fwd, conj)
 					eye.Drain() // As soon as the conjunction is output, this gate is done.

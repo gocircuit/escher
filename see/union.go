@@ -11,6 +11,7 @@ import (
 	. "github.com/gocircuit/escher/image"
 )
 
+// Matchings is a name type for the image of matchings within a circuit design image.
 type Matchings struct{}
 
 func SeeUnion(src *Src) (x interface{}) {
@@ -38,7 +39,7 @@ func SeeUnion(src *Src) (x interface{}) {
 		if peer != nil {
 			keys := peer.Names()
 			if _, noname := keys[0].(nameless); noname { // if peer is nameless, this is a slice element
-				y.Grow(j, peer[nameless{}])
+				y.Grow(Number(j), peer[nameless{}])
 				j++
 			} else {
 				y.Attach(peer)

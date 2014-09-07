@@ -32,6 +32,7 @@ func MaterializeSubscription(kind string) be.Reflex {
 		var server string
 		for {
 			valve, value := eye.See()
+			?? // use containerlike spawn param with server and name!!
 			if valve != "Server" || server != "" {
 				continue
 			}
@@ -39,6 +40,7 @@ func MaterializeSubscription(kind string) be.Reflex {
 			go func() {
 				id := ChooseID()
 				anchor := program.Client.Walk(
+					??
 					[]string{
 						server, 
 						"escher", 

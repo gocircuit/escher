@@ -8,8 +8,11 @@ package see
 
 import (
 	"bytes"
-	// "fmt"
+	"fmt"
+	"sort"
 	"strings"
+
+	. "github.com/gocircuit/escher/image"
 )
 
 type Design interface {
@@ -43,4 +46,67 @@ func (x Name) AsWalk() (walk []interface{}) {
 
 func (x Name) String() string {
 	return string(x)
+}
+
+func Names(img Image) []Name {
+	series := make(nameSlice, 0, len(img))
+	for key, _ := range x {
+		k, ok := key.(Name)
+		if !ok {
+			continue
+		}
+		series = append(series, k)
+	}
+	sort.Sort(series)
+	return series
+}
+
+// nameSlice
+type nameSlice []Name
+
+func (x nameSlice) Len() int {
+	return len(x)
+}
+
+func (x nameSlice) Less(i, j int) bool {
+	return x[i] < x[j]
+}
+
+func (x numberSlice) Swap(i, j int) {
+	x[i], x[j] = x[j], x[i]
+}
+
+// Number is a name type indicating index of element in the slice syntax
+type Number int
+
+func (x Number) String() string {
+	return fmt.Sprintf("#%d", int(x))
+}
+
+func Numbers(img Image) []Number {
+	series := make(numberSlice, 0, len(img))
+	for key, _ := range x {
+		k, ok := key.(Number)
+		if !ok {
+			continue
+		}
+		series = append(series, k)
+	}
+	sort.Sort(series)
+	return series
+}
+
+// numberSlice
+type numberSlice []Number
+
+func (x numberSlice) Len() int {
+	return len(x)
+}
+
+func (x numberSlice) Less(i, j int) bool {
+	return x[i] < x[j]
+}
+
+func (x numberSlice) Swap(i, j int) {
+	x[i], x[j] = x[j], x[i]
 }

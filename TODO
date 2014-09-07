@@ -1,6 +1,5 @@
 
-* Build Rails container
-* Fetch postgres container
+* circuits and unions/slices should be the same type facing the user
 * End-to-end tests via Escher programs whose result is checked by the go test.
 
 

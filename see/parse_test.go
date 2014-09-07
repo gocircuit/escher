@@ -147,6 +147,7 @@ main {
 	t:Tick = s:Sum
 	s:X = 5e9
 	s:Y = out:Object
+	s:Z = { "a", "b", "c" }
 }
 `,
 	`

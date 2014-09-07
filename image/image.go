@@ -137,47 +137,6 @@ func (x Image) Names() []interface{} {
 	return names
 }
 
-// Letters returns the string keys in s in sorted order.
-func (x Image) Letters() []string {
-	lex := make([]string, 0, len(x))
-	for key, _ := range x {
-		k, ok := key.(string)
-		if !ok {
-			continue
-		}
-		lex = append(lex, k)
-	}
-	sort.Strings(lex)
-	return lex
-}
-
-func (x Image) Numbers() []int {
-	series := make([]int, 0, len(x))
-	for key, _ := range x {
-		k, ok := key.(int)
-		if !ok {
-			continue
-		}
-		series = append(series, k)
-	}
-	sort.Ints(series)
-	return series
-}
-
-func (x Image) LetterValues() (v []interface{}) {
-	for _, n := range x.Letters() {
-		v = append(v, x[n])
-	}
-	return
-}
-
-func (x Image) NumberValues() (v []interface{}) {
-	for _, n := range x.Numbers() {
-		v = append(v, x[n])
-	}
-	return
-}
-
 func Same(s, t Image) bool {
 	return s.Contains(t) && t.Contains(s)
 }

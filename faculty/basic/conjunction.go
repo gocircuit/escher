@@ -12,6 +12,7 @@ import (
 	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 )
 
 func MaterializeUnion(name string, field ...string) be.Reflex {
@@ -33,7 +34,7 @@ func MaterializeUnion(name string, field ...string) be.Reflex {
 					<-y
 				}
 			} else { // field updated
-				conj.Abandon(dvalve).Grow(dvalve, dvalue)
+				conj.Abandon(see.Name(dvalve)).Grow(see.Name(dvalve), dvalue)
 				if conj.Len() == len(field) {
 					eye.Show(name, conj)
 				}

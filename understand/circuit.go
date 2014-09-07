@@ -20,7 +20,6 @@ type Circuit struct {
 	sourceFile string // File name
 	genus []*see.Circuit // Union of syntactic circuits embodied in this semantic circuit
 	peer Image // Peer name to peer structure; this circuit's super-peer participates with its name
-	index int
 }
 
 func (c *Circuit) Name() string {

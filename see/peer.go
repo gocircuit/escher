@@ -8,44 +8,35 @@ package see
 
 import (
 	// "fmt"
-	. "github.com/gocircuit/escher/image"
+
+	. "github.com/gocircuit/escher/union"
 )
 
-func SeePeerOrMatching(src *Src) (peer, match Image) {
-	if peer = SeePeer(src); peer != nil {
-		return
-	}
-	if match = SeeMatching(src); match != nil {
-		return
-	}
-	return
-}
-
-func SeePeer(src *Src) (x Image) {
+func SeePeer(src *Src) (n Name, m Meaning) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			n, m = nil, nil
 		}
 	}()
 	t := src.Copy()
 	Space(t)
-	left := SeeSymbol(t)
+	left := SeeMeaning(t)
 	if left == nil {
 		panic("peer")
 	}
 	Whitespace(t)
-	right := SeeSymbol(t)
+	right := SeeMeaning(t)
 	if !Space(t) { // require newline at end
-		return nil
+		return nil, nil
 	}
 	if right == nil { // one term (a value)
 		src.Become(t)
-		return Image{nameless{}: left}
+		return Nameless{}, left
 	} else { // two terms (name and value)
 		src.Become(t)
-		return Image{string(left.(Name)): right}
+		return string(left.(Address)), right
 	}
 	panic("peer")
 }
 
-type nameless struct{}
+type Nameless struct{}

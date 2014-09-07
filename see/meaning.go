@@ -11,19 +11,21 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	. "github.com/gocircuit/escher/union"
 )
 
-func SeeSymbol(src *Src) (x interface{}) {
+func SeeMeaning(src *Src) (x Meaning) {
 	if x = SeeUnion(src); x != nil {
 		return
 	}
-	if x = SeeSymbolNoUnion(src); x != nil {
+	if x = SeeMeaningNoUnion(src); x != nil {
 		return
 	}
 	return nil
 }
 
-func SeeSymbolNoUnion(src *Src) (x interface{}) {
+func SeeMeaningNoUnion(src *Src) (x Meaning) {
 	if x = SeeInt(src); x != nil {
 		return
 	}
@@ -39,26 +41,19 @@ func SeeSymbolNoUnion(src *Src) (x interface{}) {
 	if x = SeeDoubleQuoteString(src); x != nil {
 		return
 	}
-	if x = SeeUnion(src); x != nil {
-		return
-	}
-	if x = SeeName(src); x != nil {
+	if x = SeeAddress(src); x != nil {
 		return
 	}
 	return nil
 }
 
-// Name ...
-type Name string
-
 // Address ...
 type Address string
 
-// Name ...
-func SeeName(src *Src) interface{} {
+// SeeAddress ...
+func SeeAddress(src *Src) interface{} {
 	t := src.Copy()
 	var x []string
-	aux := t.TryMatch("@")
 	for {
 		id := Identifier(t)
 		if id == "" {
@@ -73,10 +68,7 @@ func SeeName(src *Src) interface{} {
 		return nil
 	}
 	src.Become(t)
-	if aux {
-		return Address(strings.Join(x, "."))
-	}
-	return Name(strings.Join(x, "."))
+	return Address(strings.Join(x, "."))
 }
 
 // Int …

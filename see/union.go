@@ -8,53 +8,44 @@ package see
 
 import (
 	// "fmt"
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/union"
 )
 
-// Matchings is a name type for the image of matchings within a circuit design image.
-type Matchings struct{}
-
-func SeeUnion(src *Src) (x interface{}) {
+func SeeUnion(src *Src) (u *Union) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			u = nil
 		}
 	}()
-	y, m := Make(), Make()
-	y.Grow(Matchings{}, m)
+	u = New()
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
-	var l, i, j int
+	var i, j int
 	for {
 		q := t.Copy()
 		Space(q)
-		peer, match := SeePeerOrMatching(q)
-		if peer == nil && match == nil {
+		if pn, pm := SeePeer(q); pn != nil { // parse peer
+			if _, ok := pn.(Nameless); ok { // if peer is nameless, this is a slice element
+				u.Add(j, pm)
+				j++
+			} else {
+				u.Add(pn, pm) // record the order of definition in the same namespace but with number keys
+			}
+		} else if x, carry := SeeMatching(q, 2*i); x != nil { // parse matching
+			i++
+			for _, c := range carry { // add carry peers to union
+				u.Add(c.Name, c.Meaning)
+			}
+			u.Match(*x)
+		} else {
 			break
 		}
 		Space(q)
 		t.Become(q)
-		if peer != nil {
-			keys := peer.Names()
-			if _, ok := keys[0].(nameless); ok { // if peer is nameless, this is a slice element
-				y.Grow(j, peer[nameless{}])
-				j++
-			} else {
-				y.Grow(l, keys[0]) // record the order of definition in the same namespace but with number keys
-				l++
-				y.Attach(peer)
-			}
-		} else {
-			m.Grow(i, match)
-			i++
-		}
 	}
 	Space(t)
 	t.Match("}")
 	src.Become(t)
-	if m.Len() == 0 { // no matchings
-		y.Abandon(Matchings{})
-	}
-	return y
+	return
 }

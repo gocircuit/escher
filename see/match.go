@@ -7,80 +7,95 @@
 package see
 
 import (
-	// "fmt"
-	. "github.com/gocircuit/escher/image"
+	"fmt"
+
+	. "github.com/gocircuit/escher/union"
 )
 
-func SeeMatching(src *Src) (x Image) {
+type Carry struct {
+	Name
+	Meaning
+}
+
+func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
-	x = Make()
+	x, carry = &Matching{}, make([]*Carry, 2)
 	t := src.Copy()
 	Space(t)
-	j0 := SeeJoin(t)
-	x.Grow(0, j0)
+	//
+	g, p, v, ok := seeJoin(t)
+	if !ok {
+		return nil, nil
+	}
+	if g != nil {
+		sugar := fmt.Sprintf("sugar#%d", nsugar)
+		carry[0] = &Carry{sugar, g}
+		x.Peer[0], x.Valve[0] = sugar, "_"
+	} else {
+		x.Peer[0], x.Valve[0] = p, v
+	}
+	//
 	Whitespace(t)
 	t.Match("=")
 	Whitespace(t)
-	j1 := SeeJoin(t)
-	x.Grow(1, j1)
+	//
+	g, p, v, ok = seeJoin(t)
+	if !ok {
+		return nil, nil
+	}
+	if g != nil {
+		sugar := fmt.Sprintf("sugar#%d", nsugar+1)
+		carry[1] = &Carry{sugar, g}
+		x.Peer[1], x.Valve[1] = sugar, "_"
+	} else {
+		x.Peer[1], x.Valve[1] = p, v
+	}
+	//
 	if !Space(t) { // require newline at end
-		return nil
+		return nil,nil
 	}
 	src.Become(t)
 	return
 }
 
-func SeeJoin(src *Src) (x Image) {
-	if x = seePeerValveJoin(src); x != nil { // valve (or empty string)
-		return x
+func seeJoin(src *Src) (m Meaning, p, v Name, ok bool) {
+	if p, v, ok = seeJoinAddress(src); ok { // valve (or empty string)
+		return
 	}
-	if x = seeDesignJoin(src); x != nil { // int, string, etc.
-		return x
-	}
-	panic(1)
+	m, ok = seeJoinMeaning(src) // int, string, etc.
+	return
 }
 
-func seeDesignJoin(src *Src) (x Image) {
+func seeJoinMeaning(src *Src) (m Meaning, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			ok = false
 		}
 	}()
 	t := src.Copy()
-	dsgn := SeeSymbol(t)
-	switch dsgn.(type) {
-	case nil, Name, Address:
-		return nil
+	m = SeeMeaning(t)
+	switch m.(type) {
+	case Address:
+		return nil, false
 	}
 	src.Become(t)
-	return Image{
-		"Design":  dsgn,
-	}
+	return m, true
 }
 
-func seePeerValveJoin(src *Src) (x Image) {
+func seeJoinAddress(src *Src) (peer, valve Name, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
-			x = nil
+			ok = false
 		}
 	}()
 	t := src.Copy()
-	peer := SeeName(t)
-	if peer == nil {
-		return nil
-	}
+	p := SeeAddress(t).(Address)
 	t.Match(string(ValveSelector))
-	valve := SeeName(t)
-	if valve == nil {
-		return nil
-	}
+	v := SeeAddress(t).(Address)
 	src.Become(t)
-	return Image{
-		"Peer":  string(peer.(Name)),
-		"Valve": string(valve.(Name)),
-	}
+	return Name(string(p)), Name(string(v)), true
 }

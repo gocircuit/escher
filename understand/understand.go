@@ -29,31 +29,25 @@ func Understand(s *see.Circuit) *Circuit {
 		design: nil, // indicates super
 	}
 	x.peer[s.Name] = sup
-	x.index = 1
 
-	// Add peers from circuit definition, valves are not added on this pass
-	for _, p := range s.Peer {
-		x.addPeer(p.Name, x.index, p.Design)
-		x.index++
+	// Add non-super peers from circuit definition. Valves are not added on this pass
+	for i, p := range s.Peer {
+		x.addPeer(p.Name, i+1, p.Design)
 	}
 	var nsugar int // Counter for generating names of desugared peer definitions
-	for _, m := range s.Match {
+	for l, m := range s.Match {
 		var end [2]*Valve // reciprocals
 		for i, join := range m.Join {
 			switch t := join.(type) {
 			case *see.DesignJoin: // unfold sugar
 				nsugar++
-				p := fmt.Sprintf("sugar#%d", nsugar)
-				x.addPeer(p, x.index, t.Design)
-				x.index++
-				end[i] = x.reserveValve(p, SugarValve, x.index)
-				x.index++
+				pn := fmt.Sprintf("sugar#%d", nsugar)
+				x.addPeer(pn, ??, t.Design)
+				end[i] = x.reserveValve(pn, SugarValve, l)
 			case *see.PeerJoin:
-				end[i] = x.reserveValve(t.Peer, t.Valve, x.index)
-				x.index++
+				end[i] = x.reserveValve(t.Peer, t.Valve, l)
 			case *see.ValveJoin:
-				end[i] = x.reserveValve(Super{}, t.Valve, x.index)
-				x.index++
+				end[i] = x.reserveValve(Super{}, t.Valve, l)
 			default:
 				panic(fmt.Sprintf("unknown or missing matching endpoint: %T·%v", t, t))
 			}

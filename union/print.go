@@ -13,7 +13,7 @@ import (
 	// . "github.com/gocircuit/escher/image"
 )
 
-func (u *Union) Print(super Name, prefix, indent string) string {
+func (u *union) Print(super Name, prefix, indent string) string {
 	var w bytes.Buffer
 	if super != nil {
 		fmt.Fprintf(&w, "%v ", super)

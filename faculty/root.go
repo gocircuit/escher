@@ -6,9 +6,5 @@
 
 package faculty
 
-import (
-	"github.com/gocircuit/escher/understand"
-)
-
 // Root is a global variable where packages can add gates as side-effect of being imported.
-var Root = understand.NewFaculty()
+var Root = NewFaculty()

@@ -7,7 +7,8 @@
 package see
 
 import (
-	// "fmt"
+	"log"
+
 	. "github.com/gocircuit/escher/union"
 )
 

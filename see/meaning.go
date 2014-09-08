@@ -50,6 +50,13 @@ func SeeMeaningNoUnion(src *Src) (x Meaning) {
 // Address ...
 type Address string
 
+func (a Address) Simple() string {
+	if len(strings.Split(a)) != 1 {
+		panic(1)
+	}
+	return string(a)
+}
+
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
 	t := src.Copy()

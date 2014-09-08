@@ -52,7 +52,6 @@ func New() Union {
 }
 
 var Nil Union // the nil union
-var Empty = New() // the empty union
 
 func (u *union) IsNil() bool {
 	return u == nil
@@ -63,13 +62,20 @@ func (u *union) IsEmpty() bool {
 }
 
 // Add adds a peer to this union.
-func (c *union) Add(name Name, meaning Meaning) {
+func (c *union) Add(name Name, meaning Meaning) (old Meaning, overwrite bool) {
+	old, overwrite = c.peer[name]
 	c.peer[name] = meaning
+	return
 }
 
-// Peer ...
-func (c *union) Peer(name Name) Meaning {
-	return c.peer[name]
+func (c *union) AddExclusive(name Name, meaning Meaning) (old Meaning, overwrite bool) {
+	??
+}
+
+// At ...
+func (c *union) At(name Name) (Meaning, bool) {
+	v, ok := c.peer[name]
+	return v, ok
 }
 
 func (u *union) Forget(name Name) Meaning {
@@ -98,7 +104,10 @@ func (c *union) Match(x Matching) {
 }
 
 func (c *union) valves(p Name) map[Name]Matching {
-	if c.match[p] == nil {
+	if _, ok := c.peer[p]; !ok {
+		c.peer[p] = nil // placeholder
+	}
+	if _, ok := c.match[p]; !ok {
 		c.match[p] = make(map[Name]Matching)
 	}
 	return c.match[p]
@@ -137,7 +146,7 @@ func (c *union) Numbers() []int {
 	return l
 }
 
-func (u *union) Peers() map[Name]Meaning {
+func (u *union) Symbols() map[Name]Meaning {
 	return u.peer
 }
 

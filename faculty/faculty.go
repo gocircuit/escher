@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package understand
+package faculty
 
 import (
 	// "fmt"
@@ -13,27 +13,32 @@ import (
 	"os"
 	"path"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/union"
 	"github.com/gocircuit/escher/see"
 )
 
 // I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
 
-type Faculty Image // name -> {Faculty, *Circuit, etc}
+// Faculty is a node in a hierarchy of nodes that can hold subnodes as well as circuit designs (themselves union structures).
+type Faculty Union
 
 func NewFaculty() Faculty {
-	f := make(Faculty)
-	f[Genus{}] = NewFacultyGenus()
-	return f
+	fty := Faculty(New())
+	Union(fty).Add(Genus_{}, NewGenus())
+	return fty
 }
 
-func (fty Faculty) Forget(name interface{}) (forgotten interface{}) {
-	forgotten = fty[name]
-	delete(fty, name)
-	return
+func (fty Faculty) Genus() Genus {
+	g, _ := Union(fty).At(Genus_{})
+	return g.(Genus)
 }
 
-func (fty Faculty) Roam(walk ...interface{}) (parent, child interface{}) {
+func (fty Faculty) Forget(name Name) (forgotten Meaning) {
+	return Union(fty).Forget(name)
+}
+
+// Roam traverses the hierarchy, creating faculty nodes if necessary, returning the final two nodes.
+func (fty Faculty) Roam(walk ...Name) (parent, child Meaning) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
@@ -42,16 +47,18 @@ func (fty Faculty) Roam(walk ...interface{}) (parent, child interface{}) {
 	}
 	fac, ok := child.(Faculty)
 	if !ok {
-		panic("overwriting")
+		panic("walking thru a non-faculty")
 	}
 	return fac.Roam(walk[1:]...)
 }
 
-func (fty Faculty) Walk(walk ...interface{}) (parent, child interface{}) {
+// Walk ...
+func (fty Faculty) Walk(walk ...Name) (parent, child Meaning) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
-	v, ok := fty[walk[0]]
+
+	v, ok := Union(fty).At(walk[0])
 	if !ok {
 		return nil, nil
 	}
@@ -61,7 +68,7 @@ func (fty Faculty) Walk(walk ...interface{}) (parent, child interface{}) {
 			return fty, t
 		}
 		return t.Walk(walk[1:]...)
-	default: // non-faculty children are leaves (e.g. *Circuit, Gate)
+	default: // non-faculty children are leaves (e.g. Union, Circuit, Gate)
 		if len(walk) != 1 {
 			panic("walk terminated")
 		}
@@ -70,40 +77,23 @@ func (fty Faculty) Walk(walk ...interface{}) (parent, child interface{}) {
 	panic(7)
 }
 
-func (fty Faculty) Refine(name interface{}) (child Faculty) {
-	if x, ok := fty[name]; ok {
+func (fty Faculty) Refine(name Name) Faculty {
+	if x, ok := Union(fty).At(name); ok {
 		return x.(Faculty)
 	}
-	child = NewFaculty()
-	child.Genus().Walk = append(fty.Genus().Walk, name)
-	fty[name] = child
-	return
+	y := NewFaculty()
+	y.Genus().SetWalk(append(fty.Genus().GetWalk(), name))
+	Union(fty).Add(name, y)
+	return y
 }
 
-func (fty Faculty) AddTerminal(name, term interface{}) {
-	if _, ok := fty[name]; ok {
+func (fty Faculty) AddTerminal(name Name, term Meaning) {
+	if _, over := Union(fty).Add(name, term); over {
 		panic(7)
 	}
-	fty[name] = term
 }
 
-// Genus is a name type used as a map key to mark the genus structure of a faculty.
-type Genus struct{}
-
-type FacultyGenus struct {
-	Walk []interface{} // walk to this faculty from root
-	SourceDir Image // source directoroy (acid) name to directory path
-}
-
-func NewFacultyGenus() *FacultyGenus {
-	return &FacultyGenus{SourceDir: Make()}
-}
-
-func (fty Faculty) Genus() *FacultyGenus {
-	return fty[Genus{}].(*FacultyGenus)
-}
-
-// Un
+// UnderstandDirectory ...
 func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	d, err := os.Open(dir)
 	if err != nil {
@@ -111,7 +101,7 @@ func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	}
 	defer d.Close()
 	//
-	fty.Genus().SourceDir.Grow(acid, dir)
+	fty.Genus().AddAcid(acid, dir)
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
 		log.Fatalln(err)
@@ -129,6 +119,7 @@ func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	}
 }
 
+// UnderstandFile ...
 func (fty Faculty) UnderstandFile(dir, filePath string) {
 	text, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -136,13 +127,25 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 	}
 	src := see.NewSrcString(string(text))
 	for {
-		s := see.SeeCircuit(src)
-		if s == nil {
+		n_, u_ := see.SeePeer(src)
+		if n_ == nil {
 			break
 		}
+		n := n_.(see.Address).Simple() // n is a string
+		u := u_.(Union)
+		sanitize(n, u)
+
 		t := Understand(s)
 		t.sourceDir, t.sourceFile = dir, filePath
 		fty.Interpret(t)
+	}
+}
+
+func sanitize(name Name, u Union) {
+	for nm, y := range u.Symbols() {
+		if y == nil && nm != name {
+			log.Fatalf("implicit non-super peer")
+		}
 	}
 }
 

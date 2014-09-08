@@ -52,8 +52,8 @@ func (fty Faculty) Roam(walk ...Name) (parent, child Meaning) {
 	return fac.Roam(walk[1:]...)
 }
 
-// Walk ...
-func (fty Faculty) Walk(walk ...Name) (parent, child Meaning) {
+// Lookup ...
+func (fty Faculty) Lookup(walk ...Name) (parent, child Meaning) {
 	if len(walk) == 0 {
 		return nil, fty
 	}

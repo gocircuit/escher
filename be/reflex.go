@@ -7,11 +7,11 @@
 package be
 
 import (
-	"github.com/gocircuit/escher/understand"
+	. "github.com/gocircuit/escher/union"
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
-type Reflex map[interface{}]*Synapse
+type Reflex map[Name]*Synapse
 
 type Gate interface {
 	Materialize() Reflex

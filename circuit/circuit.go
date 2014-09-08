@@ -43,11 +43,13 @@ func (x Matching) Reverse() Matching {
 
 // New ...
 func New() Circuit {
-	return Circuit{
-		&circuit{
-			symbol: make(map[Name]Meaning),
-			match: make(map[Name]map[Name]Matching),
-		},
+	return Circuit{newCircuit()}
+}
+
+func newCircuit() *circuit {
+	return &circuit{
+		symbol: make(map[Name]Meaning),
+		match: make(map[Name]map[Name]Matching),
 	}
 }
 

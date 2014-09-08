@@ -17,6 +17,8 @@ type Carry struct {
 	Meaning
 }
 
+const DefaultValve = "_"
+
 func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -34,7 +36,7 @@ func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar)
 		carry[0] = &Carry{sugar, g}
-		x.Symbol[0], x.Valve[0] = sugar, "_"
+		x.Symbol[0], x.Valve[0] = sugar, DefaultValve
 	} else {
 		x.Symbol[0], x.Valve[0] = p, v
 	}

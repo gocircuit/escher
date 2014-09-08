@@ -71,8 +71,8 @@ type ReCognizer struct {
 func (s *ReCognizer) ReCognize(value interface{}) {
 	s.Lock()
 	defer s.Unlock()
-	r, okr := s.memory.(Image)
-	v, okv := value.(Image)
+	r, okr := s.memory.(Circuit)
+	v, okv := value.(Circuit)
 	if okr && okv {
 		if Same(r, v) {
 			return

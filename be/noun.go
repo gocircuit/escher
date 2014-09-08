@@ -7,7 +7,7 @@
 package be
 
 import (
-	"github.com/gocircuit/escher/understand"
+	"github.com/gocircuit/escher/see"
 )
 
 // Ignore gates ignore their empty-string valve
@@ -18,7 +18,7 @@ func (Ignore) Materialize(*Matter) Reflex {
 	go func() {
 		s.Focus(DontCognize)
 	}()
-	return Reflex{"_": t}
+	return Reflex{see.DefaultValve: t}
 }
 
 func DontCognize(interface{}) {}
@@ -28,5 +28,5 @@ func NewNounReflex(v interface{}) Reflex {
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)
 	}()
-	return Reflex{understand.Default{}: t}
+	return Reflex{see.DefaultValve: t}
 }

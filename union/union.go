@@ -6,27 +6,24 @@
 
 package union
 
-import (
-	"bytes"
-	"fmt"
-
-	// . "github.com/gocircuit/escher/image"
-)
-
 // Name is one of: int or string
 type Name interface{}
 
 // Meaning is one of: string, int, float64, complex128, *Union
 type Meaning interface{}
 
+// Super is a placeholder meaning for the super peer
+type Super struct{}
+
+func (Super) String() string {
+	return "*"
+}
+
 // Union ...
 type Union struct {
 	peer map[Name]Meaning
 	match map[Name]map[Name]Matching // peer -> valve -> opposing peer and valve
 }
-
-// Super is a placeholder meaning for the super peer
-type Super struct{}
 
 // Matching ...
 type Matching struct {
@@ -123,42 +120,4 @@ func (u *Union) Peers() map[Name]Meaning {
 
 func (u *Union) String() string {
 	return u.Print(nil, "", "\t")
-}
-
-func (u *Union) Print(super Name, prefix, indent string) string {
-	var w bytes.Buffer
-	if super != nil {
-		fmt.Fprintf(&w, "%v ", super)
-	}
-	valves := u.Valves(super)
-	if len(valves) > 0 {
-		w.WriteString("(")
-		var i int
-		for vn, _ := range valves {
-			fmt.Fprintf(&w, "%v", vn)
-			i++
-			if i < len(valves) {
-				w.WriteString(", ")
-			}
-		}
-		w.WriteString(") ")
-	}
-	w.WriteString("{\n")
-	for n, p := range u.Peers() {
-		if n == super {
-			continue
-		}
-		w.WriteString(prefix)
-		w.WriteString(indent)
-		switch t := p.(type) {
-		case *Union:
-			fmt.Fprintf(&w, "%v %v\n", n, t.Print(n, prefix + indent, indent))
-		case string:
-			fmt.Fprintf(&w, "%v %q\n", n, t)
-		default:
-			fmt.Fprintf(&w, "%v %v\n", n, t)
-		}
-	}
-	w.WriteString("}")
-	return w.String()
 }

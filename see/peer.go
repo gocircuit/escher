@@ -9,7 +9,7 @@ package see
 import (
 	// "fmt"
 
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func SeePeer(src *Src) (n Name, m Meaning) {

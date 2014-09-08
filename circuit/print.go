@@ -4,16 +4,14 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package union
+package circuit
 
 import (
 	"bytes"
 	"fmt"
-
-	// . "github.com/gocircuit/escher/image"
 )
 
-func (u *union) Print(super Name, prefix, indent string) string {
+func (u *circuit) Print(super Name, prefix, indent string) string {
 	var w bytes.Buffer
 	if super != nil {
 		fmt.Fprintf(&w, "%v ", super)
@@ -39,7 +37,7 @@ func (u *union) Print(super Name, prefix, indent string) string {
 		w.WriteString(prefix)
 		w.WriteString(indent)
 		switch t := p.(type) {
-		case *Union:
+		case Circuit:
 			fmt.Fprintf(&w, "%v %v\n", n, t.Print(n, prefix + indent, indent))
 		case string:
 			fmt.Fprintf(&w, "%v %q\n", n, t)

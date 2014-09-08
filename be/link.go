@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	. "github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 type Being struct {
@@ -31,8 +31,8 @@ func (b *Being) Materialize(x Meaning) Reflex {
 		return t.Materialize()
 	case GateWithMatter:
 		?
-	case Union:
-		return MaterializeUnion(t)
+	case Circuit:
+		return MaterializeCircuit(t)
 	case nil:
 		log.Fatalf("Not found")
 	default:
@@ -41,6 +41,6 @@ func (b *Being) Materialize(x Meaning) Reflex {
 	panic(0)
 }
 
-func (b *Being) MaterializeUnion(u Union) {
+func (b *Being) MaterializeCircuit(u Circuit) {
 	??
 }

@@ -7,7 +7,7 @@
 package faculty
 
 import (
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Genus_ is a name type for a genus structure.
@@ -25,6 +25,6 @@ func NewFacultyGenus() *FacultyGenus {
 	}
 }
 
-type UnionGenus struct {
+type CircuitGenus struct {
 	Dir, File string
 }

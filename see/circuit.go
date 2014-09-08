@@ -7,10 +7,10 @@
 package see
 
 import (
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 )
 
-func SeeUnion(src *Src) (u Union) {
+func SeeCircuit(src *Src) (u Circuit) {
 	defer func() {
 		if r := recover(); r != nil {
 			u = Nil
@@ -33,7 +33,7 @@ func SeeUnion(src *Src) (u Union) {
 			}
 		} else if x, carry := SeeMatching(q, 2*i); x != nil { // parse matching
 			i++
-			for _, c := range carry { // add carry peers to union
+			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
 					u.Change(c.Name, c.Meaning)
 				}

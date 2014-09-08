@@ -13,28 +13,28 @@ import (
 	"os"
 	"path"
 
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/see"
 )
 
 // I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
 
-// Faculty is a node in a hierarchy of nodes that can hold subnodes as well as circuit designs (themselves union structures).
-type Faculty Union
+// Faculty is a node in a hierarchy of nodes that can hold subnodes as well as circuit designs (themselves circuit structures).
+type Faculty Circuit
 
 func NewFaculty() Faculty {
 	fty := Faculty(New())
-	Union(fty).Change(Genus_{}, NewFacultyGenus())
+	Circuit(fty).Change(Genus_{}, NewFacultyGenus())
 	return fty
 }
 
 func (fty Faculty) Genus() *FacultyGenus {
-	g, _ := Union(fty).At(Genus_{})
+	g, _ := Circuit(fty).At(Genus_{})
 	return g.(*FacultyGenus)
 }
 
 func (fty Faculty) Forget(name Name) (forgotten Meaning) {
-	return Union(fty).Forget(name)
+	return Circuit(fty).Forget(name)
 }
 
 // Roam traverses the hierarchy, creating faculty nodes if necessary, returning the final two nodes.
@@ -42,7 +42,7 @@ func (fty Faculty) Roam(walk ...Name) (parent, child Meaning) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
-	if parent, child = fty.Walk(walk[0]); parent == nil && child == nil { // If no child, make it
+	if parent, child = fty.Lookup(walk[0]); parent == nil && child == nil { // If no child, make it
 		child = fty.Refine(walk[0])
 	}
 	fac, ok := child.(Faculty)
@@ -58,7 +58,7 @@ func (fty Faculty) Lookup(walk ...Name) (parent, child Meaning) {
 		return nil, fty
 	}
 
-	v, ok := Union(fty).At(walk[0])
+	v, ok := Circuit(fty).At(walk[0])
 	if !ok {
 		return nil, nil
 	}
@@ -67,8 +67,8 @@ func (fty Faculty) Lookup(walk ...Name) (parent, child Meaning) {
 		if len(walk) == 1 {
 			return fty, t
 		}
-		return t.Walk(walk[1:]...)
-	default: // non-faculty children are leaves (e.g. Union, Circuit, Gate)
+		return t.Lookup(walk[1:]...)
+	default: // non-faculty children are leaves (e.g. Circuit, Circuit, Gate)
 		if len(walk) != 1 {
 			panic("walk terminated")
 		}
@@ -78,17 +78,17 @@ func (fty Faculty) Lookup(walk ...Name) (parent, child Meaning) {
 }
 
 func (fty Faculty) Refine(name Name) Faculty {
-	if x, ok := Union(fty).At(name); ok {
+	if x, ok := Circuit(fty).At(name); ok {
 		return x.(Faculty)
 	}
 	y := NewFaculty()
 	y.Genus().Walk = append(fty.Genus().Walk, name)
-	Union(fty).ChangeExclusive(name, y)
+	Circuit(fty).ChangeExclusive(name, y)
 	return y
 }
 
 func (fty Faculty) AddTerminal(name Name, term Meaning) {
-	Union(fty).ChangeExclusive(name, term)
+	Circuit(fty).ChangeExclusive(name, term)
 }
 
 // UnderstandDirectory ...
@@ -130,10 +130,10 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 			break
 		}
 		n := n_.(see.Address).Simple() // n is a string
-		u := u_.(Union)
+		u := u_.(Circuit)
 		seal(n, u) // Mark super peer
 		u.ChangeExclusive(Genus_{}, 
-			&UnionGenus{
+			&CircuitGenus{
 				Dir: dir,
 				File: filePath,
 			},
@@ -142,7 +142,7 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 	}
 }
 
-func seal(name Name, u Union) {
+func seal(name Name, u Circuit) {
 	u.ChangeExclusive(name, Super{})
 	for nm, y := range u.Symbols() {
 		if y == nil {

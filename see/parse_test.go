@@ -121,7 +121,7 @@ func TestPeer(t *testing.T) {
 	}
 }
 
-var testUnion = []string{
+var testCircuit = []string{
 	`{}`,
 	`{
 		a:y = b:z
@@ -170,9 +170,9 @@ var testUnion = []string{
 	`,
 }
 
-func TestUnion(t *testing.T) {
-	for _, q := range testUnion {
-		x := SeeUnion(NewSrcString(q))
+func TestCircuit(t *testing.T) {
+	for _, q := range testCircuit {
+		x := SeeCircuit(NewSrcString(q))
 		if x.IsNil() {
 			t.Errorf("problem parsing: %s", q)
 			continue

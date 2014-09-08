@@ -12,20 +12,20 @@ import (
 	"strconv"
 	"strings"
 
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func SeeMeaning(src *Src) (x Meaning) {
-	if u := SeeUnion(src); !u.IsNil() {
+	if u := SeeCircuit(src); !u.IsNil() {
 		return u
 	}
-	if x = SeeMeaningNoUnion(src); x != nil {
+	if x = SeeMeaningNoCircuit(src); x != nil {
 		return
 	}
 	return nil
 }
 
-func SeeMeaningNoUnion(src *Src) (x Meaning) {
+func SeeMeaningNoCircuit(src *Src) (x Meaning) {
 	if x = SeeInt(src); x != nil {
 		return
 	}

@@ -9,7 +9,7 @@ package see
 import (
 	"fmt"
 
-	. "github.com/gocircuit/escher/union"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 type Carry struct {
@@ -34,9 +34,9 @@ func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar)
 		carry[0] = &Carry{sugar, g}
-		x.Peer[0], x.Valve[0] = sugar, "_"
+		x.Symbol[0], x.Valve[0] = sugar, "_"
 	} else {
-		x.Peer[0], x.Valve[0] = p, v
+		x.Symbol[0], x.Valve[0] = p, v
 	}
 	//
 	Whitespace(t)
@@ -50,9 +50,9 @@ func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar+1)
 		carry[1] = &Carry{sugar, g}
-		x.Peer[1], x.Valve[1] = sugar, "_"
+		x.Symbol[1], x.Valve[1] = sugar, "_"
 	} else {
-		x.Peer[1], x.Valve[1] = p, v
+		x.Symbol[1], x.Valve[1] = p, v
 	}
 	//
 	if !Space(t) { // require newline at end

@@ -61,15 +61,17 @@ func (u *union) IsEmpty() bool {
 	return len(u.peer) == 0 && len(u.match) == 0
 }
 
-// Add adds a peer to this union.
-func (c *union) Add(name Name, meaning Meaning) (old Meaning, overwrite bool) {
-	old, overwrite = c.peer[name]
-	c.peer[name] = meaning
+// Change adds a peer to this union.
+func (u *union) Change(name Name, meaning Meaning) (before Meaning, overwrite bool) {
+	before, overwrite = u.peer[name]
+	u.peer[name] = meaning
 	return
 }
 
-func (c *union) AddExclusive(name Name, meaning Meaning) (old Meaning, overwrite bool) {
-	??
+func (u *union) ChangeExclusive(name Name, meaning Meaning) {
+	if _, over := u.Change(name, meaning); over {
+		panic(1)
+	}
 }
 
 // At ...

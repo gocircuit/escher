@@ -7,8 +7,6 @@
 package see
 
 import (
-	"log"
-
 	. "github.com/gocircuit/escher/union"
 )
 
@@ -28,16 +26,16 @@ func SeeUnion(src *Src) (u Union) {
 		Space(q)
 		if pn, pm := SeePeer(q); pn != nil { // parse peer
 			if _, ok := pn.(Nameless); ok { // if peer is nameless, this is a slice element
-				u.Add(j, pm)
+				u.Change(j, pm)
 				j++
 			} else {
-				u.Add(pn, pm) // record the order of definition in the same namespace but with number keys
+				u.Change(pn, pm) // record the order of definition in the same namespace but with number keys
 			}
 		} else if x, carry := SeeMatching(q, 2*i); x != nil { // parse matching
 			i++
 			for _, c := range carry { // add carry peers to union
 				if c != nil {
-					u.Add(c.Name, c.Meaning)
+					u.Change(c.Name, c.Meaning)
 				}
 			}
 			u.Match(*x)

@@ -10,29 +10,21 @@ import (
 	. "github.com/gocircuit/escher/union"
 )
 
-// Genus_ is a name type used to mark a genus structure within a union.
+// Genus_ is a name type for a genus structure.
 type Genus_ struct{}
-type Walk_ struct{}
 
 //
-type Genus Union
-
-func NewGenus() Genus {
-	return Genus(New())
+type FacultyGenus struct {
+	Acid map[string]string // acid to directory
+	Walk []Name // walk within hierarchy
 }
 
-func (g Genus) SetWalk(walk []Name) {
-	Union(g).Add(Walk_{}, walk)
-}
-
-func (g Genus) GetWalk() []Name {
-	w, ok := Union(g).At(Walk_{})
-	if !ok {
-		return nil
+func NewFacultyGenus() *FacultyGenus {
+	return &FacultyGenus{
+		Acid: make(map[string]string),
 	}
-	return w.([]Name)
 }
 
-func (g Genus) AddAcid(acid, dir string) {
-	Union(g).At(acid, dir)
+type UnionGenus struct {
+	Dir, File string
 }

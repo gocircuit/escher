@@ -24,13 +24,13 @@ type Faculty Union
 
 func NewFaculty() Faculty {
 	fty := Faculty(New())
-	Union(fty).Add(Genus_{}, NewGenus())
+	Union(fty).Change(Genus_{}, NewFacultyGenus())
 	return fty
 }
 
-func (fty Faculty) Genus() Genus {
+func (fty Faculty) Genus() *FacultyGenus {
 	g, _ := Union(fty).At(Genus_{})
-	return g.(Genus)
+	return g.(*FacultyGenus)
 }
 
 func (fty Faculty) Forget(name Name) (forgotten Meaning) {
@@ -82,15 +82,13 @@ func (fty Faculty) Refine(name Name) Faculty {
 		return x.(Faculty)
 	}
 	y := NewFaculty()
-	y.Genus().SetWalk(append(fty.Genus().GetWalk(), name))
-	Union(fty).Add(name, y)
+	y.Genus().Walk = append(fty.Genus().Walk, name)
+	Union(fty).ChangeExclusive(name, y)
 	return y
 }
 
 func (fty Faculty) AddTerminal(name Name, term Meaning) {
-	if _, over := Union(fty).Add(name, term); over {
-		panic(7)
-	}
+	Union(fty).ChangeExclusive(name, term)
 }
 
 // UnderstandDirectory ...
@@ -101,7 +99,7 @@ func (fty Faculty) UnderstandDirectory(acid, dir string) {
 	}
 	defer d.Close()
 	//
-	fty.Genus().AddAcid(acid, dir)
+	fty.Genus().Acid[acid] = dir
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
 		log.Fatalln(err)
@@ -133,33 +131,22 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 		}
 		n := n_.(see.Address).Simple() // n is a string
 		u := u_.(Union)
-		sanitize(n, u)
-
-		t := Understand(s)
-		t.sourceDir, t.sourceFile = dir, filePath
-		fty.Interpret(t)
+		seal(n, u) // Mark super peer
+		u.ChangeExclusive(Genus_{}, 
+			&UnionGenus{
+				Dir: dir,
+				File: filePath,
+			},
+		)
+		fty.ChangeExclusive(n, u)
 	}
 }
 
-func sanitize(name Name, u Union) {
+func seal(name Name, u Union) {
+	u.ChangeExclusive(name, Super{})
 	for nm, y := range u.Symbols() {
-		if y == nil && nm != name {
-			log.Fatalf("implicit non-super peer")
+		if y == nil {
+			log.Fatalf("implicit non-super peer: %v", nm)
 		}
 	}
-}
-
-func (fty Faculty) Interpret(cir *Circuit) (fresh *Circuit) {
-	w, ok := fty[cir.Name()]
-	if !ok {
-		fty[cir.Name()] = cir
-		return cir
-	}
-	if wcir, ok := w.(*Circuit); ok {
-		wcir.Merge(cir)
-		return wcir
-	}
-	// otherwise overwrite existing design
-	fty[cir.Name()] = cir
-	return cir
 }

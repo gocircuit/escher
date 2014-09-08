@@ -51,7 +51,7 @@ func SeeMeaningNoUnion(src *Src) (x Meaning) {
 type Address string
 
 func (a Address) Simple() string {
-	if len(strings.Split(a)) != 1 {
+	if len(strings.Split(string(a), ".")) != 1 {
 		panic(1)
 	}
 	return string(a)

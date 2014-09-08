@@ -32,7 +32,7 @@ func (u *union) Print(super Name, prefix, indent string) string {
 		w.WriteString(") ")
 	}
 	w.WriteString("{\n")
-	for n, p := range u.Peers() {
+	for n, p := range u.Symbols() {
 		if n == super {
 			continue
 		}

@@ -6,12 +6,18 @@
 
 package circuit
 
-// import (
-// 	"bytes"
-// 	"fmt"
-// )
+func CopyMeaning(x Meaning) Meaning {
+	switch t := x.(type) {
+	case Circuit:
+		return t.Copy()
+	}
+	return x
+}
 
 func (u Circuit) Copy() Circuit {
+	if u.circuit == nil {
+		return Circuit{}
+	}
 	return Circuit{u.circuit.Copy()}
 }
 
@@ -19,7 +25,7 @@ func (u *circuit) Copy() *circuit {
 	w := newCircuit()
 	// symbols
 	for n, y := range u.symbol {
-		w.symbol[n] = copyMeaning(y)
+		w.symbol[n] = CopyMeaning(y)
 	}
 	// matchings
 	for n, z := range u.match {
@@ -32,13 +38,13 @@ func (u *circuit) Copy() *circuit {
 	return w
 }
 
-func copyMeaning(x Meaning) Meaning {
-	return x
-	// switch t := x.(type) {
-	// case Circuit:
-	// 	return t.Copy()
-	// }
-	// return x
+func SameMeaning(x, y Meaning) bool {
+	xc, x_ := x.(Circuit)
+	yc, y_ := y.(Circuit)
+	if x_ && y_ {
+		return Same(xc, yc)
+	}
+	return x == y
 }
 
 func Same(x, y Circuit) bool {
@@ -58,7 +64,7 @@ func (u *circuit) Contains(w *circuit) bool {
 		if !ok {
 			return false
 		}
-		if y != yy {
+		if !SameMeaning(y, yy) {
 			return false
 		}
 	}

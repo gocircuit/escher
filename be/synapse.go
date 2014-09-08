@@ -71,18 +71,9 @@ type ReCognizer struct {
 func (s *ReCognizer) ReCognize(value interface{}) {
 	s.Lock()
 	defer s.Unlock()
-	r, okr := s.memory.(Circuit)
-	v, okv := value.(Circuit)
-	if okr && okv {
-		if Same(r, v) {
-			return
-		}
-		s.memory = v.Copy()
-	} else {
-		if s.memory == value {
-			return
-		}
-		s.memory = value
+	if SameMeaning(s.memory, value) {
+		return
 	}
+	s.memory = CopyMeaning(value)
 	s.q(value)
 }

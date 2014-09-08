@@ -8,6 +8,7 @@ package be
 
 import (
 	. "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/faculty"
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
@@ -23,10 +24,12 @@ type GateWithMatter interface {
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
-	Name []string // Full name of this circuit instance materialization in the space of all possible materializations
-	Source []interface{} // Full name of this circuit design within the program memory/faculties namespace
-	Circuit *understand.Circuit // Circuit design of this reflex
-	Faculty understand.Faculty // Faculty within which this circuit design is implemented
+	???
+	Name []string // Unique name of this materialization in the space of all materializations
+
+	Address string // Address of this circuit design within the faculties namespace
+	Design Circuit // Circuit design of this reflex
+	Memory Faculty // Faculty within which this circuit design is implemented
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }
 

@@ -120,39 +120,3 @@ func (x Space) materializeCircuit(matter *Matter, withinFac understand.Faculty, 
 	}
 	return exo
 }
-
-func (x Space) Interpret(understood *understand.Circuit) (fresh *understand.Circuit) {
-	return x.Faculty().Interpret(understood)
-}
-
-func (x Space) Forget(name interface{}) (forgotten interface{}) {
-	switch t := x.Faculty().Forget(name).(type) {
-	case understand.Faculty:
-		return Space(t)
-	default:
-		return t
-	}
-	panic(0)
-}
-
-func (x Space) Walk(walk ...interface{}) (parent, child interface{}) {
-	parent, child = x.Faculty().Walk(walk...)
-	if fac, ok := parent.(understand.Faculty); ok {
-		parent = Space(fac)
-	}
-	if fac, ok := child.(understand.Faculty); ok {
-		child = Space(fac)
-	}
-	return
-}
-
-func (x Space) Roam(walk ...interface{}) (parent, child interface{}) {
-	parent, child = x.Faculty().Roam(walk...)
-	if fac, ok := parent.(understand.Faculty); ok {
-		parent = Space(fac)
-	}
-	if fac, ok := child.(understand.Faculty); ok {
-		child = Space(fac)
-	}
-	return
-}

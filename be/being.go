@@ -25,12 +25,14 @@ func (b *Being) MaterializeAddress(addr string) Reflex {
 
 func (b *Being) Materialize(x Meaning) Reflex {
 	switch t := x.(type) {
+	case see.Address:
+		return b.MaterializeAddress(string(t))
 	case int, float64, complex128, string:
 		return NewNounReflex(t)
 	case Gate:
 		return t.Materialize()
-	case GateWithMatter:
-		?
+	// case GateWithMatter:
+	// 	??
 	case Circuit:
 		return MaterializeCircuit(t)
 	case nil:
@@ -42,5 +44,10 @@ func (b *Being) Materialize(x Meaning) Reflex {
 }
 
 func (b *Being) MaterializeCircuit(u Circuit) {
-	??
+	symbols := make(map[Name]Reflex)
+	for y, m := range u.Symbols() {
+		symbols[y] = b.Materialize(m)
+	}
+	for _, _ := range u.Valves() {
+	}
 }

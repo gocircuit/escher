@@ -24,9 +24,7 @@ type GateWithMatter interface {
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
-	???
-	Name []string // Unique name of this materialization in the space of all materializations
-
+	Being string // Name of materializing being
 	Address string // Address of this circuit design within the faculties namespace
 	Design Circuit // Circuit design of this reflex
 	Memory Faculty // Faculty within which this circuit design is implemented

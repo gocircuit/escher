@@ -51,6 +51,17 @@ func New() Union {
 	}
 }
 
+var Nil Union // the nil union
+var Empty = New() // the empty union
+
+func (u *union) Nil() bool {
+	return u == nil
+}
+
+func (u *union) Empty() bool {
+	return len(u.peer) == 0 && len(u.match) == 0
+}
+
 // Add adds a peer to this union.
 func (c *union) Add(name Name, meaning Meaning) {
 	c.peer[name] = meaning

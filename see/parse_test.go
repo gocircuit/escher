@@ -173,7 +173,7 @@ var testUnion = []string{
 func TestUnion(t *testing.T) {
 	for _, q := range testUnion {
 		x := SeeUnion(NewSrcString(q))
-		if x == nil {
+		if x.Nil() {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}

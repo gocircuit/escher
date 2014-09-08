@@ -11,10 +11,10 @@ import (
 	. "github.com/gocircuit/escher/union"
 )
 
-func SeeUnion(src *Src) (u *Union) {
+func SeeUnion(src *Src) (u Union) {
 	defer func() {
 		if r := recover(); r != nil {
-			u = nil
+			u = Nil
 		}
 	}()
 	u = New()

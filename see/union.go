@@ -35,7 +35,9 @@ func SeeUnion(src *Src) (u *Union) {
 		} else if x, carry := SeeMatching(q, 2*i); x != nil { // parse matching
 			i++
 			for _, c := range carry { // add carry peers to union
-				u.Add(c.Name, c.Meaning)
+				if c != nil {
+					u.Add(c.Name, c.Meaning)
+				}
 			}
 			u.Match(*x)
 		} else {

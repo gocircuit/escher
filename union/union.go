@@ -54,11 +54,11 @@ func New() Union {
 var Nil Union // the nil union
 var Empty = New() // the empty union
 
-func (u *union) Nil() bool {
+func (u *union) IsNil() bool {
 	return u == nil
 }
 
-func (u *union) Empty() bool {
+func (u *union) IsEmpty() bool {
 	return len(u.peer) == 0 && len(u.match) == 0
 }
 

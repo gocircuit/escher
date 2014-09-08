@@ -16,7 +16,7 @@ import (
 )
 
 func SeeMeaning(src *Src) (x Meaning) {
-	if u := SeeUnion(src); !u.Nil() {
+	if u := SeeUnion(src); !u.IsNil() {
 		return u
 	}
 	if x = SeeMeaningNoUnion(src); x != nil {

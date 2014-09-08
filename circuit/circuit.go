@@ -35,6 +35,10 @@ type Matching struct {
 	Valve [2]Name
 }
 
+func SameMatching(x, y Matching) bool {
+	return x == y
+}
+
 func (x Matching) Reverse() Matching {
 	x.Symbol[0], x.Symbol[1] = x.Symbol[1], x.Symbol[0]
 	x.Valve[0], x.Valve[1] = x.Valve[1], x.Valve[0]

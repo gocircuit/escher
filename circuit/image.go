@@ -19,7 +19,7 @@ func (u *circuit) Copy() *circuit {
 	w := newCircuit()
 	// symbols
 	for n, y := range u.symbol {
-		w.symbol[n] = y // copyMeaning(y)
+		w.symbol[n] = copyMeaning(y)
 	}
 	// matchings
 	for n, z := range u.match {
@@ -33,9 +33,50 @@ func (u *circuit) Copy() *circuit {
 }
 
 func copyMeaning(x Meaning) Meaning {
-	switch t := x.(type) {
-	case Circuit:
-		return t.Copy()
-	}
 	return x
+	// switch t := x.(type) {
+	// case Circuit:
+	// 	return t.Copy()
+	// }
+	// return x
+}
+
+func Same(x, y Circuit) bool {
+	if x.circuit == nil && y.circuit == nil {
+		return true
+	}
+	if x.circuit == nil || y.circuit == nil {
+		return false
+	}
+	return x.circuit.Contains(y.circuit) && y.circuit.Contains(x.circuit)
+}
+
+func (u *circuit) Contains(w *circuit) bool {
+	// symbol
+	for n, y := range u.symbol {
+		yy, ok := w.symbol[n]
+		if !ok {
+			return false
+		}
+		if y != yy {
+			return false
+		}
+	}
+	// match
+	for n, z := range u.match {
+		zz, ok := w.match[n]
+		if !ok {
+			return false
+		}
+		for v, m := range z {
+			mm, ok := zz[v]
+			if !ok {
+				return false
+			}
+			if !SameMatching(m, mm) {
+				return false
+			}
+		}
+	}
+	return true
 }

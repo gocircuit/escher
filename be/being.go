@@ -60,10 +60,7 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 			name = y
 		} else {
 			images[y] = b.Materialize(
-				&Matter{
-					Address: "", // ??
-					Design: u,
-				},
+				&Matter{Design: u},
 				m, false,
 			)
 		}

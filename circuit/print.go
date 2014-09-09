@@ -9,13 +9,14 @@ package circuit
 import (
 	"bytes"
 	"fmt"
+	"io"
 )
 
 func (u *circuit) super() (super Name) {
 	for n, m := range u.Images() {
 		if _, ok := m.(Super); ok {
 			if super != nil {
-				println("alrea", fmt.Sprintf("%v vs %v", super, n))
+				fmt.Printf("X=%v\n", u.Images())
 				panic("two supers")
 			}
 			super = n
@@ -47,21 +48,16 @@ func (u *circuit) Print(prefix, indent string) string {
 		w.WriteString(") ")
 	}
 	w.WriteString("{\n")
-	for n, p := range u.image {
+	// letters
+	for _, n := range u.Letters() {
+		p := u.image[n]
 		if n == super {
 			continue
 		}
-		w.WriteString(prefix)
-		w.WriteString(indent)
-		switch t := p.(type) {
-		case Circuit:
-			fmt.Fprintf(&w, "%v\n", t.Print(prefix + indent, indent))
-		case string:
-			fmt.Fprintf(&w, "%v %q\n", n, t)
-		default:
-			fmt.Fprintf(&w, "%v %v\n", n, t)
-		}
-		for _, m := range u.real[n] { // links
+		w.WriteString(prefix + indent)
+		PrintMeaning(&w, prefix+indent, indent, n, p)
+		//
+		for _, m := range u.real[n] { // reals
 			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
 				prefix, indent,  
 				m.Image[0], m.Valve[0],
@@ -71,4 +67,15 @@ func (u *circuit) Print(prefix, indent string) string {
 	}
 	w.WriteString(prefix + "}")
 	return w.String()
+}
+
+func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
+	switch t := p.(type) {
+	case Circuit:
+		fmt.Fprintf(w, "%v\n", t.Print(prefix, indent))
+	case string:
+		fmt.Fprintf(w, "%v %q\n", n, t)
+	default:
+		fmt.Fprintf(w, "%v %v\n", n, t)
+	}
 }

@@ -44,20 +44,20 @@ func (ForkSequence) Materialize() be.Reflex {
 // ExploreOnStrobe traverses the hierarchy of circuits induced by a given top-level/valveless circuit.
 //
 //	Strobe = {
-//		When interface{}
+//		When *
 //		Charge {
-//			Circuit *understand.Circuit
-//			Peer interface{} // Start peer name
+//			Circuit Circuit
+//			Peer string // Start peer name
 //			Valve string // Start valve name
 //		}
 //	}
 //
 // 	Sequence = {
-//		When interface{} // When value that sparked this sequence
+//		When * // When value that sparked this sequence
 //		Index int // Index of this circuit within exploration sequence, 0-based
 //		Charge {
-//			Circuit *understand.Circuit // Current circuit in the exploration sequence
-//			Peer interface{} // Point-of-view peer
+//			Circuit Circuit // Current circuit in the exploration sequence
+//			Peer string // Point-of-view peer
 //			Valve string // Point-of-view valve of pov peer
 //		}
 //	}

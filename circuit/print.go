@@ -61,8 +61,7 @@ func (u *circuit) Print(prefix, indent string) string {
 		default:
 			fmt.Fprintf(&w, "%v %v\n", n, t)
 		}
-		// Links
-		for _, m := range u.real[n] {
+		for _, m := range u.real[n] { // links
 			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
 				prefix, indent,  
 				m.Image[0], m.Valve[0],

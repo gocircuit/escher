@@ -9,10 +9,9 @@ package basic
 import (
 	// "fmt"
 
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
-	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -41,14 +40,14 @@ func (x *strobe) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	case "Charge":
 		select {
 		case y := <- x.when: // if a when is already waiting, couple it with the charge and send a strobe pair
-			eye.Show("Strobe", Make().Grow(see.Name("When"), y).Grow(see.Name("Charge"), dvalue))
+			eye.Show("Strobe", New().Grow("When", y).Grow("Charge", dvalue))
 		default: // otherwise remember the charge
 			x.charge <- dvalue
 		}
 	case "When":
 		select {
 		case y := <- x.charge: // if a charge is already waiting, couple it with the when and send a strobe pair
-			eye.Show("Strobe", Make().Grow(see.Name("When"), dvalue).Grow(see.Name("Charge"), y))
+			eye.Show("Strobe", New().Grow("When", dvalue).Grow("Charge", y))
 		default: // otherwise remember the when
 			x.when <- dvalue
 		}

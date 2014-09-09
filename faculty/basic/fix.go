@@ -9,10 +9,9 @@ package basic
 import (
 	// "fmt"
 
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
-	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 )
 
 // Fix creates a gate that waits until all fix valves are set and
@@ -20,13 +19,13 @@ import (
 func MaterializeFix(fwd string, fix ...string) be.Reflex {
 	reflex, eye := plumb.NewEye(append(fix, fwd)...)
 	go func() {
-		conj := Make()
+		conj := New()
 		for {
 			dvalve, dvalue := eye.See()
 			if dvalve == fwd { // conjunction updated
 				continue // ignore upstream updates
 			} else { // field updated
-				conj.Abandon(see.Name(dvalve)).Grow(see.Name(dvalve), dvalue)
+				conj.Abandon(dvalve).Grow(dvalve, dvalue)
 				if conj.Len() == len(fix) {
 					eye.Show(fwd, conj)
 					eye.Drain() // As soon as the conjunction is output, this gate is done.

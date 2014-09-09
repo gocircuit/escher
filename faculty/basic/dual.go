@@ -11,22 +11,14 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
+	. "github.com/gocircuit/escher/see"
 )
 
-func Init(n string) {
-	name = n
+func init() {
 	faculty.Root.AddTerminal("Ignore", be.Ignore{})
 	faculty.Root.AddTerminal("Show", Println{})
 	faculty.Root.AddTerminal("See", Scanln{})
-	faculty.Root.AddTerminal("Name", be.NewNounReflex(name))
-}
-
-var name string
-
-// Name returns the name assigned to this program execution
-func Name() string {
-	return name
+	faculty.Root.AddTerminal("Root", be.NewNounReflex(faculty.Root))
 }
 
 // Scanln
@@ -44,7 +36,7 @@ func (Scanln) Materialize() be.Reflex {
 			}
 		}()
 	}()
-	return be.Reflex{see.Name("_"): t}
+	return be.Reflex{DefaultValve: t}
 }
 
 // Println
@@ -59,5 +51,5 @@ func (Println) Materialize() be.Reflex {
 			},
 		)
 	}()
-	return be.Reflex{see.Name("_"): t}
+	return be.Reflex{DefaultValve: t}
 }

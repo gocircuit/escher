@@ -40,7 +40,5 @@ func (d dir) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	if dvalve != "Path" {
 		return
 	}
-	// img := value.(Image)
-	panic("not ready")
-	// eye.Show("_", ??)
+	eye.Show("_", string(d))
 }

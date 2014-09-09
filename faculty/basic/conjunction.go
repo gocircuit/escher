@@ -10,15 +10,14 @@ import (
 	// "fmt"
 
 	"github.com/gocircuit/escher/kit/plumb"
-	. "github.com/gocircuit/escher/image"
-	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
+	. "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/be"
 )
 
-func MaterializeUnion(name string, field ...string) be.Reflex {
+func MaterializeUnion(name string, field ...string) Reflex {
 	reflex, eye := plumb.NewEye(append(field, name)...)
 	go func() {
-		conj := Make()
+		conj := New()
 		for {
 			dvalve, dvalue := eye.See()
 			if dvalve == name { // conjunction updated
@@ -26,7 +25,7 @@ func MaterializeUnion(name string, field ...string) be.Reflex {
 				for _, f_ := range field { // send updated conjunction to all field valves
 					f := f_
 					go func() {
-						eye.Show(f, dvalue.(Image)[f])
+						eye.Show(f, dvalue.(Circuit).AtNil(f))
 						y <- struct{}{}
 					}()
 				}
@@ -34,7 +33,7 @@ func MaterializeUnion(name string, field ...string) be.Reflex {
 					<-y
 				}
 			} else { // field updated
-				conj.Abandon(see.Name(dvalve)).Grow(see.Name(dvalve), dvalue)
+				conj.Abandon(dvalve).Grow(dvalve, dvalue)
 				if conj.Len() == len(field) {
 					eye.Show(name, conj)
 				}

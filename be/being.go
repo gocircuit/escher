@@ -31,8 +31,6 @@ func (b *Being) Materialize(x Meaning) Reflex {
 		return NewNounReflex(t)
 	case Gate:
 		return t.Materialize()
-	// case GateWithMatter:
-	// 	??
 	case Circuit:
 		return b.MaterializeCircuit(t)
 	case nil:

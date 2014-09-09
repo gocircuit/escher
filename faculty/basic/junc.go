@@ -10,8 +10,8 @@ import (
 	// "fmt"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/plumb"
+	. "github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
@@ -21,12 +21,12 @@ func init() {
 // Junction
 type Junction struct{}
 
-func (Junction) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(cognizeJunction, "X", "Y", "Z")
+func (Junction) Materialize() Reflex {
+	reflex, _ := NewEyeCognizer(cognizeJunction, "X", "Y", "Z")
 	return reflex
 }
 
-func cognizeJunction(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func cognizeJunction(eye *Eye, dvalve string, dvalue interface{}) {
 	ch := make(sparkChan, 2)
 	switch dvalve {
 	case "X":
@@ -45,7 +45,7 @@ func cognizeJunction(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 
 type sparkChan chan struct{}
 
-func spark(ch sparkChan, eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func spark(ch sparkChan, eye *Eye, dvalve string, dvalue interface{}) {
 	eye.Show(dvalve, dvalue)
 	ch <- struct{}{}
 }

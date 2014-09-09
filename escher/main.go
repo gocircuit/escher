@@ -19,12 +19,12 @@ import (
 	. "github.com/gocircuit/escher/be"
 
 	// Load faculties
-	// "github.com/gocircuit/escher/faculty/acid"
-	// "github.com/gocircuit/escher/faculty/basic"
+	"github.com/gocircuit/escher/faculty/acid"
 	// "github.com/gocircuit/escher/faculty/circuit"
 	// // "github.com/gocircuit/escher/faculty/draw"
 	// facultyos "github.com/gocircuit/escher/faculty/os"
 	
+	_ "github.com/gocircuit/escher/faculty/basic"
 	// _ "github.com/gocircuit/escher/faculty/escher"
 	// // _ "github.com/gocircuit/escher/faculty/handbook"
 	// _ "github.com/gocircuit/escher/faculty/i"
@@ -55,9 +55,8 @@ func main() {
 		fatalf("at least one source directory, X, Y or Z, must be specified with -x, -y or -z, respectively")
 	}
 	// Initialize faculties
-	// basic.Init(*flagName)
 	// facultyos.Init(*flagArg)
-	// loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY, *flagZ)
+	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY, *flagZ)
 	//
 	switch {
 	case *flagSvg != "":
@@ -108,8 +107,8 @@ func compile(x, y, z string) Faculty {
 	return Root
 }
 
-// func loadCircuitFaculty(name, discover, x, y, z string) {
-// 	acid.Init(x, y, z)
+func loadCircuitFaculty(name, discover, x, y, z string) {
+	acid.Init(x, y, z)
 // 	if discover == "" {
 // 		circuit.Init(name, nil)
 // 		return
@@ -118,7 +117,7 @@ func compile(x, y, z string) Faculty {
 // 		panic("circuit-based Escher programs must have a non-empty name")
 // 	}
 // 	circuit.Init(name, client.DialDiscover(discover, nil))
-// }
+}
 
 func namify(x []string) (y []Name) {
 	for _, v := range x {

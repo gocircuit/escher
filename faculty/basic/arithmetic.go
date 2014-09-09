@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 )
@@ -25,28 +25,26 @@ func init() {
 type Sum struct{}
 
 func (Sum) Materialize() be.Reflex {
-	x := &sum{
-		lit: Image{},
-	}
+	x := &sum{lit: New()}
 	reflex, _ := plumb.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
 	return reflex
 }
 
 type sum struct {
 	sync.Mutex
-	lit Image // literals
+	lit Circuit // literals
 }
 
 func (x *sum) save(valve string, value int) {
 	x.Lock()
 	defer x.Unlock()
-	x.lit[valve] = value
+	x.lit.Change(valve, value)
 }
 
 func (x *sum) u(valve string) int {
 	x.Lock()
 	defer x.Unlock()
-	return x.lit.OptionalInt(valve)
+	return x.lit.OptionalIntAt(valve)
 }
 
 func (x *sum) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {

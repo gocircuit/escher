@@ -23,11 +23,9 @@ func (u Circuit) Copy() Circuit {
 
 func (u *circuit) Copy() *circuit {
 	w := newCircuit()
-	// images
 	for n, y := range u.image {
 		w.image[n] = CopyMeaning(y)
 	}
-	// reals
 	for n, z := range u.real {
 		x := make(map[Name]Real)
 		w.real[n] = x

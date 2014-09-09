@@ -167,5 +167,5 @@ func (u *circuit) Matchings() map[Name]map[Name]Matching {
 }
 
 func (u *circuit) String() string {
-	return u.Print(nil, "", "\t")
+	return u.Print("", "\t")
 }

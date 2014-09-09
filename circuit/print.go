@@ -11,8 +11,24 @@ import (
 	"fmt"
 )
 
-func (u *circuit) Print(super Name, prefix, indent string) string {
+func (u *circuit) super() (super Name) {
+	for n, m := range u.Symbols() {
+		if _, ok := m.(Super); ok {
+			if super != nil {
+				panic("two supers")
+			}
+			super = n
+		}
+	}
+	if super == nil {
+		panic("no super")
+	}
+	return
+}
+
+func (u *circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
+	super := u.super()
 	if super != nil {
 		fmt.Fprintf(&w, "%v ", super)
 	}
@@ -38,7 +54,7 @@ func (u *circuit) Print(super Name, prefix, indent string) string {
 		w.WriteString(indent)
 		switch t := p.(type) {
 		case Circuit:
-			fmt.Fprintf(&w, "%v %v\n", n, t.Print(n, prefix + indent, indent))
+			fmt.Fprintf(&w, "%v %v\n", n, t.Print(prefix + indent, indent))
 		case string:
 			fmt.Fprintf(&w, "%v %q\n", n, t)
 		default:

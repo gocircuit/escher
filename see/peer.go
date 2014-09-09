@@ -34,6 +34,12 @@ func SeePeer(src *Src) (n Name, m Meaning) {
 		return Nameless{}, left
 	} else { // two terms (name and value)
 		src.Become(t)
+		if c, ok := right.(Circuit); ok {
+			if _, ok := c.At(""); ok {
+				panic("two anonymous super")
+			}
+			c.Change("", Super{})
+		}
 		return left.(Address).Simple(), right
 	}
 	panic("peer")

@@ -14,8 +14,6 @@ import (
 	"runtime"
 	"runtime/pprof"
 	"time"
-	
-	"github.com/gocircuit/escher/see"
 )
 
 func init() {

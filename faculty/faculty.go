@@ -22,9 +22,9 @@ import (
 // Faculty is a node in a hierarchy of nodes that can hold subnodes as well as circuit designs (themselves circuit structures).
 type Faculty Circuit
 
-func NewFaculty() Faculty {
+func NewFaculty(name Name) Faculty {
 	fty := Faculty(New())
-	Circuit(fty).Seal("")
+	Circuit(fty).Seal(name)
 	Circuit(fty).Change(Genus_{}, NewFacultyGenus())
 	return fty
 }
@@ -82,10 +82,9 @@ func (fty Faculty) Refine(name Name) Faculty {
 	if x, ok := Circuit(fty).At(name); ok {
 		return x.(Faculty)
 	}
-	y := NewFaculty()
-	y.Seal(name)
+	y := NewFaculty(name)
 	y.Genus().Walk = append(fty.Genus().Walk, name)
-	Circuit(fty).ChangeExclusive(name, y)
+	Circuit(fty).Grow(name.(string), y)
 	return y
 }
 

@@ -7,4 +7,4 @@
 package faculty
 
 // Root is a global variable where packages can add gates as side-effect of being imported.
-var Root = NewFaculty()
+var Root = NewFaculty("root")

@@ -12,11 +12,15 @@ import (
 	"io"
 )
 
+type Printer interface {
+	Print(prefix, indent string) string
+}
+
 func (u *circuit) super() (super Name) {
 	for n, m := range u.Images() {
 		if _, ok := m.(Super); ok {
 			if super != nil {
-				fmt.Printf("X=%v\n", u.Images())
+				//fmt.Printf("X=%v\n", u.Images())
 				panic("two supers")
 			}
 			super = n
@@ -71,7 +75,7 @@ func (u *circuit) Print(prefix, indent string) string {
 
 func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
 	switch t := p.(type) {
-	case Circuit:
+	case Printer:
 		fmt.Fprintf(w, "%v\n", t.Print(prefix, indent))
 	case string:
 		fmt.Fprintf(w, "%v %q\n", n, t)

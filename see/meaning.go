@@ -57,6 +57,13 @@ func (a Address) Simple() string {
 	return string(a)
 }
 
+func (a Address) Walk() (walk []Name) {
+	for _, w := range strings.Split(string(a), ".") {
+		walk = append(walk, w)
+	}
+	return
+}
+
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
 	t := src.Copy()

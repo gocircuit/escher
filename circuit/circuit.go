@@ -9,7 +9,7 @@ package circuit
 // Name is one of: int or string
 type Name interface{}
 
-// Meaning is one of: string, int, float64, complex128, Circuit
+// Meaning is one of: see.Address, string, int, float64, complex128, Circuit
 type Meaning interface{}
 
 // Super is a placeholder meaning for the super symbol
@@ -160,6 +160,10 @@ func (c *circuit) Numbers() []int {
 
 func (u *circuit) Symbols() map[Name]Meaning {
 	return u.symbol
+}
+
+func (u *circuit) Matchings() map[Name]map[Name]Matching {
+	return u.match
 }
 
 func (u *circuit) String() string {

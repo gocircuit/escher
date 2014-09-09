@@ -54,9 +54,8 @@ func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
 	return m.q
 }
 
-// Merge attaches two endpoints, of distinct memories, together.
-func Merge(m1, m2 *Synapse) {
-	m2.teach <- <-m1.learn
+// Link attaches two synapse endpoints together.
+func Link(m1, m2 *Synapse) {
 	m1.teach <- <-m2.learn
 }
 

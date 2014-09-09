@@ -30,7 +30,3 @@ type Matter struct {
 	Memory Faculty // Faculty within which this circuit design is implemented
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }
-
-func (m *Matter) LastName() string {
-	return m.Name[len(m.Name)-1]
-}

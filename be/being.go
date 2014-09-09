@@ -8,25 +8,25 @@ package be
 
 import (
 	"log"
-	"strings"
 
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/see"
 )
 
 type Being struct {
 	Faculty
 }
 
-func (b *Being) MaterializeAddress(addr string) Reflex {
-	_, u := b.Faculty.Lookup(strings.Split(addr, ".")...)
+func (b *Being) MaterializeAddress(addr see.Address) Reflex {
+	_, u := b.Faculty.Lookup(addr.Walk()...)
 	return b.Materialize(u)
 }
 
 func (b *Being) Materialize(x Meaning) Reflex {
 	switch t := x.(type) {
 	case see.Address:
-		return b.MaterializeAddress(string(t))
+		return b.MaterializeAddress(t)
 	case int, float64, complex128, string:
 		return NewNounReflex(t)
 	case Gate:
@@ -34,7 +34,7 @@ func (b *Being) Materialize(x Meaning) Reflex {
 	// case GateWithMatter:
 	// 	??
 	case Circuit:
-		return MaterializeCircuit(t)
+		return b.MaterializeCircuit(t)
 	case nil:
 		log.Fatalf("Not found")
 	default:
@@ -43,11 +43,27 @@ func (b *Being) Materialize(x Meaning) Reflex {
 	panic(0)
 }
 
-func (b *Being) MaterializeCircuit(u Circuit) {
+func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	symbols := make(map[Name]Reflex)
+	var name Name
 	for y, m := range u.Symbols() {
-		symbols[y] = b.Materialize(m)
+		if _, ok := m.(Super); ok {
+			name = y
+		} else {
+			symbols[y] = b.Materialize(m)
+		}
 	}
-	for _, _ := range u.Valves() {
+	if name == nil {
+		panic("no super")
 	}
+	super, symbols[name] = make(Reflex), make(Reflex)
+	for v, _ := range u.Valves(name) {
+		super[v], symbols[name][v] = NewSynapse()
+	}
+	for _, vx := range u.Matchings() {
+		for _, x := range vx {
+			go Link(symbols[x.Symbol[0]][x.Valve[0]], symbols[x.Symbol[1]][x.Valve[1]])
+		}
+	}
+	return super
 }

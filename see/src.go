@@ -73,17 +73,17 @@ func (src *Src) SliceFrom(at int) *Src {
 	}
 }
 
-func (src *Src) TryMatch(prefix string) (ok bool) {
+func (src *Src) TryForm(prefix string) (ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			ok = false
 		}
 	}()
-	src.Match(prefix)
+	src.Form(prefix)
 	return true
 }
 
-func (src *Src) Match(prefix string) {
+func (src *Src) Form(prefix string) {
 	if strings.HasPrefix(src.String(), prefix) {
 		src.Skip(len(prefix))
 		return

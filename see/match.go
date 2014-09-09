@@ -19,13 +19,13 @@ type Carry struct {
 
 const DefaultValve = "_"
 
-func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
+func SeeReal(src *Src, nsugar int) (x *Real, carry []*Carry) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
-	x, carry = &Matching{}, make([]*Carry, 2)
+	x, carry = &Real{}, make([]*Carry, 2)
 	t := src.Copy()
 	Space(t)
 	//
@@ -36,13 +36,13 @@ func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar)
 		carry[0] = &Carry{sugar, g}
-		x.Symbol[0], x.Valve[0] = sugar, DefaultValve
+		x.Image[0], x.Valve[0] = sugar, DefaultValve
 	} else {
-		x.Symbol[0], x.Valve[0] = p, v
+		x.Image[0], x.Valve[0] = p, v
 	}
 	//
 	Whitespace(t)
-	t.Match("=")
+	t.Form("=")
 	Whitespace(t)
 	//
 	g, p, v, ok = seeJoin(t)
@@ -52,9 +52,9 @@ func SeeMatching(src *Src, nsugar int) (x *Matching, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar+1)
 		carry[1] = &Carry{sugar, g}
-		x.Symbol[1], x.Valve[1] = sugar, "_"
+		x.Image[1], x.Valve[1] = sugar, "_"
 	} else {
-		x.Symbol[1], x.Valve[1] = p, v
+		x.Image[1], x.Valve[1] = p, v
 	}
 	//
 	if !Space(t) { // require newline at end
@@ -96,7 +96,7 @@ func seeJoinAddress(src *Src) (peer, valve Name, ok bool) {
 	}()
 	t := src.Copy()
 	p := SeeAddress(t).(Address)
-	t.Match(string(ValveSelector))
+	t.Form(string(ValveSelector))
 	v := SeeAddress(t).(Address)
 	src.Become(t)
 	return p.Simple(), v, true

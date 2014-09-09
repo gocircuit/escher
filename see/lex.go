@@ -96,7 +96,7 @@ func Newline(src *Src) int {
 }
 
 func Keyword(keyword string, src *Src) {
-	src.Match(keyword)
+	src.Form(keyword)
 	// make sure this is the end of the keyword
 	if src.Len() > 0 && isIdentifier(src.RuneAt(0)) {
 		panic("no keyword")

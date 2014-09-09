@@ -32,7 +32,7 @@ func TestMeaning(t *testing.T) {
 	}
 }
 
-var testMatching = []string{
+var testReal = []string{
 	`a:X = b:Y`,
 	` X:a = y:Z `,
 	` X:_ = "hello"`,
@@ -40,9 +40,9 @@ var testMatching = []string{
 	`X:y = a:_`,
 }
 
-func TestMatching(t *testing.T) {
-	for _, q := range testMatching {
-		x, _ := SeeMatching(NewSrcString(q), 0)
+func TestReal(t *testing.T) {
+	for _, q := range testReal {
+		x, _ := SeeReal(NewSrcString(q), 0)
 		if x == nil {
 			t.Fatalf("problem parsing: %s", q)
 			continue

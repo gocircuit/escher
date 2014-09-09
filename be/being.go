@@ -46,7 +46,7 @@ func (b *Being) Materialize(x Meaning) Reflex {
 func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	symbols := make(map[Name]Reflex)
 	var name Name
-	for y, m := range u.Symbols() {
+	for y, m := range u.Meanings() {
 		if _, ok := y.(string); !ok {
 			continue // don't materialize non-string symbols
 		}
@@ -63,9 +63,9 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	for v, _ := range u.Valves(name) {
 		super[v], symbols[name][v] = NewSynapse()
 	}
-	for _, vx := range u.Matchings() {
+	for _, vx := range u.Reals() {
 		for _, x := range vx {
-			go Link(symbols[x.Symbol[0]][x.Valve[0]], symbols[x.Symbol[1]][x.Valve[1]])
+			go Link(symbols[x.Image[0]][x.Valve[0]], symbols[x.Image[1]][x.Valve[1]])
 		}
 	}
 	return super

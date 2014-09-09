@@ -23,14 +23,14 @@ func (u Circuit) Copy() Circuit {
 
 func (u *circuit) Copy() *circuit {
 	w := newCircuit()
-	// symbols
-	for n, y := range u.symbol {
-		w.symbol[n] = CopyMeaning(y)
+	// images
+	for n, y := range u.image {
+		w.image[n] = CopyMeaning(y)
 	}
-	// matchings
-	for n, z := range u.match {
-		x := make(map[Name]Matching)
-		w.match[n] = x
+	// reals
+	for n, z := range u.real {
+		x := make(map[Name]Real)
+		w.real[n] = x
 		for a, b := range z {
 			x[a] = b
 		}
@@ -58,9 +58,9 @@ func Same(x, y Circuit) bool {
 }
 
 func (u *circuit) Contains(w *circuit) bool {
-	// symbol
-	for n, y := range u.symbol {
-		yy, ok := w.symbol[n]
+	// image
+	for n, y := range u.image {
+		yy, ok := w.image[n]
 		if !ok {
 			return false
 		}
@@ -68,9 +68,9 @@ func (u *circuit) Contains(w *circuit) bool {
 			return false
 		}
 	}
-	// match
-	for n, z := range u.match {
-		zz, ok := w.match[n]
+	// real
+	for n, z := range u.real {
+		zz, ok := w.real[n]
 		if !ok {
 			return false
 		}
@@ -79,7 +79,7 @@ func (u *circuit) Contains(w *circuit) bool {
 			if !ok {
 				return false
 			}
-			if !SameMatching(m, mm) {
+			if !SameReal(m, mm) {
 				return false
 			}
 		}

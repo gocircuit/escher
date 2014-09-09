@@ -1,7 +1,7 @@
 // Written in 2014 by Petar Maymounkov.
 //
 // It helps future understanding of past knowledge to save
-// this notice, so symbols of other times and backgrounds can
+// this notice, so peers of other times and backgrounds can
 // see history clearly.
 
 package circuit
@@ -16,7 +16,7 @@ type Name interface{}
 // Meaning is one of: see.Address, string, int, float64, complex128, Circuit
 type Meaning interface{}
 
-// Super is a placeholder meaning for the super symbol
+// Super is a placeholder meaning for the super image
 type Super struct{}
 
 func (Super) String() string {
@@ -25,30 +25,30 @@ func (Super) String() string {
 
 // circuit ...
 type circuit struct {
-	symbol map[Name]Meaning
-	match map[Name]map[Name]Matching // symbol -> valve -> opposing symbol and valve
+	image map[Name]Meaning
+	real map[Name]map[Name]Real // image -> valve -> opposing image and valve
 }
 
 type Circuit struct {
 	*circuit
 }
 
-// Matching ...
-type Matching struct {
-	Symbol [2]Name
+// Real ...
+type Real struct {
+	Image [2]Name
 	Valve [2]Name
 }
 
-func SameMatching(x, y Matching) bool {
+func SameReal(x, y Real) bool {
 	return x == y
 }
 
-func (x Matching) To() (symbol, valve Name) {
-	return x.Symbol[1], x.Valve[1]
+func (x Real) To() (image, valve Name) {
+	return x.Image[1], x.Valve[1]
 }
 
-func (x Matching) Reverse() Matching {
-	x.Symbol[0], x.Symbol[1] = x.Symbol[1], x.Symbol[0]
+func (x Real) Reverse() Real {
+	x.Image[0], x.Image[1] = x.Image[1], x.Image[0]
 	x.Valve[0], x.Valve[1] = x.Valve[1], x.Valve[0]
 	return x
 }
@@ -60,8 +60,8 @@ func New() Circuit {
 
 func newCircuit() *circuit {
 	return &circuit{
-		symbol: make(map[Name]Meaning),
-		match: make(map[Name]map[Name]Matching),
+		image: make(map[Name]Meaning),
+		real: make(map[Name]map[Name]Real),
 	}
 }
 
@@ -72,13 +72,13 @@ func (u *circuit) IsNil() bool {
 }
 
 func (u *circuit) IsEmpty() bool {
-	return len(u.symbol) == 0 && len(u.match) == 0
+	return len(u.image) == 0 && len(u.real) == 0
 }
 
-// Change adds a symbol to this circuit.
+// Change adds a image to this circuit.
 func (u *circuit) Change(name Name, meaning Meaning) (before Meaning, overwrite bool) {
-	before, overwrite = u.symbol[name]
-	u.symbol[name] = meaning
+	before, overwrite = u.image[name]
+	u.image[name] = meaning
 	return
 }
 
@@ -90,28 +90,28 @@ func (u *circuit) ChangeExclusive(name Name, meaning Meaning) {
 
 // At ...
 func (c *circuit) At(name Name) (Meaning, bool) {
-	v, ok := c.symbol[name]
+	v, ok := c.image[name]
 	return v, ok
 }
 
 func (c *circuit) AtNil(name Name) Meaning {
-	return c.symbol[name]
+	return c.image[name]
 }
 
 func (u *circuit) Forget(name Name) Meaning {
-	forgotten := u.symbol[name]
-	delete(u.symbol, name)
+	forgotten := u.image[name]
+	delete(u.image, name)
 	return forgotten
 }
 
-// Match ...
-func (c *circuit) Match(x Matching) {
-	if x.Symbol[0] == x.Symbol[1] && x.Valve[0] == x.Valve[1] {
-		panic("mismatch")
+// Form ...
+func (c *circuit) Form(x Real) {
+	if x.Image[0] == x.Image[1] && x.Valve[0] == x.Valve[1] {
+		panic("misreal")
 	}
-	p := []map[Name]Matching{
-		c.valves(x.Symbol[0]), 
-		c.valves(x.Symbol[1]),
+	p := []map[Name]Real{
+		c.valves(x.Image[0]), 
+		c.valves(x.Image[1]),
 	}
 	v := x.Valve
 	if _, ok := p[0][v[0]]; ok {
@@ -123,29 +123,29 @@ func (c *circuit) Match(x Matching) {
 	p[0][v[0]], p[1][v[1]] = x, x.Reverse()
 }
 
-func (c *circuit) valves(p Name) map[Name]Matching {
-	if _, ok := c.match[p]; !ok {
-		c.match[p] = make(map[Name]Matching)
+func (c *circuit) valves(p Name) map[Name]Real {
+	if _, ok := c.real[p]; !ok {
+		c.real[p] = make(map[Name]Real)
 	}
-	return c.match[p]
+	return c.real[p]
 }
 
-func (u *circuit) Valves(symbol Name) map[Name]Matching {
-	return u.match[symbol]
+func (u *circuit) Valves(image Name) map[Name]Real {
+	return u.real[image]
 }
 
-// Follow ...
+// Real ...
 func (c *circuit) Follow(p, v Name) (q, u Name) {
 	x, ok := c.valves(p)[v]
 	if !ok {
 		return nil, nil
 	}
-	return x.Symbol[1], x.Valve[1]
+	return x.Image[1], x.Valve[1]
 }
 
 func (c *circuit) Letters() []string {
 	var l []string
-	for key, _ := range c.symbol {
+	for key, _ := range c.image {
 		if s, ok := key.(string); ok {
 			l = append(l, s)
 		}
@@ -155,7 +155,7 @@ func (c *circuit) Letters() []string {
 
 func (c *circuit) Numbers() []int {
 	var l []int
-	for key, _ := range c.symbol {
+	for key, _ := range c.image {
 		if i, ok := key.(int); ok {
 			l = append(l, i)
 		}
@@ -163,12 +163,12 @@ func (c *circuit) Numbers() []int {
 	return l
 }
 
-func (u *circuit) Symbols() map[Name]Meaning {
-	return u.symbol
+func (u *circuit) Meanings() map[Name]Meaning {
+	return u.image
 }
 
-func (u *circuit) Matchings() map[Name]map[Name]Matching {
-	return u.match
+func (u *circuit) Reals() map[Name]map[Name]Real {
+	return u.real
 }
 
 func (u *circuit) String() string {
@@ -177,7 +177,7 @@ func (u *circuit) String() string {
 
 func (u *circuit) Seal(name Name) {
 	u.ChangeExclusive(name, Super{})
-	for nm, y := range u.Symbols() {
+	for nm, y := range u.Meanings() {
 		if y == nil {
 			log.Fatalf("nil peer: %v", nm)
 		}

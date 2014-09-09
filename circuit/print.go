@@ -12,7 +12,7 @@ import (
 )
 
 func (u *circuit) super() (super Name) {
-	for n, m := range u.Symbols() {
+	for n, m := range u.Meanings() {
 		if _, ok := m.(Super); ok {
 			if super != nil {
 				println("alrea", fmt.Sprintf("%v vs %v", super, n))
@@ -47,7 +47,7 @@ func (u *circuit) Print(prefix, indent string) string {
 		w.WriteString(") ")
 	}
 	w.WriteString("{\n")
-	for n, p := range u.Symbols() {
+	for n, p := range u.image {
 		if n == super {
 			continue
 		}
@@ -62,11 +62,11 @@ func (u *circuit) Print(prefix, indent string) string {
 			fmt.Fprintf(&w, "%v %v\n", n, t)
 		}
 		// Links
-		for _, m := range u.match[n] {
+		for _, m := range u.real[n] {
 			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
 				prefix, indent,  
-				m.Symbol[0], m.Valve[0],
-				m.Symbol[1], m.Valve[1],
+				m.Image[0], m.Valve[0],
+				m.Image[1], m.Valve[1],
 			)
 		}
 	}

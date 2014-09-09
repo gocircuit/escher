@@ -18,7 +18,7 @@ func SeeCircuit(src *Src) (u Circuit) {
 	}()
 	u = New()
 	t := src.Copy()
-	t.Match("{")
+	t.Form("{")
 	Space(t)
 	var i, j int
 	for {
@@ -31,14 +31,14 @@ func SeeCircuit(src *Src) (u Circuit) {
 			} else {
 				u.Change(pn, pm) // record the order of definition in the same namespace but with number keys
 			}
-		} else if x, carry := SeeMatching(q, 2*i); x != nil { // parse matching
+		} else if x, carry := SeeReal(q, 2*i); x != nil { // parse matching
 			i++
 			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
 					u.Change(c.Name, c.Meaning)
 				}
 			}
-			u.Match(*x)
+			u.Form(*x)
 		} else {
 			break
 		}
@@ -46,7 +46,7 @@ func SeeCircuit(src *Src) (u Circuit) {
 		t.Become(q)
 	}
 	Space(t)
-	t.Match("}")
+	t.Form("}")
 	src.Become(t)
 	return
 }

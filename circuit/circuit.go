@@ -6,6 +6,10 @@
 
 package circuit
 
+import (
+	"log"
+)
+
 // Name is one of: int or string
 type Name interface{}
 
@@ -90,6 +94,10 @@ func (c *circuit) At(name Name) (Meaning, bool) {
 	return v, ok
 }
 
+func (c *circuit) AtNil(name Name) Meaning {
+	return c.symbol[name]
+}
+
 func (u *circuit) Forget(name Name) Meaning {
 	forgotten := u.symbol[name]
 	delete(u.symbol, name)
@@ -116,9 +124,6 @@ func (c *circuit) Match(x Matching) {
 }
 
 func (c *circuit) valves(p Name) map[Name]Matching {
-	if _, ok := c.symbol[p]; !ok {
-		c.symbol[p] = nil // placeholder
-	}
 	if _, ok := c.match[p]; !ok {
 		c.match[p] = make(map[Name]Matching)
 	}
@@ -168,4 +173,13 @@ func (u *circuit) Matchings() map[Name]map[Name]Matching {
 
 func (u *circuit) String() string {
 	return u.Print("", "\t")
+}
+
+func (u *circuit) Seal(name Name) {
+	u.ChangeExclusive(name, Super{})
+	for nm, y := range u.Symbols() {
+		if y == nil {
+			log.Fatalf("implicit non-super peer: %v", nm)
+		}
+	}
 }

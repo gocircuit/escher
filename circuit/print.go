@@ -15,6 +15,7 @@ func (u *circuit) super() (super Name) {
 	for n, m := range u.Symbols() {
 		if _, ok := m.(Super); ok {
 			if super != nil {
+				println("alrea", fmt.Sprintf("%v vs %v", super, n))
 				panic("two supers")
 			}
 			super = n
@@ -61,6 +62,6 @@ func (u *circuit) Print(prefix, indent string) string {
 			fmt.Fprintf(&w, "%v %v\n", n, t)
 		}
 	}
-	w.WriteString("}")
+	w.WriteString(prefix + "}")
 	return w.String()
 }

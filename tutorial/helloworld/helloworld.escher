@@ -11,4 +11,8 @@
 main {
 	s Show
 	s:_ = "¡Hello, world!"
+	hello {
+		a A
+		hello:_ = a:_
+	}
 }

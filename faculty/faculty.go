@@ -129,9 +129,8 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 		if n_ == nil {
 			break
 		}
-		n := n_.(see.Address).Simple() // n is a string
+		n := n_.(string) // n is a string
 		u := u_.(Circuit)
-		seal(n, u) // Mark super peer
 		u.ChangeExclusive(Genus_{}, 
 			&CircuitGenus{
 				Dir: dir,
@@ -139,14 +138,5 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 			},
 		)
 		fty.ChangeExclusive(n, u)
-	}
-}
-
-func seal(name Name, u Circuit) {
-	u.ChangeExclusive(name, Super{})
-	for nm, y := range u.Symbols() {
-		if y == nil {
-			log.Fatalf("implicit non-super peer: %v", nm)
-		}
 	}
 }

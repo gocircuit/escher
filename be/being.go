@@ -47,6 +47,9 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	symbols := make(map[Name]Reflex)
 	var name Name
 	for y, m := range u.Symbols() {
+		if _, ok := y.(string); !ok {
+			continue // don't materialize non-string symbols
+		}
 		if _, ok := m.(Super); ok {
 			name = y
 		} else {

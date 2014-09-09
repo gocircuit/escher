@@ -60,6 +60,16 @@ var testPeer = []string{
 	`"abc"`,
 	`"ha",`,
 	`a { "cd" }; `,
+	`
+	main {
+		s Show
+		s:_ = "¡Hello, world!"
+		hello {
+			a A
+			hello:_ = a:_
+		}
+	}
+	`,
 	// `// haha
 	// main { // jaja
 	// 	proc circuit.Process

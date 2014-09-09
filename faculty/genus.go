@@ -13,6 +13,10 @@ import (
 // Genus_ is a name type for a genus structure.
 type Genus_ struct{}
 
+func (Genus_) String() string {
+	return "*Genus"
+}
+
 //
 type FacultyGenus struct {
 	Acid map[string]string // acid to directory

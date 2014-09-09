@@ -34,7 +34,7 @@ func SeePeer(src *Src) (n Name, m Meaning) {
 		return Nameless{}, left
 	} else { // two terms (name and value)
 		src.Become(t)
-		return string(left.(Address)), right
+		return left.(Address).Simple(), right
 	}
 	panic("peer")
 }

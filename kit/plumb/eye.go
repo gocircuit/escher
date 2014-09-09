@@ -10,9 +10,7 @@ package plumb
 import (
 	"sync"
 
-	// . "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 )
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
@@ -22,15 +20,14 @@ import (
 // higher-level concepts of cause and effect).
 type Eye struct {
 	see chan *change
-	show map[interface{}]*nerve // see.Name to ...
+	show map[string]*nerve
 }
 
 type change struct {
-	Valve interface{}
+	Valve string
 	Value interface{}
 }
 
-// Valves are given as string, then transparently converted to see names.
 func NewEye(valve ...string) (be.Reflex, *Eye) {
 	return NewEyeCognizer(nil, valve...)
 }
@@ -41,10 +38,10 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (be.Reflex, *Eye) {
 	r := make(be.Reflex)
 	eye := &Eye{
 		see: make(chan *change),
-		show: make(map[interface{}]*nerve),
+		show: make(map[string]*nerve),
 	}
 	for i, v_ := range valve {
-		v := see.Name(v_) // convert valves from strings to names
+		v := v_
 		x, y := be.NewSynapse()
 		r[v] = x
 		n := &nerve{
@@ -69,7 +66,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (be.Reflex, *Eye) {
 					v,
 					y.Focus(
 						func(w interface{}) {
-							cog(eye, string(v), w)
+							cog(eye, v, w)
 						},
 					),
 				)
@@ -79,7 +76,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (be.Reflex, *Eye) {
 	return r, eye
 }
 
-func (eye *Eye) connect(valve interface{}, r *be.ReCognizer) {
+func (eye *Eye) connect(valve string, r *be.ReCognizer) {
 	ch := eye.show[valve].ch 
 	ch <- r
 	close(ch)
@@ -93,7 +90,7 @@ type nerve struct {
 }
 
 func (eye *Eye) Show(valve string, v interface{}) {
-	n := eye.show[see.Name(valve)]
+	n := eye.show[valve]
 	r, ok := <-n.ch
 	n.Lock()
 	if !ok {
@@ -105,7 +102,7 @@ func (eye *Eye) Show(valve string, v interface{}) {
 	r.ReCognize(v)
 }
 
-func (eye *Eye) cognize(valve, v interface{}) {
+func (eye *Eye) cognize(valve string, v interface{}) {
 	eye.see <- &change{
 		Valve: valve,
 		Value: v,
@@ -114,7 +111,7 @@ func (eye *Eye) cognize(valve, v interface{}) {
 
 func (eye *Eye) See() (valve string, value interface{}) {
 	chg := <-eye.see
-	return string(chg.Valve.(see.Name)), chg.Value
+	return chg.Valve, chg.Value
 }
 
 func (eye *Eye) Drain() {

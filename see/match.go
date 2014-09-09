@@ -81,7 +81,7 @@ func seeJoinMeaning(src *Src) (m Meaning, ok bool) {
 	t := src.Copy()
 	m = SeeMeaning(t)
 	switch m.(type) {
-	case Address:
+	case Address: // don't allow addresses as values
 		return nil, false
 	}
 	src.Become(t)

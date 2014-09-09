@@ -3,21 +3,23 @@
 //	escher -x tutorial/fractal -y acid/escher
 //
 main {
-	?? pause!!
 	explore model.Explore
 	explore:When = 0
-	explore:Charge = charge:_
-	explore:Sequence = sequence:_
-
-	charge model.ForkCharge
-	charge:Circuit = ?
-	charge:Peer = "b"
-	charge:Valve = ?
+	explore:Address = "A"
+	explore:Image = "b"
+	explore:Valve = "X"
 
 	sequence model.ForkSequence
-	sequence:When = ?
-	sequence:Index = ?
-	sequence:Charge = ?
+	explore:Sequence = sequence:_
+
+	ignoreWhen Ignore
+	sequence:When = ignoreWhen:_
+
+	ignoreIndex Ignore
+	sequence:Index = ignoreIndex:_
+
+	show Show
+	sequence:Charge = show:_
 }
 
 // Circuits A, B, C and D describe a complete system.
@@ -29,19 +31,19 @@ A {
 B {
 	c1 C
 	c2 C
-	X = c1:X
+	B:X = c1:X
 	c1:Y = c2:X
-	c2:Y = Y
+	c2:Y = B:Y
 }
 
 C {
 	d1 D
 	d2 D
-	X = d1:X
+	C:X = d1:X
 	d1:Y = d2:X
-	d2:Y = Y
+	d2:Y = C:Y
 }
 
 D {
-	X = Y
+	D:X = D:Y
 }

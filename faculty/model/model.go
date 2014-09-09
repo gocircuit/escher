@@ -10,6 +10,7 @@ package model
 import (
 	"container/list"
 	// "fmt"
+	"log"
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
@@ -86,7 +87,10 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		u := New().
 			Grow("When", strobe.AtNil("When")).
 			Grow("Index", n).
-			Grow("Charge", New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve))
+			Grow(
+				"Charge", 
+				New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve),
+			)
 		//
 		eye.Show("Sequence", u) // yield current view
 		//
@@ -97,21 +101,24 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		memory.PushFront(v) // remember
 		n++
 		// transition
-		next := v.Circuit.AtNil(v.Image) // address of next image
-		switch t := next.(type) {
+		entering := v.Circuit.AtNil(v.Image) // address of next image
+		switch t := entering.(type) {
 		case Address:
-			_, recall := faculty.Root.Lookup(t.Walk()...)
-			v.Circuit = recall.(Circuit) // transition to next circuit
+			_, lookup := faculty.Root.Lookup(t.Walk()...)
+			v.Circuit = lookup.(Circuit) // transition to next circuit
+			toImg, toValve := v.Circuit.Follow(t.Name(), v.Valve)
+			v.Image, v.Valve = toImg.(string), toValve.(string)
 		case Super:
-			??
+			e := memory.Front() // backtrack
+			if e == nil {
+				log.Fatalf("insufficient memory")
+			}
+			u := e.Value.(view)
+			memory.Remove(e)
+			v.Circuit = u.Circuit
+			toImg, toValve := v.Circuit.Follow(u.Image, v.Image)
+			v.Image, v.Valve = toImg.(string), toValve.(string)
 		}
-		// 
-		toImg, toValve := v.Circuit.Follow(addr.Name(), v.Valve)
-		if toImg == addr.Name() { // verify that link doesn't link into the super peer
-			panic("explorer does not return")
-		}
-		//
-		v.Image, v.Valve = toImg.(string), toValve.(string)
 		if v == start {
 			break
 		}

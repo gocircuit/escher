@@ -6,7 +6,7 @@
 //
 //	Charge {
 //		Circuit Circuit
-//		Image interface{} // Start peer name
+//		Image string // Start peer name
 //		Valve string // Start valve name
 //	}
 //
@@ -14,8 +14,8 @@
 //		When interface{}
 //		Index int
 //		Charge {
-//			Circuit *understand.Circuit
-//			Image interface{} // Start peer name
+//			Circuit Circuit
+//			Image string // Start peer name
 //			Valve string // Start valve name
 //		}
 //	}
@@ -29,4 +29,19 @@ Explore { // When, Charge, Sequence
 	strobe:Charge = Explore:Charge
 
 	Explore:Sequence = explore:Sequence
+}
+
+ExploreAddress { // Address, Image, Valve, When, Sequence
+	explore model.Explore // no local addressing
+	explore:When = ExploreAddress:When
+	explore:Sequence = ExploreAddress:Sequence
+	explore:Charge = fork:_
+
+	fork model.ForkCharge
+	fork:Image = ExploreAddress:Image
+	fork:Valve = ExploreAddress:Valve
+	fork:Circuit = lookup:_
+
+	lookup escher.Lookup
+	lookup:Address = ExploreAddress:Address
 }

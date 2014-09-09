@@ -22,7 +22,7 @@ import (
 // Faculty is a node in a hierarchy of nodes that can hold subnodes as well as circuit designs (themselves circuit structures).
 type Faculty Circuit
 
-func NewFaculty(name Name) Faculty {
+func NewFaculty(name string) Faculty {
 	fty := Faculty(New())
 	Circuit(fty).Seal(name)
 	Circuit(fty).Change(Genus_{}, NewFacultyGenus())
@@ -34,12 +34,12 @@ func (fty Faculty) Genus() *FacultyGenus {
 	return g.(*FacultyGenus)
 }
 
-func (fty Faculty) Forget(name Name) (forgotten Meaning) {
+func (fty Faculty) Forget(name string) (forgotten Meaning) {
 	return Circuit(fty).Forget(name)
 }
 
 // Roam traverses the hierarchy, creating faculty nodes if necessary, returning the final two nodes.
-func (fty Faculty) Roam(walk ...Name) (parent, child Meaning) {
+func (fty Faculty) Roam(walk ...string) (parent, child Meaning) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
@@ -53,8 +53,12 @@ func (fty Faculty) Roam(walk ...Name) (parent, child Meaning) {
 	return fac.Roam(walk[1:]...)
 }
 
+func (fty Faculty) LookupAddress(addr string) (parent, child Meaning) {
+	return fty.Lookup(strings.Split(addr, "."))
+}
+
 // Lookup ...
-func (fty Faculty) Lookup(walk ...Name) (parent, child Meaning) {
+func (fty Faculty) Lookup(walk ...string) (parent, child Meaning) {
 	if len(walk) == 0 {
 		return nil, fty
 	}
@@ -78,7 +82,7 @@ func (fty Faculty) Lookup(walk ...Name) (parent, child Meaning) {
 	panic(7)
 }
 
-func (fty Faculty) Refine(name Name) Faculty {
+func (fty Faculty) Refine(name string) Faculty {
 	if x, ok := Circuit(fty).At(name); ok {
 		return x.(Faculty)
 	}
@@ -88,7 +92,7 @@ func (fty Faculty) Refine(name Name) Faculty {
 	return y
 }
 
-func (fty Faculty) AddTerminal(name Name, term Meaning) {
+func (fty Faculty) AddTerminal(name string, term Meaning) {
 	Circuit(fty).ChangeExclusive(name, term)
 }
 

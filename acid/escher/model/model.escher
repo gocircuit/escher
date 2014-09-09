@@ -40,7 +40,7 @@ ExploreAddress { // Address, Image, Valve, When, Sequence
 	fork model.ForkCharge
 	fork:Image = ExploreAddress:Image
 	fork:Valve = ExploreAddress:Valve
-	fork:Circuit = lookup:_
+	fork:Circuit = lookup:Circuit
 
 	lookup escher.Lookup
 	lookup:Address = ExploreAddress:Address

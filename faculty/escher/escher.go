@@ -9,19 +9,37 @@ package escher
 import (
 	// "fmt"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
 	ns := faculty.Root.Refine("escher")
-	ns.AddTerminal("CircuitDesignDir", CircuitDesignDir{})
+	ns.AddTerminal("CircuitSourceDir", CircuitSourceDir{})
+	ns.AddTerminal("Lookup", Lookup{})
 }
 
-// CircuitDesignDir
-type CircuitDesignDir struct{}
+type Lookup struct{}
 
-func (CircuitDesignDir) Materialize(matter *be.Matter) be.Reflex {
+func (Lookup) Materialize() be.Reflex {
+	reflex, _ := plumb.NewEyeCognizer(
+		func(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+			if dvalve != "Address" {
+				return
+			}
+			_, r := faculty.Root.LookupAddress(dvalue.(string))
+			eye.Show("Circuit", r.(Circuit))
+		}, 
+		"Address", "Circuit",
+	)
+	return reflex
+}
+
+// CircuitSourceDir
+type CircuitSourceDir struct{}
+
+func (CircuitSourceDir) Materialize(matter *be.Matter) be.Reflex {
 	return be.NewNounReflex(matter.Circuit.SourceDir)
 }

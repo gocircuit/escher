@@ -25,7 +25,7 @@ import (
 	// facultyos "github.com/gocircuit/escher/faculty/os"
 	
 	_ "github.com/gocircuit/escher/faculty/basic"
-	// _ "github.com/gocircuit/escher/faculty/escher"
+	_ "github.com/gocircuit/escher/faculty/escher"
 	// // _ "github.com/gocircuit/escher/faculty/handbook"
 	// _ "github.com/gocircuit/escher/faculty/i"
 	// _ "github.com/gocircuit/escher/faculty/io"

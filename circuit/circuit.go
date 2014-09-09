@@ -163,7 +163,7 @@ func (c *circuit) Numbers() []int {
 	return l
 }
 
-func (u *circuit) Meanings() map[Name]Meaning {
+func (u *circuit) Images() map[Name]Meaning {
 	return u.image
 }
 
@@ -177,7 +177,7 @@ func (u *circuit) String() string {
 
 func (u *circuit) Seal(name Name) {
 	u.ChangeExclusive(name, Super{})
-	for nm, y := range u.Meanings() {
+	for nm, y := range u.Images() {
 		if y == nil {
 			log.Fatalf("nil peer: %v", nm)
 		}

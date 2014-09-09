@@ -12,7 +12,7 @@ import (
 )
 
 func (u *circuit) super() (super Name) {
-	for n, m := range u.Meanings() {
+	for n, m := range u.Images() {
 		if _, ok := m.(Super); ok {
 			if super != nil {
 				println("alrea", fmt.Sprintf("%v vs %v", super, n))

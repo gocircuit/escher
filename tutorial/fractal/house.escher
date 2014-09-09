@@ -2,8 +2,15 @@
 // Run:
 //	escher -x tutorial/fractal -y acid/escher
 //
+main2 {
+	lookup escher.Lookup
+	lookup:Address = "A"
+	lookup:Circuit = show:_
+	show Show
+}
+
 main {
-	explore model.Explore
+	explore model.ExploreAddress
 	explore:When = 0
 	explore:Address = "A"
 	explore:Image = "b"

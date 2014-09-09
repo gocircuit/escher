@@ -16,7 +16,7 @@ type Printer interface {
 	Print(prefix, indent string) string
 }
 
-func (u *circuit) super() (super Name) {
+func (u *circuit) super() (super Name, ok bool) {
 	for n, m := range u.Images() {
 		if _, ok := m.(Super); ok {
 			if super != nil {
@@ -27,15 +27,15 @@ func (u *circuit) super() (super Name) {
 		}
 	}
 	if super == nil {
-		panic("no super")
+		return nil, false
 	}
-	return
+	return super, true
 }
 
 func (u *circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
-	super := u.super()
-	if super != nil {
+	super, ok := u.super()
+	if ok {
 		fmt.Fprintf(&w, "%v ", super)
 	}
 	valves := u.Valves(super)

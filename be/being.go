@@ -75,6 +75,12 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	for _, vx := range u.Reals() {
 		for _, x_ := range vx {
 			x := x_
+			// go func() {
+			// 	log.Printf("\t%s:%s <==> %s:%s, %v :: %v", 
+			// 		x.Image[0], x.Valve[0], x.Image[1], x.Valve[1],
+			// 		images[x.Image[0]], images[x.Image[1]])
+			// 	Link(images[x.Image[0]][x.Valve[0]], images[x.Image[1]][x.Valve[1]])
+			// }()
 			go Link(images[x.Image[0]][x.Valve[0]], images[x.Image[1]][x.Valve[1]])
 		}
 	}

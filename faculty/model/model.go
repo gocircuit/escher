@@ -76,35 +76,28 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	charge := strobe.CircuitAt("Charge")
 	//
 	var start = view{
+		Index: 0,
 		Circuit: charge.CircuitAt("Circuit"),
 		Image: charge.StringAt("Image"),
 		Valve: charge.StringAt("Valve"),
 	}
 	var v = start
-	var n int // Number of steps
 	var memory list.List
 	for {
-		u := New().
-			Grow("When", strobe.AtNil("When")).
-			Grow("Index", n).
-			Grow(
-				"Charge", 
-				New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve),
-			)
-		//
-		eye.Show("Sequence", u) // yield current view
-		//
-		if memory.Len() > 1e9 {
-			log.Printf("memory overload")
-			memory.Remove(memory.Front())
-		}
-		memory.PushFront(v) // remember
-		n++
+		// Current view
+		eye.Show("Sequence", v.SequenceTerm(strobe.AtNil("When"))) // yield current view
 
 		// transition
 		entering := v.Circuit.AtNil(v.Image) // address of next image
 		switch t := entering.(type) {
 		case Address:
+			//
+			if memory.Len() > 1e9 {
+				log.Printf("memory overload")
+				memory.Remove(memory.Front())
+			}
+			memory.PushFront(v) // remember
+			//
 			_, lookup := faculty.Root.LookupAddress(t.String())
 			v.Circuit = lookup.(Circuit) // transition to next circuit
 			toImg, toValve := v.Circuit.Follow(t.Name(), v.Valve)
@@ -117,14 +110,18 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 			}
 			u := e.Value.(view)
 			memory.Remove(e)
+			//
 			v.Circuit = u.Circuit
-			toImg, toValve := v.Circuit.Follow(u.Image, v.Image)
+			// log.Printf("Following %s:%s in %s", u.Image, v.Valve, v.Circuit)
+			toImg, toValve := v.Circuit.Follow(u.Image, v.Valve)
 			v.Image, v.Valve = toImg.(string), toValve.(string)
 
 		default:
 			panic("unknown image meaning")
 		}
-		if v == start {
+		v.Index++
+		//
+		if v.Same(start) {
 			break
 		}
 	}
@@ -132,7 +129,22 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 
 // view ...
 type view struct {
+	Index int 
 	Circuit Circuit // Ambient circuit
 	Image string // Focus peer
 	Valve string // Focus valve
+}
+
+func (v view) SequenceTerm(when Meaning) Circuit {
+	return New().
+		Grow("When", when).
+		Grow("Index", v.Index).
+		Grow(
+			"Charge", 
+			New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve),
+		)
+}
+
+func (v view) Same(w view) bool {
+	return Same(v.Circuit, w.Circuit) && v.Image == w.Image && v.Valve == w.Valve
 }

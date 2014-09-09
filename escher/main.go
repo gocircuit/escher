@@ -68,6 +68,7 @@ func main() {
 		switch t := cd.(type) {
 		case Circuit:
 			println("drawing not supported")
+		// case Faulty:
 		default:
 			println(fmt.Sprintf("SVG display available only for circuits (%T)", t))
 		}
@@ -82,7 +83,6 @@ func main() {
 		case Circuit:
 			fmt.Println(t.Print("", "\t"))
 		// case Faculty:
-		// 	fmt.Println(t.Print("", "\t"))
 		default:
 			fmt.Printf("%T/%v\n", t, t)
 		}

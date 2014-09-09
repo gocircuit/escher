@@ -19,11 +19,13 @@ type Being struct {
 }
 
 func (b *Being) MaterializeAddress(addr see.Address) Reflex {
+	// log.Printf("addressing %s", string(addr))
 	_, u := b.Faculty.Lookup(addr.Walk()...)
-	return b.Materialize(u)
+	return b.Materialize(u, true)
 }
 
-func (b *Being) Materialize(x Meaning) Reflex {
+func (b *Being) Materialize(x Meaning, recurse bool) Reflex {
+	// log.Printf("materializing (%v) %v/%T", recurse, x, x)
 	switch t := x.(type) {
 	case see.Address:
 		return b.MaterializeAddress(t)
@@ -32,7 +34,10 @@ func (b *Being) Materialize(x Meaning) Reflex {
 	case Gate:
 		return t.Materialize()
 	case Circuit:
-		return b.MaterializeCircuit(t)
+		if recurse {
+			return b.MaterializeCircuit(t)
+		}
+		return NewNounReflex(t)
 	case nil:
 		log.Fatalf("Not found")
 	default:
@@ -42,28 +47,29 @@ func (b *Being) Materialize(x Meaning) Reflex {
 }
 
 func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
-	symbols := make(map[Name]Reflex)
+	images := make(map[Name]Reflex)
 	var name Name
 	for y, m := range u.Images() {
 		if _, ok := y.(string); !ok {
-			continue // don't materialize non-string symbols
+			continue // don't materialize non-string images
 		}
 		if _, ok := m.(Super); ok {
 			name = y
 		} else {
-			symbols[y] = b.Materialize(m)
+			images[y] = b.Materialize(m, false)
 		}
 	}
 	if name == nil {
 		panic("no super")
 	}
-	super, symbols[name] = make(Reflex), make(Reflex)
+	super, images[name] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(name) {
-		super[v], symbols[name][v] = NewSynapse()
+		super[v], images[name][v] = NewSynapse()
 	}
 	for _, vx := range u.Reals() {
-		for _, x := range vx {
-			go Link(symbols[x.Image[0]][x.Valve[0]], symbols[x.Image[1]][x.Valve[1]])
+		for _, x_ := range vx {
+			x := x_
+			go Link(images[x.Image[0]][x.Valve[0]], images[x.Image[1]][x.Valve[1]])
 		}
 	}
 	return super

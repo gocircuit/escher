@@ -11,8 +11,8 @@
 main {
 	s Show
 	s:_ = "¡Hello, world!"
-	hello { // no effect; just data
-		a A
-		hello:_ = a:_
-	}
+//	hello { // no effect; just data
+//		a A
+//		hello:_ = a:_
+//	}
 }

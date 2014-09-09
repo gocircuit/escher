@@ -2,11 +2,11 @@
 //
 // Valves:
 //
-//	When interface{}
+//	When *
 //
 //	Charge {
-//		Circuit *understand.Circuit
-//		Peer interface{} // Start peer name
+//		Circuit Circuit
+//		Image interface{} // Start peer name
 //		Valve string // Start valve name
 //	}
 //
@@ -15,7 +15,7 @@
 //		Index int
 //		Charge {
 //			Circuit *understand.Circuit
-//			Peer interface{} // Start peer name
+//			Image interface{} // Start peer name
 //			Valve string // Start valve name
 //		}
 //	}

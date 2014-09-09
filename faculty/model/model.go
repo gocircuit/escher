@@ -8,16 +8,13 @@
 package model
 
 import (
-	"container/list"
 	// "fmt"
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
-	"github.com/gocircuit/escher/see"
-	"github.com/gocircuit/escher/understand"
 )
 
 func init() {
@@ -27,14 +24,14 @@ func init() {
 	ns.AddTerminal("ForkSequence", ForkSequence{})
 }
 
-// ForkCharge…
+// ForkCharge
 type ForkCharge struct{}
 
 func (ForkCharge) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "Circuit", "Peer", "Valve")
+	return basic.MaterializeUnion("_", "Circuit", "Image", "Valve")
 }
 
-// ForkSequence…
+// ForkSequence
 type ForkSequence struct{}
 
 func (ForkSequence) Materialize() be.Reflex {
@@ -47,7 +44,7 @@ func (ForkSequence) Materialize() be.Reflex {
 //		When *
 //		Charge {
 //			Circuit Circuit
-//			Peer string // Start peer name
+//			Image string // Start peer name
 //			Valve string // Start valve name
 //		}
 //	}
@@ -57,7 +54,7 @@ func (ForkSequence) Materialize() be.Reflex {
 //		Index int // Index of this circuit within exploration sequence, 0-based
 //		Charge {
 //			Circuit Circuit // Current circuit in the exploration sequence
-//			Peer string // Point-of-view peer
+//			Image string // Point-of-view peer
 //			Valve string // Point-of-view valve of pov peer
 //		}
 //	}
@@ -73,51 +70,50 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	if dvalve != "Strobe" {
 		return
 	}
-	img := dvalue.(Image)
-	charge := img.Walk(see.Name("Charge"))
+	strobe := dvalue.(Circuit)
+	charge := strobe.CircuitAt("Charge")
 	//
 	var start = view{
-		Circuit: charge.Interface(see.Name("Circuit")).(*understand.Circuit),
-		Peer: charge.Interface(see.Name("Peer")),
-		Valve: charge.Interface(see.Name("Valve")),
+		Circuit: charge.CircuitAt("Circuit"),
+		Image: charge.StringAt("Image"),
+		Valve: charge.StringAt("Valve"),
 	}
-	var memory list.List
 	var v = start
 	var n int // Number of steps
 	for {
 		eye.Show( // yield current view
 			"Sequence", 
 			Image{
-				see.Name("When"): img.Interface(see.Name("When")),
+				see.Name("When"): strobe.Interface(see.Name("When")),
 				see.Name("Index"): n,
 				see.Name("Charge"): Image{
 					see.Name("Circuit"): v.Circuit,
-					see.Name("Peer"): v.Peer,
+					see.Name("Image"): v.Image,
 					see.Name("Valve"): v.Valve,
 				},
 			},
 		)
 		n++
 		// transition
-		if _, up := v.Peer.(understand.Super); up {
+		if _, up := v.Image.(understand.Super); up {
 			back := memory.Remove(memory.Back()).(view)
 			//
 			v.Circuit = back.Circuit
 			//
-			from := v.Circuit.PeerByName(back.Peer).ValveByName(v.Valve)
+			from := v.Circuit.ImageByName(back.Image).ValveByName(v.Valve)
 			to := from.Matching
-			v.Peer = to.Of.Name()
+			v.Image = to.Of.Name()
 			v.Valve = to.Name
 		} else { // down
 			memory.PushBack(v) // leave bread crumbs behind us
 			//
-			lookup := v.Circuit.PeerByName(v.Peer).Design().(see.Name) // gates are not allowed
+			lookup := v.Circuit.ImageByName(v.Image).Design().(see.Name) // gates are not allowed
 			_, recall := faculty.Root.Walk(lookup.AsWalk()...)
 			v.Circuit = recall.(*understand.Circuit) // cannot transition into gates
 			//
-			from := v.Circuit.PeerByName(understand.Super{}).ValveByName(v.Valve)
+			from := v.Circuit.ImageByName(understand.Super{}).ValveByName(v.Valve)
 			to := from.Matching
-			v.Peer = to.Of.Name()
+			v.Image = to.Of.Name()
 			v.Valve = to.Name
 		}
 		if v == start {
@@ -128,7 +124,7 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 
 // view ...
 type view struct {
-	Circuit *understand.Circuit // Ambient circuit
-	Peer interface{} // Focus peer
-	Valve interface{} // Focus valve
+	Circuit Circuit // Ambient circuit
+	Image string // Focus peer
+	Valve string // Focus valve
 }

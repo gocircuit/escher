@@ -16,6 +16,14 @@ func (u Circuit) OptionalIntAt(name string) int {
 	return i.(int)
 }
 
+func (u Circuit) CircuitAt(name string) Circuit {
+	return u.circuit.AtNil(name).(Circuit)
+}
+
+func (u Circuit) StringAt(name string) string {
+	return u.circuit.AtNil(name).(string)
+}
+
 func (u Circuit) Grow(name string, meaning Meaning) Circuit {
 	u.circuit.ChangeExclusive(name, meaning)
 	return u

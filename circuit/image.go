@@ -6,7 +6,6 @@
 
 package circuit
 
-// ??
 
 func (u Circuit) OptionalIntAt(name string) int {
 	i, ok := u.circuit.At(name)
@@ -22,6 +21,10 @@ func (u Circuit) CircuitAt(name string) Circuit {
 
 func (u Circuit) StringAt(name string) string {
 	return u.circuit.AtNil(name).(string)
+}
+
+func (u Circuit) AddressAt(name string) Address {
+	return u.circuit.AtNil(name).(Address)
 }
 
 func (u Circuit) Grow(name string, meaning Meaning) Circuit {

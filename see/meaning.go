@@ -47,23 +47,6 @@ func SeeMeaningNoCircuit(src *Src) (x Meaning) {
 	return nil
 }
 
-// Address ...
-type Address string
-
-func (a Address) Simple() string {
-	if len(strings.Split(string(a), ".")) != 1 {
-		panic(1)
-	}
-	return string(a)
-}
-
-func (a Address) Walk() (walk []Name) {
-	for _, w := range strings.Split(string(a), ".") {
-		walk = append(walk, w)
-	}
-	return
-}
-
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
 	t := src.Copy()

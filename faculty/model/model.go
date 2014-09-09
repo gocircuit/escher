@@ -83,39 +83,23 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	for {
 		eye.Show( // yield current view
 			"Sequence", 
-			Image{
-				see.Name("When"): strobe.Interface(see.Name("When")),
-				see.Name("Index"): n,
-				see.Name("Charge"): Image{
-					see.Name("Circuit"): v.Circuit,
-					see.Name("Image"): v.Image,
-					see.Name("Valve"): v.Valve,
-				},
-			},
+			New().
+				Grow("When", strobe.AtNil("When")).
+				Grow("Index", n).
+				Grow("Charge", New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve)),
 		)
 		n++
 		// transition
-		if _, up := v.Image.(understand.Super); up {
-			back := memory.Remove(memory.Back()).(view)
-			//
-			v.Circuit = back.Circuit
-			//
-			from := v.Circuit.ImageByName(back.Image).ValveByName(v.Valve)
-			to := from.Matching
-			v.Image = to.Of.Name()
-			v.Valve = to.Name
-		} else { // down
-			memory.PushBack(v) // leave bread crumbs behind us
-			//
-			lookup := v.Circuit.ImageByName(v.Image).Design().(see.Name) // gates are not allowed
-			_, recall := faculty.Root.Walk(lookup.AsWalk()...)
-			v.Circuit = recall.(*understand.Circuit) // cannot transition into gates
-			//
-			from := v.Circuit.ImageByName(understand.Super{}).ValveByName(v.Valve)
-			to := from.Matching
-			v.Image = to.Of.Name()
-			v.Valve = to.Name
+		addr := v.Circuit.AddressAt(v.Image) // address of next image
+		_, recall := faculty.Root.Lookup(addr.Walk()...)
+		v.Circuit = recall.(Circuit) // transition to next circuit
+		// 
+		toImg, toValve := v.Circuit.Follow(addr.Name(), v.Valve)
+		if toImg == addr.Name() { // verify that link doesn't link into the super peer
+			panic("explorer does not return")
 		}
+		//
+		v.Image, v.Valve = toImg.(string), toValve.(string)
 		if v == start {
 			break
 		}

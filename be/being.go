@@ -11,14 +11,13 @@ import (
 
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/see"
 )
 
 type Being struct {
 	Faculty
 }
 
-func (b *Being) MaterializeAddress(addr see.Address) Reflex {
+func (b *Being) MaterializeAddress(addr Address) Reflex {
 	// log.Printf("addressing %s", string(addr))
 	_, u := b.Faculty.Lookup(addr.Walk()...)
 	return b.Materialize(u, true)
@@ -27,7 +26,7 @@ func (b *Being) MaterializeAddress(addr see.Address) Reflex {
 func (b *Being) Materialize(x Meaning, recurse bool) Reflex {
 	// log.Printf("materializing (%v) %v/%T", recurse, x, x)
 	switch t := x.(type) {
-	case see.Address:
+	case Address:
 		return b.MaterializeAddress(t)
 	case int, float64, complex128, string:
 		return NewNounReflex(t)

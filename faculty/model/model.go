@@ -8,6 +8,7 @@
 package model
 
 import (
+	"container/list"
 	// "fmt"
 
 	"github.com/gocircuit/escher/faculty"
@@ -80,19 +81,30 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	}
 	var v = start
 	var n int // Number of steps
+	var memory list.List
 	for {
-		eye.Show( // yield current view
-			"Sequence", 
-			New().
-				Grow("When", strobe.AtNil("When")).
-				Grow("Index", n).
-				Grow("Charge", New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve)),
-		)
+		u := New().
+			Grow("When", strobe.AtNil("When")).
+			Grow("Index", n).
+			Grow("Charge", New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve))
+		//
+		eye.Show("Sequence", u) // yield current view
+		//
+		if memory.Len() > 1e9 {
+			log.Printf("memory overload")
+			memory.Remove(memory.Front())
+		}
+		memory.PushFront(v) // remember
 		n++
 		// transition
-		addr := v.Circuit.AddressAt(v.Image) // address of next image
-		_, recall := faculty.Root.Lookup(addr.Walk()...)
-		v.Circuit = recall.(Circuit) // transition to next circuit
+		next := v.Circuit.AtNil(v.Image) // address of next image
+		switch t := next.(type) {
+		case Address:
+			_, recall := faculty.Root.Lookup(t.Walk()...)
+			v.Circuit = recall.(Circuit) // transition to next circuit
+		case Super:
+			??
+		}
 		// 
 		toImg, toValve := v.Circuit.Follow(addr.Name(), v.Valve)
 		if toImg == addr.Name() { // verify that link doesn't link into the super peer

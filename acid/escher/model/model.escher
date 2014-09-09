@@ -20,11 +20,11 @@
 //		}
 //	}
 //
-Explore {
+Explore { // When, Charge, Sequence
 	explore model.ExploreOnStrobe
 	explore:Strobe = strobe:Strobe
 
-	strobe basic.Strobe
+	strobe Strobe
 	strobe:When = Explore:When
 	strobe:Charge = Explore:Charge
 

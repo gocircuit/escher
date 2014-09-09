@@ -32,7 +32,7 @@ import (
 	// _ "github.com/gocircuit/escher/faculty/io/util"
 	// _ "github.com/gocircuit/escher/faculty/path"
 	// _ "github.com/gocircuit/escher/faculty/text"
-	// _ "github.com/gocircuit/escher/faculty/model"
+	_ "github.com/gocircuit/escher/faculty/model"
 	// _ "github.com/gocircuit/escher/faculty/think"
 	// _ "github.com/gocircuit/escher/faculty/time"
 	// _ "github.com/gocircuit/escher/faculty/web/twitter"

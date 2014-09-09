@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/see"
@@ -54,7 +55,7 @@ func (fty Faculty) Roam(walk ...string) (parent, child Meaning) {
 }
 
 func (fty Faculty) LookupAddress(addr string) (parent, child Meaning) {
-	return fty.Lookup(strings.Split(addr, "."))
+	return fty.Lookup(strings.Split(addr, ".")...)
 }
 
 // Lookup ...
@@ -88,7 +89,7 @@ func (fty Faculty) Refine(name string) Faculty {
 	}
 	y := NewFaculty(name)
 	y.Genus().Walk = append(fty.Genus().Walk, name)
-	Circuit(fty).Grow(name.(string), y)
+	Circuit(fty).Grow(name, y)
 	return y
 }
 

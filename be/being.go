@@ -19,11 +19,11 @@ type Being struct {
 
 func (b *Being) MaterializeAddress(addr Address) Reflex {
 	// log.Printf("addressing %s", string(addr))
-	_, u := b.Faculty.Lookup(addr.Walk()...)
-	return b.Materialize(u, true)
+	_, u := b.Faculty.Lookup(addr.Strings()...)
+	return b.Materialize(nil, u, true) // 
 }
 
-func (b *Being) Materialize(x Meaning, recurse bool) Reflex {
+func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 	// log.Printf("materializing (%v) %v/%T", recurse, x, x)
 	switch t := x.(type) {
 	case Address:
@@ -32,6 +32,8 @@ func (b *Being) Materialize(x Meaning, recurse bool) Reflex {
 		return NewNounReflex(t)
 	case Gate:
 		return t.Materialize()
+	case GateWithMatter:
+		return t.Materialize(matter)
 	case Circuit:
 		if recurse {
 			return b.MaterializeCircuit(t)
@@ -57,7 +59,13 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 		if _, ok := m.(Super); ok {
 			name = y
 		} else {
-			images[y] = b.Materialize(m, false)
+			images[y] = b.Materialize(
+				&Matter{
+					Address: "", // ??
+					Design: u,
+				},
+				m, false,
+			)
 		}
 	}
 	if name == nil {

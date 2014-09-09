@@ -105,7 +105,7 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		entering := v.Circuit.AtNil(v.Image) // address of next image
 		switch t := entering.(type) {
 		case Address:
-			_, lookup := faculty.Root.Lookup(t.Walk()...)
+			_, lookup := faculty.Root.LookupAddress(t.String())
 			v.Circuit = lookup.(Circuit) // transition to next circuit
 			toImg, toValve := v.Circuit.Follow(t.Name(), v.Valve)
 			v.Image, v.Valve = toImg.(string), toValve.(string)

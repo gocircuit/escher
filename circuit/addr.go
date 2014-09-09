@@ -20,7 +20,15 @@ func (a Address) Simple() string {
 	return string(a)
 }
 
-func (a Address) Walk() (walk []Name) {
+func (a Address) String() string {
+	return string(a)
+}
+
+func (a Address) Strings() []string {
+	return strings.Split(string(a), ".")
+}
+
+func (a Address) Names() (walk []Name) {
 	for _, w := range strings.Split(string(a), ".") {
 		walk = append(walk, w)
 	}

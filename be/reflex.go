@@ -8,7 +8,7 @@ package be
 
 import (
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/faculty"
+	// . "github.com/gocircuit/escher/faculty"
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).

@@ -64,7 +64,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
 			walk = nil
 		}
-		_, cd := compile(*flagX, *flagY, *flagZ).Lookup(namify(walk)...)
+		_, cd := compile(*flagX, *flagY, *flagZ).Lookup(walk...)
 		switch t := cd.(type) {
 		case Circuit:
 			println("drawing not supported")
@@ -78,7 +78,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
 			walk = nil
 		}
-		_, cd := compile(*flagX, *flagY, *flagZ).Lookup(namify(walk)...)
+		_, cd := compile(*flagX, *flagY, *flagZ).Lookup(walk...)
 		switch t := cd.(type) {
 		case Circuit:
 			fmt.Println(t.Print("", "\t"))
@@ -117,11 +117,4 @@ func loadCircuitFaculty(name, discover, x, y, z string) {
 // 		panic("circuit-based Escher programs must have a non-empty name")
 // 	}
 // 	circuit.Init(name, client.DialDiscover(discover, nil))
-}
-
-func namify(x []string) (y []Name) {
-	for _, v := range x {
-		y = append(y, v)
-	}
-	return y
 }

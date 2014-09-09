@@ -179,7 +179,7 @@ func (u *circuit) Seal(name Name) {
 	u.ChangeExclusive(name, Super{})
 	for nm, y := range u.Symbols() {
 		if y == nil {
-			log.Fatalf("implicit non-super peer: %v", nm)
+			log.Fatalf("nil peer: %v", nm)
 		}
 	}
 }

@@ -55,11 +55,19 @@ func (u *circuit) Print(prefix, indent string) string {
 		w.WriteString(indent)
 		switch t := p.(type) {
 		case Circuit:
-			fmt.Fprintf(&w, "%v %v\n", n, t.Print(prefix + indent, indent))
+			fmt.Fprintf(&w, "%v\n", t.Print(prefix + indent, indent))
 		case string:
 			fmt.Fprintf(&w, "%v %q\n", n, t)
 		default:
 			fmt.Fprintf(&w, "%v %v\n", n, t)
+		}
+		// Links
+		for _, m := range u.match[n] {
+			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
+				prefix, indent,  
+				m.Symbol[0], m.Valve[0],
+				m.Symbol[1], m.Valve[1],
+			)
 		}
 	}
 	w.WriteString(prefix + "}")

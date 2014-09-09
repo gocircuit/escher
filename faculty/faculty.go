@@ -24,6 +24,7 @@ type Faculty Circuit
 
 func NewFaculty() Faculty {
 	fty := Faculty(New())
+	Circuit(fty).Seal("")
 	Circuit(fty).Change(Genus_{}, NewFacultyGenus())
 	return fty
 }
@@ -82,6 +83,7 @@ func (fty Faculty) Refine(name Name) Faculty {
 		return x.(Faculty)
 	}
 	y := NewFaculty()
+	y.Seal(name)
 	y.Genus().Walk = append(fty.Genus().Walk, name)
 	Circuit(fty).ChangeExclusive(name, y)
 	return y

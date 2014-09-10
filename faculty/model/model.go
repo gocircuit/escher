@@ -92,9 +92,9 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		switch t := entering.(type) {
 		case Address:
 			//
-			if memory.Len() > 1e9 {
-				log.Printf("memory overload")
-				memory.Remove(memory.Front())
+			if memory.Len() > 100 {
+				log.Fatalf("memory overload")
+				// memory.Remove(memory.Front())
 			}
 			memory.PushFront(v) // remember
 			//

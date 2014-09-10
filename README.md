@@ -4,6 +4,14 @@
 
 [![Build Status](https://travis-ci.org/gocircuit/escher.svg?branch=master)](https://travis-ci.org/gocircuit/escher/escher) [![GoDoc](https://godoc.org/github.com/gocircuit/escher?status.png)](https://godoc.org/github.com/gocircuit/escher)
 
+### Note: Escher is still a moving target!
+
+Thank you all for the ardent interest in a language which is not fully stable yet.
+Escher is expected to be stable in 2015. Until then the documentation below will
+likely be out of date, but generally informative. I am doing my best to 
+build the first end-to-end (end-user to datacenter) Escher app: A live 
+cluster orchestration tool.
+
 ![Escher in language](https://github.com/gocircuit/escher/raw/master/misc/img/main.png)
 
 Escher is a programming language for everything. It can naturally represent both process and data,

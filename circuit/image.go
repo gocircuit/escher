@@ -65,3 +65,11 @@ func (c *circuit) At(name Name) (Meaning, bool) {
 func (c *circuit) AtNil(name Name) Meaning {
 	return c.image[name]
 }
+
+func (c *circuit) MeaningAt(name Name) Meaning {
+	v, ok := c.image[name]
+	if !ok {
+		panic(1)
+	}
+	return v
+}

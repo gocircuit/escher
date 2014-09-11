@@ -12,7 +12,7 @@ import (
 	"io"
 	// "log"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
@@ -43,11 +43,11 @@ func (MergeBlend) Materialize() be.Reflex {
 			if valve != "XYZ" {
 				return
 			}
-			img := value.(Image)
+			xyz := value.(Circuit)
 			var w bytes.Buffer
-			w.WriteString(flatten(img.Interface("X")))
-			w.WriteString(flatten(img.Interface("Y")))
-			w.WriteString(flatten(img.Interface("Z")))
+			w.WriteString(flatten(xyz.MeaningAt("X")))
+			w.WriteString(flatten(xyz.MeaningAt("Y")))
+			w.WriteString(flatten(xyz.MeaningAt("Z")))
 			eye.Show("_", w.String())
 		}, 
 		"XYZ", "_",

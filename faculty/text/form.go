@@ -11,8 +11,8 @@ import (
 	"bytes"
 	"text/template"
 
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/kit/plumb"
 )
@@ -33,13 +33,13 @@ func (FormBlend) Materialize() be.Reflex {
 			if valve != "FormData" {
 				return
 			}
-			img := value.(Image)
-			t, err := template.New("").Parse(img.String(see.Name("Form")))
+			fd := value.(Circuit)
+			t, err := template.New("").Parse(fd.StringAt("Form"))
 			if err != nil {
 				panic(err)
 			}
 			var w bytes.Buffer
-			if err = t.Execute(&w, img.Interface(see.Name("Data"))); err != nil {
+			if err = t.Execute(&w, fd.MeaningAt("Data")); err != nil {
 				panic(err)
 			}
 			eye.Show("_", w.String())

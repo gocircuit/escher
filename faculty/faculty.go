@@ -8,14 +8,10 @@ package faculty
 
 import (
 	// "fmt"
-	"io/ioutil"
 	"log"
-	"os"
-	"path"
 	"strings"
 
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/see"
 )
 
 // I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
@@ -96,57 +92,5 @@ func (fty Faculty) Refine(name string) Faculty {
 func (fty Faculty) AddTerminal(name string, term Meaning) {
 	if _, ok := Circuit(fty).Include(name, term); ok {
 		log.Fatalf("overwriting terminal %v->%T", name, term)
-	}
-}
-
-// UnderstandDirectory ...
-func (fty Faculty) UnderstandDirectory(acid, dir string) {
-	d, err := os.Open(dir)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer d.Close()
-	//
-	fty.Genus().Acid[acid] = dir
-	fileInfos, err := d.Readdir(0)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	for _, fileInfo := range fileInfos {
-		filePath := path.Join(dir, fileInfo.Name())
-		if fileInfo.IsDir() {
-			fty.Refine(fileInfo.Name()).UnderstandDirectory(acid, filePath)
-			continue
-		}
-		if path.Ext(fileInfo.Name()) != ".escher" {
-			continue
-		}
-		fty.UnderstandFile(dir, filePath)
-	}
-}
-
-// UnderstandFile ...
-func (fty Faculty) UnderstandFile(dir, filePath string) {
-	text, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		log.Fatalf("Problem reading source file %s (%v)", filePath, err)
-	}
-	src := see.NewSrcString(string(text))
-	for {
-		n_, u_ := see.SeePeer(src)
-		if n_ == nil {
-			break
-		}
-		n := n_.(string) // n is a string
-		u := u_.(Circuit)
-		u.Include(Genus_{}, 
-			&CircuitGenus{
-				Dir: dir,
-				File: filePath,
-			},
-		)
-		if _, ok := fty.Include(n, u); ok {
-			log.Fatalf("file circuit overwrites %s", n)
-		}
 	}
 }

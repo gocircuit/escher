@@ -96,13 +96,13 @@ func main() {
 
 func compile(x, y, z string) Faculty {
 	if x != "" {
-		Root.UnderstandDirectory("X", x)
+		Root.LoadDirectoryOrFile("X", x)
 	}
 	if y != "" {
-		Root.UnderstandDirectory("Y", y)
+		Root.LoadDirectoryOrFile("Y", y)
 	}
 	if z != "" {
-		Root.UnderstandDirectory("Z", z)
+		Root.LoadDirectoryOrFile("Z", z)
 	}
 	return Root
 }

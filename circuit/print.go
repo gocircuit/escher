@@ -69,6 +69,7 @@ func (u *circuit) Print(prefix, indent string) string {
 				continue
 			}
 			o.Include(re.Image[0], re.Valve[0])
+			//
 			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
 				prefix, indent,  
 				re.Image[0], re.Valve[0],

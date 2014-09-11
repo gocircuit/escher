@@ -35,18 +35,18 @@ func (u *circuit) super() (super Name, ok bool) {
 func (u *circuit) Print(prefix, indent string) string {
 	var w bytes.Buffer
 	super, ok := u.super()
-	if ok {
-		fmt.Fprintf(&w, "%v ", super)
-	}
-	valves := u.Valves(super)
-	if len(valves) > 0 {
+	if ok { // if super is present
+		fmt.Fprintf(&w, "%v", super)
+		valves := u.Valves(super)
 		w.WriteString("(")
-		var i int
-		for vn, _ := range valves {
-			fmt.Fprintf(&w, "%v", vn)
-			i++
-			if i < len(valves) {
-				w.WriteString(", ")
+		if len(valves) > 0 {
+			var i int
+			for vn, _ := range valves {
+				fmt.Fprintf(&w, "%v", vn)
+				i++
+				if i < len(valves) {
+					w.WriteString(", ")
+				}
 			}
 		}
 		w.WriteString(") ")
@@ -60,12 +60,19 @@ func (u *circuit) Print(prefix, indent string) string {
 		}
 		w.WriteString(prefix + indent)
 		PrintMeaning(&w, prefix+indent, indent, n, p)
-		//
-		for _, m := range u.real[n] { // reals
+	}
+	//
+	o := make(Orient)
+	for _, valves := range u.real {
+		for _, re := range valves {
+			if o.Has(re.Image[1], re.Valve[1]) {
+				continue
+			}
+			o.Include(re.Image[0], re.Valve[0])
 			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
 				prefix, indent,  
-				m.Image[0], m.Valve[0],
-				m.Image[1], m.Valve[1],
+				re.Image[0], re.Valve[0],
+				re.Image[1], re.Valve[1],
 			)
 		}
 	}
@@ -76,7 +83,7 @@ func (u *circuit) Print(prefix, indent string) string {
 func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
 	switch t := p.(type) {
 	case Printer:
-		fmt.Fprintf(w, "%v\n", t.Print(prefix, indent))
+		fmt.Fprintf(w, "%v %v\n", n, t.Print(prefix, indent))
 	case string:
 		fmt.Fprintf(w, "%v %q\n", n, t)
 	default:

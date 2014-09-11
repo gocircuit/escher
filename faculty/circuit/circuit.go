@@ -11,39 +11,35 @@ import (
 	// "fmt"
 	"math/rand"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gocircuit/circuit/client"
 	"github.com/gocircuit/escher/faculty"
 )
 
-func Init(name string, client *client.Client) {
+// client *client.Client
+func Init(discover string) {
+	program = &Program{}
+	if discover != "" {
+		program.Client = client.DialDiscover(discover, nil)
+	}
+
 	rand.Seed(time.Now().UnixNano())
 
 	ns := faculty.Root.Refine("circuit")
 	ns.AddTerminal("Process", Process{})
 	ns.AddTerminal("Docker", Docker{})
-	ns.AddTerminal("Leaving", Leaving{})
-	ns.AddTerminal("Joining", Joining{})
+	// ns.AddTerminal("Leaving", Leaving{})
+	// ns.AddTerminal("Joining", Joining{})
 	// ns.AddTerminal("Channel", Chan{})
 
 	ns.AddTerminal("ForkSpawn", ForkSpawn{})
 	ns.AddTerminal("ForkExit", ForkExit{})
 	ns.AddTerminal("ForkIO", ForkIO{})
-
-	if name = strings.TrimSpace(name); name == "" || client == nil {
-		// understand-only mode
-	}
-	program = &Program{
-		Name:   name,
-		Client: client,
-	}
 }
 
 // Program…
 type Program struct {
-	Name string // Textual ID of this Escher program process to be used as part of circuit anchor names
 	*client.Client
 }
 

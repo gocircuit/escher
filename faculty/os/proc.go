@@ -72,13 +72,15 @@ func cognizeCommand(v interface{}) *exec.Cmd {
 	if dir, ok := img.StringOptionAt("Dir"); ok {
 		cmd.Dir = dir
 	}
-	env := img.CircuitAt("Env")
-	for _, key := range env.Numbers() {
-		cmd.Env = append(cmd.Env, env.StringAt(key))
+	if env, ok := img.CircuitOptionAt("Env"); ok {
+		for _, key := range env.Numbers() {
+			cmd.Env = append(cmd.Env, env.StringAt(key))
+		}
 	}
-	args := img.CircuitAt("Args")
-	for _, key := range args.Numbers() {
-		cmd.Args = append(cmd.Args, args.StringAt(key))
+	if args, ok := img.CircuitOptionAt("Args"); ok {
+		for _, key := range args.Numbers() {
+			cmd.Args = append(cmd.Args, args.StringAt(key))
+		}
 	}
 	// log.Printf("os process command (%v)", Linearize(img.Print("", "")))
 	return cmd

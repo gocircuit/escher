@@ -11,15 +11,13 @@ import (
 	"fmt"
 	"strings"
 
-	// "github.com/gocircuit/circuit/client"
-
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/be"
 
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/acid"
-	// "github.com/gocircuit/escher/faculty/circuit"
+	"github.com/gocircuit/escher/faculty/circuit"
 	// // "github.com/gocircuit/escher/faculty/draw"
 	facos "github.com/gocircuit/escher/faculty/os"
 	
@@ -108,12 +106,5 @@ func compile(x, y, z string) Faculty {
 
 func loadCircuitFaculty(name, discover, x, y, z string) {
 	acid.Init(x, y, z)
-// 	if discover == "" {
-// 		circuit.Init(name, nil)
-// 		return
-// 	}
-// 	if name == "" {
-// 		panic("circuit-based Escher programs must have a non-empty name")
-// 	}
-// 	circuit.Init(name, client.DialDiscover(discover, nil))
+	circuit.Init(discover)
 }

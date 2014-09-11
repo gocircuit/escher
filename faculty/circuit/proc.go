@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/circuit/client"
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
 )
@@ -20,9 +20,8 @@ import (
 // Process
 type Process struct{}
 
-func (x Process) Materialize(matter *be.Matter) be.Reflex {
+func (x Process) Materialize() be.Reflex {
 	p := &process{
-		name: matter.LastName(),
 		spawn: make(chan interface{}),
 	}
 	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
@@ -30,7 +29,6 @@ func (x Process) Materialize(matter *be.Matter) be.Reflex {
 }
 
 type process struct{
-	name string
 	sync.Once // start backloop once
 	spawn chan interface{} // notify loop of spawn memes
 }
@@ -41,7 +39,6 @@ func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		p.Once.Do(
 			func() {
 				back := &processBack{
-					name: p.name,
 					eye: eye, 
 					cmd: cognizeProcessCommand(dvalue), 
 					spawn: p.spawn,
@@ -56,36 +53,40 @@ func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 }
 
 //	{
-//		Env { "PATH=/abc:/bin", "LESS=less" }
+//		Env {
+//			"PATH=/abc:/bin"
+//			"LESS=less"
+//		}
 //		Dir "/home/petar"
 //		Path "/bin/ls"
 //		Args { "-l", "/" }
 //	}
 //
 func cognizeProcessCommand(v interface{}) *client.Cmd {
-	img, ok := v.(Image)
+	img, ok := v.(Circuit)
 	if !ok {
 		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 	}
 	cmd := &client.Cmd{}
-	cmd.Path = img.String(see.Name("Path")) // mandatory
-	if img.Has(see.Name("Dir")) {
-		cmd.Dir = img.String(see.Name("Dir"))
+	cmd.Path = img.StringAt("Path") // mandatory
+	if dir, ok := img.StringOptionAt("Dir"); ok {
+		cmd.Dir = dir
 	}
-	env := img.Walk(see.Name("Env"))
-	for _, key := range see.Numbers(env) {
-		cmd.Env = append(cmd.Env, env.String(key))
+	if env, ok := img.CircuitOptionAt("Env"); ok {
+		for _, key := range env.Numbers() {
+			cmd.Env = append(cmd.Env, env.StringAt(key))
+		}
 	}
-	args := img.Walk(see.Name("Args"))
-	for _, key := range see.Numbers(args) {
-		cmd.Args = append(cmd.Args, args.String(key))
+	if args, ok := img.CircuitOptionAt("Args"); ok {
+		for _, key := range args.Numbers() {
+			cmd.Args = append(cmd.Args, args.StringAt(key))
+		}
 	}
 	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t")))
 	return cmd
 }
 
 type processBack struct {
-	name string
 	eye *plumb.Eye
 	cmd *client.Cmd
 	spawn <-chan interface{}
@@ -94,18 +95,12 @@ type processBack struct {
 func (p *processBack) loop() {
 	for {
 		spwn := <-p.spawn
-		var x Image
+		x := New().Grow("Spawn", spwn)
 		if exit := p.spawnProcess(spwn); exit != nil {
-			x = Image{
-				see.Name("Spawn"): spwn,
-				see.Name("Exit"):  1,
-			}
+			x.Grow("Exit", 1)
 			p.eye.Show("Exit", x)
 		} else {
-			x = Image{
-				see.Name("Spawn"): spwn,
-				see.Name("Exit"):  0,
-			}
+			x.Grow("Exit", 0)
 			p.eye.Show("Exit", x)
 		}
 		log.Printf("circuit process exit meme sent (%v)", Linearize(fmt.Sprintf("%v", x)))
@@ -114,18 +109,11 @@ func (p *processBack) loop() {
 
 func (p *processBack) spawnProcess(spwn interface{}) error {
 	// anchor determination
-	s := spwn.(Image)
-	if s.String(see.Name("Name")) == "" {
-		panic("circuit process execution name required")
-	}
-	if s.String(see.Name("Server")) == "" {
-		panic("circuit process server required")
-	}
+	s := spwn.(Circuit)
 	anchor := program.Client.Walk(
 		[]string{
-			s.String(see.Name("Server")), // server name
-			p.name, // reflex' unique materialization name
-			s.String(see.Name("Name")), // (dynamic) execution name
+			s.StringAt("Server"), // server name
+			s.StringAt("Name"), // (dynamic) execution name
 		})
 	//
 	proc, err := anchor.MakeProc(*p.cmd)
@@ -133,12 +121,11 @@ func (p *processBack) spawnProcess(spwn interface{}) error {
 		panic("invalid command argument")
 	}
 	defer anchor.Scrub()
-	g := Image{
-		see.Name("Spawn"):  spwn,
-		see.Name("Stdin"):  proc.Stdin(),
-		see.Name("Stdout"): proc.Stdout(),
-		see.Name("Stderr"): proc.Stderr(),
-	}
+	g := New().
+		Grow("Spawn",  spwn,).
+		Grow("Stdin",  proc.Stdin()).
+		Grow("Stdout", proc.Stdout()).
+		Grow("Stderr", proc.Stderr())
 	log.Printf("circuit process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	p.eye.Show("IO", g)
 	log.Printf("circuit process waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))

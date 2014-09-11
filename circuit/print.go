@@ -100,3 +100,16 @@ func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
 		fmt.Fprintf(w, "%v %v\n", n, t)
 	}
 }
+
+func Linearize(s string) string {
+	x := []byte(s)
+	for i, b := range x {
+		if b == '\n' {
+			x[i] = ','
+		}
+		if b == '\t' {
+			x[i] = ' '
+		}
+	}
+	return string(x)
+}

@@ -14,17 +14,15 @@ import (
 
 	dkr "github.com/gocircuit/circuit/client/docker"
 	"github.com/gocircuit/escher/kit/plumb"
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 )
 
 // Docker
 type Docker struct{}
 
-func (x Docker) Materialize(matter *be.Matter) be.Reflex {
+func (x Docker) Materialize() be.Reflex {
 	p := &docker{
-		name: matter.LastName(),
 		spawn: make(chan interface{}),
 	}
 	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
@@ -33,7 +31,6 @@ func (x Docker) Materialize(matter *be.Matter) be.Reflex {
 
 // docker is the materialized docker reflex
 type docker struct {
-	name string // unique--with respect to materializations--name of this reflex
 	sync.Once // start backloop once
 	spawn chan interface{} // notify loop of spawn memes
 }
@@ -44,7 +41,6 @@ func (p *docker) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		p.Once.Do(
 			func() {
 				back := &dockerBack{
-					name: p.name,
 					eye: eye, 
 					cmd: cognizeDockerCommand(dvalue), 
 					spawn: p.spawn,
@@ -80,47 +76,50 @@ func (p *docker) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 //		}
 //
 func cognizeDockerCommand(v interface{}) *dkr.Run {
-	img, ok := v.(Image)
+	img, ok := v.(Circuit)
 	if !ok {
 		panic(fmt.Sprintf("non-image sent as circuit container command (%v)", v))
 	}
 	cmd := &dkr.Run{}
-	cmd.Image = img.String(see.Name("Image")) // mandatory
-	if img.Has(see.Name("Memory")) {
-		cmd.Memory = int64(plumb.AsInt(img[see.Name("Memory")]))
+	cmd.Image = img.StringAt("Image") // mandatory
+	if mem, ok := img.IntOptionAt("Memory"); ok {
+		cmd.Memory = int64(plumb.AsInt(mem))
 	}
-	if img.Has(see.Name("CpuShares")) {
-		cmd.CpuShares = int64(plumb.AsInt(img[see.Name("CpuShares")]))
+	if cpu, ok := img.IntOptionAt("CpuShares"); ok {
+		cmd.CpuShares = int64(plumb.AsInt(cpu))
 	}
-	lxc := img.Walk(see.Name("Lxc"))
-	for _, key := range see.Numbers(lxc) {
-		cmd.Lxc = append(cmd.Lxc, lxc.String(key))
+	if lxc, ok := img.CircuitOptionAt("Lxc"); ok {
+		for _, key := range lxc.Numbers() {
+			cmd.Lxc = append(cmd.Lxc, lxc.StringAt(key))
+		}
 	}
-	vol := img.Walk(see.Name("Volume"))
-	for _, key := range see.Numbers(vol) {
-		cmd.Volume = append(cmd.Volume, vol.String(key))
+	if vol, ok := img.CircuitOptionAt("Volume"); ok {
+		for _, key := range vol.Numbers() {
+			cmd.Volume = append(cmd.Volume, vol.StringAt(key))
+		}
 	}
-	if img.Has(see.Name("Entry")) {
-		cmd.Entry = img.String(see.Name("Entry"))
+	if entry, ok := img.StringOptionAt("Entry"); ok {
+		cmd.Entry = entry
 	}
-	cmd.Path = img.String(see.Name("Path")) // mandatory
-	if img.Has(see.Name("Dir")) {
-		cmd.Dir = img.String(see.Name("Dir"))
+	cmd.Path = img.StringAt("Path") // mandatory
+	if dir, ok := img.StringOptionAt("Dir"); ok {
+		cmd.Dir = dir
 	}
-	env := img.Walk(see.Name("Env"))
-	for _, key := range see.Numbers(env) {
-		cmd.Env = append(cmd.Env, env.String(key))
+	if env, ok := img.CircuitOptionAt("Env"); ok {
+		for _, key := range env.Numbers() {
+			cmd.Env = append(cmd.Env, env.StringAt(key))
+		}
 	}
-	args := img.Walk(see.Name("Args"))
-	for _, key := range see.Numbers(args) {
-		cmd.Args = append(cmd.Args, args.String(key))
+	if args, ok := img.CircuitOptionAt("Args"); ok {
+		for _, key := range args.Numbers() {
+			cmd.Args = append(cmd.Args, args.StringAt(key))
+		}
 	}
 	log.Printf("circuit docker command (%v)", Linearize(img.Print("", "t")))
 	return cmd
 }
 
 type dockerBack struct {
-	name string
 	eye *plumb.Eye
 	cmd *dkr.Run
 	spawn <-chan interface{}
@@ -129,18 +128,12 @@ type dockerBack struct {
 func (p *dockerBack) loop() {
 	for {
 		spwn := <-p.spawn
-		var x Image
+		x := New().Grow("Spawn", spwn)
 		if exit := p.spawnDocker(spwn); exit != nil {
-			x = Image{
-				see.Name("Spawn"): spwn,
-				see.Name("Exit"):  1,
-			}
+			x.Grow("Exit", 1)
 			p.eye.Show("Exit", x)
 		} else {
-			x = Image{
-				see.Name("Spawn"): spwn,
-				see.Name("Exit"):  0,
-			}
+			x.Grow("Exit", 0)
 			p.eye.Show("Exit", x)
 		}
 		log.Printf("circuit container exit meme sent (%v)", Linearize(fmt.Sprintf("%v", x)))
@@ -149,15 +142,11 @@ func (p *dockerBack) loop() {
 
 func (p *dockerBack) spawnDocker(spwn interface{}) error {
 	// anchor determination
-	s := spwn.(Image)
-	if s.String(see.Name("Name")) == "" {
-		panic("container execution name cannot be empty")
-	}
+	s := spwn.(Circuit)
 	anchor := program.Client.Walk(
 		[]string{
-			s.String(see.Name("Server")), // server name
-			p.name, // reflex' unique materialization name
-			s.String(see.Name("Name")), // (dynamic) execution name
+			s.StringAt("Server"), // server name
+			s.StringAt("Name"), // (dynamic) execution name
 		})
 	//
 	container, err := anchor.MakeDocker(*p.cmd)
@@ -165,12 +154,11 @@ func (p *dockerBack) spawnDocker(spwn interface{}) error {
 		log.Fatalf("container spawn error (%v)", err)
 	}
 	defer anchor.Scrub() // Anchor will be scrubbed before the exit meme is sent out
-	g := Image{
-		see.Name("Spawn"):  spwn,
-		see.Name("Stdin"):  container.Stdin(),
-		see.Name("Stdout"): container.Stdout(),
-		see.Name("Stderr"): container.Stderr(),
-	}
+	g := New().
+		Grow("Spawn",  spwn).
+		Grow("Stdin",  container.Stdin()).
+		Grow("Stdout", container.Stdout()).
+		Grow("Stderr", container.Stderr())
 	log.Printf("circuit docker io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
 	p.eye.Show("IO", g)
 	log.Printf("circuit docker waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))

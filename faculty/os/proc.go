@@ -13,9 +13,9 @@ import (
 	"os/exec"
 	"sync"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	kitio "github.com/gocircuit/escher/kit/io"
+	kio "github.com/gocircuit/escher/kit/io"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -62,23 +62,23 @@ func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 //	}
 //
 func cognizeCommand(v interface{}) *exec.Cmd {
-	img, ok := v.(Image)
+	img, ok := v.(Circuit)
 	if !ok {
 		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 	}
 	cmd := &exec.Cmd{}
-	cmd.Path = img.String(see.Name("Path")) // mandatory
+	cmd.Path = img.StringAt("Path") // mandatory
 	cmd.Args = []string{cmd.Path}
-	if img.Has(see.Name("Dir")) {
-		cmd.Dir = img.String(see.Name("Dir"))
+	if dir, ok := img.StringOptionAt("Dir"); ok {
+		cmd.Dir = dir
 	}
-	env := img.Walk(see.Name("Env"))
-	for _, key := range see.Numbers(env) {
-		cmd.Env = append(cmd.Env, env.String(key))
+	env := img.CircuitAt("Env")
+	for _, key := range env.Numbers() {
+		cmd.Env = append(cmd.Env, env.StringAt(key))
 	}
-	args := img.Walk(see.Name("Args"))
-	for _, key := range see.Numbers(args) {
-		cmd.Args = append(cmd.Args, args.String(key))
+	args := img.CircuitAt("Args")
+	for _, key := range args.Numbers() {
+		cmd.Args = append(cmd.Args, args.StringAt(key))
 	}
 	// log.Printf("os process command (%v)", Linearize(img.Print("", "")))
 	return cmd
@@ -93,18 +93,12 @@ type processBack struct {
 func (p *processBack) loop() {
 	for {
 		when := <-p.spawn
-		var x Image
+		x := New().Grow("When", when)
 		if exit := p.spawnProcess(when); exit != nil {
-			x = Image{
-				see.Name("When"): when,
-				see.Name("Exit"):  1,
-			}
+			x.Grow("Exit", 1)
 			p.eye.Show("Exit", x)
 		} else {
-			x = Image{
-				see.Name("When"): when,
-				see.Name("Exit"):  0,
-			}
+			x.Grow("Exit", 0)
 			p.eye.Show("Exit", x)
 		}
 		// log.Printf("os process exit sent (%v)", Linearize(x.Print("", "")))
@@ -133,15 +127,14 @@ func (p *processBack) spawnProcess(when interface{}) (err error) {
 	}
 	// We cannot call cmd.Wait before all std streams have been closed.
 	stdClose := make(chan struct{}, 3)
-	stdin = kitio.RunOnCloseWriter(stdin, func() { stdClose <- struct{}{} })
-	stdout = kitio.RunOnCloseReader(stdout, func() { stdClose <- struct{}{} })
-	stderr = kitio.RunOnCloseReader(stderr, func() { stdClose <- struct{}{} })
-	g := Image{
-		see.Name("When"):  when,
-		see.Name("Stdin"):  stdin,
-		see.Name("Stdout"): stdout,
-		see.Name("Stderr"): stderr,
-	}
+	stdin = kio.RunOnCloseWriter(stdin, func() { stdClose <- struct{}{} })
+	stdout = kio.RunOnCloseReader(stdout, func() { stdClose <- struct{}{} })
+	stderr = kio.RunOnCloseReader(stderr, func() { stdClose <- struct{}{} })
+	g := New().
+		Grow("When", when).
+		Grow("Stdin", stdin).
+		Grow("Stdout", stdout).
+		Grow("Stderr", stderr)
 	// log.Printf("os process io (%v)", Linearize(fmt.Sprintf("%v", when)))
 	p.eye.Show("IO", g)
 	<-stdClose

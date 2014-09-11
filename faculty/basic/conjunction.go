@@ -25,7 +25,7 @@ func MaterializeUnion(name string, field ...string) Reflex {
 				for _, f_ := range field { // send updated conjunction to all field valves
 					f := f_
 					go func() {
-						eye.Show(f, dvalue.(Circuit).AtNil(f))
+						eye.Show(f, dvalue.(Circuit).At(f))
 						y <- struct{}{}
 					}()
 				}

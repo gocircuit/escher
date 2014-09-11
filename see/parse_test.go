@@ -184,7 +184,7 @@ var testCircuit = []string{
 		c       1.2
 		d       1-2i
 		e       {}
-		f       { 1; 2; 3; }
+		f       { 1; "2"; 3.1; a, "b" }
 	}
 	`,
 }

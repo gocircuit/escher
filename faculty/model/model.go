@@ -85,10 +85,10 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 	var memory list.List
 	for {
 		// Current view
-		eye.Show("Sequence", v.SequenceTerm(strobe.AtNil("When"))) // yield current view
+		eye.Show("Sequence", v.SequenceTerm(strobe.At("When"))) // yield current view
 
 		// transition
-		entering := v.Circuit.AtNil(v.Image) // address of next image
+		entering := v.Circuit.At(v.Image) // address of next image
 		switch t := entering.(type) {
 		case Address:
 			//

@@ -8,24 +8,65 @@ package circuit
 
 // Convenience access
 
-func (u Circuit) IntOrZeroAt(name string) int {
-	i, ok := u.circuit.At(name)
+func (u Circuit) IntOrZeroAt(name Name) int {
+	i, ok := u.circuit.OptionAt(name)
 	if !ok {
 		return 0
 	}
 	return i.(int)
 }
 
-func (u Circuit) CircuitAt(name string) Circuit {
-	return u.circuit.AtNil(name).(Circuit)
+//
+func (u Circuit) CircuitAt(name Name) Circuit {
+	return u.circuit.At(name).(Circuit)
 }
 
-func (u Circuit) StringAt(name string) string {
-	return u.circuit.AtNil(name).(string)
+func (u Circuit) CircuitOptionAt(name Name) (Circuit, bool) {
+	v, ok := u.OptionAt(name)
+	if ok {
+		return v.(Circuit), ok
+	}
+	return Circuit{}, false
 }
 
-func (u Circuit) AddressAt(name string) Address {
-	return u.circuit.AtNil(name).(Address)
+// int
+func (u Circuit) IntAt(name Name) int {
+	return u.circuit.At(name).(int)
+}
+
+func (u Circuit) IntOptionAt(name Name) (int, bool) {
+	v, ok := u.OptionAt(name)
+	if ok {
+		return v.(int), ok
+	}
+	return 0, false
+}
+
+//
+func (u Circuit) StringAt(name Name) string {
+	return u.circuit.At(name).(string)
+}
+
+func (u Circuit) StringOptionAt(name Name) (string, bool) {
+	v, ok := u.OptionAt(name)
+	if ok {
+		return v.(string), ok
+	}
+	return "", false
+}
+
+//
+
+func (u Circuit) AddressAt(name Name) Address {
+	return u.circuit.At(name).(Address)
+}
+
+func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
+	v, ok := u.OptionAt(name)
+	if ok {
+		return v.(Address), ok
+	}
+	return "", false
 }
 
 // 
@@ -59,19 +100,11 @@ func (u *circuit) Len() int {
 	return len(u.image)
 }
 
-func (c *circuit) At(name Name) (Meaning, bool) {
+func (c *circuit) OptionAt(name Name) (Meaning, bool) {
 	v, ok := c.image[name]
 	return v, ok
 }
 
-func (c *circuit) AtNil(name Name) Meaning {
+func (c *circuit) At(name Name) Meaning {
 	return c.image[name]
-}
-
-func (c *circuit) MeaningAt(name Name) Meaning {
-	v, ok := c.image[name]
-	if !ok {
-		panic(1)
-	}
-	return v
 }

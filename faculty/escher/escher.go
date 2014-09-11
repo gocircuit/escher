@@ -41,5 +41,5 @@ func (Lookup) Materialize() be.Reflex {
 type CircuitSourceDir struct{}
 
 func (CircuitSourceDir) Materialize(matter *be.Matter) be.Reflex {
-	return be.NewNounReflex(matter.Design.AtNil(faculty.Genus_{}).(*faculty.CircuitGenus).Dir)
+	return be.NewNounReflex(matter.Design.At(faculty.Genus_{}).(*faculty.CircuitGenus).Dir)
 }

@@ -39,7 +39,7 @@ func (FormBlend) Materialize() be.Reflex {
 				panic(err)
 			}
 			var w bytes.Buffer
-			if err = t.Execute(&w, fd.MeaningAt("Data")); err != nil {
+			if err = t.Execute(&w, fd.At("Data")); err != nil {
 				panic(err)
 			}
 			eye.Show("_", w.String())

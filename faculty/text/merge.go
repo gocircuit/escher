@@ -45,9 +45,9 @@ func (MergeBlend) Materialize() be.Reflex {
 			}
 			xyz := value.(Circuit)
 			var w bytes.Buffer
-			w.WriteString(flatten(xyz.MeaningAt("X")))
-			w.WriteString(flatten(xyz.MeaningAt("Y")))
-			w.WriteString(flatten(xyz.MeaningAt("Z")))
+			w.WriteString(flatten(xyz.StringAt("X")))
+			w.WriteString(flatten(xyz.StringAt("Y")))
+			w.WriteString(flatten(xyz.StringAt("Z")))
 			eye.Show("_", w.String())
 		}, 
 		"XYZ", "_",

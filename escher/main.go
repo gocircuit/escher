@@ -22,7 +22,7 @@ import (
 	"github.com/gocircuit/escher/faculty/acid"
 	// "github.com/gocircuit/escher/faculty/circuit"
 	// // "github.com/gocircuit/escher/faculty/draw"
-	// facultyos "github.com/gocircuit/escher/faculty/os"
+	facos "github.com/gocircuit/escher/faculty/os"
 	
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/escher"
@@ -55,7 +55,7 @@ func main() {
 		fatalf("at least one source directory, X, Y or Z, must be specified with -x, -y or -z, respectively")
 	}
 	// Initialize faculties
-	// facultyos.Init(*flagArg)
+	facos.Init(*flagArg)
 	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY, *flagZ)
 	//
 	switch {

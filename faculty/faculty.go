@@ -27,8 +27,7 @@ func NewFaculty(name string) Faculty {
 }
 
 func (fty Faculty) Genus() *FacultyGenus {
-	g, _ := Circuit(fty).At(Genus_{})
-	return g.(*FacultyGenus)
+	return Circuit(fty).At(Genus_{}).(*FacultyGenus)
 }
 
 func (fty Faculty) Exclude(name string) (forgotten Meaning) {
@@ -60,7 +59,7 @@ func (fty Faculty) Lookup(walk ...string) (parent, child Meaning) {
 		return nil, fty
 	}
 
-	v, ok := Circuit(fty).At(walk[0])
+	v, ok := Circuit(fty).OptionAt(walk[0])
 	if !ok {
 		return nil, nil
 	}
@@ -80,7 +79,7 @@ func (fty Faculty) Lookup(walk ...string) (parent, child Meaning) {
 }
 
 func (fty Faculty) Refine(name string) Faculty {
-	if x, ok := Circuit(fty).At(name); ok {
+	if x, ok := Circuit(fty).OptionAt(name); ok {
 		return x.(Faculty)
 	}
 	y := NewFaculty(name)

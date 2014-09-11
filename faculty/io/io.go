@@ -14,7 +14,6 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 )
 
 func init() {
@@ -30,7 +29,7 @@ func (Clunk) Materialize() be.Reflex {
 	go func() {
 		_Endo.Focus(clunk)
 	}()
-	return be.Reflex{see.Name("_"): _Exo}
+	return be.Reflex{"_": _Exo}
 }
 
 func clunk(v interface{}) {

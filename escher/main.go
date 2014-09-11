@@ -13,7 +13,6 @@ import (
 
 	// "github.com/gocircuit/circuit/client"
 
-	// "github.com/gocircuit/escher/see"
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/be"
@@ -28,8 +27,8 @@ import (
 	_ "github.com/gocircuit/escher/faculty/escher"
 	// // _ "github.com/gocircuit/escher/faculty/handbook"
 	// _ "github.com/gocircuit/escher/faculty/i"
-	// _ "github.com/gocircuit/escher/faculty/io"
-	// _ "github.com/gocircuit/escher/faculty/io/util"
+	_ "github.com/gocircuit/escher/faculty/io"
+	_ "github.com/gocircuit/escher/faculty/io/util"
 	// _ "github.com/gocircuit/escher/faculty/path"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"

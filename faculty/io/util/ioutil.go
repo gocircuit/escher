@@ -14,7 +14,6 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
 )
 
 func init() {
@@ -36,8 +35,8 @@ func (WriteFile) Materialize() be.Reflex {
 		contentEndo.Focus(h.CognizeContent)
 	}()
 	return be.Reflex{
-		see.Name("Name"):    nameExo,
-		see.Name("Content"): contentExo,
+		"Name":    nameExo,
+		"Content": contentExo,
 	}
 }
 

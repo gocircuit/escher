@@ -178,6 +178,15 @@ var testCircuit = []string{
 		s:Z = { "a", "b", "c" }
 	}
 	`,
+	`{
+		a       "a"
+		b       12
+		c       1.2
+		d       1-2i
+		e       {}
+		f       { 1; 2; 3; }
+	}
+	`,
 }
 
 func TestCircuit(t *testing.T) {

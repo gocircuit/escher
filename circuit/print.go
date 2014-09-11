@@ -61,6 +61,15 @@ func (u *circuit) Print(prefix, indent string) string {
 		w.WriteString(prefix + indent)
 		PrintMeaning(&w, prefix+indent, indent, n, p)
 	}
+	// numbers
+	for _, n := range u.Numbers() {
+		p := u.image[n]
+		if n == super {
+			continue
+		}
+		w.WriteString(prefix + indent)
+		PrintMeaning(&w, prefix+indent, indent, n, p)
+	}
 	//
 	o := make(Orient)
 	for _, valves := range u.real {

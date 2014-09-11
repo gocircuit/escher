@@ -31,9 +31,6 @@ func SeePeer(src *Src) (n Name, m Meaning) {
 	}
 	if right == nil { // one term (a value)
 		src.Become(t)
-		if _, ok := left.(Address); ok {
-			panic("slice elements cannot be addresses")
-		}
 		return Nameless{}, left
 	} else { // two terms (name and value)
 		src.Become(t)

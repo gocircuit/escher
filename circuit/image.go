@@ -8,7 +8,7 @@ package circuit
 
 // Convenience access
 
-func (u Circuit) OptionalIntAt(name string) int {
+func (u Circuit) IntOrZeroAt(name string) int {
 	i, ok := u.circuit.At(name)
 	if !ok {
 		return 0
@@ -27,6 +27,8 @@ func (u Circuit) StringAt(name string) string {
 func (u Circuit) AddressAt(name string) Address {
 	return u.circuit.AtNil(name).(Address)
 }
+
+// 
 
 func (u Circuit) Grow(name string, meaning Meaning) Circuit {
 	u.circuit.Include(name, meaning)

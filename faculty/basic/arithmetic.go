@@ -44,7 +44,7 @@ func (x *sum) save(valve string, value int) {
 func (x *sum) u(valve string) int {
 	x.Lock()
 	defer x.Unlock()
-	return x.lit.OptionalIntAt(valve)
+	return x.lit.IntOrZeroAt(valve)
 }
 
 func (x *sum) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {

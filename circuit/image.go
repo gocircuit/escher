@@ -6,6 +6,7 @@
 
 package circuit
 
+// Convenience access
 
 func (u Circuit) OptionalIntAt(name string) int {
 	i, ok := u.circuit.At(name)
@@ -28,31 +29,32 @@ func (u Circuit) AddressAt(name string) Address {
 }
 
 func (u Circuit) Grow(name string, meaning Meaning) Circuit {
-	u.circuit.ChangeExclusive(name, meaning)
+	u.circuit.Include(name, meaning)
 	return u
 }
 
 func (u Circuit) Abandon(name string) Circuit {
-	u.circuit.Forget(name)
+	u.circuit.Exclude(name)
 	return u
 }
 
 // Low-level
 
-func (u *circuit) Change(name Name, meaning Meaning) (before Meaning, overwrite bool) {
+func (u *circuit) Include(name Name, meaning Meaning) (before Meaning, overwrite bool) {
 	before, overwrite = u.image[name]
 	u.image[name] = meaning
 	return
 }
 
-func (u *circuit) Len() int {
-	return len(u.image)
+func (u *circuit) Exclude(name Name) Meaning {
+	forgotten := u.image[name]
+	delete(u.image, name)
+	return forgotten
 }
 
-func (u *circuit) ChangeExclusive(name Name, meaning Meaning) {
-	if _, over := u.Change(name, meaning); over {
-		panic(1)
-	}
+// Len returns the number of images.
+func (u *circuit) Len() int {
+	return len(u.image)
 }
 
 func (c *circuit) At(name Name) (Meaning, bool) {
@@ -63,10 +65,3 @@ func (c *circuit) At(name Name) (Meaning, bool) {
 func (c *circuit) AtNil(name Name) Meaning {
 	return c.image[name]
 }
-
-func (u *circuit) Forget(name Name) Meaning {
-	forgotten := u.image[name]
-	delete(u.image, name)
-	return forgotten
-}
-

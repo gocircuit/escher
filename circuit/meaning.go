@@ -55,7 +55,7 @@ func Same(x, y Circuit) bool {
 	return x.circuit.Contains(y.circuit) && y.circuit.Contains(x.circuit)
 }
 
-func (u *circuit) Contains(w *circuit) bool {
+func (u *circuit) Contains(w *circuit) bool { // XXX: This implements is contained in
 	// image
 	for n, y := range u.image {
 		yy, ok := w.image[n]

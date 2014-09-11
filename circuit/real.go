@@ -60,5 +60,5 @@ func (c *circuit) Follow(p, v Name) (q, u Name) {
 	if !ok {
 		return nil, nil
 	}
-	return x.Image[1], x.Valve[1]
+	return x.To()
 }

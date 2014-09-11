@@ -26,16 +26,16 @@ func SeeCircuit(src *Src) (u Circuit) {
 		Space(q)
 		if pn, pm := SeePeer(q); pn != nil { // parse peer
 			if _, ok := pn.(Nameless); ok { // if peer is nameless, this is a slice element
-				u.Change(j, pm)
+				u.Include(j, pm)
 				j++
 			} else {
-				u.Change(pn, pm) // record the order of definition in the same namespace but with number keys
+				u.Include(pn, pm) // record the order of definition in the same namespace but with number keys
 			}
 		} else if x, carry := SeeReal(q, 2*i); x != nil { // parse matching
 			i++
 			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
-					u.Change(c.Name, c.Meaning)
+					u.Include(c.Name, c.Meaning)
 				}
 			}
 			u.Form(*x)

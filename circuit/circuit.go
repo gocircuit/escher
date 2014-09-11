@@ -51,6 +51,9 @@ func (u *circuit) IsNil() bool {
 }
 
 func (u *circuit) IsEmpty() bool {
+	if u == nil {
+		return true
+	}
 	return len(u.image) == 0 && len(u.real) == 0
 }
 
@@ -87,7 +90,9 @@ func (u *circuit) String() string {
 }
 
 func (u *circuit) Seal(name Name) {
-	u.ChangeExclusive(name, Super{})
+	if _, ok := u.Include(name, Super{}); ok {
+		panic("overwriting super")
+	}
 	for nm, y := range u.Images() {
 		if y == nil {
 			log.Fatalf("nil peer: %v", nm)

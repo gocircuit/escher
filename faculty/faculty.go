@@ -26,7 +26,7 @@ type Faculty Circuit
 func NewFaculty(name string) Faculty {
 	fty := Faculty(New())
 	Circuit(fty).Seal(name)
-	Circuit(fty).Change(Genus_{}, NewFacultyGenus())
+	Circuit(fty).Include(Genus_{}, NewFacultyGenus())
 	return fty
 }
 
@@ -35,8 +35,8 @@ func (fty Faculty) Genus() *FacultyGenus {
 	return g.(*FacultyGenus)
 }
 
-func (fty Faculty) Forget(name string) (forgotten Meaning) {
-	return Circuit(fty).Forget(name)
+func (fty Faculty) Exclude(name string) (forgotten Meaning) {
+	return Circuit(fty).Exclude(name)
 }
 
 // Roam traverses the hierarchy, creating faculty nodes if necessary, returning the final two nodes.
@@ -94,7 +94,9 @@ func (fty Faculty) Refine(name string) Faculty {
 }
 
 func (fty Faculty) AddTerminal(name string, term Meaning) {
-	Circuit(fty).ChangeExclusive(name, term)
+	if _, ok := Circuit(fty).Include(name, term); ok {
+		log.Fatalf("overwriting terminal %v->%T", name, term)
+	}
 }
 
 // UnderstandDirectory ...
@@ -137,12 +139,14 @@ func (fty Faculty) UnderstandFile(dir, filePath string) {
 		}
 		n := n_.(string) // n is a string
 		u := u_.(Circuit)
-		u.ChangeExclusive(Genus_{}, 
+		u.Include(Genus_{}, 
 			&CircuitGenus{
 				Dir: dir,
 				File: filePath,
 			},
 		)
-		fty.ChangeExclusive(n, u)
+		if _, ok := fty.Include(n, u); ok {
+			log.Fatalf("file circuit overwrites %s", n)
+		}
 	}
 }

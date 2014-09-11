@@ -38,7 +38,7 @@ type sum struct {
 func (x *sum) save(valve string, value int) {
 	x.Lock()
 	defer x.Unlock()
-	x.lit.Change(valve, value)
+	x.lit.Include(valve, value)
 }
 
 func (x *sum) u(valve string) int {

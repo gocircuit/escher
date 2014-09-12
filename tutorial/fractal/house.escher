@@ -5,8 +5,7 @@
 main2 {
 	lookup escher.Lookup
 	lookup:Address = "A"
-	lookup:Circuit = show:_
-	show Show
+	lookup:Circuit = Show
 }
 
 main {
@@ -19,14 +18,9 @@ main {
 	sequence model.ForkSequence
 	explore:Sequence = sequence:_
 
-	ignoreWhen Ignore
-	sequence:When = ignoreWhen:_
-
-	ignoreIndex Ignore
-	sequence:Index = ignoreIndex:_
-
-	show Show
-	sequence:Charge = show:_
+	sequence:When = Ignore
+	sequence:Index = Ignore
+	sequence:Charge = Show
 }
 
 // Circuits A, B, C and D describe a complete system.

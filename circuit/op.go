@@ -6,6 +6,16 @@
 
 package circuit
 
+type X Circuit
+
+// XXX: Copy and comparison conversions should traverse type renames!
+func init() {
+	x := X(New())
+	var y interface{} = x
+	_, ok := y.(Circuit)
+	println("ZZ", ok)
+}
+
 // func (u Circuit) Sub(w Circuit) (include, exclude Circuit) {
 // 	in, ex := u.circuit.Sub(w.circuit)
 // 	return Circuit{in}, Circuit{ex}

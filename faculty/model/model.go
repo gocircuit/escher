@@ -13,7 +13,6 @@ import (
 	"log"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/faculty/basic"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
@@ -24,20 +23,6 @@ func init() {
 	ns.AddTerminal("ExploreOnStrobe", ExploreOnStrobe{})
 	ns.AddTerminal("ForkCharge", ForkCharge{})
 	ns.AddTerminal("ForkSequence", ForkSequence{})
-}
-
-// ForkCharge
-type ForkCharge struct{}
-
-func (ForkCharge) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "Circuit", "Image", "Valve")
-}
-
-// ForkSequence
-type ForkSequence struct{}
-
-func (ForkSequence) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "When", "Index", "Charge")
 }
 
 // ExploreOnStrobe traverses the hierarchy of circuits induced by a given top-level/valveless circuit.
@@ -122,6 +107,9 @@ func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
 		v.Index++
 		//
 		if v.Same(start) {
+			x := v.SequenceTerm(strobe.At("When"))
+			x.Grow("Charge", "Loop")
+			eye.Show("Sequence", x)
 			break
 		}
 	}
@@ -135,13 +123,23 @@ type view struct {
 	Valve string // Focus valve
 }
 
+func (v view) UpDown() string {
+	if _, ok := v.Circuit.At(v.Image).(Super); ok {
+		return "Up"
+	}
+	return "Down"
+}
+
 func (v view) SequenceTerm(when Meaning) Circuit {
 	return New().
 		Grow("When", when).
 		Grow("Index", v.Index).
-		Grow(
-			"Charge", 
-			New().Grow("Circuit", v.Circuit).Grow("Image", v.Image).Grow("Valve", v.Valve),
+		Grow("Charge", 
+			New().
+			Grow("Circuit", v.Circuit).
+			Grow("Image", v.Image).
+			Grow("Valve", v.Valve).
+			Grow("Dir", v.UpDown()),
 		)
 }
 

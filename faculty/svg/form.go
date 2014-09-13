@@ -4,14 +4,11 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package plot
+package svg
 
-import (
-	"bytes"
-	"text/template"
-)
+// SVG language sentence types map to SVG shape source templates.
+var svgForm = map[string]string{
 
-const (
 	//	{
 	//		Width int
 	//		Height int
@@ -24,20 +21,22 @@ const (
 	//		Body string
 	//	}
 	//
-	svgFile = `<?xml version="1.0" standalone="no"?>
-	<svg width="{{.Width}}px" height="{{.Height}}px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-		viewBox="{{.VBox.XZero}} {{.VBox.YZero}} {{.VBox.XWidth}} {{.VBox.YWidth}}">
-		<defs><style type="text/css">@import url(http://fonts.googleapis.com/css?family=Lato);</style></defs>{{.Body}}</svg>
-	`
+	"File": `<?xml version="1.0" standalone="no"?>` +
+		`<svg width="{{.Width}}px" height="{{.Height}}px" version="1.1" xmlns="http://www.w3.org/2000/svg" ` +
+		`xmlns:xlink="http://www.w3.org/1999/xlink" ` +
+		`viewBox="{{.VBox.XZero}} {{.VBox.YZero}} {{.VBox.XWidth}} {{.VBox.YWidth}}"> ` +
+		`<defs><style type="text/css">@import url(http://fonts.googleapis.com/css?family=Lato);</style></defs>` +
+		`{{.Body}}</svg>
+		`,
 
 	//	{
 	//		CX float; CY float; R float
 	//		Stroke string; StrokeWidth float; Fill string
 	//	}
 	//
-	svgCircle = `
-	<circle cx="{{.CX}}" cy="{{.CY}}" r="{{.R}}" stroke="{{.Stroke}}" fill="{{.Fill}}" stroke-width="{{.StrokeWidth}}" />
-	`
+	"Circle": `<circle cx="{{.CX}}" cy="{{.CY}}" ` +
+		`r="{{.R}}" stroke="{{.Stroke}}" fill="{{.Fill}}" stroke-width="{{.StrokeWidth}}" />
+		`,
 
 	//	{
 	//		ID string
@@ -47,11 +46,10 @@ const (
 	//		ToTangent { X float; Y float }
 	//	}
 	//
-	svgCubic = `
-	<def>
-		<path  id="{{.ID}}" d="M{{.FromAnchor.X}} {{.FromAnchor.Y}} C {{.FromTangent.X}} {{.FromTangent.Y}}, {{.ToTangent.X}} {{.ToTangent.Y}}, {{.ToAnchor.X}} {{.ToAnchor.Y}}" />
-	</def>
-	`
+	"Cubic": `<def><path  id="{{.ID}}" d="M{{.FromAnchor.X}} ` + 
+		`{{.FromAnchor.Y}} C {{.FromTangent.X}} {{.FromTangent.Y}}, ` + 
+		`{{.ToTangent.X}} {{.ToTangent.Y}}, {{.ToAnchor.X}} {{.ToAnchor.Y}}" /></def>
+		`,
 
 	//	{
 	//		X float; Y float
@@ -66,13 +64,12 @@ const (
 	//		DY string
 	//		Body string
 	//	}
-	svgText = `
-	<text x="{{.Anchor.X}}" y="{{.Anchor.Y}}" 
-		font-size="{{.FontSize}}" font-family="{{.FontFamily}}" font-weight="{{.FontWeight}}"
-		fill="{{.Fill}}" stroke="{{.Stroke}}" stroke-width="{{.StrokeWidth}}"
-		text-anchor="{{.TextAnchor}}" dy="{{.DY}}"
-		style="{{.Style}}">{{.Body}}</text>
-	`
+	"Text": `<text x="{{.Anchor.X}}" y="{{.Anchor.Y}}" ` +
+		`font-size="{{.FontSize}}" font-family="{{.FontFamily}}" font-weight="{{.FontWeight}}" ` +
+		`fill="{{.Fill}}" stroke="{{.Stroke}}" stroke-width="{{.StrokeWidth}}" ` +
+		`text-anchor="{{.TextAnchor}}" dy="{{.DY}}" ` +
+		`style="{{.Style}}">{{.Body}}</text>
+		`,
 
 	//	{
 	//		PathID string
@@ -91,7 +88,7 @@ const (
 	//		Body string
 	//	}
 	//
-	svgTextPath = `
+	"TextPath": `
 	<g>
 	<use xlink:href="#{{.PathID}}" />
 	<text font-size="{{.FontSize}}" font-family="{{.FontFamily}}" font-weight="{{.FontWeight}}"
@@ -103,4 +100,5 @@ const (
 		</textPath>
 	</text>	
 	</g>
-	`
+	`,
+}

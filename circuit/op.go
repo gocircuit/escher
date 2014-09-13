@@ -13,8 +13,16 @@ func init() {
 	x := X(New())
 	var y interface{} = x
 	_, ok := y.(Circuit)
-	println("ZZ", ok)
+	println("op.go:", ok)
 }
+
+// func (u *circuit) Match(image Name, meaning Meaning) bool {
+// 	m, ok := u.image[image]
+// 	if !ok {
+// 		return false
+// 	}
+// 	return SameMeaning(m, meaning)
+// }
 
 // func (u Circuit) Sub(w Circuit) (include, exclude Circuit) {
 // 	in, ex := u.circuit.Sub(w.circuit)

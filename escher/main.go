@@ -18,7 +18,6 @@ import (
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/acid"
 	"github.com/gocircuit/escher/faculty/circuit"
-	// // "github.com/gocircuit/escher/faculty/draw"
 	facos "github.com/gocircuit/escher/faculty/os"
 	
 	_ "github.com/gocircuit/escher/faculty/basic"
@@ -28,6 +27,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	_ "github.com/gocircuit/escher/faculty/path"
+	_ "github.com/gocircuit/escher/faculty/svg"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	// _ "github.com/gocircuit/escher/faculty/think"

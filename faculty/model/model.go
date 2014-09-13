@@ -15,7 +15,6 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 func init() {
@@ -49,11 +48,11 @@ func init() {
 type ExploreOnStrobe struct{}
 
 func (ExploreOnStrobe) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(CognizeExploreOnStrobe, "Strobe", "Sequence")
+	reflex, _ := be.NewEyeCognizer(CognizeExploreOnStrobe, "Strobe", "Sequence")
 	return reflex
 }
 
-func CognizeExploreOnStrobe(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func CognizeExploreOnStrobe(eye *be.Eye, dvalve string, dvalue interface{}) {
 	if dvalve != "Strobe" {
 		return
 	}

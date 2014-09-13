@@ -27,7 +27,7 @@ func init() {
 type Join struct{}
 
 func (Join) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer((&join{}).Cognize, "_", "Head", "Tail")
+	reflex, _ := be.NewEyeCognizer((&join{}).Cognize, "_", "Head", "Tail")
 	return reflex
 }
 
@@ -37,7 +37,7 @@ type join struct {
 	tail *string
 }
 
-func (x *join) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *join) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	switch dvalve {

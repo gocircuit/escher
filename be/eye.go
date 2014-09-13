@@ -4,13 +4,10 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// Package plumb provides bits and bobs useful in implementing gates.
-package plumb
+package be
 
 import (
 	"sync"
-
-	"github.com/gocircuit/escher/be"
 )
 
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
@@ -28,25 +25,25 @@ type change struct {
 	Value interface{}
 }
 
-func NewEye(valve ...string) (be.Reflex, *Eye) {
+func NewEye(valve ...string) (Reflex, *Eye) {
 	return NewEyeCognizer(nil, valve...)
 }
 
 type EyeCognizer func(eye *Eye, valve string, value interface{})
 
-func NewEyeCognizer(cog EyeCognizer, valve ...string) (be.Reflex, *Eye) {
-	r := make(be.Reflex)
+func NewEyeCognizer(cog EyeCognizer, valve ...string) (Reflex, *Eye) {
+	r := make(Reflex)
 	eye := &Eye{
 		see: make(chan *change),
 		show: make(map[string]*nerve),
 	}
 	for i, v_ := range valve {
 		v := v_
-		x, y := be.NewSynapse()
+		x, y := NewSynapse()
 		r[v] = x
 		n := &nerve{
 			index: i,
-			ch: make(chan *be.ReCognizer),
+			ch: make(chan *ReCognizer),
 		}
 		eye.show[v] = n
 		if cog == nil {
@@ -76,7 +73,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (be.Reflex, *Eye) {
 	return r, eye
 }
 
-func (eye *Eye) connect(valve string, r *be.ReCognizer) {
+func (eye *Eye) connect(valve string, r *ReCognizer) {
 	ch := eye.show[valve].ch 
 	ch <- r
 	close(ch)
@@ -84,9 +81,9 @@ func (eye *Eye) connect(valve string, r *be.ReCognizer) {
 
 type nerve struct {
 	index int
-	ch chan *be.ReCognizer
+	ch chan *ReCognizer
 	sync.Mutex
-	*be.ReCognizer
+	*ReCognizer
 }
 
 func (eye *Eye) Show(valve string, v interface{}) {

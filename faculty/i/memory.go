@@ -26,7 +26,7 @@ func (Memory) Materialize() be.Reflex {
 		learn:     make(chan *eu.Circuit),
 		recall:    make(chan []interface{}),
 	}
-	reflex, eye := plumb.NewEyeCognizer(h.Cognize, "Focus", "Learn", "Recall", "Use")
+	reflex, eye := be.NewEyeCognizer(h.Cognize, "Focus", "Learn", "Recall", "Use")
 	go h.loop(eye)
 	return reflex
 }
@@ -38,7 +38,7 @@ type memory struct {
 	use       *be.ReCognizer
 }
 
-func (h *memory) Cognize(_ *plumb.Eye, dvalve string, dvalue interface{}) {
+func (h *memory) Cognize(_ *be.Eye, dvalve string, dvalue interface{}) {
 	switch dvalve {
 	case "Focus":
 		h.CognizeFocus(dvalue)
@@ -92,7 +92,7 @@ func (h *memory) CognizeRecall(v interface{}) {
 	}
 }
 
-func (h *memory) loop(eye *plumb.Eye) {
+func (h *memory) loop(eye *be.Eye) {
 	var root = &space{
 		Space: make(be.Space),
 	}

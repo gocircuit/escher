@@ -10,7 +10,6 @@ import (
 	// "fmt"
 
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/plumb"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
 )
@@ -27,7 +26,7 @@ func (Strobe) Materialize() be.Reflex {
 		when: make(chan interface{}, 1), // whens and charges cannot be out of order by more than one slot
 		charge: make(chan interface{}, 1),
 	}
-	reflex, _ := plumb.NewEyeCognizer(x.Cognize, "Charge", "When", "Strobe")
+	reflex, _ := be.NewEyeCognizer(x.Cognize, "Charge", "When", "Strobe")
 	return reflex
 }
 
@@ -35,7 +34,7 @@ type strobe struct {
 	when, charge chan interface{}
 }
 
-func (x *strobe) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *strobe) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	switch dvalve {
 	case "Charge":
 		select {

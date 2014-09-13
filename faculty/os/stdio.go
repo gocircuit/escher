@@ -12,7 +12,6 @@ import (
 	"os"
 
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 	kitio "github.com/gocircuit/escher/kit/io"
 )
 
@@ -38,7 +37,7 @@ func MaterializeWriteTo(w io.Writer) be.Reflex {
 	x := &writerTo{
 		WriteCloser: kitio.SovereignWriter(w),
 	}
-	reflex, eye := plumb.NewEyeCognizer(x.cognize, "_")
+	reflex, eye := be.NewEyeCognizer(x.cognize, "_")
 	go eye.Show("_", x.WriteCloser)
 	return reflex
 }
@@ -47,7 +46,7 @@ type writerTo struct{
 	io.WriteCloser // sovereign writer
 }
 
-func (x *writerTo) cognize(eye *plumb.Eye, valve string, value interface{}) {
+func (x *writerTo) cognize(eye *be.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
 		go Copy(x.WriteCloser, t, false, true)
@@ -80,7 +79,7 @@ func MaterializeReadFrom(w io.Reader) be.Reflex {
 	x := &readFrom{
 		ReadCloser: kitio.SovereignReader(w),
 	}
-	reflex, eye := plumb.NewEyeCognizer(x.cognize, "_")
+	reflex, eye := be.NewEyeCognizer(x.cognize, "_")
 	go eye.Show("_", x.ReadCloser)
 	return reflex
 }
@@ -89,7 +88,7 @@ type readFrom struct{
 	io.ReadCloser // sovereign writer
 }
 
-func (x *readFrom) cognize(eye *plumb.Eye, valve string, value interface{}) {
+func (x *readFrom) cognize(eye *be.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Writer:
 		go Copy(t, x.ReadCloser, true, false)

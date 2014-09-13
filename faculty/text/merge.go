@@ -16,7 +16,6 @@ import (
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 func init() {
@@ -38,8 +37,8 @@ func (ForkMerge) Materialize() be.Reflex {
 type MergeBlend struct{}
 
 func (MergeBlend) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "XYZ" {
 				return
 			}

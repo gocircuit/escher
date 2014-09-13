@@ -30,6 +30,8 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 		return b.MaterializeAddress(t)
 	case int, float64, complex128, string:
 		return NewNounReflex(t)
+	case GateFunc:
+		return t()
 	case Gate:
 		return t.Materialize()
 	case GateWithMatter:

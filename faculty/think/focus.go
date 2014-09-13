@@ -35,7 +35,7 @@ func init() {
 type Focus struct{}
 
 func (Focus) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer((&focus{}).Cognize, "From", "On", "When", "_")
+	reflex, _ := be.NewEyeCognizer((&focus{}).Cognize, "From", "On", "When", "_")
 	return reflex
 }
 
@@ -46,7 +46,7 @@ type focus struct {
 	when interface{}
 }
 
-func (x *focus) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *focus) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	switch dvalve {

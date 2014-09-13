@@ -19,7 +19,7 @@ import (
 type Associate struct{}
 
 func (Associate) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", "_")
+	reflex, _ := be.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", "_")
 	return reflex
 }
 
@@ -30,7 +30,7 @@ type association struct {
 	when interface{}
 }
 
-func (x *association) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *association) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	switch dvalve {

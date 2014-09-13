@@ -19,7 +19,7 @@ import (
 type Remember struct{}
 
 func (Remember) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer((&remember{}).Cognize, "From", "What", "When", "_")
+	reflex, _ := be.NewEyeCognizer((&remember{}).Cognize, "From", "What", "When", "_")
 	return reflex
 }
 
@@ -30,7 +30,7 @@ type remember struct {
 	when interface{}
 }
 
-func (x *remember) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *remember) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	switch dvalve {

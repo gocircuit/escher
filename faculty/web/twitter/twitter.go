@@ -56,8 +56,8 @@ func (Client) Materialize() be.Reflex {
 	}()
 	// API
 	query := make(chan Image, 5)
-	reflex, eye := plumb.NewEyeCognizer(
-		func (eye *plumb.Eye, valve string, value interface{}) {
+	reflex, eye := be.NewEyeCognizer(
+		func (eye *be.Eye, valve string, value interface{}) {
 			switch valve {
 			case "Consumer":
 				c1.Do(func () {consumer <- value.(Image)})

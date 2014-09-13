@@ -14,7 +14,6 @@ import (
 	"github.com/gocircuit/circuit/client"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 // Process
@@ -24,7 +23,7 @@ func (x Process) Materialize() be.Reflex {
 	p := &process{
 		spawn: make(chan interface{}),
 	}
-	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
+	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
 	return reflex
 }
 
@@ -33,7 +32,7 @@ type process struct{
 	spawn chan interface{} // notify loop of spawn memes
 }
 
-func (p *process) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (p *process) cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	switch dvalve {
 	case "Command":
 		p.Once.Do(
@@ -87,7 +86,7 @@ func cognizeProcessCommand(v interface{}) *client.Cmd {
 }
 
 type processBack struct {
-	eye *plumb.Eye
+	eye *be.Eye
 	cmd *client.Cmd
 	spawn <-chan interface{}
 }

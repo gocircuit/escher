@@ -15,7 +15,6 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 func Init(a string) {
@@ -58,8 +57,8 @@ var args map[string]string
 type Arg struct{}
 
 func (Arg) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "Name" {
 				return
 			}
@@ -78,8 +77,8 @@ func (Arg) Materialize() be.Reflex {
 type Env struct{}
 
 func (Env) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "Name" {
 				return
 			}
@@ -100,8 +99,8 @@ func (Env) Materialize() be.Reflex {
 type Exit struct{}
 
 func (Exit) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			os.Exit(value.(int))
 		}, 
 		"_",
@@ -113,8 +112,8 @@ func (Exit) Materialize() be.Reflex {
 type Fatal struct{}
 
 func (Fatal) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			log.Fatalln(value)
 		}, 
 		"_",
@@ -126,8 +125,8 @@ func (Fatal) Materialize() be.Reflex {
 type LookPath struct{}
 
 func (LookPath) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "Name" {
 				return
 			}

@@ -10,14 +10,13 @@ import (
 	// "fmt"
 
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/plumb"
 	"github.com/gocircuit/escher/be"
 )
 
 // Fix creates a gate that waits until all fix valves are set and
 // then outputs a singular conjunction of all values.
 func MaterializeFix(fwd string, fix ...string) be.Reflex {
-	reflex, eye := plumb.NewEye(append(fix, fwd)...)
+	reflex, eye := be.NewEye(append(fix, fwd)...)
 	go func() {
 		conj := New()
 		for {

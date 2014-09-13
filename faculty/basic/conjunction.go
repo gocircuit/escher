@@ -9,13 +9,12 @@ package basic
 import (
 	// "fmt"
 
-	"github.com/gocircuit/escher/plumb"
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/be"
 )
 
 func MaterializeUnion(name string, field ...string) Reflex {
-	reflex, eye := plumb.NewEye(append(field, name)...)
+	reflex, eye := NewEye(append(field, name)...)
 	go func() {
 		conj := New()
 		for {

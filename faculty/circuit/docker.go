@@ -25,7 +25,7 @@ func (x Docker) Materialize() be.Reflex {
 	p := &docker{
 		spawn: make(chan interface{}),
 	}
-	reflex, _ := plumb.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
+	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
 	return reflex
 }
 
@@ -35,7 +35,7 @@ type docker struct {
 	spawn chan interface{} // notify loop of spawn memes
 }
 
-func (p *docker) cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (p *docker) cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	switch dvalve {
 	case "Command":
 		p.Once.Do(
@@ -120,7 +120,7 @@ func cognizeDockerCommand(v interface{}) *dkr.Run {
 }
 
 type dockerBack struct {
-	eye *plumb.Eye
+	eye *be.Eye
 	cmd *dkr.Run
 	spawn <-chan interface{}
 }

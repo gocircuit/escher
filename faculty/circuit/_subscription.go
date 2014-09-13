@@ -27,7 +27,7 @@ func (x Leaving) Materialize() be.Reflex {
 }
 
 func MaterializeSubscription(kind string) be.Reflex {
-	reflex, eye := plumb.NewEye("Server", "_")
+	reflex, eye := be.NewEye("Server", "_")
 	go func() {
 		var server string
 		for {

@@ -20,7 +20,7 @@ import (
 type Choose struct{}
 
 func (Choose) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer((&choose{}).Cognize, "When", "From", "_")
+	reflex, _ := be.NewEyeCognizer((&choose{}).Cognize, "When", "From", "_")
 	return reflex
 }
 
@@ -30,7 +30,7 @@ type choose struct {
 	when interface{} // signal for choice
 }
 
-func (x *choose) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *choose) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	switch dvalve {

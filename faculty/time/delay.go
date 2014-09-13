@@ -24,7 +24,7 @@ func init() {
 type Delay struct{}
 
 func (Delay) Materialize() be.Reflex {
-	reflex, eye := plumb.NewEye("X", "Y", "Duration")
+	reflex, eye := be.NewEye("X", "Y", "Duration")
 	go func() {
 		ds := make(chan time.Duration, 2)
 		dur := ds

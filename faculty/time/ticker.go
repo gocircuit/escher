@@ -17,7 +17,7 @@ import (
 type Ticker struct{}
 
 func (Ticker) Materialize() be.Reflex {
-	reflex, eye := plumb.NewEye("Tick", "Duration")
+	reflex, eye := be.NewEye("Tick", "Duration")
 	go func() {
 		for {
 			valve, value := eye.See()

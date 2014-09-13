@@ -26,7 +26,7 @@ type Sum struct{}
 
 func (Sum) Materialize() be.Reflex {
 	x := &sum{lit: New()}
-	reflex, _ := plumb.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
+	reflex, _ := be.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
 	return reflex
 }
 
@@ -47,7 +47,7 @@ func (x *sum) u(valve string) int {
 	return x.lit.IntOrZeroAt(valve)
 }
 
-func (x *sum) Cognize(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+func (x *sum) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	x.save(dvalve, plumb.AsInt(dvalue))
 	var wg sync.WaitGroup
 	defer wg.Wait()

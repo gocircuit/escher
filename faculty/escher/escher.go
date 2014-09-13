@@ -12,7 +12,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/plumb"
 )
 
 func init() {
@@ -24,8 +23,8 @@ func init() {
 type Lookup struct{}
 
 func (Lookup) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, dvalve string, dvalue interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, dvalve string, dvalue interface{}) {
 			if dvalve != "Address" {
 				return
 			}

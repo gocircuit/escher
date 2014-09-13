@@ -14,7 +14,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty/basic"
-	"github.com/gocircuit/escher/plumb"
 )
 
 // ForkForm…
@@ -28,8 +27,8 @@ func (ForkForm) Materialize() be.Reflex {
 type FormBlend struct{}
 
 func (FormBlend) Materialize() be.Reflex {
-	reflex, _ := plumb.NewEyeCognizer(
-		func(eye *plumb.Eye, valve string, value interface{}) {
+	reflex, _ := be.NewEyeCognizer(
+		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "FormData" {
 				return
 			}

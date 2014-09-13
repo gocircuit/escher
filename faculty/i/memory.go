@@ -14,7 +14,7 @@ import (
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/see"
 	eu "github.com/gocircuit/escher/understand"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/plumb"
 )
 
 // Memory

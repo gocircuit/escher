@@ -16,7 +16,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	kio "github.com/gocircuit/escher/kit/io"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/plumb"
 )
 
 // Process

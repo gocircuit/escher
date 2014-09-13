@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/plumb"
 	"github.com/gocircuit/escher/be"
 )
 

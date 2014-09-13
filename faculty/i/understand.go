@@ -7,7 +7,7 @@
 package i
 
 import (
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/plumb"
 	es "github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/be"
 	eu "github.com/gocircuit/escher/understand"

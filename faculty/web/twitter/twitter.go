@@ -15,7 +15,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/plumb"
 	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
 

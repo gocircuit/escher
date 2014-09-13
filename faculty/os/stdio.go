@@ -12,7 +12,7 @@ import (
 	"os"
 
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/plumb"
 	kitio "github.com/gocircuit/escher/kit/io"
 )
 

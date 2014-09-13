@@ -8,7 +8,7 @@ package circuit
 
 type X Circuit
 
-// XXX: Copy and comparison conversions should traverse type renames!
+// XXX: Copy and comparison conversions should traverse type renames?
 func init() {
 	x := X(New())
 	var y interface{} = x

@@ -26,16 +26,21 @@ func (b *Being) MaterializeAddress(addr Address) Reflex {
 func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 	// log.Printf("materializing (%v) %v/%T", recurse, x, x)
 	switch t := x.(type) {
+	// Addresses are materialized recursively
 	case Address:
 		return b.MaterializeAddress(t)
+	// Irreducible types are materialized as gates that emit the irreducible values
 	case int, float64, complex128, string:
 		return NewNounReflex(t)
-	case GateFunc:
+	// Go-gates are materialized into runtime reflexes
+	case MaterializerFunc:
 		return t()
-	case Gate:
+	case Materializer:
 		return t.Materialize()
-	case GateWithMatter:
+	case MaterializerWithMatter:
 		return t.Materialize(matter)
+	case Gate:
+		return MaterializeInterface(t)
 	case Circuit:
 		if recurse {
 			return b.MaterializeCircuit(t)

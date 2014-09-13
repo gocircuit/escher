@@ -14,8 +14,8 @@ import (
 
 const prefix = "Cognize"
 
-func MaterializeInterface(v interface{}) (Reflex, *Eye) {
-	r := retina{ValueOf(v)}
+func MaterializeInterface(v interface{}) Reflex {
+	r := retina{makeGate(v)}
 	var valve []string
 	t := r.Value.Type()
 	for i := 0; i < t.NumMethod(); i++ {
@@ -24,7 +24,8 @@ func MaterializeInterface(v interface{}) (Reflex, *Eye) {
 			valve = append(valve, n)
 		}
 	}
-	return NewEyeCognizer(r.Cognize, valve...)
+	x, _ := NewEyeCognizer(r.Cognize, valve...)
+	return x
 }
 
 type retina struct {
@@ -39,4 +40,15 @@ func (r *retina) Cognize(eye *Eye, valve string, value interface{}) {
 			ValueOf(value),
 		},
 	)
+}
+
+func makeGate(like interface{}) Value {
+	t := TypeOf(like)
+	switch t.Kind() {
+	case Ptr: // Pointer types are allocated
+		return New(t.Elem())
+	default: // Value-based types are used as is
+		return ValueOf(like)
+	}
+	panic(0)
 }

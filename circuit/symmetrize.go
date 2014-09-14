@@ -6,19 +6,19 @@
 
 package circuit
 
-type Orient map[Name]map[Name]struct{} // image -> valve -> yes/no?
+type Orient map[Name]map[Name]struct{} // gate -> valve -> yes/no?
 
-func (o Orient) Include(image, valve Name) {
-	valves, ok := o[image]
+func (o Orient) Include(gate, valve Name) {
+	valves, ok := o[gate]
 	if !ok {
 		valves = make(map[Name]struct{})
-		o[image] = valves
+		o[gate] = valves
 	}
 	valves[valve] = struct{}{}
 }
 
-func (o Orient) Has(image, valve Name) bool {
-	if valves, ok := o[image]; ok {
+func (o Orient) Has(gate, valve Name) bool {
+	if valves, ok := o[gate]; ok {
 		if _, ok := valves[valve]; ok {
 			return true
 		}

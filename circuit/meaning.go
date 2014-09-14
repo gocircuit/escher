@@ -6,78 +6,85 @@
 
 package circuit
 
-func CopyMeaning(x Meaning) Meaning {
+type Reducible interface {
+	Copy() Reducible
+	Same(Reducible) bool
+}
+
+func Copy(x Meaning) Meaning {
 	switch t := x.(type) {
-	case Circuit:
+	case Reducible:
 		return t.Copy()
 	}
 	return x
 }
 
+func Same(x, y Meaning) bool {
+	xr, x_ := x.(Reducible)
+	yr, y_ := y.(Reducible)
+	if x_ && y_ {
+		return xr.Same(yr)
+	}
+	return x == y
+}
+
+// Circuit is reducible
+
 func (u Circuit) Copy() Circuit {
 	if u.circuit == nil {
 		return Circuit{}
 	}
-	return Circuit{u.circuit.Copy()}
+	return Circuit{u.circuit.copy()}
 }
 
-func (u *circuit) Copy() *circuit {
+func (u *circuit) copy() *circuit {
 	w := newCircuit()
-	for n, y := range u.image {
-		w.image[n] = CopyMeaning(y)
+	for n, m := range u.gate {
+		w.gate[n] = Copy(m)
 	}
-	for n, z := range u.real {
-		x := make(map[Name]Real)
-		w.real[n] = x
-		for a, b := range z {
+	for g, h := range u.flow {
+		x := make(map[Name]Vector)
+		w.flow[g] = x
+		for a, b := range h {
 			x[a] = b
 		}
 	}
 	return w
 }
 
-func SameMeaning(x, y Meaning) bool {
-	xc, x_ := x.(Circuit)
-	yc, y_ := y.(Circuit)
-	if x_ && y_ {
-		return Same(xc, yc)
-	}
-	return x == y
-}
-
-func Same(x, y Circuit) bool {
+func (x Circuit) Same(y Circuit) bool {
 	if x.circuit == nil && y.circuit == nil {
 		return true
 	}
 	if x.circuit == nil || y.circuit == nil {
 		return false
 	}
-	return x.circuit.Contains(y.circuit) && y.circuit.Contains(x.circuit)
+	return x.circuit.isWithin(y.circuit) && y.circuit.isWithin(x.circuit)
 }
 
-func (u *circuit) Contains(w *circuit) bool { // XXX: This implements is contained in
-	// image
-	for n, y := range u.image {
-		yy, ok := w.image[n]
+func (u *circuit) isWithin(w *circuit) bool {
+	// gate
+	for g, y := range u.gate {
+		yy, ok := w.gate[g]
 		if !ok {
 			return false
 		}
-		if !SameMeaning(y, yy) {
+		if !Same(y, yy) {
 			return false
 		}
 	}
-	// real
-	for n, z := range u.real {
-		zz, ok := w.real[n]
+	// flow
+	for g, h := range u.flow {
+		hh, ok := w.flow[g]
 		if !ok {
 			return false
 		}
-		for v, m := range z {
-			mm, ok := zz[v]
+		for a, b := range h {
+			bb, ok := hh[a]
 			if !ok {
 				return false
 			}
-			if !SameReal(m, mm) {
+			if !Same(b, bb) {
 				return false
 			}
 		}

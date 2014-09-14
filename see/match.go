@@ -42,7 +42,7 @@ func SeeReal(src *Src, nsugar int) (x *Real, carry []*Carry) {
 	}
 	//
 	Whitespace(t)
-	t.Form("=")
+	t.Match("=")
 	Whitespace(t)
 	//
 	g, p, v, ok = seeJoin(t)
@@ -92,7 +92,7 @@ func seeJoinAddress(src *Src) (peer, valve Name, ok bool) {
 	}()
 	t := src.Copy()
 	p := SeeAddress(t).(Address)
-	t.Form(string(ValveSelector))
+	t.Match(string(ValveSelector))
 	v := SeeAddress(t).(Address)
 	src.Become(t)
 	return p.Simple(), v.Simple(), true

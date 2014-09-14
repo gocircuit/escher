@@ -57,7 +57,7 @@ func SeeAddress(src *Src) interface{} {
 			return nil
 		}
 		x = append(x, id)
-		if !t.TryForm(".") {
+		if !t.TryMatch(".") {
 			break
 		}
 	}

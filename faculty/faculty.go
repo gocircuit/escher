@@ -31,7 +31,8 @@ func (fty Faculty) Genus() *FacultyGenus {
 }
 
 func (fty Faculty) Exclude(name string) (forgotten Meaning) {
-	return Circuit(fty).Exclude(name)
+	forgotten, _ = Circuit(fty).Exclude(name)
+	return
 }
 
 // Roam traverses the hierarchy, creating faculty nodes if necessary, returning the final two nodes.

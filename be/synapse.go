@@ -73,6 +73,6 @@ func (s *ReCognizer) ReCognize(value interface{}) {
 	if SameMeaning(s.memory, value) {
 		return
 	}
-	s.memory = CopyMeaning(value)
+	s.memory = Copy(value)
 	s.q(value)
 }

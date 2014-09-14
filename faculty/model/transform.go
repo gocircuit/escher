@@ -31,7 +31,7 @@ import (
 // x is the input circuit.
 // func transform(p, h, a, x Circuit) (y Circuit) {
 // 	y = h.Copy()
-// 	for n, v := range y.Images() {
+// 	for n, v := range y.Gates() {
 // 		switch t := 
 // 	}
 // }

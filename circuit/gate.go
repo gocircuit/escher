@@ -84,27 +84,27 @@ func (u Circuit) Abandon(name string) Circuit {
 // Low-level
 
 func (u *circuit) Include(name Name, meaning Meaning) (before Meaning, overwrite bool) {
-	before, overwrite = u.image[name]
-	u.image[name] = meaning
+	before, overwrite = u.gate[name]
+	u.gate[name] = meaning
 	return
 }
 
-func (u *circuit) Exclude(name Name) Meaning {
-	forgotten := u.image[name]
-	delete(u.image, name)
-	return forgotten
+func (u *circuit) Exclude(name Name) (meaning Meaning, forgotten bool) {
+	meaning, forgotten = u.gate[name]
+	delete(u.gate, name)
+	return
 }
 
-// Len returns the number of images.
+// Len returns the number of gates.
 func (u *circuit) Len() int {
-	return len(u.image)
+	return len(u.gate)
 }
 
 func (c *circuit) OptionAt(name Name) (Meaning, bool) {
-	v, ok := c.image[name]
+	v, ok := c.gate[name]
 	return v, ok
 }
 
 func (c *circuit) At(name Name) Meaning {
-	return c.image[name]
+	return c.gate[name]
 }

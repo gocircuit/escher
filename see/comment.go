@@ -37,7 +37,7 @@ func comment(src *Src) {
 		recover()
 	}()
 	t := src.Copy()
-	t.Form("//")
+	t.Match("//")
 	t.Consume(isNotNewline) // comment body
 	src.Become(t)
 }

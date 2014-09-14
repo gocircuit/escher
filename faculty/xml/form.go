@@ -6,28 +6,29 @@
 
 package svg
 
-// SVG language sentence types map to SVG shape source templates.
-var svgForm = map[string]string{
 
-	//	{
-	//		Width int
-	//		Height int
-	//		VBox {
-	//			XZero float
-	//			YZero float
-	//			XWidth float
-	//			YWidth float
-	//		}
-	//		Body string
-	//	}
-	//
-	"File": `<?xml version="1.0" standalone="no"?>` +
-		`<svg width="{{.Width}}px" height="{{.Height}}px" version="1.1" xmlns="http://www.w3.org/2000/svg" ` +
-		`xmlns:xlink="http://www.w3.org/1999/xlink" ` +
-		`viewBox="{{.VBox.XZero}} {{.VBox.YZero}} {{.VBox.XWidth}} {{.VBox.YWidth}}"> ` +
-		`<defs><style type="text/css">@import url(http://fonts.googleapis.com/css?family=Lato);</style></defs>` +
-		`{{.Body}}</svg>
-		`,
+//	{
+//		Width int
+//		Height int
+//		VBox {
+//			XZero float
+//			YZero float
+//			XWidth float
+//			YWidth float
+//		}
+//		Body string
+//	}
+//
+var file = `<?xml version="1.0" standalone="no"?>` +
+	`<svg width="{{.Width}}px" height="{{.Height}}px" version="1.1" xmlns="http://www.w3.org/2000/svg" ` +
+	`xmlns:xlink="http://www.w3.org/1999/xlink" ` +
+	`viewBox="{{.VBox.XZero}} {{.VBox.YZero}} {{.VBox.XWidth}} {{.VBox.YWidth}}"> ` +
+	`<defs><style type="text/css">@import url(http://fonts.googleapis.com/css?family=Lato);</style></defs>` +
+	`{{.Body}}</svg>
+	`,
+
+// SVG language sentence types map to SVG shape source templates.
+var shapes = map[string]string{
 
 	//	{
 	//		CX float; CY float; R float

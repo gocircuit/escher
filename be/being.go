@@ -59,7 +59,7 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	images := make(map[Name]Reflex)
 	var name Name
-	for y, m := range u.Images() {
+	for y, m := range u.Gates() {
 		if _, ok := y.(string); !ok {
 			continue // don't materialize non-string images
 		}

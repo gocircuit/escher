@@ -18,7 +18,7 @@ func SeeCircuit(src *Src) (u Circuit) {
 	}()
 	u = New()
 	t := src.Copy()
-	t.Form("{")
+	t.Match("{")
 	Space(t)
 	var i, j int
 	for {
@@ -38,7 +38,7 @@ func SeeCircuit(src *Src) (u Circuit) {
 					u.Include(c.Name, c.Meaning)
 				}
 			}
-			u.Form(*x)
+			u.Link(*x)
 		} else {
 			break
 		}
@@ -46,7 +46,7 @@ func SeeCircuit(src *Src) (u Circuit) {
 		t.Become(q)
 	}
 	Space(t)
-	t.Form("}")
+	t.Match("}")
 	src.Become(t)
 	return
 }

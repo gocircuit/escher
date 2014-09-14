@@ -17,19 +17,12 @@ type Printer interface {
 }
 
 func (u *circuit) super() (super Name, ok bool) {
-	for n, m := range u.Images() {
+	for g, m := range u.Gates() {
 		if _, ok := m.(Super); ok {
-			if super != nil {
-				//fmt.Printf("X=%v\n", u.Images())
-				panic("two supers")
-			}
-			super = n
+			return g, true
 		}
 	}
-	if super == nil {
-		return nil, false
-	}
-	return super, true
+	return nil, false
 }
 
 func (u *circuit) Print(prefix, indent string) string {
@@ -54,7 +47,7 @@ func (u *circuit) Print(prefix, indent string) string {
 	w.WriteString("{\n")
 	// letters
 	for _, n := range u.Letters() {
-		p := u.image[n]
+		p := u.gate[n]
 		if n == super {
 			continue
 		}
@@ -63,7 +56,7 @@ func (u *circuit) Print(prefix, indent string) string {
 	}
 	// numbers
 	for _, n := range u.Numbers() {
-		p := u.image[n]
+		p := u.gate[n]
 		if n == super {
 			continue
 		}
@@ -72,17 +65,18 @@ func (u *circuit) Print(prefix, indent string) string {
 	}
 	//
 	o := make(Orient)
-	for _, valves := range u.real {
-		for _, re := range valves {
-			if o.Has(re.Image[1], re.Valve[1]) {
+	for sg, valves := range u.flow {
+		for sv, t := range valves {
+			tg, tv := t.Reduce()
+			if o.Has(tg, tv) {
 				continue
 			}
-			o.Include(re.Image[0], re.Valve[0])
+			o.Include(sg, sv)
 			//
 			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
 				prefix, indent,  
-				re.Image[0], re.Valve[0],
-				re.Image[1], re.Valve[1],
+				sg, sv,
+				tg, tv,
 			)
 		}
 	}

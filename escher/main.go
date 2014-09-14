@@ -27,12 +27,12 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	_ "github.com/gocircuit/escher/faculty/path"
-	_ "github.com/gocircuit/escher/faculty/svg"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	// _ "github.com/gocircuit/escher/faculty/think"
 	// _ "github.com/gocircuit/escher/faculty/time"
 	// _ "github.com/gocircuit/escher/faculty/web/twitter"
+	// _ "github.com/gocircuit/escher/faculty/xml"
 )
 
 var (

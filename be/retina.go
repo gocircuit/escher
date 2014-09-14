@@ -14,8 +14,10 @@ import (
 
 const prefix = "Cognize"
 
-func MaterializeInterface(v interface{}) Reflex {
-	r := retina{makeGate(v)}
+func MaterializeInterface(v Gate) Reflex {
+	w := makeGate(v)
+	w.Interface().(Gate).Is() // Initialize
+	r := retina{w}
 	var valve []string
 	t := r.Value.Type()
 	for i := 0; i < t.NumMethod(); i++ {
@@ -46,7 +48,7 @@ func makeGate(like interface{}) Value {
 	t := TypeOf(like)
 	switch t.Kind() {
 	case Ptr: // Pointer types are allocated
-		return New(t.Elem())
+		return New(t.Elem()).Convert(t)
 	default: // Value-based types are used as is
 		return ValueOf(like)
 	}

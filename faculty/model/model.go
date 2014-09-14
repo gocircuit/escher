@@ -22,6 +22,7 @@ func init() {
 	ns.AddTerminal("ExploreOnStrobe", ExploreOnStrobe{})
 	ns.AddTerminal("ForkCharge", ForkCharge{})
 	ns.AddTerminal("ForkSequence", ForkSequence{})
+	ns.AddTerminal("Reservoir", Reservoir{})
 }
 
 // ExploreOnStrobe traverses the hierarchy of circuits induced by a given top-level/valveless circuit.

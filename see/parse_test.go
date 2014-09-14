@@ -42,7 +42,7 @@ var testReal = []string{
 
 func TestReal(t *testing.T) {
 	for _, q := range testReal {
-		x, _ := SeeReal(NewSrcString(q), 0)
+		x, _ := SeeLink(NewSrcString(q), 0)
 		if x == nil {
 			t.Fatalf("problem parsing: %s", q)
 			continue

@@ -9,6 +9,10 @@ package circuit
 // Vector ...
 type Vector Circuit
 
+func AssembleVector(gate, valve Name) Vector {
+	return Vector(New().Grow("Gate", gate).Grow("Valve", valve))
+}
+
 func (v Vector) Reduce() (gate, valve Name) {
 	return Circuit(v).At("Gate"), Circuit(v).At("Valve")
 }

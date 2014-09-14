@@ -31,14 +31,14 @@ func SeeCircuit(src *Src) (u Circuit) {
 			} else {
 				u.Include(pn, pm) // record the order of definition in the same namespace but with number keys
 			}
-		} else if x, carry := SeeReal(q, 2*i); x != nil { // parse matching
+		} else if x, carry := SeeLink(q, 2*i); x != nil { // parse matching
 			i++
 			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
 					u.Include(c.Name, c.Meaning)
 				}
 			}
-			u.Link(*x)
+			u.Link(x[0], x[1])
 		} else {
 			break
 		}

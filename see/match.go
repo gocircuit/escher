@@ -19,13 +19,13 @@ type Carry struct {
 
 const DefaultValve = "_"
 
-func SeeReal(src *Src, nsugar int) (x *Real, carry []*Carry) {
+func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
-	x, carry = &Real{}, make([]*Carry, 2)
+	x, carry = make([]Vector, 2), make([]*Carry, 2)
 	t := src.Copy()
 	Space(t)
 	//
@@ -36,9 +36,9 @@ func SeeReal(src *Src, nsugar int) (x *Real, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar)
 		carry[0] = &Carry{sugar, g}
-		x.Image[0], x.Valve[0] = sugar, DefaultValve
+		x[0] = AssembleVector(sugar, DefaultValve)
 	} else {
-		x.Image[0], x.Valve[0] = p, v
+		x[0] = AssembleVector(p, v)
 	}
 	//
 	Whitespace(t)
@@ -52,9 +52,9 @@ func SeeReal(src *Src, nsugar int) (x *Real, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar+1)
 		carry[1] = &Carry{sugar, g}
-		x.Image[1], x.Valve[1] = sugar, "_"
+		x[1] = AssembleVector(sugar, DefaultValve)
 	} else {
-		x.Image[1], x.Valve[1] = p, v
+		x[1] = AssembleVector(p, v)
 	}
 	//
 	if !Space(t) { // require newline at end

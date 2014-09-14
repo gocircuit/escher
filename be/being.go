@@ -77,10 +77,16 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	for v, _ := range u.Valves(name) {
 		super[v], gates[name][v] = NewSynapse()
 	}
-	for _, g := range u.Letters() {
-		for v, t := range u.Valves(g) {
+	for _, g_ := range u.Letters() {
+		g := g_
+		for v_, t := range u.Valves(g) {
+			v := v_
 			tg, tv := t.Reduce()
 			go Link(gates[g][v], gates[tg][tv])
+			// go func() {
+			// 	log.Printf("%s:%s -> %s:%s", g, v, tg, tv)
+			// 	Link(gates[g][v], gates[tg][tv])
+			// }()
 		}
 	}
 	return super

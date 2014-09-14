@@ -11,23 +11,23 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
-// OrbitStart
-type OrbitStart struct{}
+// ForkStart
+type ForkStart struct{}
 
-func (OrbitStart) Materialize() be.Reflex {
+func (ForkStart) Materialize() be.Reflex {
 	return basic.MaterializeUnion("_", "Circuit", "Vector")
 }
 
-// OrbitView
-type OrbitView struct{}
+// ForkView
+type ForkView struct{}
 
-func (OrbitView) Materialize() be.Reflex {
+func (ForkView) Materialize() be.Reflex {
 	return basic.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Series",)
 }
 
-// Vector_
-type Vector_ struct{}
+// ForkVector
+type ForkVector struct{}
 
-func (Vector_) Materialize() be.Reflex {
+func (ForkVector) Materialize() be.Reflex {
 	return basic.MaterializeUnion("_", "Gate", "Valve")
 }

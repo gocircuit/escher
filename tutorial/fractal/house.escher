@@ -5,11 +5,17 @@
 main {
 	lookup escher.Lookup
 	lookup:Address = "A"
-	lookup:Circuit = ??
+	lookup:Circuit = start:Circuit
 	
-	orbit model.Orbit
+	start model.ForkStart
+	start:Vector = {
+		Gate "B"
+		Valve "X"
+	}
 
-	orbit:View = Show
+	tour model.Hamiltonian
+	tour:Start = start:_
+	tour:View = Show
 }
 
 // Circuits A, B, C and D describe a complete system.

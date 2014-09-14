@@ -88,10 +88,12 @@ func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
 	switch t := p.(type) {
 	case Printer:
 		fmt.Fprintf(w, "%v %v\n", n, t.Print(prefix, indent))
+	case Address:
+		fmt.Fprintf(w, "%v %s\n", n, t)
 	case string:
 		fmt.Fprintf(w, "%v %q\n", n, t)
 	default:
-		fmt.Fprintf(w, "%v %v\n", n, t)
+		fmt.Fprintf(w, "%v (%T)\n", n, t)
 	}
 }
 

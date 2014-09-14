@@ -14,10 +14,10 @@ import (
 func init() {
 	ns := faculty.Root.Refine("model")
 	//
-	ns.AddTerminal("Orbit", Orbit{})
-	ns.AddTerminal("OrbitStart", OrbitStart{})
-	ns.AddTerminal("OrbitView", OrbitView{})
-	ns.AddTerminal("Vector", Vector_{})
+	ns.AddTerminal("Hamiltonian", Hamiltonian{})
+	ns.AddTerminal("ForkStart", ForkStart{})
+	ns.AddTerminal("ForkView", ForkView{})
+	ns.AddTerminal("ForkVector", ForkVector{})
 	//
 	ns.AddTerminal("Reservoir", Reservoir{})
 }

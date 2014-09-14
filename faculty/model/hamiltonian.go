@@ -17,7 +17,7 @@ import (
 )
 
 /*
-	Orbit traverses the hierarchy of circuits induced by a given top-level/valveless circuit.
+	Hamiltonian traverses the hierarchy of circuits induced by a given top-level/valveless circuit.
 
 	Start = {
 		Circuit Circuit
@@ -33,11 +33,13 @@ import (
 		Series string // Loop
 	}
 */
-type Orbit struct{}
+type Hamiltonian struct{}
 
-func CognizeView(*be.Eye, interface{}) {}
+func (Hamiltonian) Is() {}
 
-func CognizeStart(eye *be.Eye, dv interface{}) {
+func (Hamiltonian) CognizeView(*be.Eye, interface{}) {}
+
+func (Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 	var in = dv.(Circuit)
 	var start = view{
 		Circuit: in.CircuitAt("Circuit"),

@@ -81,6 +81,16 @@ func (u Circuit) Abandon(name string) Circuit {
 	return u
 }
 
+func (u Circuit) Rename(x, y Name) {
+	m, ok := u.circuit.Exclude(x)
+	if !ok {
+		panic("np")
+	}
+	if _, over := u.circuit.Include(y, m); over {
+		panic("over")
+	}
+}
+
 // Low-level
 
 func (u *circuit) Include(name Name, meaning Meaning) (before Meaning, overwrite bool) {

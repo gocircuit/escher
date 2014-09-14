@@ -40,11 +40,11 @@ func (r *Reservoir) CognizeX(eye *be.Eye, v interface{}) {
 	defer r.Unlock()
 	u := v.(Circuit)
 	switch u.StringAt("Command") {
-	case "Open":
+	case "Enter":
 		r.path.PushBack(r.focus)
 		r.focus = r.focus.CircuitAt(u.At("Gate"))
 
-	case "Close":
+	case "Return":
 		r.focus = r.path.Remove(r.path.Back()).(Circuit)
 
 	case "Include":
@@ -68,73 +68,4 @@ func (r *Reservoir) CognizeX(eye *be.Eye, v interface{}) {
 	case "Yield":
 		r.stop.Do(func() { eye.Show("Y", r.y) })
 	}
-}
-
-//
-type OpenCommand Circuit
-
-func NewOpenCommand(gate Name) OpenCommand {
-	return OpenCommand(New().Grow("Command", "Open").Grow("Gate", gate))
-}
-
-func (x OpenCommand) Reduce() (gate Name) {
-	return x.At("Gate")
-}
-
-//
-type CloseCommand Circuit
-
-func NewCloseCommand(gate Name) CloseCommand {
-	return CloseCommand(New().Grow("Command", "Close").Grow("Gate", gate))
-}
-
-//
-type IncludeCommand Circuit
-
-func NewIncludeCommand(gate Name, meaning Meaning) IncludeCommand {
-	return IncludeCommand(New().Grow("Command", "Include").Grow("Gate", gate).Grow("Meaning", meaning))
-}
-
-func (x IncludeCommand) Reduce() (gate Name, meaning Meaning) {
-	return x.At("Gate"), x.At("Meaning")
-}
-
-//
-type ExcludeCommand Circuit
-
-func NewExcludeCommand(gate Name) ExcludeCommand {
-	return ExcludeCommand(New().Grow("Command", "Exclude").Grow("Gate", gate))
-}
-
-func (x ExcludeCommand) Reduce() (gate Name) {
-	return x.At("Gate")
-}
-
-//
-type LinkCommand Circuit
-
-func NewLinkCommand(u, v Vector) LinkCommand {
-	return LinkCommand(New().Grow("Command", "Link").Grow("U", Circuit(u)).Grow("V", Circuit(v)))
-}
-
-func (x LinkCommand) Reduce() (u, v Vector) {
-	return Vector(Circuit(x).CircuitAt("U")), Vector(Circuit(x).CircuitAt("V"))
-}
-
-//
-type UnlinkCommand Circuit
-
-func NewUnlinkCommand(u, v Vector) UnlinkCommand {
-	return UnlinkCommand(New().Grow("Command", "Unlink").Grow("U", Circuit(u)).Grow("V", Circuit(v)))
-}
-
-func (x UnlinkCommand) Reduce() (u, v Vector) {
-	return Vector(Circuit(x).CircuitAt("U")), Vector(Circuit(x).CircuitAt("V"))
-}
-
-//
-type YieldCommand Circuit
-
-func NewYieldCommand() YieldCommand {
-	return YieldCommand(New().Grow("Command", "Yield"))
 }

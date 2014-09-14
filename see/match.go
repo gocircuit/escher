@@ -36,9 +36,9 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar)
 		carry[0] = &Carry{sugar, g}
-		x[0] = AssembleVector(sugar, DefaultValve)
+		x[0] = NewVector(sugar, DefaultValve)
 	} else {
-		x[0] = AssembleVector(p, v)
+		x[0] = NewVector(p, v)
 	}
 	//
 	Whitespace(t)
@@ -52,9 +52,9 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	if g != nil {
 		sugar := fmt.Sprintf("sugar#%d", nsugar+1)
 		carry[1] = &Carry{sugar, g}
-		x[1] = AssembleVector(sugar, DefaultValve)
+		x[1] = NewVector(sugar, DefaultValve)
 	} else {
-		x[1] = AssembleVector(p, v)
+		x[1] = NewVector(p, v)
 	}
 	//
 	if !Space(t) { // require newline at end

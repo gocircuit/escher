@@ -2,25 +2,14 @@
 // Run:
 //	escher -x tutorial/fractal -y acid/escher
 //
-main2 {
+main {
 	lookup escher.Lookup
 	lookup:Address = "A"
-	lookup:Circuit = Show
-}
+	lookup:Circuit = ??
+	
+	orbit model.Orbit
 
-main {
-	explore model.ExploreAddress
-	explore:When = 0
-	explore:Address = "A"
-	explore:Image = "b"
-	explore:Valve = "X"
-
-	sequence model.ForkSequence
-	explore:Sequence = sequence:_
-
-	sequence:When = Ignore
-	sequence:Index = Ignore
-	sequence:Charge = Show
+	orbit:View = Show
 }
 
 // Circuits A, B, C and D describe a complete system.

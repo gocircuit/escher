@@ -69,7 +69,7 @@ func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 	return "", false
 }
 
-// 
+// Series-application methods
 
 func (u Circuit) Grow(name string, meaning Meaning) Circuit {
 	u.circuit.Include(name, meaning)
@@ -81,7 +81,7 @@ func (u Circuit) Abandon(name string) Circuit {
 	return u
 }
 
-func (u Circuit) Rename(x, y Name) {
+func (u Circuit) Rename(x, y Name) Circuit {
 	m, ok := u.circuit.Exclude(x)
 	if !ok {
 		panic("np")
@@ -89,6 +89,7 @@ func (u Circuit) Rename(x, y Name) {
 	if _, over := u.circuit.Include(y, m); over {
 		panic("over")
 	}
+	return u
 }
 
 // Low-level

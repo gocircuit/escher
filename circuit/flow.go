@@ -9,12 +9,20 @@ package circuit
 // Vector ...
 type Vector Circuit
 
-func AssembleVector(gate, valve Name) Vector {
+func NewVector(gate, valve Name) Vector {
 	return Vector(New().Grow("Gate", gate).Grow("Valve", valve))
 }
 
 func (v Vector) Reduce() (gate, valve Name) {
 	return Circuit(v).At("Gate"), Circuit(v).At("Valve")
+}
+
+func (v Vector) Gate() Name {
+	return Circuit(v).At("Gate")
+}
+
+func (v Vector) Valve() Name {
+	return Circuit(v).At("Valve")
 }
 
 func (v Vector) Copy() Reducible {
@@ -28,20 +36,6 @@ func (v Vector) Same(x Reducible) bool {
 	}
 	return Same(Circuit(v), Circuit(w))
 }
-
-// Flow ...
-// type Flow Circuit
-
-// func (f Flow) Reduce() (from, to Vector) {
-// 	from = Vector(Circuit(f).CircuitAt("From"))
-// 	to = Vector(Circuit(f).CircuitAt("To"))
-// 	return
-// }
-
-// func (f Flow) Reverse() Flow {
-// 	from, to := f.Reduce()
-// 	return Flow(New().Grow("From", Circuit(to)).Grow("To", Circuit(from)))
-// }
 
 //
 func (c *circuit) Link(x, y Vector) {
@@ -85,10 +79,6 @@ func (u *circuit) Valves(gate Name) map[Name]Vector {
 	return u.flow[gate]
 }
 
-func (c *circuit) Follow(g, v Name) (h, u Name) {
-	w, ok := c.Valves(g)[v]
-	if !ok {
-		return nil, nil
-	}
-	return w.Reduce()
+func (c *circuit) Follow(v Vector) Vector {
+	return c.flow[v.Gate()][v.Valve()]
 }

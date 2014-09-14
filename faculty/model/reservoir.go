@@ -7,22 +7,23 @@
 package model
 
 import (
+	"container/list"
 	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
 )
 
 type Reservoir struct{
 	sync.Mutex
 	stop sync.Once
-	y, f Circuit // output and current focus
+	y, focus Circuit // output and current focus
+	path list.List
 }
 
 func (r *Reservoir) Is() {
 	r.y = New()
-	r.f = r.y
+	r.focus = r.y
 }
 
 func (r *Reservoir) CognizeY(eye *be.Eye, v interface{}) {}
@@ -30,7 +31,7 @@ func (r *Reservoir) CognizeY(eye *be.Eye, v interface{}) {}
 /*
 	{
 		Command string
-		Name string
+		Gate string
 		Meaning *
 	}
 */
@@ -38,51 +39,33 @@ func (r *Reservoir) CognizeX(eye *be.Eye, v interface{}) {
 	r.Lock()
 	defer r.Unlock()
 	u := v.(Circuit)
-	switch u.StringAt("Command") {
+	switch u.StringAt("Change") {
 	case "Open":
-		r.f = r.f.CircuitAt(u.At("Name"))
+		r.path.PushBack(r.focus)
+		r.focus = r.focus.CircuitAt(u.At("Gate"))
 
 	case "Close":
-		r.f = r.f.CircuitAt(backtrack{})
+		r.focus = r.path.Remove(r.path.Back()).(Circuit)
 
 	case "Include":
-		v := u.At("Meaning")
-		switch t := v.(type) {
-		case Circuit:
-			if _, over := t.Include(backtrack{}, r.f); over {
-				panic("circuit already part of another reservoir")
-			}
-		}
-		if _, over := r.f.Include(u.At("Name"), v); over {
+		if _, over := r.focus.Include(u.At("Gate"), u.At("Meaning")); over {
 			panic("over including")
 		}
 
 	case "Exclude":
-		if _, forgotten := r.f.Exclude(u.At("Name")); !forgotten {
+		if _, forgotten := r.focus.Exclude(u.At("Gate")); !forgotten {
 			panic("nothing to exclude")
 		}
 
 	case "Link":
-		a, b := u.CircuitAt(0), u.CircuitAt(1)
-		r.f.Form(
-			Real{
-				Image: [2]Name{a.At("Image"), b.At("Image")},
-				Valve: [2]Name{a.At("Valve"), b.At("Valve")},
-			},
-		)
+		a, b := Vector(u.CircuitAt(0)), Vector(u.CircuitAt(1))
+		r.focus.Link(a, b)
 
 	case "Unlink":
-		??
+		a, b := Vector(u.CircuitAt(0)), Vector(u.CircuitAt(1))
+		r.focus.Unlink(a, b)
 
-	case "Stop":
-		r.stop.Do(func() { r.emit(eye) })
+	case "Yield":
+		r.stop.Do(func() { eye.Show("Y", r.y) })
 	}
 }
-
-func (r *Reservoir) emit(eye *be.Eye) {
-	// remove all backtracks
-	??
-	eye.Show("Y", r.y)
-}
-
-type backtrack struct{}

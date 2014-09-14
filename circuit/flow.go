@@ -30,18 +30,18 @@ func (v Vector) Same(x Reducible) bool {
 }
 
 // Flow ...
-type Flow Circuit
+// type Flow Circuit
 
-func (f Flow) Reduce() (from, to Vector) {
-	from = Vector(Circuit(f).CircuitAt("From"))
-	to = Vector(Circuit(f).CircuitAt("To"))
-	return
-}
+// func (f Flow) Reduce() (from, to Vector) {
+// 	from = Vector(Circuit(f).CircuitAt("From"))
+// 	to = Vector(Circuit(f).CircuitAt("To"))
+// 	return
+// }
 
-func (f Flow) Reverse() Flow {
-	from, to := f.Reduce()
-	return Flow(New().Grow("From", Circuit(to)).Grow("To", Circuit(from)))
-}
+// func (f Flow) Reverse() Flow {
+// 	from, to := f.Reduce()
+// 	return Flow(New().Grow("From", Circuit(to)).Grow("To", Circuit(from)))
+// }
 
 //
 func (c *circuit) Link(x, y Vector) {

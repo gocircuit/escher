@@ -57,16 +57,14 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 }
 
 func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
-	images := make(map[Name]Reflex)
-	var name Name
-	for y, m := range u.Gates() {
-		if _, ok := y.(string); !ok {
-			continue // don't materialize non-string images
-		}
+	gates := make(map[Name]Reflex)
+	var name Name // name of circuit u
+	for _, g := range u.Letters() {
+		m := u.At(g)
 		if _, ok := m.(Super); ok {
-			name = y
+			name = g
 		} else {
-			images[y] = b.Materialize(
+			gates[g] = b.Materialize(
 				&Matter{Design: u},
 				m, false,
 			)
@@ -75,20 +73,14 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	if name == nil {
 		panic("no super")
 	}
-	super, images[name] = make(Reflex), make(Reflex)
+	super, gates[name] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(name) {
-		super[v], images[name][v] = NewSynapse()
+		super[v], gates[name][v] = NewSynapse()
 	}
-	for _, vx := range u.Reals() {
-		for _, x_ := range vx {
-			x := x_
-			// go func() {
-			// 	log.Printf("\t%s:%s <==> %s:%s, %v :: %v", 
-			// 		x.Image[0], x.Valve[0], x.Image[1], x.Valve[1],
-			// 		images[x.Image[0]], images[x.Image[1]])
-			// 	Link(images[x.Image[0]][x.Valve[0]], images[x.Image[1]][x.Valve[1]])
-			// }()
-			go Link(images[x.Image[0]][x.Valve[0]], images[x.Image[1]][x.Valve[1]])
+	for _, g := range u.Letters() {
+		for v, t := range u.Valves(g) {
+			tg, tv := t.Reduce()
+			go Link(gates[g][v], gates[tg][tv])
 		}
 	}
 	return super

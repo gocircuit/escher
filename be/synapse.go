@@ -70,7 +70,7 @@ type ReCognizer struct {
 func (s *ReCognizer) ReCognize(value interface{}) {
 	s.Lock()
 	defer s.Unlock()
-	if SameMeaning(s.memory, value) {
+	if Same(s.memory, value) {
 		return
 	}
 	s.memory = Copy(value)

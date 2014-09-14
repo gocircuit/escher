@@ -49,13 +49,13 @@ type writerTo struct{
 func (x *writerTo) cognize(eye *be.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
-		go Copy(x.WriteCloser, t, false, true)
+		go CopyClose(x.WriteCloser, t, false, true)
 	default:
 		log.Printf("unexpected type at writer origin (%T)", t)
 	}
 }
 
-func Copy(w io.Writer, r io.Reader, closeWriter, closeReader bool) {
+func CopyClose(w io.Writer, r io.Reader, closeWriter, closeReader bool) {
 	_, err := io.Copy(w, r)
 	if err != nil {
 		log.Printf("draining problem (%s)", err)
@@ -91,7 +91,7 @@ type readFrom struct{
 func (x *readFrom) cognize(eye *be.Eye, valve string, value interface{}) {
 	switch t := value.(type) {
 	case io.Writer:
-		go Copy(t, x.ReadCloser, true, false)
+		go CopyClose(t, x.ReadCloser, true, false)
 	default:
 		log.Printf("unexpected type at reader origin (%T)", t)
 	}

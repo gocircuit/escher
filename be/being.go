@@ -84,7 +84,7 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 			tg, tv := t.Reduce()
 			go Link(gates[g][v], gates[tg][tv])
 			// go func() {
-			// 	log.Printf("%s:%s -> %s:%s", g, v, tg, tv)
+			// 	log.Printf("%s:%s -> %s:%s | %v %v", g, v, tg, tv, gates[g][v], gates[tg][tv])
 			// 	Link(gates[g][v], gates[tg][tv])
 			// }()
 		}

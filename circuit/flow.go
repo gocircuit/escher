@@ -6,6 +6,10 @@
 
 package circuit
 
+import (
+	"fmt"
+)
+
 // Vector ...
 type Vector Circuit
 
@@ -26,7 +30,12 @@ func (v Vector) Valve() Name {
 }
 
 func (v Vector) Copy() Reducible {
-	return Vector(Circuit(v).Copy())
+	return Vector(Circuit(v).Clone())
+}
+
+func (v Vector) String() string {
+	g, u := v.Reduce()
+	return fmt.Sprintf("%v:%v", g, u)
 }
 
 func (v Vector) Same(x Reducible) bool {

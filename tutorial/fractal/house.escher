@@ -9,7 +9,7 @@ main {
 	
 	start model.ForkStart
 	start:Vector = {
-		Gate "B"
+		Gate "b"
 		Valve "X"
 	}
 

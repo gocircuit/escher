@@ -7,6 +7,7 @@
 package be
 
 import (
+	// "log"
 	. "reflect"
 )
 
@@ -23,7 +24,7 @@ func MaterializeInterface(v Gate) Reflex {
 	for i := 0; i < t.NumMethod(); i++ {
 		n := t.Method(i).Name
 		if len(n) >= len(prefix) && n[:len(prefix)] == prefix {
-			valve = append(valve, n)
+			valve = append(valve, n[len(prefix):])
 		}
 	}
 	x, _ := NewEyeCognizer(r.Cognize, valve...)

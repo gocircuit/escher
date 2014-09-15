@@ -30,11 +30,15 @@ func Same(x, y Meaning) bool {
 
 // Circuit is reducible
 
-func (u Circuit) Copy() Circuit {
+func (u Circuit) Copy() Reducible {
 	if u.circuit == nil {
 		return Circuit{}
 	}
 	return Circuit{u.circuit.copy()}
+}
+
+func (u Circuit) Clone() Circuit {
+	return u.Copy().(Circuit)
 }
 
 func (u *circuit) copy() *circuit {
@@ -52,7 +56,11 @@ func (u *circuit) copy() *circuit {
 	return w
 }
 
-func (x Circuit) Same(y Circuit) bool {
+func (x Circuit) Same(r Reducible) bool {
+	y, ok := r.(Circuit)
+	if !ok {
+		return false
+	}
 	if x.circuit == nil && y.circuit == nil {
 		return true
 	}

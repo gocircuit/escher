@@ -61,8 +61,11 @@ func (Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 			memory.PushFront(v) // remember
 			//
 			_, lookup := faculty.Root.LookupAddress(t.String())
+			if lookup == nil {
+				log.Fatalf("No circuit with address %s", t.String())
+			}
 			v.Circuit = lookup.(Circuit) // transition to next circuit
-			v.Vector = v.Circuit.Follow(v.Vector)
+			v.Vector = v.Circuit.Follow(NewVector(v.Circuit.Super(), v.Vector.Valve()))
 			v.Depth++
 
 		case Super: // Up
@@ -78,13 +81,14 @@ func (Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 			v.Depth--
 
 		default:
-			panic("unknown gate meaning")
+			log.Fatalf("unknown gate meaning %T", t)
 		}
 		v.Index++
 		//
+		log.Printf("%s vs %s = %v", v.Vector, start.Vector, Same(v.Vector, start.Vector))
 		if Same(v.Circuit, start.Circuit) && Same(v.Vector, start.Vector) {
-			eye.Show("View", v.Circuitize().Grow("Series", "Loop")) // yield current view
-			break
+			eye.Show("View", v.Circuitize().Grow("Path", "Loop")) // yield current view
+			return
 		}
 	}
 }

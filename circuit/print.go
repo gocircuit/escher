@@ -26,10 +26,17 @@ func (u *circuit) super() (super Name, ok bool) {
 }
 
 func (u *circuit) Print(prefix, indent string) string {
+	if u == nil {
+		return "<nil>"
+	}
 	var w bytes.Buffer
+
+	w.WriteString("{")
+
+	// super
 	super, ok := u.super()
-	if ok { // if super is present
-		fmt.Fprintf(&w, "%v", super)
+	if ok {
+		fmt.Fprintf(&w, " // %v", super)
 		valves := u.Valves(super)
 		w.WriteString("(")
 		if len(valves) > 0 {
@@ -44,7 +51,8 @@ func (u *circuit) Print(prefix, indent string) string {
 		}
 		w.WriteString(") ")
 	}
-	w.WriteString("{\n")
+	w.WriteString("\n")
+
 	// letters
 	for _, n := range u.Letters() {
 		p := u.gate[n]
@@ -92,6 +100,8 @@ func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
 		fmt.Fprintf(w, "%v %s\n", n, t)
 	case string:
 		fmt.Fprintf(w, "%v %q\n", n, t)
+	case int, float64, complex128:
+		fmt.Fprintf(w, "%v %v\n", n, t)
 	default:
 		fmt.Fprintf(w, "%v (%T)\n", n, t)
 	}

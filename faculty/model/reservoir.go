@@ -28,13 +28,6 @@ func (r *Reservoir) Is() {
 
 func (r *Reservoir) CognizeY(eye *be.Eye, v interface{}) {}
 
-/*
-	{
-		Command string
-		Gate string
-		Meaning *
-	}
-*/
 func (r *Reservoir) CognizeX(eye *be.Eye, v interface{}) {
 	r.Lock()
 	defer r.Unlock()

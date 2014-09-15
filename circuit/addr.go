@@ -28,7 +28,7 @@ func (a Address) Strings() []string {
 	return strings.Split(string(a), ".")
 }
 
-func (a Address) Names() (walk []Name) {
+func (a Address) Path() (walk []Name) {
 	for _, w := range strings.Split(string(a), ".") {
 		walk = append(walk, w)
 	}

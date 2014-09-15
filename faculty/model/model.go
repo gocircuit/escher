@@ -15,6 +15,7 @@ func init() {
 	ns := faculty.Root.Refine("model")
 	//
 	ns.AddTerminal("Hamiltonian", Hamiltonian{})
+	// ns.AddTerminal("Eulerian", Eulerian{})
 	ns.AddTerminal("ForkStart", ForkStart{})
 	ns.AddTerminal("ForkView", ForkView{})
 	ns.AddTerminal("ForkVector", ForkVector{})

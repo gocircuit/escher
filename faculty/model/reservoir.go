@@ -21,7 +21,7 @@ type Reservoir struct{
 	path list.List
 }
 
-func (r *Reservoir) Is() {
+func (r *Reservoir) Spark() {
 	r.y = New()
 	r.focus = r.y
 }

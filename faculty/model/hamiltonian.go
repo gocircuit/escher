@@ -30,12 +30,12 @@ import (
 		Index int // Index of this circuit within exploration sequence, 0-based
 		Depth int
 		Dir string
-		Series string // Loop
+		Path string // Loop
 	}
 */
 type Hamiltonian struct{}
 
-func (Hamiltonian) Is() {}
+func (Hamiltonian) Spark() {}
 
 func (Hamiltonian) CognizeView(*be.Eye, interface{}) {}
 
@@ -85,7 +85,7 @@ func (Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 		}
 		v.Index++
 		//
-		log.Printf("%s vs %s = %v", v.Vector, start.Vector, Same(v.Vector, start.Vector))
+		// log.Printf("%s vs %s = %v", v.Vector, start.Vector, Same(v.Vector, start.Vector))
 		if Same(v.Circuit, start.Circuit) && Same(v.Vector, start.Vector) {
 			eye.Show("View", v.Circuitize().Grow("Path", "Loop")) // yield current view
 			return

@@ -17,7 +17,7 @@ const prefix = "Cognize"
 
 func MaterializeInterface(v Gate) Reflex {
 	w := makeGate(v)
-	w.Interface().(Gate).Is() // Initialize
+	w.Interface().(Gate).Spark() // Initialize
 	r := retina{w}
 	var valve []string
 	t := r.Value.Type()

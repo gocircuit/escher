@@ -23,6 +23,13 @@ func NewMemory() *Memory {
 	return &Memory{__: newMemory()}
 }
 
+// View
+func (m *Memory) View() Circuit {
+	m.Lock()
+	defer m.Unlock()
+	return m.__.View()
+}
+
 // Restart
 func (m *Memory) Restart() Circuit {
 	m.Lock()
@@ -31,7 +38,7 @@ func (m *Memory) Restart() Circuit {
 }
 
 // Step
-func (m *Memory) Step(gate Name) Circuit {
+func (m *Memory) Step(gate Name) (Circuit, Address) {
 	m.Lock()
 	defer m.Unlock()
 	return m.__.Step(gate)

@@ -71,9 +71,22 @@ func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 
 // Series-application methods
 
-func (u Circuit) Grow(name string, meaning Meaning) Circuit {
+func (u Circuit) ReGrow(name string, meaning Meaning) Circuit {
 	u.circuit.Include(name, meaning)
 	return u
+}
+
+func (u Circuit) Grow(name string, meaning Meaning) Circuit {
+	if _, over := u.circuit.Include(name, meaning); over {
+		panic("over writing")
+	}
+	return u
+}
+
+func (u Circuit) Refine(name string) Circuit {
+	r := New()
+	u.Grow(name, r)
+	return r
 }
 
 func (u Circuit) Abandon(name string) Circuit {

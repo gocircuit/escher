@@ -26,6 +26,11 @@ func newMemory() *memory {
 	}
 }
 
+// View
+func (m *memory) View() Circuit {
+	return m.seeing
+}
+
 // Restart
 func (m *memory) Restart() Circuit {
 	m.seeing = m.root
@@ -34,12 +39,8 @@ func (m *memory) Restart() Circuit {
 
 // Step
 func (m *memory) Step(gate Name) (Circuit, Address) {
-	??
-	a, ok := m.seeing.At(gate).(Address)
-	if !ok {
-		panic("cannot enter non-addresses")
-	}
-	return m.Jump(a.Path()...)
+	a := m.seeing.At(gate).(Address)
+	return m.Jump(a.Path()...), a
 }
 
 // Lookup
@@ -61,11 +62,6 @@ func (m *memory) Jump(gate ...Name) Circuit {
 }
 
 // Plumbing
-
-func (m *memory) Refine(n Name) Circuit {
-	m.Include(n, New())
-	return m.seeing
-}
 
 // Include
 func (m *memory) Include(n Name, x Meaning) Circuit {

@@ -14,6 +14,7 @@ import (
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/fs"
 
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/acid"
@@ -30,7 +31,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	// _ "github.com/gocircuit/escher/faculty/think"
-	// _ "github.com/gocircuit/escher/faculty/time"
+	_ "github.com/gocircuit/escher/faculty/time"
 	// _ "github.com/gocircuit/escher/faculty/web/twitter"
 	// _ "github.com/gocircuit/escher/faculty/xml"
 )
@@ -61,7 +62,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
 			walk = nil
 		}
-		_, cd := compile(*flagX, *flagY, *flagZ).Lookup(walk...)
+		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk).Path()...)
 		switch t := cd.(type) {
 		case Circuit:
 			println("drawing not supported")
@@ -75,7 +76,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
 			walk = nil
 		}
-		_, cd := compile(*flagX, *flagY, *flagZ).Lookup(walk...)
+		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk).Path()...)
 		switch t := cd.(type) {
 		case Circuit:
 			fmt.Println(t.Print("", "\t"))
@@ -85,21 +86,21 @@ func main() {
 		}
 
 	default:
-		b := &Being{compile(*flagX, *flagY, *flagZ)}
-		b.MaterializeAddress("main")
+		b := NewBeing(compile(*flagX, *flagY, *flagZ))
+		b.MaterializeAddress(NewAddressStrings([]string{"main"}))
 		select {} // wait forever
 	}
 }
 
-func compile(x, y, z string) Faculty {
+func compile(x, y, z string) Circuit {
 	if x != "" {
-		Root.LoadDirectoryOrFile("X", x)
+		Load(Root, "X", x)
 	}
 	if y != "" {
-		Root.LoadDirectoryOrFile("Y", y)
+		Load(Root, "Y", y)
 	}
 	if z != "" {
-		Root.LoadDirectoryOrFile("Z", z)
+		Load(Root, "Z", z)
 	}
 	return Root
 }

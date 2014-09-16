@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("Strobe", Strobe{})
+	faculty.Root.Grow("Strobe", Strobe{})
 }
 
 // Strobe ...

@@ -10,14 +10,13 @@ import (
 	"time"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/plumb"
 	"github.com/gocircuit/escher/be"
 )
 
 func init() {
 	ns := faculty.Root.Refine("time")
-	ns.AddTerminal("Ticker", Ticker{})
-	ns.AddTerminal("Delay", Delay{})
+	ns.Grow("Ticker", Ticker{})
+	ns.Grow("Delay", Delay{})
 }
 
 // Delay…

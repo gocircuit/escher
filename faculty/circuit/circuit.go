@@ -27,15 +27,15 @@ func Init(discover string) {
 	rand.Seed(time.Now().UnixNano())
 
 	ns := faculty.Root.Refine("circuit")
-	ns.AddTerminal("Process", Process{})
-	ns.AddTerminal("Docker", Docker{})
-	// ns.AddTerminal("Leaving", Leaving{})
-	// ns.AddTerminal("Joining", Joining{})
-	// ns.AddTerminal("Channel", Chan{})
+	ns.Grow("Process", Process{})
+	ns.Grow("Docker", Docker{})
+	// ns.Grow("Leaving", Leaving{})
+	// ns.Grow("Joining", Joining{})
+	// ns.Grow("Channel", Chan{})
 
-	ns.AddTerminal("ForkSpawn", ForkSpawn{})
-	ns.AddTerminal("ForkExit", ForkExit{})
-	ns.AddTerminal("ForkIO", ForkIO{})
+	ns.Grow("ForkSpawn", ForkSpawn{})
+	ns.Grow("ForkExit", ForkExit{})
+	ns.Grow("ForkIO", ForkIO{})
 }
 
 // Program…

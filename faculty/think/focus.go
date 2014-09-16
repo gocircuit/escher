@@ -20,15 +20,15 @@ import (
 func init() {
 	ns := faculty.Root.Refine("think")
 	//
-	ns.AddTerminal("Associate", Associate{})
-	ns.AddTerminal("Remember", Remember{})
-	ns.AddTerminal("Choose", Choose{})
-	ns.AddTerminal("Focus", Focus{})
+	ns.Grow("Associate", Associate{})
+	ns.Grow("Remember", Remember{})
+	ns.Grow("Choose", Choose{})
+	ns.Grow("Focus", Focus{})
 	//
-	ns.AddTerminal("A", Associate{})
-	ns.AddTerminal("R", Remember{})
-	ns.AddTerminal("C", Choose{})
-	ns.AddTerminal("F", Focus{})
+	ns.Grow("A", Associate{})
+	ns.Grow("R", Remember{})
+	ns.Grow("C", Choose{})
+	ns.Grow("F", Focus{})
 }
 
 // Focus

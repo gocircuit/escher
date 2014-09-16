@@ -37,18 +37,18 @@ func (m *Memory) Restart() Circuit {
 	return m.__.Restart()
 }
 
+// Lookup
+func (m *Memory) Lookup(name ...Name) Meaning {
+	m.Lock()
+	defer m.Unlock()
+	return m.__.Lookup(name)
+}
+
 // Step
 func (m *Memory) Step(gate Name) (Circuit, Address) {
 	m.Lock()
 	defer m.Unlock()
 	return m.__.Step(gate)
-}
-
-// Lookup
-func (m *Memory) Lookup(gate ...Name) Meaning {
-	m.Lock()
-	defer m.Unlock()
-	return m.__.Lookup(gate...)
 }
 
 // Jump

@@ -24,7 +24,7 @@ func MaterializeFix(fwd string, fix ...string) be.Reflex {
 			if dvalve == fwd { // conjunction updated
 				continue // ignore upstream updates
 			} else { // field updated
-				conj.Abandon(dvalve).Grow(dvalve, dvalue)
+				conj.ReGrow(dvalve, dvalue)
 				if conj.Len() == len(fix) {
 					eye.Show(fwd, conj)
 					eye.Drain() // As soon as the conjunction is output, this gate is done.

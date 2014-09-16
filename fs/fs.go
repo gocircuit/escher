@@ -4,7 +4,8 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package memory
+// Package fs provides routines for reading in Escher circuits from directory structures.
+package fs
 
 import (
 	// "fmt"

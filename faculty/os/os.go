@@ -35,19 +35,19 @@ func Init(a string) {
 		log.Printf("Argument %s=%s", nv[0], v)
 	}
 	ns := faculty.Root.Refine("os")
-	ns.AddTerminal("Arg", Arg{})
-	ns.AddTerminal("Env", Env{})
-	ns.AddTerminal("Exit", Exit{})
-	ns.AddTerminal("Fatal", Fatal{})
-	ns.AddTerminal("Stdin", Stdin{})
-	ns.AddTerminal("Stdout", Stdout{})
-	ns.AddTerminal("Stderr", Stderr{})
+	ns.Grow("Arg", Arg{})
+	ns.Grow("Env", Env{})
+	ns.Grow("Exit", Exit{})
+	ns.Grow("Fatal", Fatal{})
+	ns.Grow("Stdin", Stdin{})
+	ns.Grow("Stdout", Stdout{})
+	ns.Grow("Stderr", Stderr{})
 	//
-	ns.AddTerminal("LookPath", LookPath{})
-	ns.AddTerminal("Process", Process{})
-	ns.AddTerminal("ForkCommand", ForkCommand{})
-	ns.AddTerminal("ForkExit", ForkExit{})
-	ns.AddTerminal("ForkIO", ForkIO{})
+	ns.Grow("LookPath", LookPath{})
+	ns.Grow("Process", Process{})
+	ns.Grow("ForkCommand", ForkCommand{})
+	ns.Grow("ForkExit", ForkExit{})
+	ns.Grow("ForkIO", ForkIO{})
 	//
 }
 

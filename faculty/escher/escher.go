@@ -11,13 +11,14 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/fs"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
 	ns := faculty.Root.Refine("escher")
-	ns.AddTerminal("CircuitSourceDir", CircuitSourceDir{})
-	ns.AddTerminal("Lookup", Lookup{})
+	ns.Grow("CircuitSourceDir", CircuitSourceDir{})
+	ns.Grow("Lookup", Lookup{})
 }
 
 type Lookup struct{}
@@ -28,7 +29,7 @@ func (Lookup) Materialize() be.Reflex {
 			if dvalve != "Address" {
 				return
 			}
-			_, r := faculty.Root.LookupAddress(dvalue.(string))
+			r := faculty.Root.Lookup(dvalue.(string))
 			eye.Show("Circuit", r.(Circuit))
 		}, 
 		"Address", "Circuit",
@@ -40,5 +41,5 @@ func (Lookup) Materialize() be.Reflex {
 type CircuitSourceDir struct{}
 
 func (CircuitSourceDir) Materialize(matter *be.Matter) be.Reflex {
-	return be.NewNounReflex(matter.Design.At(faculty.Genus_{}).(*faculty.CircuitGenus).Dir)
+	return be.NewNounReflex(matter.Design.At(fs.Source{}).(Circuit).StringAt("Dir"))
 }

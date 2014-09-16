@@ -20,7 +20,7 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("handbook")
-	ns.AddTerminal("Join", Join{}) ??
+	ns.Grow("Join", Join{}) ??
 }
 
 // Join

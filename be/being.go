@@ -9,12 +9,15 @@ package be
 import (
 	"log"
 
-	. "github.com/gocircuit/escher/memory"
 	. "github.com/gocircuit/escher/circuit"
 )
 
 type Being struct {
-	mem *Memory
+	mem Circuit
+}
+
+func NewBeing(m Circuit) *Being {
+	return &Being{m}
 }
 
 func (b *Being) MaterializeAddress(addr Address) Reflex {

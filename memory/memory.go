@@ -12,6 +12,8 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
+// I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
+
 // memory is a hierarchical namespace of circuits.
 type memory struct{
 	root Circuit
@@ -45,19 +47,12 @@ func (m *memory) Step(gate Name) (Circuit, Address) {
 
 // Lookup
 func (m *memory) Lookup(gate ...Name) Meaning {
-	var x Circuit = m.root
-	for i, g := range gate {
-		if i+1 == len(gate) {
-			return x.At(g)
-		}
-		x = x.CircuitAt(g)
-	}
-	return x
+	return m.root.Lookup(gate...)
 }
 
 // Jump
 func (m *memory) Jump(gate ...Name) Circuit {
-	m.seeing = m.Lookup(gate...).(Circuit)
+	m.seeing = m.root.Lookup(gate...).(Circuit)
 	return m.seeing
 }
 

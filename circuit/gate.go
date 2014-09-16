@@ -105,6 +105,17 @@ func (u Circuit) Rename(x, y Name) Circuit {
 	return u
 }
 
+func (u Circuit) Lookup(gate ...Name) Meaning {
+	x := u
+	for i, g := range gate {
+		if i+1 == len(gate) {
+			return x.At(g)
+		}
+		x = x.CircuitAt(g)
+	}
+	return x
+}
+
 // Low-level
 
 func (u *circuit) Include(name Name, meaning Meaning) (before Meaning, overwrite bool) {

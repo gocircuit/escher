@@ -17,8 +17,8 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("io")
-	ns.AddTerminal("Clunk", Clunk{})
+	ns := faculty.Root.Refine("io") // XXX: Root is not protected from races.
+	ns.Grow("Clunk", Clunk{})
 }
 
 // Clunk…

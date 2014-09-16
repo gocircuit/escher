@@ -14,11 +14,11 @@ import (
 func init() {
 	ns := faculty.Root.Refine("model")
 	//
-	ns.AddTerminal("Hamiltonian", Hamiltonian{})
-	ns.AddTerminal("Eulerian", Eulerian{})
-	ns.AddTerminal("ForkStart", ForkStart{})
-	ns.AddTerminal("ForkView", ForkView{})
-	ns.AddTerminal("ForkVector", ForkVector{})
+	ns.Grow("Hamiltonian", Hamiltonian{})
+	ns.Grow("Eulerian", Eulerian{})
+	ns.Grow("ForkStart", ForkStart{})
+	ns.Grow("ForkView", ForkView{})
+	ns.Grow("ForkVector", ForkVector{})
 	//
-	ns.AddTerminal("Reservoir", Reservoir{})
+	ns.Grow("Reservoir", Reservoir{})
 }

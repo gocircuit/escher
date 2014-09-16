@@ -24,11 +24,11 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("web").Refine("twitter")
-	ns.AddTerminal("Client", Client{})
-	ns.AddTerminal("Answer", AnswerMaterializer{})
-	ns.AddTerminal("Consumer", ConsumerMaterializer{})
-	ns.AddTerminal("Access", AccessMaterializer{})
-	ns.AddTerminal("UserTimelineQuery", UserTimelineQueryMaterializer{})
+	ns.Grow("Client", Client{})
+	ns.Grow("Answer", AnswerMaterializer{})
+	ns.Grow("Consumer", ConsumerMaterializer{})
+	ns.Grow("Access", AccessMaterializer{})
+	ns.Grow("UserTimelineQuery", UserTimelineQueryMaterializer{})
 }
 
 // Client ...

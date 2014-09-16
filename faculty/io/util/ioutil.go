@@ -18,7 +18,7 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("io").Refine("util")
-	ns.AddTerminal("WriteFile", WriteFile{})
+	ns.Grow("WriteFile", WriteFile{})
 }
 
 // WriteFile …

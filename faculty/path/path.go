@@ -18,7 +18,7 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("path")
-	ns.AddTerminal("Join", Join{})
+	ns.Grow("Join", Join{})
 }
 
 // Join

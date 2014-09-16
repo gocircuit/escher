@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("Junction", Junction{})
+	faculty.Root.Grow("Junction", Junction{})
 }
 
 // Junction

@@ -15,10 +15,10 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("i")
-	ns.AddTerminal("See", See{})
-	ns.AddTerminal("Understand", Understand{})
-	ns.AddTerminal("Memory", Memory{})
-	// ns.AddTerminal("Materialize", Materialize{})
+	ns.Grow("See", See{})
+	ns.Grow("Understand", Understand{})
+	ns.Grow("Memory", Memory{})
+	// ns.Grow("Materialize", Materialize{})
 }
 
 // See

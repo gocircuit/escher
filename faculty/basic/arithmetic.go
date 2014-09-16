@@ -17,8 +17,8 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("Sum", Sum{})
-	// faculty.Root.AddTerminal("Prod", Prod{})
+	faculty.Root.Grow("Sum", Sum{})
+	// faculty.Root.Grow("Prod", Prod{})
 }
 
 // Sum

@@ -6,5 +6,9 @@
 
 package faculty
 
-// Root is a global variable where packages can add gates as side-effect of being imported.
-var Root = NewFaculty("root")
+import (
+	. "github.com/gocircuit/escher/circuit"
+)
+
+// Root is the global faculties memory where Go packages add gate designs as side-effect of being imported.
+var Root = New()

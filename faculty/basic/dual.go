@@ -15,10 +15,10 @@ import (
 )
 
 func init() {
-	faculty.Root.AddTerminal("Ignore", be.Ignore{})
-	faculty.Root.AddTerminal("Show", Println{})
-	faculty.Root.AddTerminal("See", Scanln{})
-	faculty.Root.AddTerminal("Root", be.NewNounReflex(faculty.Root))
+	faculty.Root.Grow("Ignore", be.Ignore{})
+	faculty.Root.Grow("Show", Println{})
+	faculty.Root.Grow("See", Scanln{})
+	faculty.Root.Grow("Root", be.NewNounReflex(faculty.Root))
 }
 
 // Scanln

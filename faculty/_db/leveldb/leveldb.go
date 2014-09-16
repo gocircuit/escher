@@ -21,7 +21,7 @@ import (
 
 func init() {
 	ns := faculty.Root.Refine("db").Refine("leveldb")
-	ns.AddTerminal("File", File{})
+	ns.Grow("File", File{})
 }
 
 // File

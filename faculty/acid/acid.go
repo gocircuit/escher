@@ -17,9 +17,9 @@ import (
 
 func Init(x, y, z string) {
 	ns := faculty.Root.Refine("acid")
-	ns.AddTerminal("XDir", Dir{x})
-	ns.AddTerminal("YDir", Dir{y})
-	ns.AddTerminal("ZDir", Dir{z})
+	ns.Grow("XDir", Dir{x})
+	ns.Grow("YDir", Dir{y})
+	ns.Grow("ZDir", Dir{z})
 }
 
 // Dir

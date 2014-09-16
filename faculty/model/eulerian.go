@@ -7,13 +7,13 @@
 package model
 
 import (
-	"container/list"
+	// "container/list"
 	// "fmt"
 	"log"
 
-	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/memory"
 )
 
 /*
@@ -68,7 +68,7 @@ func euler(eye *be.Eye, m *Memory, v *eulerView) int {
 	eye.Show("View", v.Circuitize(true))
 	n++
 	//
-	for g, h := range v.Circuit.Gates() {
+	for _, h := range v.Circuit.Gates() {
 		switch t := h.(type) {
 		case Address:
 			x := m.Lookup(t.Path()...) // Resolve addresses once

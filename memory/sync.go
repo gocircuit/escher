@@ -38,7 +38,7 @@ func (m *Memory) Step(gate Name) Circuit {
 }
 
 // Lookup
-func (m *Memory) Lookup(gate ...Name) Circuit {
+func (m *Memory) Lookup(gate ...Name) Meaning {
 	m.Lock()
 	defer m.Unlock()
 	return m.__.Lookup(gate...)

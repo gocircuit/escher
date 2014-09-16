@@ -42,21 +42,29 @@ func (m *memory) Step(gate Name) Circuit {
 }
 
 // Lookup
-func (m *memory) Lookup(gate ...Name) Circuit {
-	var x = m.root
-	for _, g := range gate {
-		x = x.At(g).(Circuit)
+func (m *memory) Lookup(gate ...Name) Meaning {
+	var x Circuit = m.root
+	for i, g := range gate {
+		if i+1 == len(gate) {
+			return x.At(g)
+		}
+		x = x.CircuitAt(g)
 	}
 	return x
 }
 
 // Jump
 func (m *memory) Jump(gate ...Name) Circuit {
-	m.seeing = m.Lookup(gate...)
+	m.seeing = m.Lookup(gate...).(Circuit)
 	return m.seeing
 }
 
 // Plumbing
+
+func (m *memory) Refine(n Name) Circuit {
+	m.Include(n, New())
+	return m.Step(n)
+}
 
 // Include
 func (m *memory) Include(n Name, x Meaning) Circuit {

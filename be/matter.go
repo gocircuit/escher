@@ -8,24 +8,11 @@ package be
 
 import (
 	"fmt"
-	"hash/fnv"
 	"os"
 	"runtime/pprof"
-	"strconv"
 	"sync"
 	"time"
 )
-
-func ChainKey(superKey string, fullName []interface{}) string {
-	h := fnv.New32a()
-	h.Write([]byte(superKey))
-	h.Write([]byte("·"))
-	for _, x := range fullName {
-		h.Write([]byte(string(x.(string))))
-		h.Write([]byte("."))
-	}
-	return strconv.FormatUint(uint64(h.Sum32()), 36) + ":" + string(fullName[len(fullName)-1].(string))
-}
 
 func stk() {
 	prof := pprof.Lookup("goroutine")

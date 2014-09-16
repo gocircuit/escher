@@ -9,18 +9,18 @@ package be
 import (
 	"log"
 
-	. "github.com/gocircuit/escher/faculty"
+	. "github.com/gocircuit/escher/memory"
 	. "github.com/gocircuit/escher/circuit"
 )
 
 type Being struct {
-	Faculty
+	mem *Memory
 }
 
 func (b *Being) MaterializeAddress(addr Address) Reflex {
 	// log.Printf("addressing %s", string(addr))
-	_, u := b.Faculty.Lookup(addr.Strings()...)
-	return b.Materialize(nil, u, true) // 
+	x := b.mem.Lookup(addr.Path()...)
+	return b.Materialize(nil, x, true) // 
 }
 
 func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {

@@ -10,7 +10,6 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
-	"strings"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -65,7 +64,7 @@ func SeeAddress(src *Src) interface{} {
 		return nil
 	}
 	src.Become(t)
-	return Address(strings.Join(x, "."))
+	return NewAddressStrings(x)
 }
 
 // Int …

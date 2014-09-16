@@ -7,35 +7,52 @@
 package circuit
 
 import (
-	"strings"
+	"bytes"
+	"fmt"
+	// "strings"
 )
 
 // Address ...
-type Address string
+type Address []Name
+
+func NewAddressStrings(ss []string) (a Address) {
+	a = make(Address, len(ss))
+	for i, x := range ss {
+		a[i] = x
+	}
+	return a
+}
 
 func (a Address) Simple() string {
-	if len(strings.Split(string(a), ".")) != 1 {
-		panic(1)
+	if len(a) != 1 {
+		panic("address not simple")
 	}
-	return string(a)
+	return a[0].(string)
 }
 
 func (a Address) String() string {
-	return string(a)
+	var w bytes.Buffer
+	for i, x := range a {
+		fmt.Fprintf(&w, "%v", x)
+		if i + 1 < len(a) {
+			w.WriteString(".")
+		}
+	}
+	return w.String()
 }
 
 func (a Address) Strings() []string {
-	return strings.Split(string(a), ".")
+	var s = make([]string, len(a))
+	for i, x := range a {
+		s[i] = x.(string)
+	}
+	return s
 }
 
 func (a Address) Path() (walk []Name) {
-	for _, w := range strings.Split(string(a), ".") {
-		walk = append(walk, w)
-	}
-	return
+	return []Name(a)
 }
 
 func (a Address) Name() string {
-	p := strings.Split(string(a), ".")
-	return p[len(p)-1]
+	return a[len(a)-1].(string)
 }

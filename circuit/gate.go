@@ -66,7 +66,7 @@ func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 	if ok {
 		return v.(Address), ok
 	}
-	return "", false
+	return nil, false
 }
 
 // Series-application methods

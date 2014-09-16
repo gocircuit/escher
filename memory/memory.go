@@ -33,7 +33,8 @@ func (m *memory) Restart() Circuit {
 }
 
 // Step
-func (m *memory) Step(gate Name) Circuit {
+func (m *memory) Step(gate Name) (Circuit, Address) {
+	??
 	a, ok := m.seeing.At(gate).(Address)
 	if !ok {
 		panic("cannot enter non-addresses")
@@ -63,7 +64,7 @@ func (m *memory) Jump(gate ...Name) Circuit {
 
 func (m *memory) Refine(n Name) Circuit {
 	m.Include(n, New())
-	return m.Step(n)
+	return m.seeing
 }
 
 // Include

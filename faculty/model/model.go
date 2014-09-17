@@ -12,13 +12,11 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("model")
+	faculty.Register("model.Hamiltonian", Hamiltonian{})
+	faculty.Register("model.Eulerian", Eulerian{})
+	faculty.Register("model.ForkStart", ForkStart{})
+	faculty.Register("model.ForkView", ForkView{})
+	faculty.Register("model.ForkVector", ForkVector{})
 	//
-	ns.Grow("Hamiltonian", Hamiltonian{})
-	ns.Grow("Eulerian", Eulerian{})
-	ns.Grow("ForkStart", ForkStart{})
-	ns.Grow("ForkView", ForkView{})
-	ns.Grow("ForkVector", ForkVector{})
-	//
-	ns.Grow("Reservoir", Reservoir{})
+	faculty.Register("model.Reservoir", Reservoir{})
 }

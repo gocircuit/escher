@@ -19,11 +19,10 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("text")
-	ns.Grow("ForkMerge", ForkMerge{})
-	ns.Grow("MergeBlend", MergeBlend{})
-	ns.Grow("ForkForm", ForkForm{})
-	ns.Grow("FormBlend", FormBlend{})
+	faculty.Register("text.ForkMerge", ForkMerge{})
+	faculty.Register("text.MergeBlend", MergeBlend{})
+	faculty.Register("text.ForkForm", ForkForm{})
+	faculty.Register("text.FormBlend", FormBlend{})
 }
 
 // ForkMerge…

@@ -14,9 +14,8 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("time")
-	ns.Grow("Ticker", Ticker{})
-	ns.Grow("Delay", Delay{})
+	faculty.Register("time.Ticker", Ticker{})
+	faculty.Register("time.Delay", Delay{})
 }
 
 // Delay…

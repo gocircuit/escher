@@ -16,10 +16,9 @@ import (
 )
 
 func Init(x, y, z string) {
-	ns := faculty.Root.Refine("acid")
-	ns.Grow("XDir", Dir{x})
-	ns.Grow("YDir", Dir{y})
-	ns.Grow("ZDir", Dir{z})
+	faculty.Register("acid.XDir", Dir{x})
+	faculty.Register("acid.YDir", Dir{y})
+	faculty.Register("acid.ZDir", Dir{z})
 }
 
 // Dir

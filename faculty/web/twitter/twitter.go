@@ -23,12 +23,11 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("web").Refine("twitter")
-	ns.Grow("Client", Client{})
-	ns.Grow("Answer", AnswerMaterializer{})
-	ns.Grow("Consumer", ConsumerMaterializer{})
-	ns.Grow("Access", AccessMaterializer{})
-	ns.Grow("UserTimelineQuery", UserTimelineQueryMaterializer{})
+	faculty.Register("web.twitter.Client", Client{})
+	faculty.Register("web.twitter.Answer", AnswerMaterializer{})
+	faculty.Register("web.twitter.Consumer", ConsumerMaterializer{})
+	faculty.Register("web.twitter.Access", AccessMaterializer{})
+	faculty.Register("web.twitter.UserTimelineQuery", UserTimelineQueryMaterializer{})
 }
 
 // Client ...

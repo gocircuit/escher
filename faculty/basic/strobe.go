@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	faculty.Root.Grow("Strobe", Strobe{})
+	faculty.Register("Strobe", Strobe{})
 }
 
 // Strobe ...

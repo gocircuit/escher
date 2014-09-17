@@ -18,17 +18,16 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("think")
 	//
-	ns.Grow("Associate", Associate{})
-	ns.Grow("Remember", Remember{})
-	ns.Grow("Choose", Choose{})
-	ns.Grow("Focus", Focus{})
+	faculty.Register("think.Associate", Associate{})
+	faculty.Register("think.Remember", Remember{})
+	faculty.Register("think.Choose", Choose{})
+	faculty.Register("think.Focus", Focus{})
 	//
-	ns.Grow("A", Associate{})
-	ns.Grow("R", Remember{})
-	ns.Grow("C", Choose{})
-	ns.Grow("F", Focus{})
+	faculty.Register("think.A", Associate{})
+	faculty.Register("think.R", Remember{})
+	faculty.Register("think.C", Choose{})
+	faculty.Register("think.F", Focus{})
 }
 
 // Focus

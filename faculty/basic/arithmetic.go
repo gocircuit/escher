@@ -17,7 +17,7 @@ import (
 )
 
 func init() {
-	faculty.Root.Grow("Sum", Sum{})
+	faculty.Register("Sum", Sum{})
 	// faculty.Root.Grow("Prod", Prod{})
 }
 

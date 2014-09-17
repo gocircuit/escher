@@ -17,8 +17,7 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("io").Refine("util")
-	ns.Grow("WriteFile", WriteFile{})
+	faculty.Register("io.util.WriteFile", WriteFile{})
 }
 
 // WriteFile …

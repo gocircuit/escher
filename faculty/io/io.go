@@ -17,8 +17,7 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("io") // XXX: Root is not protected from races.
-	ns.Grow("Clunk", Clunk{})
+	faculty.Register("io.Clunk", Clunk{})
 }
 
 // Clunk…

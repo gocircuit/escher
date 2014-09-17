@@ -39,6 +39,11 @@ func (m *memory) Restart() Circuit {
 	return m.seeing
 }
 
+// Yield
+func (m *memory) Yield() Circuit {
+	return m.root.Copy().(Circuit)
+}
+
 // Step
 func (m *memory) Step(gate Name) (Circuit, Address) {
 	a := m.seeing.At(gate).(Address)

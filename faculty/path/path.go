@@ -17,8 +17,7 @@ import (
 )
 
 func init() {
-	ns := faculty.Root.Refine("path")
-	ns.Grow("Join", Join{})
+	faculty.Register("path.Join", Join{})
 }
 
 // Join

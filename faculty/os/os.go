@@ -34,20 +34,19 @@ func Init(a string) {
 		args[nv[0]] = v
 		log.Printf("Argument %s=%s", nv[0], v)
 	}
-	ns := faculty.Root.Refine("os")
-	ns.Grow("Arg", Arg{})
-	ns.Grow("Env", Env{})
-	ns.Grow("Exit", Exit{})
-	ns.Grow("Fatal", Fatal{})
-	ns.Grow("Stdin", Stdin{})
-	ns.Grow("Stdout", Stdout{})
-	ns.Grow("Stderr", Stderr{})
+	faculty.Register("os.Arg", Arg{})
+	faculty.Register("os.Env", Env{})
+	faculty.Register("os.Exit", Exit{})
+	faculty.Register("os.Fatal", Fatal{})
+	faculty.Register("os.Stdin", Stdin{})
+	faculty.Register("os.Stdout", Stdout{})
+	faculty.Register("os.Stderr", Stderr{})
 	//
-	ns.Grow("LookPath", LookPath{})
-	ns.Grow("Process", Process{})
-	ns.Grow("ForkCommand", ForkCommand{})
-	ns.Grow("ForkExit", ForkExit{})
-	ns.Grow("ForkIO", ForkIO{})
+	faculty.Register("os.LookPath", LookPath{})
+	faculty.Register("os.Process", Process{})
+	faculty.Register("os.ForkCommand", ForkCommand{})
+	faculty.Register("os.ForkExit", ForkExit{})
+	faculty.Register("os.ForkIO", ForkIO{})
 	//
 }
 

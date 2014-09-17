@@ -23,6 +23,21 @@ func NewMemory() *Memory {
 	return &Memory{__: newMemory()}
 }
 
+func (m *Memory) StartHijack() Circuit {
+	m.Lock()
+	return m.__.root
+}
+
+func (m *Memory) EndHijack() {
+	m.Unlock()
+}
+
+func (m *Memory) Yield() Circuit {
+	m.Lock()
+	defer m.Unlock()
+	return m.__.Yield()
+}
+
 // View
 func (m *Memory) View() Circuit {
 	m.Lock()

@@ -93,16 +93,18 @@ func main() {
 }
 
 func compile(x, y, z string) Circuit {
+	m := Root().Yield()
+	//
 	if x != "" {
-		Load(Root, "X", x)
+		Load(m, "X", x)
 	}
 	if y != "" {
-		Load(Root, "Y", y)
+		Load(m, "Y", y)
 	}
 	if z != "" {
-		Load(Root, "Z", z)
+		Load(m, "Z", z)
 	}
-	return Root
+	return m
 }
 
 func loadCircuitFaculty(name, discover, x, y, z string) {

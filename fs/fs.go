@@ -45,11 +45,23 @@ func loadDirectory(into Circuit, acid, dir string) Circuit {
 	}
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
-		if fileInfo.IsDir() {
-			into.Grow(fileInfo.Name(), loadDirectory(New(), acid, filePath))
+		if fileInfo.IsDir() { // directory
+			fn := fileInfo.Name()
+			var sub Circuit
+			x, ok := into.OptionAt(fn)
+			if ok {
+				sub, ok = x.(Circuit)
+				if !ok {
+					log.Fatalf("Loading directory (%s) overwrites an irreducible", filePath)
+				}
+			} else {
+				sub = New()
+				into.Grow(fn, sub)
+			}
+			loadDirectory(sub, acid, filePath)
 			continue
 		}
-		if path.Ext(fileInfo.Name()) != ".escher" {
+		if path.Ext(fileInfo.Name()) != ".escher" { // file
 			continue
 		}
 		loadFile(into, dir, filePath)

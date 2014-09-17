@@ -17,7 +17,7 @@ Form {
 	fork:Form = Form:Form
 	fork:Data = Form:Data
 
-	form text.ForkBlend
+	form text.FormBlend
 	form:FormData = fork:_
 	form:_ = Form:_
 }

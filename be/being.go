@@ -21,8 +21,10 @@ func NewBeing(m Circuit) *Being {
 }
 
 func (b *Being) MaterializeAddress(addr Address) Reflex {
-	// log.Printf("addressing %s", string(addr))
 	x := b.mem.Lookup(addr.Path()...)
+	if x == nil {
+		log.Fatalf("Address %v is dangling", addr)
+	}
 	return b.Materialize(nil, x, true) // 
 }
 
@@ -51,7 +53,7 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 	case Super:
 		log.Fatal("Cannot materialize super")
 	case nil:
-		log.Fatalf("Not found")
+		panic("report error")
 	default:
 		log.Fatalf("Not knowing how to materialize %v/%T", t, t)
 	}

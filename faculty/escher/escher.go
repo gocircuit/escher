@@ -19,6 +19,8 @@ func init() {
 	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir{})
 	faculty.Register("escher.Lookup", Lookup{})
 	faculty.Register("escher.Memory", Memory{})
+	faculty.Register("escher.Embody", Embody{})
+	// faculty.Register("escher.Connect", Connect{})
 }
 
 // Lookup

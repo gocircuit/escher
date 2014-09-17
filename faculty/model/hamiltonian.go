@@ -13,6 +13,7 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/plumb"
 	. "github.com/gocircuit/escher/memory"
 )
 
@@ -36,21 +37,15 @@ import (
 	}
 */
 type Hamiltonian struct{
-	m chan *Memory
+	mem plumb.Given
 }
 
 func (h *Hamiltonian) Spark() {
-	h.m = make(chan *Memory, 1)	
-}
-
-func (h *Hamiltonian) memory() *Memory {
-	m := <-h.m
-	h.m <- m
-	return m
+	h.mem.Init()
 }
 
 func (h *Hamiltonian) CognizeMemory(_ *be.Eye, v interface{}) {
-	h.m <- v.(*Memory)
+	h.mem.Fix(v)
 }
 
 func (h *Hamiltonian) CognizeView(*be.Eye, interface{}) {}
@@ -76,7 +71,7 @@ func (h *Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 			}
 			memory.PushFront(v) // remember
 			//
-			lookup := h.memory().Lookup(t.Path()...)
+			lookup := h.mem.Use().(*Memory).Lookup(t.Path()...)
 			if lookup == nil {
 				log.Fatalf("No Hamiltonian circuit addressed %s", t.String())
 			}

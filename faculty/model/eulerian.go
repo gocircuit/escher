@@ -13,6 +13,7 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/plumb"
 	. "github.com/gocircuit/escher/memory"
 )
 
@@ -32,21 +33,15 @@ import (
 	}
 */
 type Eulerian struct{
-	m chan *Memory
+	mem plumb.Given
 }
 
 func (e *Eulerian) Spark() {
-	e.m = make(chan *Memory, 1)
-}
-
-func (e *Eulerian) memory() *Memory {
-	m := <-e.m
-	e.m <- m
-	return m
+	e.mem.Init()
 }
 
 func (e *Eulerian) CognizeMemory(_ *be.Eye, v interface{}) {
-	e.m <- v.(*Memory)
+	e.mem.Fix(v)
 }
 
 func (e *Eulerian) CognizeView(*be.Eye, interface{}) {}
@@ -54,7 +49,7 @@ func (e *Eulerian) CognizeView(*be.Eye, interface{}) {}
 func (e *Eulerian) CognizeStart(eye *be.Eye, v interface{}) {
 	euler(
 		eye,
-		e.memory(),
+		e.mem.Use().(*Memory),
 		&eulerView{
 			Circuit: v.(Circuit),
 			Index: 0,

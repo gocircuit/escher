@@ -10,7 +10,14 @@ import (
 	"log"
 
 	. "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/memory"
 )
+
+func Materialize(m *Memory, design Meaning) Reflex {
+	b := &Being{m.StartHijack()}
+	defer m.EndHijack()
+	return b.Materialize(nil, design, true)
+}
 
 type Being struct {
 	mem Circuit

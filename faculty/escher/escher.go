@@ -18,8 +18,10 @@ import (
 func init() {
 	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir{})
 	faculty.Register("escher.Lookup", Lookup{})
+	faculty.Register("escher.Memory", Memory{})
 }
 
+// Lookup
 type Lookup struct{}
 
 func (Lookup) Materialize() be.Reflex {
@@ -34,6 +36,13 @@ func (Lookup) Materialize() be.Reflex {
 		"Address", "Circuit",
 	)
 	return reflex
+}
+
+// Memory
+type Memory struct{}
+
+func (Memory) Materialize() be.Reflex {
+	return be.NewNounReflex(faculty.Root())
 }
 
 // CircuitSourceDir

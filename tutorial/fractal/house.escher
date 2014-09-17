@@ -16,6 +16,7 @@ main {
 	tour model.Hamiltonian
 	tour:Start = start:_
 	tour:View = Show
+	tour:Memory = escher.Memory
 }
 
 // Circuits A, B, C and D describe a complete system.

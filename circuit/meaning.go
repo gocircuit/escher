@@ -6,6 +6,10 @@
 
 package circuit
 
+import (
+	// "fmt"
+)
+
 type Reducible interface {
 	Copy() Reducible
 	Same(Reducible) bool

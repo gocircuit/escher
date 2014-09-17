@@ -23,6 +23,28 @@ func NewAddressStrings(ss []string) (a Address) {
 	return a
 }
 
+func (a Address) Same(r Reducible) bool {
+	b, ok := r.(Address)
+	if !ok {
+		return false
+	}
+	if len(a) != len(b) {
+		return false
+	}
+	for i, j := range a {
+		if !Same(j, b[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func (a Address) Copy() Reducible {
+	c := make(Address, len(a))
+	copy(c, a)
+	return c
+}
+
 func (a Address) Simple() string {
 	if len(a) != 1 {
 		panic("address not simple")

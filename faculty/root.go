@@ -14,7 +14,7 @@ import (
 )
 
 // Root is the global faculties memory where Go packages add gate designs as side-effect of being imported.
-var root *Memory
+var root *Memory = NewMemory()
 
 func Root() *Memory {
 	return root

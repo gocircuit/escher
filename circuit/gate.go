@@ -6,6 +6,10 @@
 
 package circuit
 
+import (
+	// "fmt"
+)
+
 // Convenience access
 
 func (u Circuit) IntOrZeroAt(name Name) int {

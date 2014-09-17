@@ -56,7 +56,7 @@ func (m *Memory) Restart() Circuit {
 func (m *Memory) Lookup(name ...Name) Meaning {
 	m.Lock()
 	defer m.Unlock()
-	return m.__.Lookup(name)
+	return m.__.Lookup(name...)
 }
 
 // Step

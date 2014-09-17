@@ -93,7 +93,7 @@ func main() {
 }
 
 func compile(x, y, z string) Circuit {
-	m := Root().Yield()
+	m := Root().StartHijack()
 	//
 	if x != "" {
 		Load(m, "X", x)
@@ -104,7 +104,8 @@ func compile(x, y, z string) Circuit {
 	if z != "" {
 		Load(m, "Z", z)
 	}
-	return m
+	Root().EndHijack()
+	return Root().Yield()
 }
 
 func loadCircuitFaculty(name, discover, x, y, z string) {

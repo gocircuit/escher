@@ -27,7 +27,6 @@ func (b *Being) MaterializeAddress(addr Address) Reflex {
 }
 
 func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
-	// log.Printf("materializing (%v) %v/%T", recurse, x, x)
 	switch t := x.(type) {
 	// Addresses are materialized recursively
 	case Address:

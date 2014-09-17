@@ -12,11 +12,11 @@ import (
 )
 
 func init() {
-	faculty.Register("model.Hamiltonian", Hamiltonian{})
-	faculty.Register("model.Eulerian", Eulerian{})
+	faculty.Register("model.Hamiltonian", &Hamiltonian{})
+	faculty.Register("model.Eulerian", &Eulerian{})
 	faculty.Register("model.ForkStart", ForkStart{})
 	faculty.Register("model.ForkView", ForkView{})
 	faculty.Register("model.ForkVector", ForkVector{})
 	//
-	faculty.Register("model.Reservoir", Reservoir{})
+	faculty.Register("model.Reservoir", &Reservoir{})
 }

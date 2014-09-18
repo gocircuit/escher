@@ -7,7 +7,7 @@
 package circuit
 
 import (
-	"log"
+	// "log"
 )
 
 // Name is one of: int or string
@@ -83,15 +83,4 @@ func (u *circuit) Gates() map[Name]Meaning {
 
 func (u *circuit) String() string {
 	return u.Print("", "\t")
-}
-
-func (u *circuit) Seal(name Name) {
-	if _, ok := u.Include(name, Super{}); ok {
-		panic("overwriting super")
-	}
-	for nm, y := range u.Gates() {
-		if y == nil {
-			log.Fatalf("nil peer: %v", nm)
-		}
-	}
 }

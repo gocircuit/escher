@@ -95,5 +95,5 @@ func seeJoinAddress(src *Src) (peer, valve Name, ok bool) {
 	t.Match(string(ValveSelector))
 	v := SeeAddress(t).(Address)
 	src.Become(t)
-	return p.Simple(), v.Simple(), true
+	return p.Simplify(), v.Simplify(), true
 }

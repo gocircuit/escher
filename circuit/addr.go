@@ -45,6 +45,13 @@ func (a Address) Copy() Reducible {
 	return c
 }
 
+func (a Address) Simplify() interface{} {
+	if len(a) == 1 {
+		return a.Simple()
+	}
+	return a
+}
+
 func (a Address) Simple() string {
 	if len(a) != 1 {
 		panic("address not simple")

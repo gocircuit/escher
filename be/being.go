@@ -57,8 +57,6 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 			return b.MaterializeCircuit(t)
 		}
 		return NewNounReflex(t)
-	case Super:
-		log.Fatal("Cannot materialize super")
 	case nil:
 		panic("report error")
 	default:

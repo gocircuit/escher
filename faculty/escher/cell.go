@@ -48,7 +48,7 @@ func (h *Embody) CognizeWhen(eye *be.Eye, w interface{}) {
 	eye.Show("_", New().Grow("When", w).Grow("Cell", cell))
 }
 
-// Connect. Cell, 
+// Connect
 type Connect struct{
 	cell plumb.Given
 }

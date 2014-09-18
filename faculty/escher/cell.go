@@ -47,3 +47,30 @@ func (h *Embody) CognizeWhen(eye *be.Eye, w interface{}) {
 	)
 	eye.Show("_", New().Grow("When", w).Grow("Cell", cell))
 }
+
+// Connect. Cell, 
+type Connect struct{
+	cell plumb.Given
+}
+
+func (h *Connect) Spark() {
+	h.cell.Init()
+}
+
+func (h *Connect) CognizeCell(_ *be.Eye, v interface{}) {
+	h.cell.Fix(v)
+}
+
+func (h *Connect) CognizePush(_ *be.Eye, v interface{}) {
+	w := v.(Circuit)
+	cell := h.cell.Use().(*be.Cell)
+	cell.ReCognize(w.StringAt("Valve"), w.At("Value"))
+}
+
+func (h *Connect) CognizePull(eye *be.Eye, v interface{}) {
+	cell := h.cell.Use().(*be.Cell)
+	vlv, val := cell.Cognize()
+	eye.Show("_", New().Grow("Valve", vlv).Grow("Value", val).Grow("Pull", v))
+}
+
+func (h *Connect) Cognize_(*be.Eye, interface{}) {}

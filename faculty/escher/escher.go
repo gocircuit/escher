@@ -20,7 +20,7 @@ func init() {
 	faculty.Register("escher.Lookup", Lookup{})
 	faculty.Register("escher.Memory", Memory{})
 	faculty.Register("escher.Embody", Embody{})
-	// faculty.Register("escher.Connect", Connect{})
+	faculty.Register("escher.Connect", Connect{})
 }
 
 // Lookup

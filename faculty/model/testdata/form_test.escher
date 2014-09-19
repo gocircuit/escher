@@ -2,8 +2,11 @@
 main {
 	form model.Form
 	form:Form = {
-		A 1
-		B 2
+		a 1
+		B .b
+		C {
+			.b .a
+		}
 	}
 	form:Weave = {
 		a "hello"

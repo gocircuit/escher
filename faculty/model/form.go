@@ -54,14 +54,14 @@ func combine(form, weave Circuit) Circuit {
 	for gname, gvalue := range form.Gates() {
 		switch t := gvalue.(type) {
 		case Address:
-			if len(t) > 0 && t[0] == "" { // If the gate meaning is a substitution address
-				form.ReGrow(gname, weave.Lookup(t[1:]...))
+			if len(t.Path()) > 0 && t.Path()[0] == "" { // If the gate meaning is a substitution address
+				form.ReGrow(gname, weave.Lookup(t.Path()[1:]...))
 			}
 		case Circuit:
 			form.ReGrow(gname, combine(t, weave))
 		}
-		if s, ok := gname.(Address); ok && len(s) > 0 && s[0] == "" { // If the gate name is a substitution address
-			rename(form, gname, weave.Lookup(s[1:]...))
+		if s, ok := gname.(Address); ok && len(s.Path()) > 0 && s.Path()[0] == "" { // If the gate name is a substitution address
+			rename(form, gname, weave.Lookup(s.Path()[1:]...))
 		}
 	}
 	return form

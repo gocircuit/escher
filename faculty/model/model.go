@@ -19,4 +19,6 @@ func init() {
 	faculty.Register("model.ForkVector", ForkVector{})
 	//
 	faculty.Register("model.Reservoir", &Reservoir{})
+	//
+	faculty.Register("model.Form", &Form{})
 }

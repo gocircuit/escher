@@ -14,17 +14,17 @@ import (
 
 // Address ...
 type Address struct {
-	path []Name
+	*address
 }
 
+type address []Name
+
 func NewAddressStrings(ss []string) (a Address) {
-	a = Address{
-		path: make([]Name, len(ss)),
-	}
+	p := make(address, len(ss))
 	for i, x := range ss {
-		a.path[i] = x
+		p[i] = x
 	}
-	return
+	return Address{&p}
 }
 
 func (a Address) Same(r Reducible) bool {
@@ -32,11 +32,15 @@ func (a Address) Same(r Reducible) bool {
 	if !ok {
 		return false
 	}
-	if len(a.path) != len(b.path) {
+	return a.address.Same(*b.address)
+}
+
+func (a address) Same(b address) bool {
+	if len(a) != len(b) {
 		return false
 	}
-	for i, j := range a.path {
-		if !Same(j, b.path[i]) {
+	for i, j := range a {
+		if !Same(j, b[i]) {
 			return false
 		}
 	}
@@ -44,50 +48,53 @@ func (a Address) Same(r Reducible) bool {
 }
 
 func (a Address) Copy() Reducible {
-	c := Address{
-		path: make([]Name, len(a.path)),
-	}
-	copy(c.path, a.path)
-	return c
+	b := a.address.Copy()
+	return Address{&b}
+}
+
+func (a address) Copy() address {
+	x := make([]Name, len(a))
+	copy(x, a)
+	return x
 }
 
 func (a Address) Simplify() interface{} {
-	if len(a.path) == 1 {
+	if len(*a.address) == 1 {
 		return a.Simple()
 	}
 	return a
 }
 
-func (a Address) Simple() string {
-	if len(a.path) != 1 {
+func (a address) Simple() string {
+	if len(a) != 1 {
 		panic("address not simple")
 	}
-	return a.path[0].(string)
+	return a[0].(string)
 }
 
-func (a Address) String() string {
+func (a address) String() string {
 	var w bytes.Buffer
-	for i, x := range a.path {
+	for i, x := range a {
 		fmt.Fprintf(&w, "%v", x)
-		if i + 1 < len(a.path) {
+		if i + 1 < len(a) {
 			w.WriteString(".")
 		}
 	}
 	return w.String()
 }
 
-func (a Address) Strings() []string {
-	var s = make([]string, len(a.path))
-	for i, x := range a.path {
+func (a address) Strings() []string {
+	var s = make([]string, len(a))
+	for i, x := range a {
 		s[i] = x.(string)
 	}
 	return s
 }
 
-func (a Address) Path() (walk []Name) {
-	return []Name(a.path)
+func (a address) Path() []Name {
+	return []Name(a)
 }
 
-func (a Address) Name() string {
-	return a.path[len(a.path)-1].(string)
+func (a address) Name() string {
+	return a[len(a)-1].(string)
 }

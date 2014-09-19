@@ -52,15 +52,15 @@ func SeeAddress(src *Src) interface{} {
 	var x []string
 	for {
 		id := Identifier(t)
-		if id == "" {
-			return nil
-		}
 		x = append(x, id)
 		if !t.TryMatch(".") {
 			break
 		}
 	}
 	if len(x) == 0 {
+		return nil
+	}
+	if len(x) == 1 && x[0] == "" {
 		return nil
 	}
 	src.Become(t)

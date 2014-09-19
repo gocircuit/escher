@@ -15,3 +15,8 @@ func TestSame(t *testing.T) {
 		t.Errorf("same")
 	}
 }
+
+func TestAddress(t *testing.T) {
+	m := make(map[interface{}]struct{})
+	m[NewAddressStrings([]string{"a"})] = struct{}{}
+}

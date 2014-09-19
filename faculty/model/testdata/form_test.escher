@@ -1,14 +1,14 @@
 // TestForm ...
 main {
 	form model.Form
-	form:Form = {
+	form:Positive = {
 		a 1
 		B .b
 		C {
 			.b .a
 		}
 	}
-	form:Weave = {
+	form:Negative = {
 		a "hello"
 		b "world"
 	}

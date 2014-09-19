@@ -15,32 +15,31 @@ import (
 )
 
 type Form struct{
-	form plumb.Given
-	weave plumb.Given
+	pos, neg plumb.Given
 }
 
 func (h *Form) Spark() {
-	h.form.Init()
-	h.weave.Init()
+	h.pos.Init()
+	h.neg.Init()
 }
 
-func (h *Form) CognizeForm(eye *be.Eye, v interface{}) {
-	h.form.Fix(v)
+func (h *Form) CognizePositive(eye *be.Eye, v interface{}) {
+	h.pos.Fix(v)
 	eye.Show(
 		"_", 
 		combine(
 			v.(Circuit), 
-			h.weave.Use().(Circuit),
+			h.neg.Use().(Circuit),
 		),
 	)
 }
 
-func (h *Form) CognizeWeave(eye *be.Eye, v interface{}) {
-	h.weave.Fix(v)
+func (h *Form) CognizeNegative(eye *be.Eye, v interface{}) {
+	h.neg.Fix(v)
 	eye.Show(
 		"_", 
 		combine(
-			h.form.Use().(Circuit),
+			h.pos.Use().(Circuit),
 			v.(Circuit), 
 		),
 	)
@@ -48,23 +47,23 @@ func (h *Form) CognizeWeave(eye *be.Eye, v interface{}) {
 
 func (h *Form) Cognize_(*be.Eye, interface{}) {}
 
-// combine substitutes dot-prefix addresses in the form with corresponding data from the weave.
-func combine(form, weave Circuit) Circuit {
-	form = form.Clone()
-	for gname, gvalue := range form.Gates() {
+// combine substitutes dot-prefix addresses in the pos with corresponding data from the neg.
+func combine(pos, neg Circuit) Circuit {
+	pos = pos.Clone()
+	for gname, gvalue := range pos.Gates() {
 		switch t := gvalue.(type) {
 		case Address:
 			if len(t.Path()) > 0 && t.Path()[0] == "" { // If the gate meaning is a substitution address
-				form.ReGrow(gname, weave.Lookup(t.Path()[1:]...))
+				pos.ReGrow(gname, neg.Lookup(t.Path()[1:]...))
 			}
 		case Circuit:
-			form.ReGrow(gname, combine(t, weave))
+			pos.ReGrow(gname, combine(t, neg))
 		}
 		if s, ok := gname.(Address); ok && len(s.Path()) > 0 && s.Path()[0] == "" { // If the gate name is a substitution address
-			rename(form, gname, weave.Lookup(s.Path()[1:]...))
+			rename(pos, gname, neg.Lookup(s.Path()[1:]...))
 		}
 	}
-	return form
+	return pos
 }
 
 func rename(u Circuit, g, h Name) Circuit {

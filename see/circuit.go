@@ -7,6 +7,8 @@
 package see
 
 import (
+	// "log"
+
 	. "github.com/gocircuit/escher/circuit"
 )
 

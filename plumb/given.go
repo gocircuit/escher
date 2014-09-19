@@ -11,7 +11,7 @@ type Given struct {
 }
 
 func (a *Given) Init() {
-	a.cycle = make(chan interface{})
+	a.cycle = make(chan interface{}, 1)
 }
 
 func (a *Given) Fix(v interface{}) {

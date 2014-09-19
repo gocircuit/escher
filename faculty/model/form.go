@@ -25,6 +25,7 @@ func (h *Form) Spark() {
 }
 
 func (h *Form) CognizeForm(eye *be.Eye, v interface{}) {
+	h.form.Fix(v)
 	eye.Show(
 		"_", 
 		combine(
@@ -35,6 +36,7 @@ func (h *Form) CognizeForm(eye *be.Eye, v interface{}) {
 }
 
 func (h *Form) CognizeWeave(eye *be.Eye, v interface{}) {
+	h.weave.Fix(v)
 	eye.Show(
 		"_", 
 		combine(
@@ -50,8 +52,13 @@ func (h *Form) Cognize_(*be.Eye, interface{}) {}
 func combine(form, weave Circuit) Circuit {
 	form = form.Clone()
 	for gname, gvalue := range form.Gates() {
-		if t, ok := gvalue.(Address); ok && len(t) > 0 && t[0] == "" { // If the gate meaning is a substitution address
-			form.ReGrow(gname, weave.Lookup(t[1:]...))
+		switch t := gvalue.(type) {
+		case Address:
+			if len(t) > 0 && t[0] == "" { // If the gate meaning is a substitution address
+				form.ReGrow(gname, weave.Lookup(t[1:]...))
+			}
+		case Circuit:
+			form.ReGrow(gname, combine(t, weave))
 		}
 		if s, ok := gname.(Address); ok && len(s) > 0 && s[0] == "" { // If the gate name is a substitution address
 			rename(form, gname, weave.Lookup(s[1:]...))

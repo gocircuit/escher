@@ -1,0 +1,13 @@
+// TestForm ...
+main {
+	form model.Form
+	form:Form = {
+		A 1
+		B 2
+	}
+	form:Weave = {
+		a "hello"
+		b "world"
+	}
+	form:_ = Show
+}

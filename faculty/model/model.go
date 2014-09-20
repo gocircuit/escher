@@ -25,4 +25,6 @@ func init() {
 	//
 	faculty.Register("model.Range", &Range{})
 	faculty.Register("model.ForkRange", ForkRange{})
+	//
+	faculty.Register("model.IO", &IO{})
 }

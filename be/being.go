@@ -91,6 +91,7 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 		for v_, t := range u.Valves(g) {
 			v := v_
 			tg, tv := t.Reduce()
+			checkLink(u, gates, g, v, tg, tv)
 			go Link(gates[g][v], gates[tg][tv])
 			// go func() {
 			// 	log.Printf("%s:%s -> %s:%s | %v %v", g, v, tg, tv, gates[g][v], gates[tg][tv])
@@ -99,4 +100,19 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 		}
 	}
 	return super
+}
+
+func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
+	if _, ok := gates[sg]; !ok {
+		log.Fatalf("Unknown gate %v in circuit:\n%v\n", sg, u)
+	}
+	if _, ok := gates[tg]; !ok {
+		log.Fatalf("Unknown gate %v in circuit:\n%v\n", tg, u)
+	}
+	if _, ok := gates[sg][sv]; !ok {
+		log.Fatalf("Unknown valve %v:%v in circuit:\n%v\n", sg, sv, u)
+	}
+	if _, ok := gates[tg][tv]; !ok {
+		log.Fatalf("Unknown valve %v:%v in circuit:\n%v\n", tg, tv, u)
+	}
 }

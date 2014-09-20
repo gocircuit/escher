@@ -43,11 +43,20 @@ func (h *Range) Cognize_(*be.Eye, interface{}) {}
 func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 	gates := over.Gates()
 	ch := make(chan Circuit, len(gates))
+	var i int
 	for gname_, gvalue_ := range gates {
 		gname, gvalue := gname_, gvalue_
+		index := i
+		i++
 		go func() {
 			x := be.NewCell(be.Materialize(mem, with))
-			x.ReCognize("_", New().Grow(gname, gvalue))
+			x.ReCognize(
+				"_", 
+				New().
+					Grow("Name", gname).
+					Grow("Value", gvalue).
+					Grow("Index", index),
+			)
 			vlv, val := x.Cognize()
 			if vlv != "_" {
 				panic(4)

@@ -22,7 +22,7 @@ func (ForkStart) Materialize() be.Reflex {
 type ForkView struct{}
 
 func (ForkView) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Series",)
+	return basic.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Path",)
 }
 
 // ForkVector

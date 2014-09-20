@@ -15,6 +15,8 @@ import (
 
 type Mix struct{}
 
+func (h *Mix) Spark() {}
+
 func (h *Mix) CognizePN(eye *be.Eye, v interface{}) {
 	eye.Show(
 		"_", 

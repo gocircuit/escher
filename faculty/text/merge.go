@@ -14,7 +14,6 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
 )
 
@@ -29,7 +28,7 @@ func init() {
 type ForkMerge struct{}
 
 func (ForkMerge) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "X", "Y", "Z")
+	return be.MaterializeUnion("_", "X", "Y", "Z")
 }
 
 // MergeBlend …

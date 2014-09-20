@@ -7,36 +7,35 @@
 package model
 
 import (
-	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
 )
 
 // ForkStart
 func MaterializeForkStart() be.Reflex {
-	return basic.MaterializeUnion("_", "Circuit", "Vector")
+	return be.MaterializeUnion("_", "Circuit", "Vector")
 }
 
 // ForkView
 func MaterializeForkView() be.Reflex {
-	return basic.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Path",)
+	return be.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Path",)
 }
 
 // ForkVector
 func MaterializeForkVector() be.Reflex {
-	return basic.MaterializeUnion("_", "Gate", "Valve")
+	return be.MaterializeUnion("_", "Gate", "Valve")
 }
 
 // ForkMix
 func MaterializeForkMix() be.Reflex {
-	return basic.MaterializeUnion("_", "Positive", "Negative")
+	return be.MaterializeUnion("_", "Positive", "Negative")
 }
 
 // ForkRange
 func MaterializeForkRange() be.Reflex {
-	return basic.MaterializeUnion("_", "Over", "With")
+	return be.MaterializeUnion("_", "Over", "With")
 }
 
 // ForkRangeView
 func MaterializeForkRangeView() be.Reflex {
-	return basic.MaterializeUnion("_", "Name", "Value", "Count", "Index")
+	return be.MaterializeUnion("_", "Name", "Value", "Count", "Index")
 }

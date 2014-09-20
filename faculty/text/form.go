@@ -13,14 +13,13 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/faculty/basic"
 )
 
 // ForkForm…
 type ForkForm struct{}
 
 func (ForkForm) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "Form", "Data")
+	return be.MaterializeUnion("_", "Form", "Data")
 }
 
 // FormBlend …

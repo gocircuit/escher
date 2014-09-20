@@ -4,13 +4,12 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package basic
+package be
 
 import (
 	// "fmt"
 
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/be"
 )
 
 func MaterializeUnion(name string, field ...string) Reflex {

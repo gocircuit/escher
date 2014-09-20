@@ -1,16 +1,18 @@
 // TestMix ...
-main {
+TestMix {
 	form model.Mix
-	form:Positive = {
-		a 1
-		B .b
-		C {
-			.b .a
+	form:PN = {
+		Positive {
+			a 1
+			B .b
+			C {
+				.b .a
+			}
 		}
-	}
-	form:Negative = {
-		a "hello"
-		b "world"
+		Negative {
+			a "hello"
+			b "world"
+		}
 	}
 	form:_ = Show
 }

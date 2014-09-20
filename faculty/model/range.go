@@ -55,6 +55,7 @@ func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 				New().
 					Grow("Name", gname).
 					Grow("Value", gvalue).
+					Grow("Count", len(gates)).
 					Grow("Index", index),
 			)
 			vlv, val := x.Cognize()

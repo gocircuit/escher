@@ -14,17 +14,18 @@ import (
 func init() {
 	faculty.Register("model.Hamiltonian", &Hamiltonian{})
 	faculty.Register("model.Eulerian", &Eulerian{})
-	faculty.Register("model.ForkStart", ForkStart{})
-	faculty.Register("model.ForkView", ForkView{})
-	faculty.Register("model.ForkVector", ForkVector{})
+	faculty.Register("model.ForkStart", MaterializeForkStart)
+	faculty.Register("model.ForkView", MaterializeForkView)
+	faculty.Register("model.ForkVector", MaterializeForkVector)
 	//
 	faculty.Register("model.Reservoir", &Reservoir{})
 	//
 	faculty.Register("model.Mix", &Mix{})
-	faculty.Register("model.ForkMix", ForkMix{})
+	faculty.Register("model.ForkMix", MaterializeForkMix)
 	//
 	faculty.Register("model.Range", &Range{})
-	faculty.Register("model.ForkRange", ForkRange{})
+	faculty.Register("model.ForkRange", MaterializeForkRange)
+	faculty.Register("model.ForkRangeView", MaterializeForkRangeView)
 	//
-	faculty.Register("model.IO", &IO{})
+	faculty.Register("model.IO", IO{})
 }

@@ -48,7 +48,7 @@ func (u Circuit) Clone() Circuit {
 func (u *circuit) copy() *circuit {
 	w := newCircuit()
 	for n, m := range u.gate {
-		w.gate[n] = Copy(m)
+		w.gate[n] = m // Copy(m) shallow copy
 	}
 	for g, h := range u.flow {
 		x := make(map[Name]Vector)

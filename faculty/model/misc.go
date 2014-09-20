@@ -12,36 +12,31 @@ import (
 )
 
 // ForkStart
-type ForkStart struct{}
-
-func (ForkStart) Materialize() be.Reflex {
+func MaterializeForkStart() be.Reflex {
 	return basic.MaterializeUnion("_", "Circuit", "Vector")
 }
 
 // ForkView
-type ForkView struct{}
-
-func (ForkView) Materialize() be.Reflex {
+func MaterializeForkView() be.Reflex {
 	return basic.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Path",)
 }
 
 // ForkVector
-type ForkVector struct{}
-
-func (ForkVector) Materialize() be.Reflex {
+func MaterializeForkVector() be.Reflex {
 	return basic.MaterializeUnion("_", "Gate", "Valve")
 }
 
-// ForkRange
-type ForkRange struct{}
+// ForkMix
+func MaterializeForkMix() be.Reflex {
+	return basic.MaterializeUnion("_", "Positive", "Negative")
+}
 
-func (ForkRange) Materialize() be.Reflex {
+// ForkRange
+func MaterializeForkRange() be.Reflex {
 	return basic.MaterializeUnion("_", "Over", "With")
 }
 
-// ForkMix
-type ForkMix struct{}
-
-func (ForkMix) Materialize() be.Reflex {
-	return basic.MaterializeUnion("_", "Positive", "Negative")
+// ForkRangeView
+func MaterializeForkRangeView() be.Reflex {
+	return basic.MaterializeUnion("_", "Name", "Value", "Count", "Index")
 }

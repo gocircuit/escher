@@ -31,3 +31,17 @@ type ForkVector struct{}
 func (ForkVector) Materialize() be.Reflex {
 	return basic.MaterializeUnion("_", "Gate", "Valve")
 }
+
+// ForkRange
+type ForkRange struct{}
+
+func (ForkRange) Materialize() be.Reflex {
+	return basic.MaterializeUnion("_", "Over", "With")
+}
+
+// ForkMix
+type ForkMix struct{}
+
+func (ForkMix) Materialize() be.Reflex {
+	return basic.MaterializeUnion("_", "Positive", "Negative")
+}

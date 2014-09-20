@@ -15,18 +15,26 @@ func (a *Given) Init() {
 }
 
 func (a *Given) Fix(v interface{}) {
+	for {
+		select {
+		case <-a.cycle:
+			continue
+		default:
+		}
+		break
+	}
 	a.cycle <- v
 }
 
 func (a *Given) Use() interface{} {
 	v := <-a.cycle
-__Drain:
 	for { // drain the cycle until the latest value is gotten
 		select {
 		case v = <-a.cycle:
+			continue
 		default:
-			break __Drain
 		}
+		break
 	}
 	go func() {
 		a.cycle <- v // return the value to the cycle

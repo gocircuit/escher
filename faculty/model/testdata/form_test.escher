@@ -1,6 +1,6 @@
-// TestForm ...
+// TestMix ...
 main {
-	form model.Form
+	form model.Mix
 	form:Positive = {
 		a 1
 		B .b

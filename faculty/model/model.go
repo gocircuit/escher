@@ -20,5 +20,9 @@ func init() {
 	//
 	faculty.Register("model.Reservoir", &Reservoir{})
 	//
-	faculty.Register("model.Form", &Form{})
+	faculty.Register("model.Mix", &Mix{})
+	faculty.Register("model.ForkMix", ForkMix{})
+	//
+	faculty.Register("model.Range", &Range{})
+	faculty.Register("model.ForkRange", ForkRange{})
 }

@@ -11,41 +11,21 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
-type Form struct{
-	pos, neg plumb.Given
-}
+type Mix struct{}
 
-func (h *Form) Spark() {
-	h.pos.Init()
-	h.neg.Init()
-}
-
-func (h *Form) CognizePositive(eye *be.Eye, v interface{}) {
-	h.pos.Fix(v)
+func (h *Mix) CognizePN(eye *be.Eye, v interface{}) {
 	eye.Show(
 		"_", 
 		combine(
-			v.(Circuit), 
-			h.neg.Use().(Circuit),
+			v.(Circuit).CircuitAt("Positive"),
+			v.(Circuit).CircuitAt("Negative"),
 		),
 	)
 }
 
-func (h *Form) CognizeNegative(eye *be.Eye, v interface{}) {
-	h.neg.Fix(v)
-	eye.Show(
-		"_", 
-		combine(
-			h.pos.Use().(Circuit),
-			v.(Circuit), 
-		),
-	)
-}
-
-func (h *Form) Cognize_(*be.Eye, interface{}) {}
+func (h *Mix) Cognize_(*be.Eye, interface{}) {}
 
 // combine substitutes dot-prefix addresses in the pos with corresponding data from the neg.
 func combine(pos, neg Circuit) Circuit {

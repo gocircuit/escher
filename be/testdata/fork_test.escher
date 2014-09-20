@@ -1,0 +1,7 @@
+
+main {
+	f Fork
+	f:A = "1"
+	f:B = "2"
+	f:_ = Show
+}

@@ -21,27 +21,27 @@
 //	}
 //
 Explore { // When, Charge, Sequence
-	explore model.ExploreOnStrobe
-	explore:Strobe = strobe:Strobe
+	exp model.ExploreOnStrobe
+	exp:Strobe = strobe:Strobe
 
 	strobe Strobe
-	strobe:When = Explore:When
-	strobe:Charge = Explore:Charge
+	strobe:When = :When
+	strobe:Charge = :Charge
 
-	Explore:Sequence = explore:Sequence
+	:Sequence = exp:Sequence
 }
 
 ExploreAddress { // Address, Image, Valve, When, Sequence
-	explore model.Explore // no local addressing
-	explore:When = ExploreAddress:When
-	explore:Sequence = ExploreAddress:Sequence
-	explore:Charge = fork:_
+	exp model.Explore // no local addressing
+	exp:When = :When
+	exp:Sequence = :Sequence
+	exp:Charge = fork:_
 
 	fork model.ForkCharge
-	fork:Image = ExploreAddress:Image
-	fork:Valve = ExploreAddress:Valve
+	fork:Image = :Image
+	fork:Valve = :Valve
 	fork:Circuit = lookup:Circuit
 
 	lookup escher.Lookup
-	lookup:Address = ExploreAddress:Address
+	lookup:Address = :Address
 }

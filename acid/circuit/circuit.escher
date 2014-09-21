@@ -8,14 +8,10 @@ ProcessIgnoreIO {
 	:Command = proc:Command
 
 	yio circuit.ForkIO
-	ignoreSpawn Ignore
-	clunkIn io.Clunk
-	clunkOut io.Clunk
-	clunkErr io.Clunk
-
 	yio:_ = proc:IO
-	yio:Spawn = ignoreSpawn:_
-	yio:Stdin = clunkIn:_
-	yio:Stdout = clunkOut:_
-	yio:Stderr = clunkErr:_
+
+	yio:Spawn = Ignore
+	yio:Stdin = io.Clunk
+	yio:Stdout = io.Clunk
+	yio:Stderr = io.Clunk
 }

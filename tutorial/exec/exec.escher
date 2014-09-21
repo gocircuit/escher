@@ -7,24 +7,20 @@ main {
 		Path "/bin/ls"
 		Args { "/" }
 	}
-	proc.Spawn = 1
+	proc:When = 1
 
 	yio os.ForkIO
-	proc.IO = yio._
+	proc:IO = yio:
 
-	clunkIn io.Clunk
-	stdout os.Stdout // connect to stdout of this program
-	stderr os.Stderr // connect to stderr of this program
-	yio.Stdin = clunkIn._
-	yio.Stdout = stdout._
-	yio.Stderr = stderr._
-	ign Ignore
-	yio.Spawn = ign._
+	yio:Stdin = io.Clunk
+	yio:Stdout = os.Stdout
+	yio:Stderr = os.Stderr
+	yio:When = Ignore
 
 	yexit os.ForkExit
-	proc.Exit = yexit._
+	proc:Exit = yexit:
 	exit os.Exit // exit this program
-	yexit.Exit = exit._
-	ignoreSpawn Ignore
-	yexit.Spawn = ignoreSpawn._
+
+	yexit:Exit = exit:
+	yexit:When = Ignore
 }

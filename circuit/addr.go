@@ -30,6 +30,12 @@ func NewAddressStrings(ss []string) (a Address) {
 	return Address{&p}
 }
 
+func NewAddress(nn []Name) (a Address) {
+	p := make(address, len(nn))
+	copy(p, nn)
+	return Address{&p}
+}
+
 func (a Address) Same(r Reducible) bool {
 	b, ok := r.(Address)
 	if !ok {

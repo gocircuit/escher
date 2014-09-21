@@ -7,7 +7,7 @@
 package circuit
 
 import (
-	// "fmt"
+	"log"
 )
 
 // Convenience access
@@ -123,7 +123,11 @@ func (u Circuit) Lookup(gate ...Name) Meaning {
 		if i+1 == len(gate) {
 			return x.At(g)
 		}
-		x = x.CircuitAt(g)
+		var ok bool
+		x, ok = x.CircuitOptionAt(g)
+		if !ok {
+			log.Fatalf("Address %v points to nothing", NewAddress(gate))
+		}
 	}
 	return x
 }

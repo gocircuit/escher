@@ -156,4 +156,4 @@ func (c *circuit) At(name Name) Meaning {
 	return c.gate[name]
 }
 
-const Super = "reflex"
+const Super = "super"

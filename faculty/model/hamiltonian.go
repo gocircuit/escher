@@ -63,8 +63,22 @@ func (h *Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 	for {
 		eye.Show("View", v.Circuitize()) // yield current hamiltonianView
 
-		switch t := v.Circuit.At(v.Vector.Gate()).(type) { // next gate
-		case Address: // Down
+		if v.Vector.Gate() == Super {
+			e := memory.Front() // backtrack
+			if e == nil {
+				log.Fatalf("short memory")
+			}
+			u := e.Value.(hamiltonianView)
+			memory.Remove(e)
+			//
+			v.Circuit = u.Circuit
+			v.Vector = v.Circuit.Follow(NewVector(u.Vector.Gate(), v.Vector.Valve()))
+			v.Depth--
+		} else {
+			t, ok := v.Circuit.At(v.Vector.Gate()).(Address)
+			if !ok {
+				log.Fatalf("unknown gate meaning %T", t)
+			}
 			if memory.Len() > 100 {
 				log.Fatalf("memory overload")
 				// memory.Remove(memory.Front())
@@ -76,23 +90,8 @@ func (h *Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 				log.Fatalf("No Hamiltonian circuit addressed %s", t.String())
 			}
 			v.Circuit = lookup.(Circuit) // transition to next circuit
-			v.Vector = v.Circuit.Follow(NewVector(v.Circuit.Super(), v.Vector.Valve()))
+			v.Vector = v.Circuit.Follow(NewVector(Super, v.Vector.Valve()))
 			v.Depth++
-
-		case Super: // Up
-			e := memory.Front() // backtrack
-			if e == nil {
-				log.Fatalf("short memory")
-			}
-			u := e.Value.(hamiltonianView)
-			memory.Remove(e)
-			//
-			v.Circuit = u.Circuit
-			v.Vector = v.Circuit.Follow(NewVector(u.Vector.Gate(), v.Vector.Valve()))
-			v.Depth--
-
-		default:
-			log.Fatalf("unknown gate meaning %T", t)
 		}
 		v.Index++
 		//
@@ -112,7 +111,7 @@ type hamiltonianView struct {
 }
 
 func (v *hamiltonianView) Dir() string {
-	if _, ok := v.Circuit.At(v.Vector.Gate()).(Super); ok {
+	if v.Vector.Gate() == Super {
 		return "Up"
 	}
 	return "Down"

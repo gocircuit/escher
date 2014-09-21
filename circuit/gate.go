@@ -156,11 +156,4 @@ func (c *circuit) At(name Name) Meaning {
 	return c.gate[name]
 }
 
-func (c *circuit) Super() Name {
-	for n, m := range c.gate {
-		if _, ok := m.(Super); ok {
-			return n
-		}
-	}
-	return nil
-}
+const Super = "reflex"

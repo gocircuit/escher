@@ -67,12 +67,12 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 
 func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	gates := make(map[Name]Reflex)
-	var name Name // name of circuit u
 	for _, g := range u.Letters() {
+		if g == Super {
+			log.Fatalf("Circuit design overwrites the %s gate. In:\n%v\n", Super, u)
+		}
 		m := u.At(g)
-		if _, ok := m.(Super); ok {
-			name = g
-		} else if a, ok := m.(Address); ok && len(a.Path()) == 1 && a.Path()[0] == "Fork" { // Generate circuit partition gates on the fly
+		if a, ok := m.(Address); ok && len(a.Path()) == 1 && a.Path()[0] == "Fork" { // Generate circuit partition gates on the fly
 			var arm []string
 			var under bool
 			for vlv, _ := range u.Valves(g) {
@@ -85,7 +85,7 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 			if !under || len(arm) == 0 {
 				log.Fatalf("Partition gate is missing default valve or has not partition valves. In:\n%v\n", u)
 			}
-			gates[g] = MaterializeUnion("_", arm...) // move to being
+			gates[g] = MaterializeUnion("_", arm...)
 		} else {
 			gates[g] = b.Materialize(
 				&Matter{Design: u},
@@ -93,12 +93,9 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 			)
 		}
 	}
-	if name == nil {
-		panic("no super")
-	}
-	super, gates[name] = make(Reflex), make(Reflex)
-	for v, _ := range u.Valves(name) {
-		super[v], gates[name][v] = NewSynapse()
+	super, gates[Super] = make(Reflex), make(Reflex)
+	for v, _ := range u.Valves(Super) {
+		super[v], gates[Super][v] = NewSynapse()
 	}
 	for _, g_ := range u.Letters() {
 		g := g_

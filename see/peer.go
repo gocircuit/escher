@@ -7,7 +7,7 @@
 package see
 
 import (
-	"log"
+	// "log"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -34,24 +34,9 @@ func SeePeer(src *Src) (n Name, m Meaning) {
 		return Nameless{}, left
 	} else { // two terms (name and value)
 		src.Become(t)
-		name := left.(Address).Simplify()
-		if c, ok := right.(Circuit); ok {
-			seal(c, name)
-		}
-		return name, right
+		return left.(Address).Simplify(), right
 	}
 	panic("peer")
 }
 
 type Nameless struct{}
-
-func seal(u Circuit, name Name) {
-	if _, ok := u.Include(name, Super{}); ok {
-		panic("overwriting super")
-	}
-	for nm, y := range u.Gates() {
-		if y == nil {
-			log.Fatalf("nil peer: %v", nm)
-		}
-	}
-}

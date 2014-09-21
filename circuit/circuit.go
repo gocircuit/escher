@@ -16,13 +16,6 @@ type Name interface{}
 // Meaning is one of: see.Address, string, int, float64, complex128, Circuit
 type Meaning interface{}
 
-// Super is a placeholder meaning for the super gate
-type Super struct{}
-
-func (Super) String() string {
-	return "*"
-}
-
 // circuit ...
 type circuit struct {
 	gate map[Name]Meaning

@@ -16,29 +16,16 @@ type Printer interface {
 	Print(prefix, indent string) string
 }
 
-func (u *circuit) super() (super Name, ok bool) {
-	for g, m := range u.Gates() {
-		if _, ok := m.(Super); ok {
-			return g, true
-		}
-	}
-	return nil, false
-}
-
 func (u *circuit) Print(prefix, indent string) string {
 	if u == nil {
 		return "<nil>"
 	}
 	var w bytes.Buffer
-
 	w.WriteString("{")
 
 	// super
-	super, ok := u.super()
-	if ok {
-		fmt.Fprintf(&w, " // %v", super)
-		valves := u.Valves(super)
-		w.WriteString("(")
+	if valves := u.Valves(Super); len(valves) > 0 {
+		fmt.Fprintf(&w, " // (")
 		if len(valves) > 0 {
 			var i int
 			for vn, _ := range valves {
@@ -56,18 +43,12 @@ func (u *circuit) Print(prefix, indent string) string {
 	// letters
 	for _, n := range u.Letters() {
 		p := u.gate[n]
-		if n == super {
-			continue
-		}
 		w.WriteString(prefix + indent)
 		PrintMeaning(&w, prefix+indent, indent, n, p)
 	}
 	// numbers
 	for _, n := range u.Numbers() {
 		p := u.gate[n]
-		if n == super {
-			continue
-		}
 		w.WriteString(prefix + indent)
 		PrintMeaning(&w, prefix+indent, indent, n, p)
 	}

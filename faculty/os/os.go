@@ -15,6 +15,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func Init(a string) {
@@ -102,7 +103,7 @@ func (Exit) Materialize() be.Reflex {
 		func(eye *be.Eye, valve string, value interface{}) {
 			os.Exit(value.(int))
 		}, 
-		"_",
+		DefaultValve,
 	)
 	return reflex
 }
@@ -115,7 +116,7 @@ func (Fatal) Materialize() be.Reflex {
 		func(eye *be.Eye, valve string, value interface{}) {
 			log.Fatalln(value)
 		}, 
-		"_",
+		DefaultValve,
 	)
 	return reflex
 }
@@ -133,9 +134,9 @@ func (LookPath) Materialize() be.Reflex {
 			if err != nil {
 				log.Fatalf("no file path to %s", value.(string))
 			}
-			eye.Show("_", p)
+			eye.Show(DefaultValve, p)
 		},
-		"Name", "_",
+		"Name", DefaultValve,
 	)
 	return reflex
 }

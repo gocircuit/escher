@@ -23,15 +23,9 @@ func init() {
 // Clunk…
 type Clunk struct{}
 
-func (Clunk) Materialize() be.Reflex {
-	_Endo, _Exo := be.NewSynapse()
-	go func() {
-		_Endo.Focus(clunk)
-	}()
-	return be.Reflex{"_": _Exo}
-}
+func (Clunk) Spark() {}
 
-func clunk(v interface{}) {
+func (Clunk) Cognize(_ *be.Eye, v interface{}) {
 	go func() {
 		switch t := v.(type) {
 		case io.ReadCloser:

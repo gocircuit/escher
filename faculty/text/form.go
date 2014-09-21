@@ -19,7 +19,7 @@ import (
 type ForkForm struct{}
 
 func (ForkForm) Materialize() be.Reflex {
-	return be.MaterializeUnion("_", "Form", "Data")
+	return be.MaterializeUnion("Form", "Data")
 }
 
 // FormBlend …
@@ -40,9 +40,9 @@ func (FormBlend) Materialize() be.Reflex {
 			if err = t.Execute(&w, fd.At("Data")); err != nil {
 				panic(err)
 			}
-			eye.Show("_", w.String())
+			eye.Show(DefaultValve, w.String())
 		}, 
-		"FormData", "_",
+		"FormData", DefaultValve,
 	)
 	return reflex
 }

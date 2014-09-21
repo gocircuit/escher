@@ -11,7 +11,7 @@ import (
 	"path"
 	"sync"
 
-	// . "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
 )
@@ -24,7 +24,7 @@ func init() {
 type Join struct{}
 
 func (Join) Materialize() be.Reflex {
-	reflex, _ := be.NewEyeCognizer((&join{}).Cognize, "_", "Head", "Tail")
+	reflex, _ := be.NewEyeCognizer((&join{}).Cognize, DefaultValve, "Head", "Tail")
 	return reflex
 }
 
@@ -50,5 +50,5 @@ func (x *join) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	if x.head == nil || x.tail == nil {
 		return
 	}
-	eye.Show("_", path.Join(*x.head, *x.tail))
+	eye.Show(DefaultValve, path.Join(*x.head, *x.tail))
 }

@@ -74,18 +74,18 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 		m := u.At(g)
 		if a, ok := m.(Address); ok && len(a.Path()) == 1 && a.Path()[0] == "Fork" { // Generate circuit partition gates on the fly
 			var arm []string
-			var under bool
+			var defaultUsed bool
 			for vlv, _ := range u.Valves(g) {
-				if vlv == "_" {
-					under = true
+				if vlv == "" { // 
+					defaultUsed = true
 				} else {
 					arm = append(arm, vlv.(string))
 				}
 			}
-			if !under || len(arm) == 0 {
-				log.Fatalf("Partition gate is missing default valve or has not partition valves. In:\n%v\n", u)
+			if !defaultUsed || len(arm) == 0 {
+				log.Fatalf("Fork gate's default valve not linked or has no partition valves. In:\n%v\n", u)
 			}
-			gates[g] = MaterializeUnion("_", arm...)
+			gates[g] = MaterializeUnion(arm...)
 		} else {
 			gates[g] = b.Materialize(
 				&Matter{Design: u},

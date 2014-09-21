@@ -19,7 +19,7 @@ func (h *Mix) Spark() {}
 
 func (h *Mix) CognizePN(eye *be.Eye, v interface{}) {
 	eye.Show(
-		"_", 
+		DefaultValve, 
 		combine(
 			v.(Circuit).CircuitAt("Positive"),
 			v.(Circuit).CircuitAt("Negative"),
@@ -27,7 +27,7 @@ func (h *Mix) CognizePN(eye *be.Eye, v interface{}) {
 	)
 }
 
-func (h *Mix) Cognize_(*be.Eye, interface{}) {}
+func (h *Mix) Cognize(*be.Eye, interface{}) {}
 
 // combine substitutes dot-prefix addresses in the pos with corresponding data from the neg.
 func combine(pos, neg Circuit) Circuit {

@@ -1,23 +1,23 @@
 
 // Merge ...
 Merge {
-	fork text.ForkMerge
-	fork:X = Merge:X
-	fork:Y = Merge:Y
-	fork:Z = Merge:Z
+	fork Fork
+	fork:X = :X
+	fork:Y = :Y
+	fork:Z = :Z
 
 	merge text.MergeBlend
-	merge:XYZ = fork:_
-	merge:_ = Merge:_
+	merge:XYZ = fork:
+	merge: = :
 }
 
 // Form ...
 Form {
-	fork text.ForkForm
-	fork:Form = Form:Form
-	fork:Data = Form:Data
+	fork Fork
+	fork:Form = :Form
+	fork:Data = :Data
 
 	form text.FormBlend
-	form:FormData = fork:_
-	form:_ = Form:_
+	form:FormData = fork:
+	form: = :
 }

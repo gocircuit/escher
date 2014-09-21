@@ -46,8 +46,16 @@ func SeeMeaningNoCircuit(src *Src) (x Meaning) {
 	return nil
 }
 
+func SeeAddressOrEmpty(src *Src) interface{} {
+	return seeAddress(src, true)
+}
+
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
+	return seeAddress(src, false)
+}
+
+func seeAddress(src *Src, allowEmpty bool) interface{} {
 	t := src.Copy()
 	var x []string
 	for {
@@ -60,8 +68,10 @@ func SeeAddress(src *Src) interface{} {
 	if len(x) == 0 {
 		return nil
 	}
-	if len(x) == 1 && x[0] == "" {
-		return nil
+	if !allowEmpty {
+		if len(x) == 1 && x[0] == "" {
+			return nil
+		}
 	}
 	src.Become(t)
 	return NewAddressStrings(x)

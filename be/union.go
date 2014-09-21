@@ -12,13 +12,13 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func MaterializeUnion(name string, field ...string) Reflex {
-	reflex, eye := NewEye(append(field, name)...)
+func MaterializeUnion(field ...string) Reflex {
+	reflex, eye := NewEye(append(field, DefaultValve)...) // add the default valve
 	go func() {
 		conj := New()
 		for {
 			dvalve, dvalue := eye.See()
-			if dvalve == name { // conjunction updated
+			if dvalve == DefaultValve { // conjunction updated
 				y := make(chan struct{}) // block and
 				for _, f_ := range field { // send updated conjunction to all field valves
 					f := f_
@@ -33,7 +33,7 @@ func MaterializeUnion(name string, field ...string) Reflex {
 			} else { // field updated
 				conj.Abandon(dvalve).Grow(dvalve, dvalue)
 				if conj.Len() == len(field) {
-					eye.Show(name, conj)
+					eye.Show(DefaultValve, conj)
 				}
 			}
 		}

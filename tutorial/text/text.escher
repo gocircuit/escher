@@ -5,7 +5,7 @@ main {
 	h header
 	h:Title = "Hello, world!"
 	show Show
-	show:_ = h:_
+	show: = h:
 }
 
 header {
@@ -13,9 +13,9 @@ header {
 	merge:X = `
 <html><head><title>
 `
-	merge:Y = header:Title
+	merge:Y = :Title
 	merge:Z = `
 </title></head></html>
 `
-	header:_ = merge:_
+	: = merge:
 }

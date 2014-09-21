@@ -19,7 +19,7 @@ import (
 type Remember struct{}
 
 func (Remember) Materialize() be.Reflex {
-	reflex, _ := be.NewEyeCognizer((&remember{}).Cognize, "From", "What", "When", "_")
+	reflex, _ := be.NewEyeCognizer((&remember{}).Cognize, "From", "What", "When", DefaultValve)
 	return reflex
 }
 
@@ -40,12 +40,12 @@ func (x *remember) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 		x.what = dvalue.(Image)
 	case "When":
 		x.when = dvalue
-	case "_":
+	case DefaultValve:
 	default:
 		panic("eh")
 	}
 	eye.Show(
-		"_", 
+		DefaultValve, 
 		Image{
 			"Memory": emphasize(x.from, x.what),
 			"When": x.when,

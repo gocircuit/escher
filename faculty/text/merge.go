@@ -28,7 +28,7 @@ func init() {
 type ForkMerge struct{}
 
 func (ForkMerge) Materialize() be.Reflex {
-	return be.MaterializeUnion("_", "X", "Y", "Z")
+	return be.MaterializeUnion("X", "Y", "Z")
 }
 
 // MergeBlend …
@@ -45,9 +45,9 @@ func (MergeBlend) Materialize() be.Reflex {
 			w.WriteString(flatten(xyz.StringAt("X")))
 			w.WriteString(flatten(xyz.StringAt("Y")))
 			w.WriteString(flatten(xyz.StringAt("Z")))
-			eye.Show("_", w.String())
+			eye.Show(DefaultValve, w.String())
 		}, 
-		"XYZ", "_",
+		"XYZ", DefaultValve,
 	)
 	return reflex
 }

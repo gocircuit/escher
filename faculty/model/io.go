@@ -10,6 +10,7 @@ import (
 	// "fmt"
 
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 /*
@@ -19,12 +20,12 @@ type IO struct{}
 
 func (IO) Spark() {}
 
-func (IO) Cognize_(eye *be.Eye, v interface{}) {
+func (IO) Cognize(eye *be.Eye, v interface{}) {
 	eye.Show("In", v)
 }
 
 func (IO) CognizeIn(eye *be.Eye, v interface{}) {}
 
 func (IO) CognizeOut(eye *be.Eye, v interface{}) {
-	eye.Show("_", v)
+	eye.Show(DefaultValve, v)
 }

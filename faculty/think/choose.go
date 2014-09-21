@@ -20,7 +20,7 @@ import (
 type Choose struct{}
 
 func (Choose) Materialize() be.Reflex {
-	reflex, _ := be.NewEyeCognizer((&choose{}).Cognize, "When", "From", "_")
+	reflex, _ := be.NewEyeCognizer((&choose{}).Cognize, "When", "From", DefaultValve)
 	return reflex
 }
 
@@ -38,7 +38,7 @@ func (x *choose) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 		x.from = dvalue.(Image)
 	case "When":
 		x.when = dvalue
-	case "_":
+	case DefaultValve:
 	default:
 		panic("eh")
 	}
@@ -48,7 +48,7 @@ func (x *choose) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 			continue
 		}
 		eye.Show(
-			"_", 
+			DefaultValve, 
 			Image{
 				"When": x.when,
 				"Choice": x.from[key],

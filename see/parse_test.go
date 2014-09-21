@@ -38,6 +38,7 @@ var testReal = []string{
 	` X:_ = "hello"`,
 	`123 = "a"`,
 	`X:y = a:_`,
+	`X:y = :_`,
 }
 
 func TestReal(t *testing.T) {
@@ -115,7 +116,7 @@ var testPeer = []string{
 		merge:First = ""
 		merge:Second = Title:_
 		merge:Third = ""
-		header:_ = merge:_
+		: = merge:
 	}
 	`,
 }

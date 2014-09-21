@@ -34,7 +34,7 @@ func init() {
 type Focus struct{}
 
 func (Focus) Materialize() be.Reflex {
-	reflex, _ := be.NewEyeCognizer((&focus{}).Cognize, "From", "On", "When", "_")
+	reflex, _ := be.NewEyeCognizer((&focus{}).Cognize, "From", "On", "When", DefaultValve)
 	return reflex
 }
 
@@ -55,12 +55,12 @@ func (x *focus) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 		x.on = dvalue.(string)
 	case "When":
 		x.when = dvalue
-	case "_":
+	case DefaultValve:
 	default:
 		panic("eh")
 	}
 	eye.Show(
-		"_", 
+		DefaultValve, 
 		Image{
 			"Focus": x.from.Copy().Cut(x.on),
 			"When": x.when,

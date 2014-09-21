@@ -32,7 +32,7 @@ func (h *Embody) CognizeMemory(_ *be.Eye, v interface{}) {
 	h.mem.Fix(v)
 }
 
-func (h *Embody) Cognize_(*be.Eye, interface{}) {}
+func (h *Embody) Cognize(*be.Eye, interface{}) {} // DefaultValve
 
 func (h *Embody) CognizeDesign(_ *be.Eye, v interface{}) {
 	h.design.Fix(v)
@@ -45,7 +45,7 @@ func (h *Embody) CognizeWhen(eye *be.Eye, w interface{}) {
 			h.design.Use().(Meaning),
 		),
 	)
-	eye.Show("_", New().Grow("When", w).Grow("Cell", cell))
+	eye.Show(DefaultValve, New().Grow("When", w).Grow("Cell", cell))
 }
 
 // Connect

@@ -12,7 +12,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	// . "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func Init(x, y, z string) {
@@ -28,7 +28,7 @@ type Dir struct{
 
 func (d Dir) Materialize() be.Reflex {
 	x := dir(d.dir)
-	reflex, _ := be.NewEyeCognizer(x.Cognize, "Path", "_")
+	reflex, _ := be.NewEyeCognizer(x.Cognize, "Path", DefaultValve)
 	return reflex
 }
 
@@ -38,5 +38,5 @@ func (d dir) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	if dvalve != "Path" {
 		return
 	}
-	eye.Show("_", string(d))
+	eye.Show(DefaultValve, string(d))
 }

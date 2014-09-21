@@ -12,6 +12,7 @@ import (
 	"os"
 
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	kitio "github.com/gocircuit/escher/kit/io"
 )
 
@@ -37,8 +38,8 @@ func MaterializeWriteTo(w io.Writer) be.Reflex {
 	x := &writerTo{
 		WriteCloser: kitio.SovereignWriter(w),
 	}
-	reflex, eye := be.NewEyeCognizer(x.cognize, "_")
-	go eye.Show("_", x.WriteCloser)
+	reflex, eye := be.NewEyeCognizer(x.cognize, DefaultValve)
+	go eye.Show(DefaultValve, x.WriteCloser)
 	return reflex
 }
 
@@ -79,8 +80,8 @@ func MaterializeReadFrom(w io.Reader) be.Reflex {
 	x := &readFrom{
 		ReadCloser: kitio.SovereignReader(w),
 	}
-	reflex, eye := be.NewEyeCognizer(x.cognize, "_")
-	go eye.Show("_", x.ReadCloser)
+	reflex, eye := be.NewEyeCognizer(x.cognize, DefaultValve)
+	go eye.Show(DefaultValve, x.ReadCloser)
 	return reflex
 }
 

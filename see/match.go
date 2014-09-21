@@ -17,8 +17,6 @@ type Carry struct {
 	Meaning
 }
 
-const DefaultValve = "_"
-
 func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -91,9 +89,9 @@ func seeJoinAddress(src *Src) (peer, valve Name, ok bool) {
 		}
 	}()
 	t := src.Copy()
-	p := SeeAddress(t).(Address)
+	p := SeeAddressOrEmpty(t).(Address)
 	t.Match(string(ValveSelector))
-	v := SeeAddress(t).(Address)
+	v := SeeAddressOrEmpty(t).(Address)
 	src.Become(t)
 	return p.Simplify(), v.Simplify(), true
 }

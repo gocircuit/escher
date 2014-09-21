@@ -19,7 +19,7 @@ import (
 type Associate struct{}
 
 func (Associate) Materialize() be.Reflex {
-	reflex, _ := be.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", "_")
+	reflex, _ := be.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", DefaultValve)
 	return reflex
 }
 
@@ -40,12 +40,12 @@ func (x *association) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 		x.with = dvalue
 	case "When":
 		x.when = dvalue
-	case "_":
+	case DefaultValve:
 	default:
 		panic("eh")
 	}
 	eye.Show(
-		"_", 
+		DefaultValve, 
 		Image{
 			x.name: x.with,
 			"When": x.when,

@@ -29,7 +29,7 @@ func (h *Range) CognizeMemory(eye *be.Eye, v interface{}) {
 
 func (h *Range) CognizeIn(eye *be.Eye, v interface{}) {
 	eye.Show(
-		"_", 
+		DefaultValve, 
 		rangeOverWith(
 			h.mem.Use().(*memory.Memory),
 			v.(Circuit).CircuitAt("Over"), // Circuit
@@ -38,7 +38,7 @@ func (h *Range) CognizeIn(eye *be.Eye, v interface{}) {
 	)
 }
 
-func (h *Range) Cognize_(*be.Eye, interface{}) {}
+func (h *Range) Cognize(*be.Eye, interface{}) {}
 
 func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 	gates := over.Gates()
@@ -51,7 +51,7 @@ func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 		go func() {
 			x := be.NewCell(be.Materialize(mem, with))
 			x.ReCognize(
-				"_", 
+				DefaultValve, 
 				New().
 					Grow("Name", gname).
 					Grow("Value", gvalue).
@@ -59,7 +59,7 @@ func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 					Grow("Index", index),
 			)
 			vlv, val := x.Cognize()
-			if vlv != "_" {
+			if vlv != DefaultValve {
 				panic(4)
 			}
 			ch <- val.(Circuit)

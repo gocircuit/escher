@@ -12,30 +12,30 @@ import (
 
 // ForkStart
 func MaterializeForkStart() be.Reflex {
-	return be.MaterializeUnion("_", "Circuit", "Vector")
+	return be.MaterializeUnion("Circuit", "Vector")
 }
 
 // ForkView
 func MaterializeForkView() be.Reflex {
-	return be.MaterializeUnion("_", "Circuit", "Vector", "Index", "Depth", "Dir", "Path",)
+	return be.MaterializeUnion("Circuit", "Vector", "Index", "Depth", "Dir", "Path",)
 }
 
 // ForkVector
 func MaterializeForkVector() be.Reflex {
-	return be.MaterializeUnion("_", "Gate", "Valve")
+	return be.MaterializeUnion("Gate", "Valve")
 }
 
 // ForkMix
 func MaterializeForkMix() be.Reflex {
-	return be.MaterializeUnion("_", "Positive", "Negative")
+	return be.MaterializeUnion("Positive", "Negative")
 }
 
 // ForkRange
 func MaterializeForkRange() be.Reflex {
-	return be.MaterializeUnion("_", "Over", "With")
+	return be.MaterializeUnion("Over", "With")
 }
 
 // ForkRangeView
 func MaterializeForkRangeView() be.Reflex {
-	return be.MaterializeUnion("_", "Name", "Value", "Count", "Index")
+	return be.MaterializeUnion("Name", "Value", "Count", "Index")
 }

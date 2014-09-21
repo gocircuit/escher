@@ -12,6 +12,9 @@ import (
 	// "strings"
 )
 
+// DefaultValve
+const DefaultValve = ""
+
 // Address ...
 type Address struct {
 	*address

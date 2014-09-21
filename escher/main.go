@@ -24,7 +24,6 @@ import (
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	// // _ "github.com/gocircuit/escher/faculty/handbook"
-	// _ "github.com/gocircuit/escher/faculty/i"
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/io/util"
 	_ "github.com/gocircuit/escher/faculty/path"

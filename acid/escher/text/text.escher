@@ -8,6 +8,7 @@ Merge {
 
 	merge text.MergeBlend
 	merge:XYZ = fork:
+
 	merge: = :
 }
 

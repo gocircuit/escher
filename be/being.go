@@ -97,7 +97,7 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 	for v, _ := range u.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
-	for _, g_ := range u.Letters() {
+	for _, g_ := range append(u.Letters(), DefaultValve) {
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
@@ -114,6 +114,7 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 }
 
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
+	// log.Printf(" %v:%v <=> %v:%v", sg, sv, tg, tv)
 	if _, ok := gates[sg]; !ok {
 		log.Fatalf("Unknown gate %v in circuit:\n%v\n", sg, u)
 	}

@@ -21,6 +21,7 @@ func init() {
 	faculty.Register("Root", be.NewNounReflex(faculty.Root))
 	//
 	faculty.Register("Grow", &Grow{})
+	faculty.Register("Fork", Fork{})
 }
 
 // Scanln

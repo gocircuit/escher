@@ -83,32 +83,16 @@ func (b *Being) MaterializeCircuit(matter *Matter, u Circuit) (super Reflex) {
 			log.Fatalf("Circuit design overwrites the %s gate. In:\n%v\n", Super, u)
 		}
 		m := u.At(g)
-		if a, ok := m.(Address); ok && len(a.Path()) == 1 && a.Path()[0] == "Fork" { // Generate circuit partition gates on the fly
-			var arm []string
-			var defaultUsed bool
-			for vlv, _ := range u.Valves(g) {
-				if vlv == "" { // 
-					defaultUsed = true
-				} else {
-					arm = append(arm, vlv.(string))
-				}
-			}
-			if !defaultUsed || len(arm) == 0 {
-				log.Fatalf("Fork gate's default valve not linked or has no partition valves. In:\n%v\n", u)
-			}
-			gates[g] = MaterializeUnion(arm...)
-		} else {
-			gates[g] = b.Materialize(
-				&Matter{
-					Address: Address{},
-					Design: m,
-					Valve: valveSet(u.Valves(g)),
-					Path: append(matter.Path, g),
-					Super: matter,
-				},
-				m, false,
-			)
-		}
+		gates[g] = b.Materialize(
+			&Matter{
+				Address: Address{},
+				Design: m,
+				Valve: valveSet(u.Valves(g)),
+				Path: append(matter.Path, g),
+				Super: matter,
+			},
+			m, false,
+		)
 	}
 	super, gates[Super] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(Super) {

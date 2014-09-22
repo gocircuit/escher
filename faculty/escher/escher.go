@@ -51,5 +51,5 @@ func (Memory) Materialize() be.Reflex {
 type CircuitSourceDir struct{}
 
 func (CircuitSourceDir) Materialize(matter *be.Matter) be.Reflex {
-	return be.NewNounReflex(matter.Design.At(fs.Source{}).(Circuit).StringAt("Dir"))
+	return be.NewNounReflex(matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).StringAt("Dir"))
 }

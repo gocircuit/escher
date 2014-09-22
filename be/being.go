@@ -28,18 +28,29 @@ func NewBeing(m Circuit) *Being {
 }
 
 func (b *Being) MaterializeAddress(addr Address) Reflex {
-	x := b.mem.Lookup(addr.Path()...)
-	if x == nil {
+	matter := &Matter{
+		Valve: nil,
+		Path: []Name{},
+		Super: nil,
+	}
+	return b.materializeAddress(matter, addr)
+}
+
+func (b *Being) materializeAddress(matter *Matter, addr Address) Reflex {
+	val := b.mem.Lookup(addr.Path()...)
+	if val == nil {
 		log.Fatalf("Address %v is dangling", addr)
 	}
-	return b.Materialize(nil, x, true) // 
+	matter.Address = addr
+	matter.Design = val
+	return b.Materialize(matter, val, true)
 }
 
 func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 	switch t := x.(type) {
 	// Addresses are materialized recursively
 	case Address:
-		return b.MaterializeAddress(t)
+		return b.materializeAddress(matter, t)
 	// Irreducible types are materialized as gates that emit the irreducible values
 	case int, float64, complex128, string:
 		return NewNounReflex(t)
@@ -54,7 +65,7 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 		return MaterializeInterface(t)
 	case Circuit:
 		if recurse {
-			return b.MaterializeCircuit(t)
+			return b.MaterializeCircuit(matter, t)
 		}
 		return NewNounReflex(t)
 	case nil:
@@ -65,7 +76,7 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 	panic(0)
 }
 
-func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
+func (b *Being) MaterializeCircuit(matter *Matter, u Circuit) (super Reflex) {
 	gates := make(map[Name]Reflex)
 	for _, g := range u.Letters() {
 		if g == Super {
@@ -88,7 +99,13 @@ func (b *Being) MaterializeCircuit(u Circuit) (super Reflex) {
 			gates[g] = MaterializeUnion(arm...)
 		} else {
 			gates[g] = b.Materialize(
-				&Matter{Design: u},
+				&Matter{
+					Address: Address{},
+					Design: m,
+					Valve: valveSet(u.Valves(g)),
+					Path: append(matter.Path, g),
+					Super: matter,
+				},
 				m, false,
 			)
 		}
@@ -127,4 +144,12 @@ func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
 	if _, ok := gates[tg][tv]; !ok {
 		log.Fatalf("Unknown valve %v:%v in circuit:\n%v\n", tg, tv, u)
 	}
+}
+
+func valveSet(v map[Name]Vector) map[Name]struct{} {
+	w := make(map[Name]struct{})
+	for vlv, _ := range v {
+		w[vlv] = struct{}{}
+	}
+	return w
 }

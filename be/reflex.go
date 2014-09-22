@@ -30,8 +30,10 @@ type Gate interface {
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
-	// Address string // Address of this circuit design within the faculties namespace
-	Design Circuit // Circuit design of this reflex
-	// Memory Faculty // Faculty within which this circuit design is implemented
-	// Super *Matter // Matter of the circuit that recalled this reflex as a peer
+	Address Address // Address of the materialized design in memory
+	Design interface{} // Design
+	Valve map[Name]struct{} // Valves connected to this design in the enclosing circuit
+	//
+	Path []Name // Materialization path of this reflex, recursively following gate names
+	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }

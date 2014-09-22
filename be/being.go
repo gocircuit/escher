@@ -16,7 +16,13 @@ import (
 func Materialize(m *Memory, design Meaning) Reflex {
 	b := &Being{m.StartHijack()}
 	defer m.EndHijack()
-	return b.Materialize(nil, design, true)
+	matter := &Matter{
+		Design: design,
+		Valve: nil,
+		Path: []Name{},
+		Super: nil,
+	}
+	return b.Materialize(matter, design, true)
 }
 
 type Being struct {

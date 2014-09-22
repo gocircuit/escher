@@ -17,30 +17,37 @@ import (
 
 type Range struct{
 	mem plumb.Given
+	aux plumb.Given
 }
 
 func (h *Range) Spark() {
 	h.mem.Init()
+	h.aux.Init()
 }
 
 func (h *Range) CognizeMemory(eye *be.Eye, v interface{}) {
-	h.mem.Fix(v.(*memory.Memory))
+	h.mem.Fix(v)
 }
 
-func (h *Range) CognizeIn(eye *be.Eye, v interface{}) {
+func (h *Range) CognizeAux(eye *be.Eye, v interface{}) {
+	h.aux.Fix(v)
+}
+
+func (h *Range) CognizeOverWith(eye *be.Eye, v interface{}) {
 	eye.Show(
 		DefaultValve, 
 		rangeOverWith(
 			h.mem.Use().(*memory.Memory),
+			h.aux.Use(),
 			v.(Circuit).CircuitAt("Over"), // Circuit
-			v.(Circuit).At("With"), // Materializable design
+			v.(Circuit).At("With"), // Materializable design (circuit or address)
 		),
 	)
 }
 
 func (h *Range) Cognize(*be.Eye, interface{}) {}
 
-func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
+func rangeOverWith(mem *memory.Memory, aux Meaning, over Circuit, with Meaning) Circuit {
 	gates := over.Gates()
 	ch := make(chan Circuit, len(gates))
 	var i int
@@ -48,17 +55,18 @@ func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 		gname, gvalue := gname_, gvalue_
 		index := i
 		i++
-		go func() {
-			x := be.NewCell(be.Materialize(mem, with))
+		go func() { // For each gate
+			x := be.NewCell(be.Materialize(mem, with)) // Make a cell, according to the design with
 			x.ReCognize(
-				DefaultValve, 
+				DefaultValve,
 				New().
+					Grow("Aux", aux).
 					Grow("Name", gname).
 					Grow("Value", gvalue).
 					Grow("Count", len(gates)).
 					Grow("Index", index),
 			)
-			vlv, val := x.Cognize()
+			vlv, val := x.Cognize() // Read the first output from the default gate of the cell
 			if vlv != DefaultValve {
 				panic(4)
 			}
@@ -66,7 +74,7 @@ func rangeOverWith(mem *memory.Memory, over Circuit, with Meaning) Circuit {
 		}()
 	}
 	r := New()
-	for _ = range gates {
+	for _ = range gates { // merge all output circuits into one
 		for n, v := range (<-ch).Gates() {
 			r.ReGrow(n, v)
 		}

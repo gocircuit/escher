@@ -23,7 +23,7 @@ func init() {
 	faculty.Register("model.Mix", &Mix{})
 	faculty.Register("model.ForkMix", MaterializeForkMix)
 	//
-	faculty.Register("model.Range", &Range{})
+	faculty.Register("model.Range_", &Range{})
 	faculty.Register("model.ForkRange", MaterializeForkRange)
 	faculty.Register("model.ForkRangeView", MaterializeForkRangeView)
 	//

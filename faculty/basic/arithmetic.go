@@ -8,6 +8,7 @@ package basic
 
 import (
 	// "fmt"
+	"strconv"
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
@@ -18,7 +19,25 @@ import (
 
 func init() {
 	faculty.Register("Sum", Sum{})
+	faculty.Register("IntString", IntString{})
 	// faculty.Root.Grow("Prod", Prod{})
+}
+
+// IntString
+type IntString struct{}
+
+func (IntString) Spark() {}
+
+func (IntString) CognizeInt(eye *be.Eye, v interface{}) {
+	eye.Show("String", strconv.Itoa(v.(int)))
+}
+
+func (IntString) CognizeString(eye *be.Eye, v interface{}) {
+	i, err := strconv.Atoi(v.(string))
+	if err != nil {
+		panic(err)
+	}
+	eye.Show("Int", i)
 }
 
 // Sum

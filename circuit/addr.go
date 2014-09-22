@@ -9,7 +9,7 @@ package circuit
 import (
 	"bytes"
 	"fmt"
-	// "strings"
+	"strings"
 )
 
 // DefaultValve
@@ -22,17 +22,21 @@ type Address struct {
 
 type address []Name
 
+func NewAddress(nn []Name) (a Address) {
+	p := make(address, len(nn))
+	copy(p, nn)
+	return Address{&p}
+}
+
+func NewAddressParse(src string) Address {
+	return NewAddressStrings(strings.Split(src, "."))
+}
+
 func NewAddressStrings(ss []string) (a Address) {
 	p := make(address, len(ss))
 	for i, x := range ss {
 		p[i] = x
 	}
-	return Address{&p}
-}
-
-func NewAddress(nn []Name) (a Address) {
-	p := make(address, len(nn))
-	copy(p, nn)
 	return Address{&p}
 }
 

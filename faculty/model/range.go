@@ -8,6 +8,7 @@ package model
 
 import (
 	// "fmt"
+	"log"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
@@ -56,7 +57,15 @@ func rangeOverWith(mem *memory.Memory, aux Meaning, over Circuit, with Meaning) 
 		index := i
 		i++
 		go func() { // For each gate
-			x := be.NewCell(be.Materialize(mem, with)) // Make a cell, according to the design with
+			var x *be.Cell
+			switch t := with.(type) {
+			case Circuit:
+				x = be.NewCell(be.Materialize(mem, t))
+			case string:
+				x = be.NewCell(be.Materialize(mem, NewAddressParse(t)))
+			default:
+				log.Fatalf("Unknown type at Range:With (%T)", with)
+			}
 			x.ReCognize(
 				DefaultValve,
 				New().

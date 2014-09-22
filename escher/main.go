@@ -36,6 +36,7 @@ import (
 )
 
 var (
+	flagMain     = flag.String("main", "main", "address of the startup circuit")
 	flagShow     = flag.String("show", "", "print out an object at a given path; don't run")
 	flagSvg     = flag.String("svg", "", "display a circuit as SVG; don't run")
 	flagX        = flag.String("x", "", "program source directory X")
@@ -86,7 +87,7 @@ func main() {
 
 	default:
 		b := NewBeing(compile(*flagX, *flagY, *flagZ))
-		b.MaterializeAddress(NewAddressStrings([]string{"main"}))
+		b.MaterializeAddress(NewAddressParse(*flagMain))
 		select {} // wait forever
 	}
 }

@@ -16,7 +16,7 @@ import (
 
 func init() {
 	faculty.Register("Ignore", be.Ignore{})
-	faculty.Register("Show", Println{})
+	faculty.Register("Show", MaterializeShow)
 	faculty.Register("See", Scanln{})
 	faculty.Register("Root", be.NewNounReflex(faculty.Root))
 	//

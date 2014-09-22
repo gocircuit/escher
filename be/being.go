@@ -61,8 +61,10 @@ func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
 	case int, float64, complex128, string:
 		return NewNounReflex(t)
 	// Go-gates are materialized into runtime reflexes
-	case MaterializerFunc:
+	case func() Reflex:
 		return t()
+	case func(*Matter) Reflex:
+		return t(matter)
 	case Materializer:
 		return t.Materialize()
 	case MaterializerWithMatter:

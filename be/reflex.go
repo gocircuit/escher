@@ -14,16 +14,17 @@ import (
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
 type Reflex map[Name]*Synapse
 
-type MaterializerFunc func() Reflex
-
+//
 type Materializer interface {
 	Materialize() Reflex
 }
 
+//
 type MaterializerWithMatter interface {
 	Materialize(*Matter) Reflex
 }
 
+//
 type Gate interface {
 	Spark() // Initializer
 }

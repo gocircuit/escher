@@ -7,39 +7,63 @@
 package basic
 
 import (
-	// "fmt"
+	"fmt"
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/be"
 )
 
 func init() {
-	faculty.Register("Junction", Junction{})
+	faculty.Register("Junction", MaterializeJunction)
 }
 
-// Junction
-type Junction struct{}
+// MaterializeJunction
+func MaterializeJunction(matter *Matter) Reflex {
+	return MaterializeJunctionWithFunc(matter, nil)
+}
 
-func (Junction) Materialize() Reflex {
-	reflex, _ := NewEyeCognizer(cognizeJunction, "X", "Y", "Z")
+func MaterializeShow(matter *Matter) Reflex {
+	return MaterializeJunctionWithFunc(
+		matter, 
+		func (v interface{}) {
+			fmt.Printf("%v\n", v)
+		},
+	)
+}
+
+func MaterializeJunctionWithFunc(matter *Matter, f func(interface{})) Reflex {
+	if len(matter.Valve) < 1 {
+		panic("Junction is not connected")
+	}
+	vlv := make([]string, 0, len(matter.Valve))
+	for v, _ := range matter.Valve {
+		vlv = append(vlv, v.(string))
+	}
+	j := junction{f, vlv}
+	reflex, _ := NewEyeCognizer(j.Cognize, vlv...)
 	return reflex
 }
 
-func cognizeJunction(eye *Eye, dvalve string, dvalue interface{}) {
-	ch := make(sparkChan, 2)
-	switch dvalve {
-	case "X":
-		go spark(ch, eye, "Y", dvalue)
-		go spark(ch, eye, "Z", dvalue)
-	case "Y":
-		go spark(ch, eye, "X", dvalue)
-		go spark(ch, eye, "Z", dvalue)
-	case "Z":
-		go spark(ch, eye, "X", dvalue)
-		go spark(ch, eye, "Y", dvalue)
+type junction struct {
+	f func(interface{})
+	valve []string
+}
+
+func (j junction) Cognize(eye *Eye, name string, value interface{}) {
+	if j.f != nil {
+		j.f(value)
 	}
-	<-ch
-	<-ch
+	ch := make(sparkChan, len(j.valve)-1)
+	for _, u_ := range j.valve {
+		u := u_
+		if u == name {
+			continue
+		}
+		go spark(ch, eye, u, value)
+	}
+	for i := 0; i+1 < len(j.valve); i++ {
+		<-ch
+	}
 }
 
 type sparkChan chan struct{}

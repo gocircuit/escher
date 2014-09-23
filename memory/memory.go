@@ -18,6 +18,7 @@ import (
 type Memory interface {
 	Lookup(Address) Meaning
 	Goto(...Name) Memory
+	Refine(Name) Memory
 
 	Circuit() Circuit
 	Include(Name, Meaning) Meaning
@@ -43,6 +44,10 @@ func NewMemory() Memory {
 	}
 }
 
+func (m *memory) String() string {
+	return "Memory"
+}
+
 func (m *memory) T(t func(Circuit))  {
 	m.Lock()
 	defer m.Unlock()
@@ -52,16 +57,37 @@ func (m *memory) T(t func(Circuit))  {
 func (m *memory) Lookup(addr Address) Meaning {
 	m.Lock()
 	defer m.Unlock()
-	return Copy(m.x.Goto(addr.Path()...))
+	names := addr.Path()
+	k := len(names)-1
+	return Copy(m.goto_(names[:k]).(*memory).x.At(names[k]))
 }
 
 func (m *memory) Goto(gate ...Name) Memory {
 	m.Lock()
 	defer m.Unlock()
-	return &memory{
-		Mutex: m.Mutex,
-		x: m.x.Goto(gate...).(Circuit),
+	return m.goto_(gate...)
+}
+
+func (m *memory) goto_(gate ...Name) Memory {
+	for _, name := range gate {
+		m = m.x.At(name).(*memory)
 	}
+	return m
+}
+
+func (m *memory) Refine(n Name) (k Memory) {
+	m.Lock()
+	defer m.Unlock()
+	v, ok := m.x.OptionAt(n)
+	if !ok {
+		k = &memory{
+			Mutex: m.Mutex,
+			x: New(),
+		}
+		m.x.Include(n, k)
+		return k
+	}
+	return v.(Memory)
 }
 
 func (m *memory) Circuit() Circuit {

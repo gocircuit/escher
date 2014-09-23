@@ -31,8 +31,7 @@ func Register(name string, v interface{}) {
 		if i+1 == len(a) {
 			break
 		}
-		x.IncludeIfNot(g, New())
-		x = x.Goto(g)
+		x = x.Refine(g)
 	}
 	if x.Include(a[len(a)-1], v) != nil {
 		panic("overwriting builtin")

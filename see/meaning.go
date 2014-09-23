@@ -24,6 +24,15 @@ func SeeMeaning(src *Src) (x Meaning) {
 	return nil
 }
 
+func SeeMeaningNoCircuitOrNil(src *Src) (x Meaning) {
+	defer func() {
+		if r := recover(); r != nil {
+			x = nil
+		}
+	}()
+	return SeeMeaningNoCircuit(src)
+}
+
 func SeeMeaningNoCircuit(src *Src) (x Meaning) {
 	if x = SeeInt(src); x != nil {
 		return

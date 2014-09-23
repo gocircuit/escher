@@ -48,10 +48,7 @@ func loadDirectory(into Memory, acid, dir string) Memory {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
 			fn := fileInfo.Name()
-			if _, ok := into.IncludeIfNot(fn, New()).(Circuit); !ok {
-				panic("writing over an irreducible")
-			}
-			loadDirectory(into.Goto(fn), acid, filePath)
+			loadDirectory(into.Refine(fn), acid, filePath)
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
@@ -101,5 +98,5 @@ func loadFile(into Memory, dir, file string) Memory {
 type Source struct{}
 
 func (Source) String() string {
-	return "*Source"
+	return "Source"
 }

@@ -19,10 +19,11 @@ import (
 	// . "github.com/gocircuit/escher/be"
 	// . "github.com/gocircuit/escher/fs"
 	. "github.com/gocircuit/escher/memory"
+	"github.com/gocircuit/escher/see"
 )
 
 type Shell struct {
-	memory *Memory
+	memory Memory
 	in io.Reader
 	out io.WriteCloser
 	err io.WriteCloser
@@ -36,7 +37,7 @@ type Focus struct {
 	Address Address
 }
 
-func NewShell(in io.Reader, out, err io.WriteCloser, memory *Memory) *Shell {
+func NewShell(in io.Reader, out, err io.WriteCloser, memory Memory) *Shell {
 	sh := &Shell{
 		memory: memory,
 		in: in,
@@ -81,7 +82,7 @@ func (sh *Shell) ShowPrompt() {
 
 func (sh *Shell) ShowCircuit(w []string) {
 	if len(w) == 0 {
-		fmt.Fprintf(sh.err, "%v\n", sh.memory.View())
+		fmt.Fprintf(sh.err, "%v\n", sh.memory.Circuit())
 		return
 	}
 	// XXX
@@ -91,14 +92,28 @@ func (sh *Shell) ShowCircuit(w []string) {
 func (sh *Shell) Include(w []string) {
 	switch {
 	case len(w) == 0:
-		fmt.Fprintf(sh.err, "Make command needs arguments\n")
+		fmt.Fprintf(sh.err, "Include command needs arguments\n")
 	case len(w) == 1:
 		dir, file := path.Split(w[0])
 		if dir != "" {
-			fmt.Fprintf(sh.err, "Make argument cannot be a path\n")
+			fmt.Fprintf(sh.err, "Include argument cannot be a path\n")
 			return
 		}
-		sh.memory.Include(file, New())
+		sh.memory.Refine(file)
+	case len(w) == 2:
+		dir, file := path.Split(w[0])
+		if dir != "" {
+			fmt.Fprintf(sh.err, "Include argument cannot be a path\n")
+			return
+		}
+		x := see.SeeMeaningNoCircuitOrNil(see.NewSrcString(w[1]))
+		if x == nil {
+			fmt.Fprintf(sh.err, "Value not recognized\n")
+			return
+		}
+		sh.memory.Include(file, x)
+	default:
+		fmt.Fprintf(sh.err, "Include accepts at most two arguments\n")
 	}
 }
 
@@ -108,14 +123,22 @@ func (sh *Shell) ShowFocus() {
 
 func (sh *Shell) ShowHelp() {
 	const help = `
-help		Show this screen
-cd		Move current focus
-ls		Show the current circuit
-mk		Add a sub-circuit
-fwd, f	Move forward in history
-bwd, b	Move backward in history
-jump		Change the current focus
-`
+help, h, ?
+ls
+mk xyz
+mk xyz "abc"
+---
+cd
+cd ef
+cd ef/gh
+cd /
+cd ..
+ls ../ef/
+ls abc/d
+ls abc/d/...
+fwd, f
+bwd, b
+jump g`
 	fmt.Fprintf(sh.err, "%s\n", help)
 }
 

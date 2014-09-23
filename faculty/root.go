@@ -26,17 +26,15 @@ func Register(name string, v interface{}) {
 		panic(1)
 	}
 	//
-	x := root.Goto(nil)
+	x := root
 	for i, g := range a {
 		if i+1 == len(a) {
 			break
 		}
-		y, ok := x.CircuitOptionAt(g)
-		if !ok {
-			y = New()
-			x.Grow(g, y)
-		}
-		x = y
+		x.IncludeIfNot(g, New())
+		x = x.Goto(g)
 	}
-	x.Grow(a[len(a)-1], v)
+	if x.Include(a[len(a)-1], v) != nil {
+		panic("overwriting builtin")
+	}
 }

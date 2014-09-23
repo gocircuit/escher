@@ -22,7 +22,7 @@ import (
 
 	Start Circuit
 
-	Memory *Memory
+	Memory Memory
 
 	View = {
 		Circuit Circuit // Current circuit in the exploration sequence
@@ -49,7 +49,7 @@ func (e *Eulerian) CognizeView(*be.Eye, interface{}) {}
 func (e *Eulerian) CognizeStart(eye *be.Eye, v interface{}) {
 	euler(
 		eye,
-		e.mem.Use().(*Memory),
+		e.mem.Use().(Memory),
 		&eulerView{
 			Circuit: v.(Circuit),
 			Index: 0,
@@ -58,7 +58,7 @@ func (e *Eulerian) CognizeStart(eye *be.Eye, v interface{}) {
 	)
 }
 
-func euler(eye *be.Eye, m *Memory, v *eulerView) int {
+func euler(eye *be.Eye, m Memory, v *eulerView) int {
 	var n int // number of views shown
 	eye.Show("View", v.Circuitize(true))
 	n++
@@ -66,7 +66,7 @@ func euler(eye *be.Eye, m *Memory, v *eulerView) int {
 	for _, h := range v.Circuit.Gates() {
 		switch t := h.(type) {
 		case Address:
-			x := m.Lookup(t.Path()...) // Resolve addresses once
+			x := m.Lookup(t) // Resolve addresses once
 			if x == nil {
 				log.Fatalf("No Eulerian circuit addressed %s", t.String())
 			}

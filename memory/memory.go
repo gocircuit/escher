@@ -21,9 +21,12 @@ type Memory interface {
 
 	Circuit() Circuit
 	Include(Name, Meaning) Meaning
+	IncludeIfNot(Name, Meaning) Meaning
 	Exclude(Name) Meaning
 	Link(u, v Vector)
 	Unlink(u, v Vector)
+
+	T(func(Circuit))
 }
 
 // memory is a hierarchical namespace of circuits.
@@ -38,6 +41,12 @@ func NewMemory() Memory {
 		Mutex: &lk,
 		x: New(),
 	}
+}
+
+func (m *memory) T(t func(Circuit))  {
+	m.Lock()
+	defer m.Unlock()
+	t(m.x)
 }
 
 func (m *memory) Lookup(addr Address) Meaning {
@@ -66,6 +75,17 @@ func (m *memory) Include(n Name, v Meaning) Meaning {
 	defer m.Unlock()
 	r, _ := m.x.Include(n, Copy(v))
 	return r
+}
+
+func (m *memory) IncludeIfNot(n Name, v Meaning) Meaning {
+	m.Lock()
+	defer m.Unlock()
+	u, ok := m.x.OptionAt(n)
+	if ok {
+		return Copy(u)
+	}
+	m.x.Include(n, Copy(v))
+	return v
 }
 
 func (m *memory) Exclude(n Name) Meaning {

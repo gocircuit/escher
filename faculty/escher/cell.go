@@ -41,7 +41,7 @@ func (h *Embody) CognizeDesign(_ *be.Eye, v interface{}) {
 func (h *Embody) CognizeWhen(eye *be.Eye, w interface{}) {
 	cell := be.NewCell(
 		be.Materialize(
-			h.mem.Use().(*memory.Memory), 
+			h.mem.Use().(memory.Memory), 
 			h.design.Use().(Meaning),
 		),
 	)

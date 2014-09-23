@@ -13,6 +13,7 @@ import (
 
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/memory"
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/fs"
 
@@ -62,7 +63,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -svg .
 			walk = nil
 		}
-		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk).Path()...)
+		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk))
 		switch t := cd.(type) {
 		case Circuit:
 			println("drawing not supported")
@@ -76,7 +77,7 @@ func main() {
 		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
 			walk = nil
 		}
-		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk).Path()...)
+		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk))
 		switch t := cd.(type) {
 		case Circuit:
 			fmt.Println(t.Print("", "\t"))
@@ -92,20 +93,17 @@ func main() {
 	}
 }
 
-func compile(x, y, z string) Circuit {
-	m := Root().StartHijack()
-	//
+func compile(x, y, z string) Memory {
 	if x != "" {
-		Load(m, "X", x)
+		Load(Root(), "X", x)
 	}
 	if y != "" {
-		Load(m, "Y", y)
+		Load(Root(), "Y", y)
 	}
 	if z != "" {
-		Load(m, "Z", z)
+		Load(Root(), "Z", z)
 	}
-	Root().EndHijack()
-	return Root().Yield()
+	return Root()
 }
 
 func loadCircuitFaculty(name, discover, x, y, z string) {

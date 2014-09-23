@@ -38,7 +38,7 @@ func (h *Range) CognizeOverWith(eye *be.Eye, v interface{}) {
 	eye.Show(
 		DefaultValve, 
 		rangeOverWith(
-			h.mem.Use().(*memory.Memory),
+			h.mem.Use().(memory.Memory),
 			h.aux.Use(),
 			v.(Circuit).CircuitAt("Over"), // Circuit
 			v.(Circuit).At("With"), // Materializable design (circuit or address)
@@ -48,7 +48,7 @@ func (h *Range) CognizeOverWith(eye *be.Eye, v interface{}) {
 
 func (h *Range) Cognize(*be.Eye, interface{}) {}
 
-func rangeOverWith(mem *memory.Memory, aux Meaning, over Circuit, with Meaning) Circuit {
+func rangeOverWith(mem memory.Memory, aux Meaning, over Circuit, with Meaning) Circuit {
 	gates := over.Gates()
 	ch := make(chan Circuit, len(gates))
 	var i int

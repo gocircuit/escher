@@ -16,9 +16,10 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/see"
+	. "github.com/gocircuit/escher/memory"
 )
 
-func Load(into Circuit, acid, filedir string) {
+func Load(into Memory, acid, filedir string) {
 	fi, err := os.Stat(filedir)
 	if err != nil {
 		log.Fatalf("cannot read source file %s (%v)", filedir, err)
@@ -31,7 +32,7 @@ func Load(into Circuit, acid, filedir string) {
 }
 
 // loadDirectory ...
-func loadDirectory(into Circuit, acid, dir string) Circuit {
+func loadDirectory(into Memory, acid, dir string) Memory {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
@@ -47,18 +48,10 @@ func loadDirectory(into Circuit, acid, dir string) Circuit {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
 			fn := fileInfo.Name()
-			var sub Circuit
-			x, ok := into.OptionAt(fn)
-			if ok {
-				sub, ok = x.(Circuit)
-				if !ok {
-					log.Fatalf("Loading directory (%s) overwrites an irreducible", filePath)
-				}
-			} else {
-				sub = New()
-				into.Grow(fn, sub)
+			if _, ok := into.IncludeIfNot(fn, New()).(Circuit); !ok {
+				panic("writing over an irreducible")
 			}
-			loadDirectory(sub, acid, filePath)
+			loadDirectory(into.Goto(fn), acid, filePath)
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
@@ -69,17 +62,21 @@ func loadDirectory(into Circuit, acid, dir string) Circuit {
 	return into
 }
 
-func addSource(into Circuit, acid, dir string) {
-	src, ok := into.CircuitOptionAt(Source{})
-	if !ok {
-		src = New()
-		into.Include(Source{}, src)
-	}
-	src.Include(src.Len(), New().Grow("Acid", acid).Grow("Dir", dir))
+func addSource(into Memory, acid, dir string) {
+	into.T(
+		func (u Circuit) {
+			src, ok := u.CircuitOptionAt(Source{})
+			if !ok {
+				src = New()
+				u.Include(Source{}, src)
+			}
+			u.Include(u.Len(), New().Grow("Acid", acid).Grow("Dir", dir))
+		},
+	)
 }
 
 // loadFile ...
-func loadFile(into Circuit, dir, file string) Circuit {
+func loadFile(into Memory, dir, file string) Memory {
 	text, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", file, err)
@@ -93,7 +90,9 @@ func loadFile(into Circuit, dir, file string) Circuit {
 		n := n_.(string) // n is a string
 		u := u_.(Circuit)
 		u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
-		into.Include(n, u)
+		if over := into.Include(n, u); over != nil {
+			panic("overwriting")
+		}
 	}
 	return into
 }

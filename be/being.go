@@ -28,7 +28,7 @@ type Being struct {
 	mem Memory
 }
 
-func NewBeing(m Circuit) *Being {
+func NewBeing(m Memory) *Being {
 	return &Being{m}
 }
 
@@ -42,7 +42,7 @@ func (b *Being) MaterializeAddress(addr Address) Reflex {
 }
 
 func (b *Being) materializeAddress(matter *Matter, addr Address) Reflex {
-	val := b.mem.Lookup(addr.Path()...)
+	val := b.mem.Lookup(addr)
 	if val == nil {
 		log.Fatalf("Address %v is dangling", addr)
 	}

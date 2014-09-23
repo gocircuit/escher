@@ -32,7 +32,7 @@ func (Lookup) Materialize() be.Reflex {
 			if dvalve != "Address" {
 				return
 			}
-			r := faculty.Root().Lookup(dvalue.(string))
+			r := faculty.Root().Lookup(NewAddressParse(dvalue.(string)))
 			eye.Show("Circuit", r.(Circuit))
 		}, 
 		"Address", "Circuit",

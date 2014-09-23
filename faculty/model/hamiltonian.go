@@ -25,7 +25,7 @@ import (
 		Vector Vector
 	}
 
-	Memory *Memory
+	Memory Memory
 
 	View = {
 		Circuit Circuit // Current circuit in the exploration sequence
@@ -85,7 +85,7 @@ func (h *Hamiltonian) CognizeStart(eye *be.Eye, dv interface{}) {
 			}
 			memory.PushFront(v) // remember
 			//
-			lookup := h.mem.Use().(*Memory).Lookup(t.Path()...)
+			lookup := h.mem.Use().(Memory).Lookup(t)
 			if lookup == nil {
 				log.Fatalf("No Hamiltonian circuit addressed %s", t.String())
 			}

@@ -14,9 +14,9 @@ import (
 )
 
 // Root is the global faculties memory where Go packages add gate designs as side-effect of being imported.
-var root *Memory = NewMemory()
+var root Memory = NewMemory()
 
-func Root() *Memory {
+func Root() Memory {
 	return root
 }
 
@@ -26,10 +26,7 @@ func Register(name string, v interface{}) {
 		panic(1)
 	}
 	//
-	r := root.StartHijack()
-	defer root.EndHijack()
-	//
-	x := r
+	x := root.Goto(nil)
 	for i, g := range a {
 		if i+1 == len(a) {
 			break

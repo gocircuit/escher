@@ -13,9 +13,8 @@ import (
 	. "github.com/gocircuit/escher/memory"
 )
 
-func Materialize(m *Memory, design Meaning) Reflex {
-	b := &Being{m.StartHijack()}
-	defer m.EndHijack()
+func Materialize(m Memory, design Meaning) Reflex {
+	b := &Being{m}
 	matter := &Matter{
 		Design: design,
 		Valve: nil,
@@ -26,7 +25,7 @@ func Materialize(m *Memory, design Meaning) Reflex {
 }
 
 type Being struct {
-	mem Circuit
+	mem Memory
 }
 
 func NewBeing(m Circuit) *Being {

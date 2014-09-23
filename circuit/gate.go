@@ -117,7 +117,7 @@ func (u Circuit) Rename(x, y Name) Circuit {
 	return u
 }
 
-func (u Circuit) Lookup(gate ...Name) Meaning {
+func (u Circuit) Goto(gate ...Name) Meaning {
 	x := u
 	for i, g := range gate {
 		if i+1 == len(gate) {

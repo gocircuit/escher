@@ -17,39 +17,24 @@ import (
 )
 
 func init() {
-	faculty.Register("io.util.WriteFile", WriteFile{})
+	faculty.Register("io.util.WriteFile", &WriteFile{})
 }
 
-// WriteFile …
-type WriteFile struct{}
-
-func (WriteFile) Materialize() be.Reflex {
-	nameEndo, nameExo := be.NewSynapse()
-	contentEndo, contentExo := be.NewSynapse()
-	go func() {
-		h := writeFile{
-			named: make(chan struct{}),
-		}
-		nameEndo.Focus(h.CognizeName)
-		contentEndo.Focus(h.CognizeContent)
-	}()
-	return be.Reflex{
-		"Name":    nameExo,
-		"Content": contentExo,
-	}
-}
-
-type writeFile struct {
+type WriteFile struct {
 	name  string
 	named chan struct{}
 }
 
-func (h *writeFile) CognizeName(v interface{}) {
+func (h *WriteFile) Spark() {
+	h.named = make(chan struct{})
+}
+
+func (h *WriteFile) CognizeName(eye *be.Eye, v interface{}) {
 	h.name = v.(string)
 	close(h.named)
 }
 
-func (h *writeFile) CognizeContent(v interface{}) {
+func (h *WriteFile) CognizeContent(eye *be.Eye, v interface{}) {
 	<-h.named
 	switch t := v.(type) {
 	case string:
@@ -63,4 +48,7 @@ func (h *writeFile) CognizeContent(v interface{}) {
 	default:
 		panic("eh?")
 	}
+	eye.Show("Ready", 1)
 }
+
+func (h *WriteFile) CognizeReady(eye *be.Eye, v interface{}) {}

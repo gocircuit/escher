@@ -101,7 +101,12 @@ type Exit struct{}
 func (Exit) Materialize() be.Reflex {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
-			os.Exit(value.(int))
+			switch t := value.(type) {
+			case int:
+				os.Exit(t)
+			default:
+				os.Exit(0)
+			}
 		}, 
 		DefaultValve,
 	)

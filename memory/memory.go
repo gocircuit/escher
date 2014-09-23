@@ -8,85 +8,81 @@ package memory
 
 import (
 	// "container/list"
+	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
 )
 
 // I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
 
+type Memory interface {
+	Lookup(Address) Meaning
+	Goto(...Name) Memory
+
+	Circuit() Circuit
+	Include(Name, Meaning) Meaning
+	Exclude(Name) Meaning
+	Link(u, v Vector)
+	Unlink(u, v Vector)
+}
+
 // memory is a hierarchical namespace of circuits.
 type memory struct{
-	root Circuit
-	seeing Circuit // output and current focus
+	*sync.Mutex
+	x Circuit
 }
 
-func newMemory() *memory {
-	root := New()
+func NewMemory() Memory {
+	var lk sync.Mutex
 	return &memory{
-		root: root,
-		seeing: root,
+		Mutex: &lk,
+		x: New(),
 	}
 }
 
-// View
-func (m *memory) View() Circuit {
-	return m.seeing
+func (m *memory) Lookup(addr Address) Meaning {
+	m.Lock()
+	defer m.Unlock()
+	return Copy(m.x.Goto(addr.Path()...))
 }
 
-// Restart
-func (m *memory) Restart() Circuit {
-	m.seeing = m.root
-	return m.seeing
-}
-
-// Yield
-func (m *memory) Yield() Circuit {
-	return m.root.Copy().(Circuit)
-}
-
-// Step
-func (m *memory) Step(gate Name) (Circuit, Address) {
-	a := m.seeing.At(gate).(Address)
-	return m.Jump(a.Path()...), a
-}
-
-// Lookup
-func (m *memory) Lookup(gate ...Name) Meaning {
-	return m.root.Lookup(gate...)
-}
-
-// Jump
-func (m *memory) Jump(gate ...Name) Circuit {
-	m.seeing = m.root.Lookup(gate...).(Circuit)
-	return m.seeing
-}
-
-// Plumbing
-
-// Include
-func (m *memory) Include(n Name, x Meaning) Circuit {
-	if _, over := m.seeing.Include(n, x); over {
-		panic("over including")
+func (m *memory) Goto(gate ...Name) Memory {
+	m.Lock()
+	defer m.Unlock()
+	return &memory{
+		Mutex: m.Mutex,
+		x: m.x.Goto(gate...).(Circuit),
 	}
-	return m.seeing
 }
 
-// Exclude
-func (m *memory) Exclude(n Name) Circuit {
-	if _, forgotten := m.seeing.Exclude(n); !forgotten {
-		panic("nothing to exclude")
-	}
-	return m.seeing
+func (m *memory) Circuit() Circuit {
+	m.Lock()
+	defer m.Unlock()
+	return m.x.Clone()
 }
 
-// Link
-func (m *memory) Link(u, v Vector) Circuit {
-	m.seeing.Link(u, v)
-	return m.seeing
+func (m *memory) Include(n Name, v Meaning) Meaning {
+	m.Lock()
+	defer m.Unlock()
+	r, _ := m.x.Include(n, Copy(v))
+	return r
 }
 
-// Unlink
-func (m *memory) Unlink(u, v Vector) Circuit {
-	m.seeing.Unlink(u, v)
-	return m.seeing
+func (m *memory) Exclude(n Name) Meaning {
+	m.Lock()
+	defer m.Unlock()
+	r, _ := m.x.Exclude(n)
+	return r
+}
+
+func (m *memory) Link(u, v Vector) {
+	m.Lock()
+	defer m.Unlock()
+	m.x.Link(u, v)
+}
+
+func (m *memory) Unlink(u, v Vector) {
+	m.Lock()
+	defer m.Unlock()
+	m.x.Unlink(u, v)
 }

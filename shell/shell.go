@@ -80,6 +80,10 @@ func (sh *Shell) Loop() {
 			sh.what(words[1:])
 		case "jump", "jmp", "j":
 			sh.jump(words[1:])
+		case "l", "link":
+			sh.link(words[1:])
+		case "u", "unlink":
+			sh.unlink(words[1:])
 		default:
 			fmt.Fprintf(sh.err, "command not recognized; try help\n")
 		}
@@ -152,6 +156,15 @@ func (sh *Shell) cd(w []string) {
 	}
 }
 
+func (sh *Shell) at() Memory {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(sh.err, "current path is disconnected from root\n")
+		}
+	}()
+	return sh.memory.Goto(sh.focus().Path...)
+}
+
 func (sh *Shell) ls(w []string) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -160,7 +173,7 @@ func (sh *Shell) ls(w []string) {
 	}()
 	switch {
 	case len(w) == 0:
-		fmt.Fprintf(sh.err, "%v\n", sh.memory.Goto(sh.focus().Path...).Circuit())
+		fmt.Fprintf(sh.err, "%v\n", sh.at().Circuit())
 	case len(w) == 1:
 		pov, _ := sh.glob(w[0])
 		fmt.Fprintf(sh.err, "%v\n", sh.memory.Goto(pov...).Circuit())
@@ -171,6 +184,24 @@ func (sh *Shell) ls(w []string) {
 
 func (sh *Shell) path(w []string) {
 	fmt.Fprintf(sh.err, "%s\n", printPath(sh.focus().Path))
+}
+
+func (sh *Shell) unlink(w []string) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(sh.err, "unlink error\n")
+		}
+	}()
+	sh.at().Unlink(parseLink(w))
+}
+
+func (sh *Shell) link(w []string) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(sh.err, "link error\n")
+		}
+	}()
+	sh.at().Link(parseLink(w))
 }
 
 func (sh *Shell) mk(w []string) {
@@ -189,7 +220,7 @@ func (sh *Shell) mk(w []string) {
 			fmt.Fprintf(sh.err, "mk argument cannot be a path\n")
 			return
 		}
-		sh.memory.Refine(file)
+		sh.at().Refine(file)
 	case len(w) == 2:
 		dir, file := path.Split(w[0])
 		if dir != "" {
@@ -201,7 +232,7 @@ func (sh *Shell) mk(w []string) {
 			fmt.Fprintf(sh.err, "Value not recognized\n")
 			return
 		}
-		sh.memory.Include(file, x)
+		sh.at().Include(file, x)
 	default:
 		fmt.Fprintf(sh.err, "mk accepts at most two arguments\n")
 	}
@@ -227,22 +258,27 @@ func (sh *Shell) rm(w []string) {
 
 func (sh *Shell) help(w []string) {
 	const help = `
-help, h       Show help screen
+EXAMINE
 p             Show current path
+v             Show all foci
+j b           Change current focus to "b"
 ls            Show circuit in current focus
-ls ../ef/
+ls ../ef/     Show circuit at path relative to current
+
+NAVIGATE
+cd            Move current focus to root memory circuit
+cd /          "
+cd ef/gh      Move current focus relative to itself
+cd ..         Move current focus to parent memory circuit
+
+CONTROL
 mk xyz        Make a memory gate named "xyz"
 mk xyz "abc"  Make a gate named "xyz"
-mk xyz 123
-mk xyz {a 1}
+mk xyz 123    "
+mk xyz {a 1}  "
 rm abc        Remove gate named "abc"
-cd            Move current focus to root memory circuit
-cd /       
-cd ef         Move current focus to a memory gate
-cd ef/gh
-cd ..         Move current focus to parent memory circuit
-jmp b         Change current focus to "b"
-v             Show all foci
+l x:a = y:b   Link gate valves
+u x:a = y:b   Unlink gate valves
 `
 	fmt.Fprintf(sh.err, "%s\n", help)
 }

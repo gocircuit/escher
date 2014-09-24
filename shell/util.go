@@ -94,3 +94,14 @@ func (sh *Shell) glob(w string) (pov []Name, ell bool) {
 	}
 	return pov, ell
 }
+
+func parseLink(w []string) (x, y Vector) {
+	v, cry := see.SeeLink(see.NewSrcString(strings.Join(w, " ")), 0)
+	if v == nil {
+		panic("link not recognized")
+	}
+	if cry[0] != nil || cry[1] != nil {
+		panic("link is not simple")
+	}
+	return v[0], v[1]
+}

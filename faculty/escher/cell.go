@@ -42,7 +42,7 @@ func (h *Embody) CognizeWhen(eye *be.Eye, w interface{}) {
 	cell := be.NewCell(
 		be.Materialize(
 			h.mem.Use().(memory.Memory), 
-			h.design.Use().(Meaning),
+			h.design.Use().(Value),
 		),
 	)
 	eye.Show(DefaultValve, New().Grow("When", w).Grow("Cell", cell))

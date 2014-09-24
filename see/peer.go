@@ -12,7 +12,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func SeePeer(src *Src) (n Name, m Meaning) {
+func SeePeer(src *Src) (n Name, m Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			n, m = nil, nil
@@ -20,12 +20,12 @@ func SeePeer(src *Src) (n Name, m Meaning) {
 	}()
 	t := src.Copy()
 	Space(t)
-	left := SeeMeaning(t)
+	left := SeeValue(t)
 	if left == nil {
 		panic("peer")
 	}
 	Whitespace(t)
-	right := SeeMeaning(t)
+	right := SeeValue(t)
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}

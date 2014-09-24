@@ -15,7 +15,7 @@ type Reducible interface {
 	Same(Reducible) bool
 }
 
-func Copy(x Meaning) Meaning {
+func Copy(x Value) Value {
 	switch t := x.(type) {
 	case Reducible:
 		return t.Copy()
@@ -23,7 +23,7 @@ func Copy(x Meaning) Meaning {
 	return x
 }
 
-func Same(x, y Meaning) bool {
+func Same(x, y Value) bool {
 	xr, x_ := x.(Reducible)
 	yr, y_ := y.(Reducible)
 	if x_ && y_ {

@@ -83,12 +83,12 @@ func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 
 // Series-application methods
 
-func (u Circuit) ReGrow(name Name, meaning Meaning) Circuit {
+func (u Circuit) ReGrow(name Name, meaning Value) Circuit {
 	u.circuit.Include(name, meaning)
 	return u
 }
 
-func (u Circuit) Grow(name Name, meaning Meaning) Circuit {
+func (u Circuit) Grow(name Name, meaning Value) Circuit {
 	if _, over := u.circuit.Include(name, meaning); over {
 		panic("over writing")
 	}
@@ -117,7 +117,7 @@ func (u Circuit) Rename(x, y Name) Circuit {
 	return u
 }
 
-func (u Circuit) Goto(gate ...Name) Meaning {
+func (u Circuit) Goto(gate ...Name) Value {
 	x := u
 	for i, g := range gate {
 		if i+1 == len(gate) {
@@ -134,13 +134,13 @@ func (u Circuit) Goto(gate ...Name) Meaning {
 
 // Low-level
 
-func (u *circuit) Include(name Name, meaning Meaning) (before Meaning, overwrite bool) {
+func (u *circuit) Include(name Name, meaning Value) (before Value, overwrite bool) {
 	before, overwrite = u.gate[name]
 	u.gate[name] = meaning
 	return
 }
 
-func (u *circuit) Exclude(name Name) (meaning Meaning, forgotten bool) {
+func (u *circuit) Exclude(name Name) (meaning Value, forgotten bool) {
 	meaning, forgotten = u.gate[name]
 	delete(u.gate, name)
 	return
@@ -151,12 +151,12 @@ func (u *circuit) Len() int {
 	return len(u.gate)
 }
 
-func (c *circuit) OptionAt(name Name) (Meaning, bool) {
+func (c *circuit) OptionAt(name Name) (Value, bool) {
 	v, ok := c.gate[name]
 	return v, ok
 }
 
-func (c *circuit) At(name Name) Meaning {
+func (c *circuit) At(name Name) Value {
 	return c.gate[name]
 }
 

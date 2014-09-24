@@ -14,7 +14,7 @@ import (
 
 type Carry struct {
 	Name
-	Meaning
+	Value
 }
 
 func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
@@ -62,22 +62,22 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	return
 }
 
-func seeJoin(src *Src) (m Meaning, p, v Name, ok bool) {
+func seeJoin(src *Src) (m Value, p, v Name, ok bool) {
 	if p, v, ok = seeJoinAddress(src); ok { // valve (or empty string)
 		return
 	}
-	m, ok = seeJoinMeaning(src) // int, string, etc.
+	m, ok = seeJoinValue(src) // int, string, etc.
 	return
 }
 
-func seeJoinMeaning(src *Src) (m Meaning, ok bool) {
+func seeJoinValue(src *Src) (m Value, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			ok = false
 		}
 	}()
 	t := src.Copy()
-	m = SeeMeaning(t)
+	m = SeeValue(t)
 	src.Become(t)
 	return m, true
 }

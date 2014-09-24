@@ -13,7 +13,7 @@ import (
 	. "github.com/gocircuit/escher/memory"
 )
 
-func Materialize(m Memory, design Meaning) Reflex {
+func Materialize(m Memory, design Value) Reflex {
 	b := &Being{m}
 	matter := &Matter{
 		Design: design,
@@ -51,7 +51,7 @@ func (b *Being) materializeAddress(matter *Matter, addr Address) Reflex {
 	return b.Materialize(matter, val, true)
 }
 
-func (b *Being) Materialize(matter *Matter, x Meaning, recurse bool) Reflex {
+func (b *Being) Materialize(matter *Matter, x Value, recurse bool) Reflex {
 	switch t := x.(type) {
 	// Addresses are materialized recursively
 	case Address:

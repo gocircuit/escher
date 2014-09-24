@@ -227,7 +227,7 @@ func (sh *Shell) mk(w []string) {
 			fmt.Fprintf(sh.err, "mk argument cannot be a path\n")
 			return
 		}
-		x := see.SeeMeaningOrNil(see.NewSrcString(w[1]))
+		x := see.SeeValueOrNil(see.NewSrcString(w[1]))
 		if x == nil {
 			fmt.Fprintf(sh.err, "Value not recognized\n")
 			return

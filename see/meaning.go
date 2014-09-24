@@ -14,26 +14,26 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func SeeMeaning(src *Src) (x Meaning) {
+func SeeValue(src *Src) (x Value) {
 	if u := SeeCircuit(src); !u.IsNil() {
 		return u
 	}
-	if x = SeeMeaningNoCircuit(src); x != nil {
+	if x = SeeValueNoCircuit(src); x != nil {
 		return
 	}
 	return nil
 }
 
-func SeeMeaningOrNil(src *Src) (x Meaning) {
+func SeeValueOrNil(src *Src) (x Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
-	return SeeMeaning(src)
+	return SeeValue(src)
 }
 
-func SeeMeaningNoCircuit(src *Src) (x Meaning) {
+func SeeValueNoCircuit(src *Src) (x Value) {
 	if x = SeeInt(src); x != nil {
 		return
 	}

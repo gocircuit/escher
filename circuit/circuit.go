@@ -13,12 +13,12 @@ import (
 // Name is one of: int or string
 type Name interface{}
 
-// Meaning is one of: see.Address, string, int, float64, complex128, Circuit
-type Meaning interface{}
+// Value is one of: see.Address, string, int, float64, complex128, Circuit
+type Value interface{}
 
 // circuit ...
 type circuit struct {
-	gate map[Name]Meaning
+	gate map[Name]Value
 	flow map[Name]map[Name]Vector // gate -> valve -> opposing gate and valve
 }
 
@@ -32,7 +32,7 @@ func New() Circuit {
 
 func newCircuit() *circuit {
 	return &circuit{
-		gate: make(map[Name]Meaning),
+		gate: make(map[Name]Value),
 		flow: make(map[Name]map[Name]Vector),
 	}
 }
@@ -70,7 +70,7 @@ func (c *circuit) Numbers() []int {
 	return l
 }
 
-func (u *circuit) Gates() map[Name]Meaning {
+func (u *circuit) Gates() map[Name]Value {
 	return u.gate
 }
 

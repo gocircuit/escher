@@ -37,7 +37,7 @@ func SeeCircuit(src *Src) (u Circuit) {
 			i++
 			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
-					u.Include(c.Name, c.Meaning)
+					u.Include(c.Name, c.Value)
 				}
 			}
 			u.Link(x[0], x[1])

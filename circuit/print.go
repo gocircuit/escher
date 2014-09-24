@@ -44,13 +44,13 @@ func (u *circuit) Print(prefix, indent string) string {
 	for _, n := range u.Letters() {
 		p := u.gate[n]
 		w.WriteString(prefix + indent)
-		PrintMeaning(&w, prefix+indent, indent, n, p)
+		PrintValue(&w, prefix+indent, indent, n, p)
 	}
 	// numbers
 	for _, n := range u.Numbers() {
 		p := u.gate[n]
 		w.WriteString(prefix + indent)
-		PrintMeaning(&w, prefix+indent, indent, n, p)
+		PrintValue(&w, prefix+indent, indent, n, p)
 	}
 	//
 	o := make(Orient)
@@ -73,7 +73,7 @@ func (u *circuit) Print(prefix, indent string) string {
 	return w.String()
 }
 
-func PrintMeaning(w io.Writer, prefix, indent string, n Name, p Meaning) {
+func PrintValue(w io.Writer, prefix, indent string, n Name, p Value) {
 	switch t := p.(type) {
 	case Printer:
 		fmt.Fprintf(w, "%v %v\n", n, t.Print(prefix, indent))

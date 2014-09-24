@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-var testMeaning = []string{
+var testValue = []string{
 	`3.19e-2`,
 	`22`,
 	`"ha" `,
@@ -21,9 +21,9 @@ var testMeaning = []string{
 	`name.family`,
 }
 
-func TestMeaning(t *testing.T) {
-	for _, q := range testMeaning {
-		x := SeeMeaning(NewSrcString(q))
+func TestValue(t *testing.T) {
+	for _, q := range testValue {
+		x := SeeValue(NewSrcString(q))
 		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue

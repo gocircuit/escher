@@ -16,14 +16,14 @@ import (
 // I see forward. I think back. I see that I think. I think that I see. Thinking and seeing are not apart.
 
 type Memory interface {
-	Lookup(Address) Meaning
+	Lookup(Address) Value
 	Goto(...Name) Memory
 	Refine(Name) Memory
 
 	Circuit() Circuit
-	Include(Name, Meaning) Meaning
-	IncludeIfNot(Name, Meaning) Meaning
-	Exclude(Name) Meaning
+	Include(Name, Value) Value
+	IncludeIfNot(Name, Value) Value
+	Exclude(Name) Value
 	Link(u, v Vector)
 	Unlink(u, v Vector)
 
@@ -54,7 +54,7 @@ func (m *memory) T(t func(Circuit))  {
 	t(m.x)
 }
 
-func (m *memory) Lookup(addr Address) Meaning {
+func (m *memory) Lookup(addr Address) Value {
 	m.Lock()
 	defer m.Unlock()
 	names := addr.Path()
@@ -96,14 +96,14 @@ func (m *memory) Circuit() Circuit {
 	return m.x.Clone()
 }
 
-func (m *memory) Include(n Name, v Meaning) Meaning {
+func (m *memory) Include(n Name, v Value) Value {
 	m.Lock()
 	defer m.Unlock()
 	r, _ := m.x.Include(n, Copy(v))
 	return r
 }
 
-func (m *memory) IncludeIfNot(n Name, v Meaning) Meaning {
+func (m *memory) IncludeIfNot(n Name, v Value) Value {
 	m.Lock()
 	defer m.Unlock()
 	u, ok := m.x.OptionAt(n)
@@ -114,7 +114,7 @@ func (m *memory) IncludeIfNot(n Name, v Meaning) Meaning {
 	return v
 }
 
-func (m *memory) Exclude(n Name) Meaning {
+func (m *memory) Exclude(n Name) Value {
 	m.Lock()
 	defer m.Unlock()
 	r, _ := m.x.Exclude(n)

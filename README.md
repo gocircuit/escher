@@ -87,7 +87,7 @@ Go to the Escher base directory and run one of the tutorials
 
 	escher -src tutorial/helloworld
 
-## Value
+## Meaning
 
 An Escher program is a collection of interconnected _reflexes_. A reflex, the only
 abstraction in Escher, represents an independent computing entity that can interact

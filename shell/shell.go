@@ -74,12 +74,12 @@ func (sh *Shell) Loop() {
 			sh.mk(words[1:])
 		case "rm":
 			sh.rm(words[1:])
-		case "p":
+		case "p", "pwd":
 			sh.path(words[1:])
-		case "w":
+		case "v", "view":
 			sh.what(words[1:])
-		case "f":
-			sh.refocus(words[1:])
+		case "jump", "jmp", "j":
+			sh.jump(words[1:])
 		default:
 			fmt.Fprintf(sh.err, "command not recognized; try help\n")
 		}
@@ -95,9 +95,9 @@ func (sh *Shell) prompt() {
 	fmt.Fprintf(sh.err, " ")
 }
 
-func (sh *Shell) refocus(w []string) {
+func (sh *Shell) jump(w []string) {
 	if len(w) != 1 {
-		fmt.Fprintf(sh.err, "refocus requires one argument\n")
+		fmt.Fprintf(sh.err, "jump requires one argument\n")
 		return
 	}
 	f, ok := sh.foci[w[0]]
@@ -227,7 +227,7 @@ func (sh *Shell) rm(w []string) {
 
 func (sh *Shell) help(w []string) {
 	const help = `
-help, h, ?    Show help screen
+help, h       Show help screen
 p             Show current path
 ls            Show circuit in current focus
 ls ../ef/
@@ -241,8 +241,8 @@ cd /
 cd ef         Move current focus to a memory gate
 cd ef/gh
 cd ..         Move current focus to parent memory circuit
-f b           Change current focus to "b"
-w             Show all foci with non-root paths
+jmp b         Change current focus to "b"
+v             Show all foci
 `
 	fmt.Fprintf(sh.err, "%s\n", help)
 }

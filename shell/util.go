@@ -71,6 +71,7 @@ func derelativize(walk []string, pov []Name) ([]Name, bool) {
 				return nil, false
 			}
 			pov = pov[:len(pov)-1]
+		case ".":
 		case "":
 			pov = []Name{}
 		default:

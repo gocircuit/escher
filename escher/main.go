@@ -10,12 +10,14 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+	"os"
 
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/memory"
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/fs"
+	"github.com/gocircuit/escher/shell"
 
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/acid"
@@ -50,9 +52,6 @@ var (
 
 func main() {
 	flag.Parse()
-	if *flagX == "" && *flagY == "" && *flagZ == "" {
-		fatalf("at least one source directory, X, Y or Z, must be specified with -x, -y or -z, respectively")
-	}
 	// Initialize faculties
 	facos.Init(*flagArg)
 	loadCircuitFaculty(*flagName, *flagDiscover, *flagX, *flagY, *flagZ)
@@ -87,7 +86,13 @@ func main() {
 		}
 
 	default:
-		b := NewBeing(compile(*flagX, *flagY, *flagZ))
+		mem := compile(*flagX, *flagY, *flagZ)
+		b := NewBeing(mem)
+		defer func() {
+			if r := recover(); r != nil {
+				shell.NewShell(os.Stdin, os.Stdout, os.Stderr, mem).Loop()
+			}
+		}()
 		b.MaterializeAddress(NewAddressParse(*flagMain))
 		select {} // wait forever
 	}

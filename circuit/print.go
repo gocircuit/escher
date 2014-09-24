@@ -41,13 +41,13 @@ func (u *circuit) Print(prefix, indent string) string {
 	w.WriteString("\n")
 
 	// letters
-	for _, n := range u.Letters() {
+	for _, n := range u.SortedLetters() {
 		p := u.gate[n]
 		w.WriteString(prefix + indent)
 		PrintValue(&w, prefix+indent, indent, n, p)
 	}
 	// numbers
-	for _, n := range u.Numbers() {
+	for _, n := range u.SortedNumbers() {
 		p := u.gate[n]
 		w.WriteString(prefix + indent)
 		PrintValue(&w, prefix+indent, indent, n, p)
@@ -84,7 +84,7 @@ func PrintValue(w io.Writer, prefix, indent string, n Name, p Value) {
 	case int, float64, complex128:
 		fmt.Fprintf(w, "%v %v\n", n, t)
 	default:
-		fmt.Fprintf(w, "%v (%T)\n", n, t)
+		fmt.Fprintf(w, "%v (builtin/%T)\n", n, t)
 	}
 }
 

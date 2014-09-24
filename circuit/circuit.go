@@ -8,6 +8,7 @@ package circuit
 
 import (
 	// "log"
+	"sort"
 )
 
 // Name is one of: int or string
@@ -50,6 +51,12 @@ func (u *circuit) IsEmpty() bool {
 	return len(u.gate) == 0 && len(u.flow) == 0
 }
 
+func (c *circuit) SortedLetters() []string {
+	x := c.Letters()
+	sort.Strings(x)
+	return x
+}
+
 func (c *circuit) Letters() []string {
 	var l []string
 	for key, _ := range c.gate {
@@ -58,6 +65,12 @@ func (c *circuit) Letters() []string {
 		}
 	}
 	return l
+}
+
+func (c *circuit) SortedNumbers() []int {
+	x := c.Numbers()
+	sort.Ints(x)
+	return x
 }
 
 func (c *circuit) Numbers() []int {

@@ -44,8 +44,8 @@ func NewMemory() Memory {
 	}
 }
 
-func (m *memory) String() string {
-	return "Memory"
+func (m *memory) Print(prefix, indent string) string {
+	return "(Memory)"
 }
 
 func (m *memory) T(t func(Circuit))  {

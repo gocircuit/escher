@@ -22,7 +22,7 @@ func isNotNewline(r rune) bool {
 	return !isNewline(r)
 }
 
-func isIdentifier(r rune) bool {
+func IsIdentifier(r rune) bool {
 	switch {
 	case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z':
 		return true
@@ -34,7 +34,7 @@ func isIdentifier(r rune) bool {
 	return false
 }
 
-func isIdentifierFirst(r rune) bool {
+func IsIdentifierFirst(r rune) bool {
 	switch {
 	case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z':
 		return true
@@ -48,10 +48,10 @@ func Identifier(src *Src) string {
 	if src.Len() == 0 {
 		return ""
 	}
-	if !isIdentifierFirst(src.RuneAt(0)) {
+	if !IsIdentifierFirst(src.RuneAt(0)) {
 		return ""
 	}
-	return src.Consume(isIdentifier)
+	return src.Consume(IsIdentifier)
 }
 
 // Identifier + Delimiter + Operator < Literal
@@ -98,7 +98,7 @@ func Newline(src *Src) int {
 func Keyword(keyword string, src *Src) {
 	src.Match(keyword)
 	// make sure this is the end of the keyword
-	if src.Len() > 0 && isIdentifier(src.RuneAt(0)) {
+	if src.Len() > 0 && IsIdentifier(src.RuneAt(0)) {
 		panic("no keyword")
 	}
 	Whitespace(src)

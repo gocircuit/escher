@@ -7,6 +7,7 @@
 package memory
 
 import (
+	// "fmt"
 	// "container/list"
 	"sync"
 
@@ -59,7 +60,7 @@ func (m *memory) Lookup(addr Address) Value {
 	defer m.Unlock()
 	names := addr.Path()
 	k := len(names)-1
-	return Copy(m.goto_(names[:k]).(*memory).x.At(names[k]))
+	return Copy(m.goto_(names[:k]...).(*memory).x.At(names[k]))
 }
 
 func (m *memory) Goto(gate ...Name) Memory {

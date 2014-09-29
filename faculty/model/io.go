@@ -18,7 +18,9 @@ import (
 */
 type IO struct{}
 
-func (IO) Spark() {}
+func (IO) Spark() Value {
+	return IO{}
+}
 
 func (IO) Cognize(eye *be.Eye, v interface{}) {
 	eye.Show("In", v)

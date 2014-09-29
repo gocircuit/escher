@@ -8,6 +8,8 @@ package be
 
 import (
 	// "log"
+
+	. "github.com/gocircuit/escher/circuit"
 )
 
 type Cell struct {
@@ -16,7 +18,7 @@ type Cell struct {
 	ping chan string
 }
 
-func NewCell(r Reflex) *Cell {
+func NewCell(r Reflex, _ Value) *Cell {
 	x := &Cell{
 		show: make(map[string]*ReCognizer),
 		see: make(map[string]chan interface{}),

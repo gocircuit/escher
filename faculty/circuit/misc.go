@@ -9,25 +9,26 @@ package circuit
 
 import (
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // ForkExit…
 type ForkExit struct{}
 
-func (ForkExit) Materialize() be.Reflex {
+func (ForkExit) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Spawn", "Exit")
 }
 
 // ForkIO…
 type ForkIO struct{}
 
-func (ForkIO) Materialize() be.Reflex {
+func (ForkIO) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Spawn", "Stdin", "Stdout", "Stderr")
 }
 
 // ForkSpawn…
 type ForkSpawn struct{}
 
-func (ForkSpawn) Materialize() be.Reflex {
+func (ForkSpawn) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Name", "Server")
 }

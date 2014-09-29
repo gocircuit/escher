@@ -15,7 +15,7 @@ import (
 
 type Fork struct{}
 
-func (Fork) Materialize(matter *be.Matter) be.Reflex {
+func (Fork) Materialize(matter *be.Matter) (be.Reflex, Value) {
 	var arm []string
 	var defaultUsed bool
 	for vlv, _ := range matter.Valve {

@@ -36,8 +36,9 @@ type Eulerian struct{
 	mem plumb.Given
 }
 
-func (e *Eulerian) Spark() {
+func (e *Eulerian) Spark() Value {
 	e.mem.Init()
+	return &Eulerian{}
 }
 
 func (e *Eulerian) CognizeMemory(_ *be.Eye, v interface{}) {

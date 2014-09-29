@@ -14,6 +14,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func init() {
@@ -25,8 +26,9 @@ type WriteFile struct {
 	named chan struct{}
 }
 
-func (h *WriteFile) Spark() {
+func (h *WriteFile) Spark() Value {
 	h.named = make(chan struct{})
+	return &WriteFile{}
 }
 
 func (h *WriteFile) CognizeName(eye *be.Eye, v interface{}) {

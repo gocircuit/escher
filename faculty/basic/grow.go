@@ -19,8 +19,9 @@ type Grow struct{
 	u Circuit
 }
 
-func (g *Grow) Spark() {
+func (g *Grow) Spark() Value {
 	g.u = New()
+	return &Grow{}
 }
 
 func (g *Grow) CognizeKey(eye *be.Eye, v interface{}) {

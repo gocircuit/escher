@@ -11,6 +11,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func init() {
@@ -21,7 +22,7 @@ func init() {
 // Delay…
 type Delay struct{}
 
-func (Delay) Materialize() be.Reflex {
+func (Delay) Materialize() (be.Reflex, Value) {
 	reflex, eye := be.NewEye("X", "Y", "Duration")
 	go func() {
 		ds := make(chan time.Duration, 2)
@@ -62,5 +63,5 @@ func (Delay) Materialize() be.Reflex {
 			}
 		}
 	}()
-	return reflex
+	return reflex, Delay{}
 }

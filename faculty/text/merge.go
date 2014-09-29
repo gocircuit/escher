@@ -27,14 +27,14 @@ func init() {
 // ForkMerge…
 type ForkMerge struct{}
 
-func (ForkMerge) Materialize() be.Reflex {
+func (ForkMerge) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("X", "Y", "Z")
 }
 
 // MergeBlend …
 type MergeBlend struct{}
 
-func (MergeBlend) Materialize() be.Reflex {
+func (MergeBlend) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "XYZ" {
@@ -49,7 +49,7 @@ func (MergeBlend) Materialize() be.Reflex {
 		}, 
 		"XYZ", DefaultValve,
 	)
-	return reflex
+	return reflex, MergeBlend{}
 }
 
 func flatten(v interface{}) string {

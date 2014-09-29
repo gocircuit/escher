@@ -19,14 +19,14 @@ func init() {
 	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir{})
 	faculty.Register("escher.Lookup", Lookup{})
 	faculty.Register("escher.Memory", Memory{})
-	faculty.Register("escher.Embody", Embody{})
-	faculty.Register("escher.Connect", Connect{})
+	faculty.Register("escher.Embody", &Embody{})
+	faculty.Register("escher.Connect", &Connect{})
 }
 
 // Lookup
 type Lookup struct{}
 
-func (Lookup) Materialize() be.Reflex {
+func (Lookup) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, dvalve string, dvalue interface{}) {
 			if dvalve != "Address" {
@@ -37,19 +37,19 @@ func (Lookup) Materialize() be.Reflex {
 		}, 
 		"Address", "Circuit",
 	)
-	return reflex
+	return reflex, Lookup{}
 }
 
 // Memory
 type Memory struct{}
 
-func (Memory) Materialize() be.Reflex {
-	return be.NewNounReflex(faculty.Root())
+func (Memory) Materialize() (be.Reflex, Value) {
+	return be.MaterializeNoun(faculty.Root())
 }
 
 // CircuitSourceDir
 type CircuitSourceDir struct{}
 
-func (CircuitSourceDir) Materialize(matter *be.Matter) be.Reflex {
-	return be.NewNounReflex(matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).StringAt("Dir"))
+func (CircuitSourceDir) Materialize(matter *be.Matter) (be.Reflex, Value) {
+	return be.MaterializeNoun(matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).CircuitAt(0).StringAt("Dir"))
 }

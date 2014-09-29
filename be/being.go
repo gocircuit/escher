@@ -13,8 +13,8 @@ import (
 	. "github.com/gocircuit/escher/memory"
 )
 
-func Materialize(m Memory, design Value) Reflex {
-	b := &Being{m}
+func Materialize(memory Memory, design Value) (Reflex, Value) {
+	b := &Renderer{memory}
 	matter := &Matter{
 		Design: design,
 		Valve: nil,
@@ -24,15 +24,15 @@ func Materialize(m Memory, design Value) Reflex {
 	return b.Materialize(matter, design, true)
 }
 
-type Being struct {
+type Renderer struct {
 	mem Memory
 }
 
-func NewBeing(m Memory) *Being {
-	return &Being{m}
+func NewRenderer(m Memory) *Renderer {
+	return &Renderer{m}
 }
 
-func (b *Being) MaterializeAddress(addr Address) Reflex {
+func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 	matter := &Matter{
 		Valve: nil,
 		Path: []Name{},
@@ -41,7 +41,7 @@ func (b *Being) MaterializeAddress(addr Address) Reflex {
 	return b.materializeAddress(matter, addr)
 }
 
-func (b *Being) materializeAddress(matter *Matter, addr Address) Reflex {
+func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
 	val := b.mem.Lookup(addr)
 	if val == nil {
 		panicf("Address %v is dangling", addr)
@@ -51,18 +51,18 @@ func (b *Being) materializeAddress(matter *Matter, addr Address) Reflex {
 	return b.Materialize(matter, val, true)
 }
 
-func (b *Being) Materialize(matter *Matter, x Value, recurse bool) Reflex {
+func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, Value) {
 	switch t := x.(type) {
 	// Addresses are materialized recursively
 	case Address:
 		return b.materializeAddress(matter, t)
 	// Irreducible types are materialized as gates that emit the irreducible values
 	case int, float64, complex128, string:
-		return NewNounReflex(t)
+		return MaterializeNoun(t)
 	// Go-gates are materialized into runtime reflexes
-	case func() Reflex:
+	case func() (Reflex, Value):
 		return t()
-	case func(*Matter) Reflex:
+	case func(*Matter) (Reflex, Value):
 		return t(matter)
 	case Materializer:
 		return t.Materialize()
@@ -74,7 +74,7 @@ func (b *Being) Materialize(matter *Matter, x Value, recurse bool) Reflex {
 		if recurse {
 			return b.MaterializeCircuit(matter, t)
 		}
-		return NewNounReflex(t)
+		return MaterializeNoun(t)
 	case nil:
 		panic("report error")
 	default:
@@ -83,14 +83,16 @@ func (b *Being) Materialize(matter *Matter, x Value, recurse bool) Reflex {
 	panic(0)
 }
 
-func (b *Being) MaterializeCircuit(matter *Matter, u Circuit) (super Reflex) {
+func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
+	value := New()
 	gates := make(map[Name]Reflex)
 	for _, g := range u.Letters() {
 		if g == Super {
 			log.Fatalf("Circuit design overwrites the %s gate. In:\n%v\n", Super, u)
 		}
 		m := u.At(g)
-		gates[g] = b.Materialize(
+		var gv Value
+		gates[g], gv = b.Materialize(
 			&Matter{
 				Address: Address{},
 				Design: m,
@@ -100,17 +102,21 @@ func (b *Being) MaterializeCircuit(matter *Matter, u Circuit) (super Reflex) {
 			},
 			m, false,
 		)
+		value.Gate[g] = gv
 	}
+	var super Reflex
 	super, gates[Super] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
-	for _, g_ := range append(u.Letters(), DefaultValve) {
+	value.Gate[Super] = matter.Circuit()
+	for _, g_ := range append(u.Letters(), Super) {
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
 			tg, tv := t.Reduce()
 			checkLink(u, gates, g, v, tg, tv)
+			value.Link(NewVector(g, v), NewVector(tg, tv))
 			go Link(gates[g][v], gates[tg][tv])
 			// go func() {
 			// 	log.Printf("%s:%s -> %s:%s | %v %v", g, v, tg, tv, gates[g][v], gates[tg][tv])
@@ -118,7 +124,7 @@ func (b *Being) MaterializeCircuit(matter *Matter, u Circuit) (super Reflex) {
 			// }()
 		}
 	}
-	return super
+	return super, value
 }
 
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {

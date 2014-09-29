@@ -18,29 +18,32 @@ import (
 
 type Stdin struct{}
 
-func (Stdin) Materialize() be.Reflex {
+func (Stdin) Materialize() (be.Reflex, Value) {
 	return MaterializeReadFrom(os.Stdin)
 }
 
 type Stdout struct{}
 
-func (Stdout) Materialize() be.Reflex {
+func (Stdout) Materialize() (be.Reflex, Value) {
 	return MaterializeWriteTo(os.Stdout)
 }
 
 type Stderr struct{}
 
-func (Stderr) Materialize() be.Reflex {
+func (Stderr) Materialize() (be.Reflex, Value) {
 	return MaterializeWriteTo(os.Stderr)
 }
 
-func MaterializeWriteTo(w io.Writer) be.Reflex {
+func MaterializeWriteTo(w io.Writer) (be.Reflex, Value) {
 	x := &writerTo{
 		WriteCloser: kitio.SovereignWriter(w),
 	}
 	reflex, eye := be.NewEyeCognizer(x.cognize, DefaultValve)
 	go eye.Show(DefaultValve, x.WriteCloser)
-	return reflex
+	return reflex,
+		func() (be.Reflex, Value) {
+			return MaterializeWriteTo(w)
+		}
 }
 
 type writerTo struct{
@@ -76,13 +79,16 @@ func CopyClose(w io.Writer, r io.Reader, closeWriter, closeReader bool) {
 	}
 }
 
-func MaterializeReadFrom(w io.Reader) be.Reflex {
+func MaterializeReadFrom(w io.Reader) (be.Reflex, Value) {
 	x := &readFrom{
 		ReadCloser: kitio.SovereignReader(w),
 	}
 	reflex, eye := be.NewEyeCognizer(x.cognize, DefaultValve)
 	go eye.Show(DefaultValve, x.ReadCloser)
-	return reflex
+	return reflex,
+		func() (be.Reflex, Value) {
+			return MaterializeReadFrom(w)
+		}
 }
 
 type readFrom struct{

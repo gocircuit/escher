@@ -11,12 +11,13 @@ import (
 
 	"github.com/gocircuit/escher/plumb"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Ticker
 type Ticker struct{}
 
-func (Ticker) Materialize() be.Reflex {
+func (Ticker) Materialize() (be.Reflex, Value) {
 	reflex, eye := be.NewEye("Tick", "Duration")
 	go func() {
 		for {
@@ -44,5 +45,5 @@ func (Ticker) Materialize() be.Reflex {
 			}
 		}
 	}()
-	return reflex
+	return reflex, Ticker{}
 }	

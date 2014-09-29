@@ -18,14 +18,14 @@ import (
 // ForkForm…
 type ForkForm struct{}
 
-func (ForkForm) Materialize() be.Reflex {
+func (ForkForm) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Form", "Data")
 }
 
 // FormBlend …
 type FormBlend struct{}
 
-func (FormBlend) Materialize() be.Reflex {
+func (FormBlend) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "FormData" {
@@ -44,7 +44,7 @@ func (FormBlend) Materialize() be.Reflex {
 		}, 
 		"FormData", DefaultValve,
 	)
-	return reflex
+	return reflex, FormBlend{}
 }
 
 func gateHierarchy(u Circuit) map[string]interface{} {

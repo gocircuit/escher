@@ -56,7 +56,7 @@ var args map[string]string
 // Arg
 type Arg struct{}
 
-func (Arg) Materialize() be.Reflex {
+func (Arg) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "Name" {
@@ -70,13 +70,13 @@ func (Arg) Materialize() be.Reflex {
 		}, 
 		"Name", "Value",
 	)
-	return reflex
+	return reflex, Arg{}
 }
 
 // Env
 type Env struct{}
 
-func (Env) Materialize() be.Reflex {
+func (Env) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "Name" {
@@ -92,13 +92,13 @@ func (Env) Materialize() be.Reflex {
 		},
 		"Name", "Value",
 	)
-	return reflex
+	return reflex, Env{}
 }
 
 // Exit
 type Exit struct{}
 
-func (Exit) Materialize() be.Reflex {
+func (Exit) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			switch t := value.(type) {
@@ -110,26 +110,26 @@ func (Exit) Materialize() be.Reflex {
 		}, 
 		DefaultValve,
 	)
-	return reflex
+	return reflex, Exit{}
 }
 
 // Fatal
 type Fatal struct{}
 
-func (Fatal) Materialize() be.Reflex {
+func (Fatal) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			log.Fatalln(value)
 		}, 
 		DefaultValve,
 	)
-	return reflex
+	return reflex, Fatal{}
 }
 
 // LookPath
 type LookPath struct{}
 
-func (LookPath) Materialize() be.Reflex {
+func (LookPath) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "Name" {
@@ -143,5 +143,5 @@ func (LookPath) Materialize() be.Reflex {
 		},
 		"Name", DefaultValve,
 	)
-	return reflex
+	return reflex, LookPath{}
 }

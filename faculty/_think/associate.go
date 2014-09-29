@@ -10,17 +10,16 @@ import (
 	// "fmt"
 	"sync"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 // Associate
 type Associate struct{}
 
-func (Associate) Materialize() be.Reflex {
+func (Associate) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer((&association{}).Cognize, "Name", "With", "When", DefaultValve)
-	return reflex
+	return reflex, Associate{}
 }
 
 type association struct {
@@ -46,7 +45,7 @@ func (x *association) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	}
 	eye.Show(
 		DefaultValve, 
-		Image{
+		Circuit{
 			x.name: x.with,
 			"When": x.when,
 		},

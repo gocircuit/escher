@@ -9,16 +9,18 @@ package be
 import (
 	// "log"
 	. "reflect"
+
+	"github.com/gocircuit/escher/circuit"
 )
 
 // type RetinaCognizer func(eye *Eye, value interface{})
 
 const prefix = "Cognize"
 
-func MaterializeInterface(v Gate) Reflex {
+func MaterializeInterface(v Gate) (Reflex, circuit.Value) {
 	w := makeGate(v)
-	w.Interface().(Gate).Spark() // Initialize
-	r := retina{w}
+	spark := w.Interface().(Gate).Spark() // Initialize
+	r := gate{w}
 	var valve []string
 	t := r.Value.Type()
 	for i := 0; i < t.NumMethod(); i++ {
@@ -28,14 +30,14 @@ func MaterializeInterface(v Gate) Reflex {
 		}
 	}
 	x, _ := NewEyeCognizer(r.Cognize, valve...)
-	return x
+	return x, spark
 }
 
-type retina struct {
+type gate struct {
 	Value
 }
 
-func (r *retina) Cognize(eye *Eye, valve string, value interface{}) {
+func (r *gate) Cognize(eye *Eye, valve string, value interface{}) {
 	m := r.Value.MethodByName(prefix + valve)
 	m.Call(
 		[]Value{

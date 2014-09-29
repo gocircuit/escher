@@ -19,12 +19,12 @@ import (
 // Process
 type Process struct{}
 
-func (x Process) Materialize() be.Reflex {
+func (x Process) Materialize() (be.Reflex, Value) {
 	p := &process{
 		spawn: make(chan interface{}),
 	}
 	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
-	return reflex
+	return reflex, Process{}
 }
 
 type process struct{

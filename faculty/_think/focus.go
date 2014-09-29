@@ -12,9 +12,8 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 func init() {
@@ -40,7 +39,7 @@ func (Focus) Materialize() be.Reflex {
 
 type focus struct {
 	sync.Mutex
-	from Image
+	from Circuit
 	on string
 	when interface{}
 }
@@ -50,7 +49,7 @@ func (x *focus) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	defer x.Unlock()
 	switch dvalve {
 	case "From":
-		x.from = dvalue.(Image)
+		x.from = dvalue.(Circuit)
 	case "On":
 		x.on = dvalue.(string)
 	case "When":
@@ -61,7 +60,7 @@ func (x *focus) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	}
 	eye.Show(
 		DefaultValve, 
-		Image{
+		Circuit{
 			"Focus": x.from.Copy().Cut(x.on),
 			"When": x.when,
 		},

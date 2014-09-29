@@ -11,22 +11,21 @@ import (
 	"math/rand"
 	"sync"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 // Choose
 type Choose struct{}
 
-func (Choose) Materialize() be.Reflex {
+func (Choose) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer((&choose{}).Cognize, "When", "From", DefaultValve)
-	return reflex
+	return reflex, Choose{}
 }
 
 type choose struct {
 	sync.Mutex
-	from Image // image from which a child is being chosen
+	from Circuit // image from which a child is being chosen
 	when interface{} // signal for choice
 }
 
@@ -35,7 +34,7 @@ func (x *choose) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	defer x.Unlock()
 	switch dvalve {
 	case "From":
-		x.from = dvalue.(Image)
+		x.from = dvalue.(Circuit)
 	case "When":
 		x.when = dvalue
 	case DefaultValve:
@@ -49,7 +48,7 @@ func (x *choose) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 		}
 		eye.Show(
 			DefaultValve, 
-			Image{
+			Circuit{
 				"When": x.when,
 				"Choice": x.from[key],
 			},

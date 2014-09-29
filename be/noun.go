@@ -13,20 +13,20 @@ import (
 // Ignore gates ignore their empty-string valve
 type Ignore struct{}
 
-func (Ignore) Materialize(*Matter) Reflex {
+func (Ignore) Materialize(*Matter) (Reflex, Value) {
 	s, t := NewSynapse()
 	go func() {
 		s.Focus(DontCognize)
 	}()
-	return Reflex{DefaultValve: t}
+	return Reflex{DefaultValve: t}, nil
 }
 
 func DontCognize(interface{}) {}
 
-func NewNounReflex(v interface{}) Reflex {
+func MaterializeNoun(v interface{}) (Reflex, Value) {
 	s, t := NewSynapse()
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)
 	}()
-	return Reflex{DefaultValve: t}
+	return Reflex{DefaultValve: t}, t
 }

@@ -14,6 +14,7 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 func init() {
@@ -23,7 +24,9 @@ func init() {
 // Clunk…
 type Clunk struct{}
 
-func (Clunk) Spark() {}
+func (Clunk) Spark() Value {
+	return Clunk{}
+}
 
 func (Clunk) Cognize(_ *be.Eye, v interface{}) {
 	go func() {

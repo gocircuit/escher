@@ -10,9 +10,8 @@ import (
 	// "fmt"
 	"sync"
 
-	. "github.com/gocircuit/escher/image"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/plumb"
 )
 
 // Remember
@@ -25,8 +24,8 @@ func (Remember) Materialize() be.Reflex {
 
 type remember struct {
 	sync.Mutex
-	from Image
-	what Image
+	from Circuit
+	what Circuit
 	when interface{}
 }
 
@@ -35,9 +34,9 @@ func (x *remember) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	defer x.Unlock()
 	switch dvalve {
 	case "From":
-		x.from = dvalue.(Image)
+		x.from = dvalue.(Circuit)
 	case "What":
-		x.what = dvalue.(Image)
+		x.what = dvalue.(Circuit)
 	case "When":
 		x.when = dvalue
 	case DefaultValve:
@@ -46,14 +45,14 @@ func (x *remember) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
 	}
 	eye.Show(
 		DefaultValve, 
-		Image{
+		Circuit{
 			"Memory": emphasize(x.from, x.what),
 			"When": x.when,
 		},
 	)
 }
 
-func emphasize(from, what Image) Image {
+func emphasize(from, what Circuit) Circuit {
 	if what == nil {
 		return from
 	}
@@ -64,8 +63,8 @@ func emphasize(from, what Image) Image {
 			continue
 		}
 		switch t := v.(type) {
-		case Image:
-			r[name] = emphasize(subwhat.(Image), t)
+		case Circuit:
+			r[name] = emphasize(subwhat.(Circuit), t)
 		default: // Go primitive types and nil
 			r[name] = t
 		}

@@ -21,12 +21,12 @@ import (
 // Docker
 type Docker struct{}
 
-func (x Docker) Materialize() be.Reflex {
+func (x Docker) Materialize() (be.Reflex, Value) {
 	p := &docker{
 		spawn: make(chan interface{}),
 	}
 	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
-	return reflex
+	return reflex, Docker{}
 }
 
 // docker is the materialized docker reflex

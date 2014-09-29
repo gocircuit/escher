@@ -21,9 +21,10 @@ type Reservoir struct{
 	path list.List
 }
 
-func (r *Reservoir) Spark() {
+func (r *Reservoir) Spark() Value {
 	r.y = New()
 	r.focus = r.y
+	return &Reservoir{}
 }
 
 func (r *Reservoir) CognizeY(eye *be.Eye, v interface{}) {}

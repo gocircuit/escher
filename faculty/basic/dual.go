@@ -18,7 +18,6 @@ func init() {
 	faculty.Register("Ignore", be.Ignore{})
 	faculty.Register("Show", MaterializeShow)
 	faculty.Register("See", Scanln{})
-	faculty.Register("Root", be.NewNounReflex(faculty.Root))
 	//
 	faculty.Register("Grow", &Grow{})
 	faculty.Register("Fork", Fork{})
@@ -27,7 +26,7 @@ func init() {
 // Scanln
 type Scanln struct{}
 
-func (Scanln) Materialize() be.Reflex {
+func (Scanln) Materialize() (be.Reflex, Value) {
 	s, t := be.NewSynapse()
 	go func() {
 		r := s.Focus(be.DontCognize)
@@ -39,13 +38,13 @@ func (Scanln) Materialize() be.Reflex {
 			}
 		}()
 	}()
-	return be.Reflex{DefaultValve: t}
+	return be.Reflex{DefaultValve: t}, Scanln{}
 }
 
 // Println
 type Println struct{}
 
-func (Println) Materialize() be.Reflex {
+func (Println) Materialize() (be.Reflex, Value) {
 	s, t := be.NewSynapse()
 	go func() {
 		s.Focus(
@@ -54,5 +53,5 @@ func (Println) Materialize() be.Reflex {
 			},
 		)
 	}()
-	return be.Reflex{DefaultValve: t}
+	return be.Reflex{DefaultValve: t}, Println{}
 }

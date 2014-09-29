@@ -23,9 +23,9 @@ func init() {
 // Join
 type Join struct{}
 
-func (Join) Materialize() be.Reflex {
+func (Join) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer((&join{}).Cognize, DefaultValve, "Head", "Tail")
-	return reflex
+	return reflex, Join{}
 }
 
 type join struct {

@@ -12,7 +12,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func MaterializeUnion(field ...string) Reflex {
+func MaterializeUnion(field ...string) (Reflex, Value) {
 	reflex, eye := NewEye(append(field, DefaultValve)...) // add the default valve
 	go func() {
 		conj := New()
@@ -38,5 +38,8 @@ func MaterializeUnion(field ...string) Reflex {
 			}
 		}
 	}()
-	return reflex
+	return reflex, 
+		func() (Reflex, Value) {
+			return MaterializeUnion(field...)
+		}
 }

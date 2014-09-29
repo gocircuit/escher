@@ -16,8 +16,8 @@ import (
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/plumb"
-	. "github.com/gocircuit/escher/image"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 
 	"github.com/gocircuit/escher/github.com/ChimeraCoder/anaconda"
 )
@@ -33,11 +33,11 @@ func init() {
 // Client ...
 type Client struct{}
 
-func (Client) Materialize() be.Reflex {
+func (Client) Materialize() (be.Reflex, Value) {
 	var c1, a1 sync.Once
-	api, consumer, access := make(chan *anaconda.TwitterApi), make(chan Image, 1), make(chan Image, 1)
+	api, consumer, access := make(chan *anaconda.TwitterApi), make(chan Circuit, 1), make(chan Circuit, 1)
 	go func() { // start connecting monad
-		var c, a Image
+		var c, a Circuit
 		for i := 0; i < 2; i++ {
 			select {
 			case c = <-consumer:
@@ -54,14 +54,14 @@ func (Client) Materialize() be.Reflex {
 		}
 	}()
 	// API
-	query := make(chan Image, 5)
+	query := make(chan Circuit, 5)
 	reflex, eye := be.NewEyeCognizer(
 		func (eye *be.Eye, valve string, value interface{}) {
 			switch valve {
 			case "Consumer":
-				c1.Do(func () {consumer <- value.(Image)})
+				c1.Do(func () {consumer <- value.(Circuit)})
 			case "Access":
-				a1.Do(func() {access <- value.(Image)})
+				a1.Do(func() {access <- value.(Circuit)})
 			case "UserTimelineQuery", "HomeTimelineQuery", "RetweetsQuery","RetweetsOfMeQuery":
 				valve = valve[:len(valve)-len("Query")]
 				query <- Make().Grow(valve, value)
@@ -81,9 +81,9 @@ func (Client) Materialize() be.Reflex {
 			for {
 				g := <-query
 				q := g.Letters()[0]
-				x := g[q].(Image)
+				x := g[q].(Circuit)
 				uv := urlize(x)
-				log.Printf("Twitter %s query %v", q, ImagineWithMaps(uv).(Image).PrintLine())
+				log.Printf("Twitter %s query %v", q, ImagineWithMaps(uv).(Circuit).PrintLine())
 				var tweets []anaconda.Tweet
 				var err error
 				switch q {
@@ -102,7 +102,7 @@ func (Client) Materialize() be.Reflex {
 				eye.Show(
 					q,
 					Pretty(
-						Image{
+						Circuit{
 							"Name": x.Interface("Name"),
 							"Sentence": Imagine(tweets),
 						},
@@ -111,10 +111,10 @@ func (Client) Materialize() be.Reflex {
 			}
 		}()
 	}
-	return reflex
+	return reflex, Client{}
 }
 
-func urlize(g Image) url.Values {
+func urlize(g Circuit) url.Values {
 	uv := url.Values{}
 	uv.Set("user_id", g.OptionalString("UserId"))
 	uv.Set("screen_name", g.OptionalString("ScreenName"))

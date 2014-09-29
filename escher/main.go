@@ -87,7 +87,7 @@ func main() {
 
 	default:
 		mem := compile(*flagX, *flagY, *flagZ)
-		b := NewBeing(mem)
+		b := NewRenderer(mem)
 		defer func() {
 			if r := recover(); r != nil {
 				shell.NewShell(os.Stdin, os.Stdout, os.Stderr, mem).Loop()

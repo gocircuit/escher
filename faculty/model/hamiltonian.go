@@ -40,8 +40,9 @@ type Hamiltonian struct{
 	mem plumb.Given
 }
 
-func (h *Hamiltonian) Spark() {
+func (h *Hamiltonian) Spark() Value {
 	h.mem.Init()
+	return &Hamiltonian{}
 }
 
 func (h *Hamiltonian) CognizeMemory(_ *be.Eye, v interface{}) {

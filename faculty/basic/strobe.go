@@ -21,13 +21,13 @@ func init() {
 // Strobe ...
 type Strobe struct{}
 
-func (Strobe) Materialize() be.Reflex {
+func (Strobe) Materialize() (be.Reflex, Value) {
 	x := &strobe{
 		when: make(chan interface{}, 1), // whens and charges cannot be out of order by more than one slot
 		charge: make(chan interface{}, 1),
 	}
 	reflex, _ := be.NewEyeCognizer(x.Cognize, "Charge", "When", "Strobe")
-	return reflex
+	return reflex, Strobe{}
 }
 
 type strobe struct {

@@ -23,9 +23,10 @@ type Embody struct{
 	design plumb.Given
 }
 
-func (h *Embody) Spark() {
+func (h *Embody) Spark() Value {
 	h.mem.Init()
 	h.design.Init()
+	return &Embody{}
 }
 
 func (h *Embody) CognizeMemory(_ *be.Eye, v interface{}) {
@@ -53,8 +54,9 @@ type Connect struct{
 	cell plumb.Given
 }
 
-func (h *Connect) Spark() {
+func (h *Connect) Spark() Value {
 	h.cell.Init()
+	return &Connect{}
 }
 
 func (h *Connect) CognizeCell(_ *be.Eye, v interface{}) {

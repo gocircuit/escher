@@ -21,9 +21,10 @@ type Range struct{
 	aux plumb.Given
 }
 
-func (h *Range) Spark() {
+func (h *Range) Spark() Value {
 	h.mem.Init()
 	h.aux.Init()
+	return &Range{}
 }
 
 func (h *Range) CognizeMemory(eye *be.Eye, v interface{}) {

@@ -26,7 +26,9 @@ func init() {
 // IntString
 type IntString struct{}
 
-func (IntString) Spark() {}
+func (IntString) Spark() Value {
+	return IntString{}
+}
 
 func (IntString) CognizeInt(eye *be.Eye, v interface{}) {
 	eye.Show("String", strconv.Itoa(v.(int)))
@@ -43,10 +45,10 @@ func (IntString) CognizeString(eye *be.Eye, v interface{}) {
 // Sum
 type Sum struct{}
 
-func (Sum) Materialize() be.Reflex {
+func (Sum) Materialize() (be.Reflex, Value) {
 	x := &sum{lit: New()}
 	reflex, _ := be.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
-	return reflex
+	return reflex, Sum{}
 }
 
 type sum struct {

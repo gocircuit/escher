@@ -10,6 +10,7 @@ import (
 	"fmt"
 
 	"github.com/gocircuit/escher/faculty"
+	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/be"
 )
 
@@ -18,11 +19,11 @@ func init() {
 }
 
 // MaterializeJunction
-func MaterializeJunction(matter *Matter) Reflex {
+func MaterializeJunction(matter *Matter) (Reflex, Value) {
 	return MaterializeJunctionWithFunc(matter, nil)
 }
 
-func MaterializeShow(matter *Matter) Reflex {
+func MaterializeShow(matter *Matter) (Reflex, Value) {
 	return MaterializeJunctionWithFunc(
 		matter, 
 		func (v interface{}) {
@@ -31,7 +32,9 @@ func MaterializeShow(matter *Matter) Reflex {
 	)
 }
 
-func MaterializeJunctionWithFunc(matter *Matter, f func(interface{})) Reflex {
+type JuncFunc func(interface{})
+
+func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 	if len(matter.Valve) < 1 {
 		panic("Junction is not connected")
 	}
@@ -39,9 +42,12 @@ func MaterializeJunctionWithFunc(matter *Matter, f func(interface{})) Reflex {
 	for v, _ := range matter.Valve {
 		vlv = append(vlv, v.(string))
 	}
-	j := junction{f, vlv}
+	j := junction{jf, vlv}
 	reflex, _ := NewEyeCognizer(j.Cognize, vlv...)
-	return reflex
+	return reflex, 
+		func(matter_ *Matter) (Reflex, Value) {
+			return MaterializeJunctionWithFunc(matter_, jf)
+		}
 }
 
 type junction struct {

@@ -10,7 +10,7 @@ import (
 	"sync"
 
 	// "github.com/gocircuit/escher/faculty"
-	// . "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	// "github.com/gocircuit/escher/plumb"
 )
@@ -21,7 +21,9 @@ type IntSum struct{
 	x, y, sum int
 }
 
-func (s *IntSum) Spark() {}
+func (s *IntSum) Spark() Value {
+	return &IntSum{}
+}
 
 func (s *IntSum) save(valve string, value int) (x, y, sum int) {
 	s.Lock()

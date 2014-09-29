@@ -26,10 +26,10 @@ type Dir struct{
 	dir string
 }
 
-func (d Dir) Materialize() be.Reflex {
+func (d Dir) Materialize() (be.Reflex, Value) {
 	x := dir(d.dir)
 	reflex, _ := be.NewEyeCognizer(x.Cognize, "Path", DefaultValve)
-	return reflex
+	return reflex, d.dir
 }
 
 type dir string

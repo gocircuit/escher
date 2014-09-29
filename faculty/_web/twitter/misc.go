@@ -10,32 +10,33 @@ package twitter
 import (
 	"github.com/gocircuit/escher/faculty/basic"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // AnswerMaterializer ...
 type AnswerMaterializer struct{}
 
-func (AnswerMaterializer) Materialize() be.Reflex {
+func (AnswerMaterializer) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Name", "Sentence")
 }
 
 // ConsumerMaterializer ...
 type ConsumerMaterializer struct{}
 
-func (ConsumerMaterializer) Materialize() be.Reflex {
+func (ConsumerMaterializer) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Key", "Secret")
 }
 
 // AccessMaterializer ...
 type AccessMaterializer struct{}
 
-func (AccessMaterializer) Materialize() be.Reflex {
+func (AccessMaterializer) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("Token", "Secret")
 }
 
 // UserTimelineQueryMaterializer ...
 type UserTimelineQueryMaterializer struct{}
 
-func (UserTimelineQueryMaterializer) Materialize() be.Reflex {
+func (UserTimelineQueryMaterializer) Materialize() (be.Reflex, Value) {
 	return be.MaterializeUnion("UserId", "ScreenName", "AfterId", "NotAfterId", "Count")
 }

@@ -16,17 +16,17 @@ type Reflex map[Name]*Synapse
 
 //
 type Materializer interface {
-	Materialize() Reflex
+	Materialize() (Reflex, Value)
 }
 
 //
 type MaterializerWithMatter interface {
-	Materialize(*Matter) Reflex
+	Materialize(*Matter) (Reflex, Value)
 }
 
 //
 type Gate interface {
-	Spark() // Initializer
+	Spark() Value // Initializer
 }
 
 // Matter describes the circuit context that commissioned the present materialization.
@@ -37,4 +37,30 @@ type Matter struct {
 	//
 	Path []Name // Materialization path of this reflex, recursively following gate names
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
+}
+
+func (m *Matter) Circuit() Circuit {
+	return New().
+		Grow("Address", m.Address).
+		Grow("Design", m.Design).
+		Grow("Valve", valveSetCircuit(m.Valve)).
+		Grow("Path", pathCircuit(m.Path))
+}
+
+func valveSetCircuit(s map[Name]struct{}) Circuit {
+	r := New()
+	var i int
+	for v, _ := range s {
+		r.Gate[i] = v
+		i++
+	}
+	return r
+}
+
+func pathCircuit(p []Name) Circuit {
+	r := New()
+	for i, n := range p {
+		r.Grow(i, n)
+	}
+	return r
 }

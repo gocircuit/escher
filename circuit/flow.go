@@ -8,6 +8,7 @@ package circuit
 
 import (
 	// "fmt"
+	// "log"
 )
 
 func (u Circuit) Link(x, y Vector) {
@@ -17,11 +18,11 @@ func (u Circuit) Link(x, y Vector) {
 		panic("self loop")
 	}
 	xs, ys := u.valves(xg), u.valves(yg)
-	if _, ok := xs[xv]; ok {
-		panic("dup")
+	if z, ok := xs[xv]; ok && !Same(z, y) {
+		panic("contra")
 	}
-	if _, ok := ys[yv]; ok {
-		panic("dup")
+	if z, ok := ys[yv]; ok && !Same(z, x){
+		panic("contra")
 	}
 	xs[xv], ys[yv] = y, x
 }

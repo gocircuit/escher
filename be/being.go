@@ -13,7 +13,7 @@ import (
 	. "github.com/gocircuit/escher/memory"
 )
 
-func Materialize(memory Memory, design Value) (Reflex, Value) {
+func Materialize(memory Memory, design Value) (reflex Reflex, residual Value) {
 	b := &Renderer{memory}
 	matter := &Matter{
 		Design: design,

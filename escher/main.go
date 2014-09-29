@@ -90,8 +90,7 @@ func main() {
 		b := NewRenderer(mem)
 		defer func() {
 			if r := recover(); r != nil {
-				panic(r)
-				shell.NewShell(os.Stdin, os.Stdout, os.Stderr, mem).Loop()
+				shell.NewShell("¡zmb!", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))
 			}
 		}()
 		b.MaterializeAddress(NewAddressParse(*flagMain))

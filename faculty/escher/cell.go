@@ -15,9 +15,7 @@ import (
 	"github.com/gocircuit/escher/memory"
 )
 
-/*
-	Memory *Memory
-*/
+// Embody
 type Embody struct{
 	mem plumb.Given
 	design plumb.Given

@@ -22,6 +22,7 @@ import (
 )
 
 type Shell struct {
+	name string
 	memory Memory
 	in io.Reader
 	out io.WriteCloser
@@ -36,9 +37,9 @@ type Focus struct {
 	Path []Name
 }
 
-func NewShell(in io.Reader, out, err io.WriteCloser, memory Memory) *Shell {
+func NewShell(name string, in io.Reader, out, err io.WriteCloser) *Shell {
 	sh := &Shell{
-		memory: memory,
+		name: name,
 		in: in,
 		out: out,
 		err: err,
@@ -55,7 +56,8 @@ func NewShell(in io.Reader, out, err io.WriteCloser, memory Memory) *Shell {
 	return sh
 }
 
-func (sh *Shell) Loop() {
+func (sh *Shell) Loop(memory Circuit) {
+	sh.memory = Memory(memory)
 	sh.prompt()
 	for sh.scan.Scan() {
 		words := split(sh.scan.Text())
@@ -84,6 +86,8 @@ func (sh *Shell) Loop() {
 			sh.link(words[1:])
 		case "u", "unlink":
 			sh.unlink(words[1:])
+		case "recycle", "r":
+			return
 		default:
 			fmt.Fprintf(sh.err, "command not recognized; try help\n")
 		}
@@ -96,7 +100,7 @@ func (sh *Shell) focus() *Focus {
 }
 
 func (sh *Shell) prompt() {
-	fmt.Fprintf(sh.err, " ")
+	fmt.Fprintf(sh.err, "%s ", sh.name)
 }
 
 func (sh *Shell) jump(w []string) {
@@ -258,7 +262,10 @@ func (sh *Shell) rm(w []string) {
 
 func (sh *Shell) help(w []string) {
 	const help = `
-EXAMINE
+ACT
+r             Recycle the current view
+
+VIEW
 p             Show current path
 v             Show all foci
 j b           Change current focus to "b"
@@ -271,7 +278,7 @@ cd /          "
 cd ef/gh      Move current focus relative to itself
 cd ..         Move current focus to parent memory circuit
 
-CONTROL
+CHANGE
 mk xyz        Make a memory gate named "xyz"
 mk xyz "abc"  Make a gate named "xyz"
 mk xyz 123    "

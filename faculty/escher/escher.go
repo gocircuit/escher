@@ -21,6 +21,7 @@ func init() {
 	faculty.Register("escher.Memory", Memory{})
 	faculty.Register("escher.Embody", &Embody{})
 	faculty.Register("escher.Connect", &Connect{})
+	faculty.Register("escher.Shell", &Shell{})
 }
 
 // Lookup

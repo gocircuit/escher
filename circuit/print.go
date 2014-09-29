@@ -16,8 +16,8 @@ type Printer interface {
 	Print(prefix, indent string) string
 }
 
-func (u *circuit) Print(prefix, indent string) string {
-	if u == nil {
+func (u Circuit) Print(prefix, indent string) string {
+	if u.IsNil() {
 		return "<nil>"
 	}
 	var w bytes.Buffer
@@ -42,19 +42,19 @@ func (u *circuit) Print(prefix, indent string) string {
 
 	// letters
 	for _, n := range u.SortedLetters() {
-		p := u.gate[n]
+		p := u.Gate[n]
 		w.WriteString(prefix + indent)
 		PrintValue(&w, prefix+indent, indent, n, p)
 	}
 	// numbers
 	for _, n := range u.SortedNumbers() {
-		p := u.gate[n]
+		p := u.Gate[n]
 		w.WriteString(prefix + indent)
 		PrintValue(&w, prefix+indent, indent, n, p)
 	}
 	//
 	o := make(Orient)
-	for sg, valves := range u.flow {
+	for sg, valves := range u.Flow {
 		for sv, t := range valves {
 			tg, tv := t.Reduce()
 			if o.Has(tg, tv) {

@@ -21,15 +21,7 @@ func (v Vector) Reduce() (gate, valve Name) {
 	return Circuit(v).At("Gate"), Circuit(v).At("Valve")
 }
 
-func (v Vector) Gate() Name {
-	return Circuit(v).At("Gate")
-}
-
-func (v Vector) Valve() Name {
-	return Circuit(v).At("Valve")
-}
-
-func (v Vector) Copy() Reducible {
+func (v Vector) Copy() Irreducible {
 	return Vector(Circuit(v).Clone())
 }
 
@@ -38,7 +30,7 @@ func (v Vector) String() string {
 	return fmt.Sprintf("%v:%v", g, u)
 }
 
-func (v Vector) Same(x Reducible) bool {
+func (v Vector) Same(x Irreducible) bool {
 	w, ok := x.(Vector)
 	if !ok {
 		return false

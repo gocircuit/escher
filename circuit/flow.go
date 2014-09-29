@@ -10,14 +10,13 @@ import (
 	// "fmt"
 )
 
-//
-func (c *circuit) Link(x, y Vector) {
+func (u Circuit) Link(x, y Vector) {
 	xg, xv := x.Reduce()
 	yg, yv := y.Reduce()
 	if xg == yg && xv == yv {
 		panic("self loop")
 	}
-	xs, ys := c.valves(xg), c.valves(yg)
+	xs, ys := u.valves(xg), u.valves(yg)
 	if _, ok := xs[xv]; ok {
 		panic("dup")
 	}
@@ -27,31 +26,32 @@ func (c *circuit) Link(x, y Vector) {
 	xs[xv], ys[yv] = y, x
 }
 
-func (c *circuit) Unlink(x, y Vector) {
+func (u Circuit) valves(p Name) map[Name]Vector {
+	if _, ok := u.Flow[p]; !ok {
+		u.Flow[p] = make(map[Name]Vector)
+	}
+	return u.Flow[p]
+}
+
+func (u Circuit) Unlink(x, y Vector) {
 	xg, xv := x.Reduce()
 	yg, yv := y.Reduce()
-	xs, ys := c.flow[xg], c.flow[yg]
+	xs, ys := u.Flow[xg], u.Flow[yg]
 	delete(xs, xv)
 	delete(ys, yv)
 	if len(xs) == 0 {
-		delete(c.flow, xg)
+		delete(u.Flow, xg)
 	}
 	if len(ys) == 0 {
-		delete(c.flow, yg)
+		delete(u.Flow, yg)
 	}
 }
 
-func (c *circuit) valves(p Name) map[Name]Vector {
-	if _, ok := c.flow[p]; !ok {
-		c.flow[p] = make(map[Name]Vector)
-	}
-	return c.flow[p]
+func (u Circuit) Valves(gate Name) map[Name]Vector {
+	return u.Flow[gate]
 }
 
-func (u *circuit) Valves(gate Name) map[Name]Vector {
-	return u.flow[gate]
-}
-
-func (c *circuit) Follow(v Vector) Vector {
-	return c.flow[v.Gate()][v.Valve()]
+func (u Circuit) Follow(v Vector) Vector {
+	g, h := v.Reduce()
+	return u.Flow[g][h]
 }

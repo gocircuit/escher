@@ -41,12 +41,12 @@ func (r *Reservoir) CognizeX(eye *be.Eye, v interface{}) {
 		r.focus = r.path.Remove(r.path.Back()).(Circuit)
 
 	case "Include":
-		if _, over := r.focus.Include(u.At("Gate"), u.At("Value")); over {
+		if r.focus.Include(u.At("Gate"), u.At("Value")) != nil {
 			panic("over including")
 		}
 
 	case "Exclude":
-		if _, forgotten := r.focus.Exclude(u.At("Gate")); !forgotten {
+		if r.focus.Exclude(u.At("Gate")) == nil {
 			panic("nothing to exclude")
 		}
 

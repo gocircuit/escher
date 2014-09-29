@@ -8,19 +8,23 @@ package faculty
 
 import (
 	"strings"
+	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/memory"
 )
 
 // Root is the global faculties memory where Go packages add gate designs as side-effect of being imported.
-var root Memory = NewMemory()
+var root = Memory(New())
+var lk sync.Mutex
 
 func Root() Memory {
 	return root
 }
 
 func Register(name string, v interface{}) {
+	lk.Lock()
+	defer lk.Unlock()
 	a := strings.Split(name, ".")
 	if len(a) == 0 {
 		panic(1)

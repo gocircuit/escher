@@ -13,7 +13,7 @@ import (
 // Convenience access
 
 func (u Circuit) IntOrZeroAt(name Name) int {
-	i, ok := u.circuit.OptionAt(name)
+	i, ok := u.OptionAt(name)
 	if !ok {
 		return 0
 	}
@@ -21,16 +21,15 @@ func (u Circuit) IntOrZeroAt(name Name) int {
 }
 
 func (u Circuit) FloatOrZeroAt(name Name) float64 {
-	f, ok := u.circuit.OptionAt(name)
+	f, ok := u.OptionAt(name)
 	if !ok {
 		return 0
 	}
 	return f.(float64)
 }
 
-//
 func (u Circuit) CircuitAt(name Name) Circuit {
-	return u.circuit.At(name).(Circuit)
+	return u.At(name).(Circuit)
 }
 
 func (u Circuit) CircuitOptionAt(name Name) (Circuit, bool) {
@@ -41,9 +40,8 @@ func (u Circuit) CircuitOptionAt(name Name) (Circuit, bool) {
 	return Circuit{}, false
 }
 
-// int
 func (u Circuit) IntAt(name Name) int {
-	return u.circuit.At(name).(int)
+	return u.At(name).(int)
 }
 
 func (u Circuit) IntOptionAt(name Name) (int, bool) {
@@ -54,9 +52,8 @@ func (u Circuit) IntOptionAt(name Name) (int, bool) {
 	return 0, false
 }
 
-//
 func (u Circuit) StringAt(name Name) string {
-	return u.circuit.At(name).(string)
+	return u.At(name).(string)
 }
 
 func (u Circuit) StringOptionAt(name Name) (string, bool) {
@@ -67,10 +64,8 @@ func (u Circuit) StringOptionAt(name Name) (string, bool) {
 	return "", false
 }
 
-//
-
 func (u Circuit) AddressAt(name Name) Address {
-	return u.circuit.At(name).(Address)
+	return u.At(name).(Address)
 }
 
 func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
@@ -83,13 +78,13 @@ func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 
 // Series-application methods
 
-func (u Circuit) ReGrow(name Name, meaning Value) Circuit {
-	u.circuit.Include(name, meaning)
+func (u Circuit) ReGrow(name Name, value Value) Circuit {
+	u.Include(name, value)
 	return u
 }
 
-func (u Circuit) Grow(name Name, meaning Value) Circuit {
-	if _, over := u.circuit.Include(name, meaning); over {
+func (u Circuit) Grow(name Name, value Value) Circuit {
+	if u.Include(name, value) != nil {
 		panic("over writing")
 	}
 	return u
@@ -102,16 +97,16 @@ func (u Circuit) Refine(name string) Circuit {
 }
 
 func (u Circuit) Abandon(name string) Circuit {
-	u.circuit.Exclude(name)
+	u.Exclude(name)
 	return u
 }
 
 func (u Circuit) Rename(x, y Name) Circuit {
-	m, ok := u.circuit.Exclude(x)
-	if !ok {
+	m := u.Exclude(x)
+	if m == nil {
 		panic("np")
 	}
-	if _, over := u.circuit.Include(y, m); over {
+	if u.Include(y, m) != nil {
 		panic("over")
 	}
 	return u
@@ -132,32 +127,31 @@ func (u Circuit) Goto(gate ...Name) Value {
 	return x
 }
 
-// Low-level
+// Assembly
 
-func (u *circuit) Include(name Name, meaning Value) (before Value, overwrite bool) {
-	before, overwrite = u.gate[name]
-	u.gate[name] = meaning
+func (u Circuit) Include(name Name, value Value) (before Value) {
+	before = u.Gate[name]
+	u.Gate[name] = value
 	return
 }
 
-func (u *circuit) Exclude(name Name) (meaning Value, forgotten bool) {
-	meaning, forgotten = u.gate[name]
-	delete(u.gate, name)
+func (u Circuit) Exclude(name Name) (forgotten Value) {
+	forgotten = u.Gate[name]
+	delete(u.Gate, name)
 	return
 }
 
-// Len returns the number of gates.
-func (u *circuit) Len() int {
-	return len(u.gate)
+func (u Circuit) Len() int {
+	return len(u.Gate)
 }
 
-func (c *circuit) OptionAt(name Name) (Value, bool) {
-	v, ok := c.gate[name]
+func (u Circuit) OptionAt(name Name) (Value, bool) {
+	v, ok := u.Gate[name]
 	return v, ok
 }
 
-func (c *circuit) At(name Name) Value {
-	return c.gate[name]
+func (u Circuit) At(name Name) Value {
+	return u.Gate[name]
 }
 
 const Super = ""

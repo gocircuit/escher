@@ -11,55 +11,38 @@ import (
 	"sort"
 )
 
-// Name is one of: int or string
-type Name interface{}
-
-// Value is one of: see.Address, string, int, float64, complex128, Circuit
-type Value interface{}
-
-// circuit ...
-type circuit struct {
-	gate map[Name]Value
-	flow map[Name]map[Name]Vector // gate -> valve -> opposing gate and valve
-}
-
+// Circuit ...
 type Circuit struct {
-	*circuit
+	Gate map[Name]Value
+	Flow map[Name]map[Name]Vector // gate -> valve -> opposing gate and valve
 }
 
 func New() Circuit {
-	return Circuit{newCircuit()}
-}
-
-func newCircuit() *circuit {
-	return &circuit{
-		gate: make(map[Name]Value),
-		flow: make(map[Name]map[Name]Vector),
+	return Circuit{
+		Gate: make(map[Name]Value),
+		Flow: make(map[Name]map[Name]Vector),
 	}
 }
 
 var Nil Circuit // the nil circuit
 
-func (u *circuit) IsNil() bool {
-	return u == nil
+func (u Circuit) IsNil() bool {
+	return u.Gate == nil || u.Flow == nil
 }
 
-func (u *circuit) IsEmpty() bool {
-	if u == nil {
-		return true
-	}
-	return len(u.gate) == 0 && len(u.flow) == 0
+func (u Circuit) IsEmpty() bool {
+	return len(u.Gate) == 0 && len(u.Flow) == 0
 }
 
-func (c *circuit) SortedLetters() []string {
-	x := c.Letters()
+func (u Circuit) SortedLetters() []string {
+	x := u.Letters()
 	sort.Strings(x)
 	return x
 }
 
-func (c *circuit) Letters() []string {
+func (u Circuit) Letters() []string {
 	var l []string
-	for key, _ := range c.gate {
+	for key, _ := range u.Gate {
 		if s, ok := key.(string); ok {
 			l = append(l, s)
 		}
@@ -67,15 +50,15 @@ func (c *circuit) Letters() []string {
 	return l
 }
 
-func (c *circuit) SortedNumbers() []int {
-	x := c.Numbers()
+func (u Circuit) SortedNumbers() []int {
+	x := u.Numbers()
 	sort.Ints(x)
 	return x
 }
 
-func (c *circuit) Numbers() []int {
+func (u Circuit) Numbers() []int {
 	var l []int
-	for key, _ := range c.gate {
+	for key, _ := range u.Gate {
 		if i, ok := key.(int); ok {
 			l = append(l, i)
 		}
@@ -83,10 +66,10 @@ func (c *circuit) Numbers() []int {
 	return l
 }
 
-func (u *circuit) Gates() map[Name]Value {
-	return u.gate
+func (u Circuit) Gates() map[Name]Value {
+	return u.Gate
 }
 
-func (u *circuit) String() string {
+func (u Circuit) String() string {
 	return u.Print("", "\t")
 }

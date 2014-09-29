@@ -50,8 +50,8 @@ func combine(pos, neg Circuit) Circuit {
 
 func rename(u Circuit, g, h Name) Circuit {
 	// gate
-	x, ok := u.Exclude(g)
-	if !ok {
+	x := u.Exclude(g)
+	if x == nil {
 		panic(2)
 	}
 	u.Include(h, x)

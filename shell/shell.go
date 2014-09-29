@@ -173,10 +173,10 @@ func (sh *Shell) ls(w []string) {
 	}()
 	switch {
 	case len(w) == 0:
-		fmt.Fprintf(sh.err, "%v\n", sh.at().Circuit())
+		fmt.Fprintf(sh.err, "%v\n", Circuit(sh.at()))
 	case len(w) == 1:
 		pov, _ := sh.glob(w[0])
-		fmt.Fprintf(sh.err, "%v\n", sh.memory.Goto(pov...).Circuit())
+		fmt.Fprintf(sh.err, "%v\n", Circuit(sh.memory.Goto(pov...)))
 	default:
 		fmt.Fprintf(sh.err, "ls accepts at most one argument\n")
 	}

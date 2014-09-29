@@ -60,16 +60,12 @@ func loadDirectory(into Memory, acid, dir string) Memory {
 }
 
 func addSource(into Memory, acid, dir string) {
-	into.T(
-		func (u Circuit) {
-			x, ok := u.CircuitOptionAt(Source{})
-			if !ok {
-				x = New()
-				u.Include(Source{}, x)
-			}
-			x.Include(x.Len(), New().Grow("Acid", acid).Grow("Dir", dir))
-		},
-	)
+	x, ok := Circuit(into).CircuitOptionAt(Source{})
+	if !ok {
+		x = New()
+		into.Include(Source{}, x)
+	}
+	x.Include(x.Len(), New().Grow("Acid", acid).Grow("Dir", dir))
 }
 
 // loadFile ...

@@ -69,7 +69,7 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 	case MaterializerWithMatter:
 		return t.Materialize(matter)
 	case Gate:
-		return MaterializeInterface(t)
+		return MaterializeInterface(t, matter)
 	case Circuit:
 		if recurse {
 			return b.MaterializeCircuit(matter, t)

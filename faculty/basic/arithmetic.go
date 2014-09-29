@@ -26,7 +26,7 @@ func init() {
 // IntString
 type IntString struct{}
 
-func (IntString) Spark() Value {
+func (IntString) Spark(*be.Matter) Value {
 	return IntString{}
 }
 

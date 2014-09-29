@@ -17,9 +17,9 @@ import (
 
 const prefix = "Cognize"
 
-func MaterializeInterface(v Gate) (Reflex, circuit.Value) {
+func MaterializeInterface(v Gate, matter *Matter) (Reflex, circuit.Value) {
 	w := makeGate(v)
-	spark := w.Interface().(Gate).Spark() // Initialize
+	spark := w.Interface().(Gate).Spark(matter) // Initialize
 	r := gate{w}
 	var valve []string
 	t := r.Value.Type()

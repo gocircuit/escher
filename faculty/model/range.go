@@ -21,7 +21,7 @@ type Range struct{
 	aux plumb.Given
 }
 
-func (h *Range) Spark() Value {
+func (h *Range) Spark(*be.Matter) Value {
 	h.mem.Init()
 	h.aux.Init()
 	return &Range{}

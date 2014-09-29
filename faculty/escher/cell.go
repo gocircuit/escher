@@ -21,7 +21,7 @@ type Embody struct{
 	design plumb.Given
 }
 
-func (h *Embody) Spark() Value {
+func (h *Embody) Spark(*be.Matter) Value {
 	h.mem.Init()
 	h.design.Init()
 	return &Embody{}
@@ -52,7 +52,7 @@ type Connect struct{
 	cell plumb.Given
 }
 
-func (h *Connect) Spark() Value {
+func (h *Connect) Spark(*be.Matter) Value {
 	h.cell.Init()
 	return &Connect{}
 }

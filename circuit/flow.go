@@ -52,6 +52,15 @@ func (u Circuit) Valves(gate Name) map[Name]Vector {
 	return u.Flow[gate]
 }
 
+func (u Circuit) View(gate Name) Circuit {
+	x := New()
+	for vlv, vec := range u.Flow[gate] {
+		tg, _ := vec.Reduce()
+		x.Include(vlv, u.At(tg))
+	}
+	return x
+}
+
 func (u Circuit) Follow(v Vector) Vector {
 	g, h := v.Reduce()
 	return u.Flow[g][h]

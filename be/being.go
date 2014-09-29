@@ -17,7 +17,7 @@ func Materialize(memory Memory, design Value) (reflex Reflex, residual Value) {
 	b := &Renderer{memory}
 	matter := &Matter{
 		Design: design,
-		Valve: nil,
+		View: Circuit{},
 		Path: []Name{},
 		Super: nil,
 	}
@@ -34,7 +34,7 @@ func NewRenderer(m Memory) *Renderer {
 
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 	matter := &Matter{
-		Valve: nil,
+		View: Circuit{},
 		Path: []Name{},
 		Super: nil,
 	}
@@ -96,7 +96,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			&Matter{
 				Address: Address{},
 				Design: m,
-				Valve: valveSet(u.Valves(g)),
+				View: u.View(g),
 				Path: append(matter.Path, g),
 				Super: matter,
 			},
@@ -141,12 +141,4 @@ func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
 	if _, ok := gates[tg][tv]; !ok {
 		log.Fatalf("Unknown valve %v:%v in circuit:\n%v\n", tg, tv, u)
 	}
-}
-
-func valveSet(v map[Name]Vector) map[Name]struct{} {
-	w := make(map[Name]struct{})
-	for vlv, _ := range v {
-		w[vlv] = struct{}{}
-	}
-	return w
 }

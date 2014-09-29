@@ -33,8 +33,7 @@ type Gate interface {
 type Matter struct {
 	Address Address // Address of the materialized design in memory
 	Design interface{} // Design
-	Valve map[Name]struct{} // Valves connected to this design in the enclosing circuit
-	//
+	View Circuit // Valves connected to this design in the enclosing circuit and the gate values they point to
 	Path []Name // Materialization path of this reflex, recursively following gate names
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }
@@ -43,18 +42,8 @@ func (m *Matter) Circuit() Circuit {
 	return New().
 		Grow("Address", m.Address).
 		Grow("Design", m.Design).
-		Grow("Valve", valveSetCircuit(m.Valve)).
+		Grow("View", m.View).
 		Grow("Path", pathCircuit(m.Path))
-}
-
-func valveSetCircuit(s map[Name]struct{}) Circuit {
-	r := New()
-	var i int
-	for v, _ := range s {
-		r.Gate[i] = v
-		i++
-	}
-	return r
 }
 
 func pathCircuit(p []Name) Circuit {

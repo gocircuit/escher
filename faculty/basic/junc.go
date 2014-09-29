@@ -35,11 +35,11 @@ func MaterializeShow(matter *Matter) (Reflex, Value) {
 type JuncFunc func(interface{})
 
 func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
-	if len(matter.Valve) < 1 {
+	if matter.View.Len() < 1 {
 		panic("Junction is not connected")
 	}
-	vlv := make([]string, 0, len(matter.Valve))
-	for v, _ := range matter.Valve {
+	vlv := make([]string, 0, matter.View.Len())
+	for v, _ := range matter.View.Gate {
 		vlv = append(vlv, v.(string))
 	}
 	j := junction{jf, vlv}

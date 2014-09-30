@@ -25,7 +25,7 @@ func (u Circuit) Print(prefix, indent string) string {
 
 	// super
 	if valves := u.Valves(Super); len(valves) > 0 {
-		fmt.Fprintf(&w, " // (")
+		fmt.Fprintf(&w, " // ")
 		if len(valves) > 0 {
 			var i int
 			for vn, _ := range valves {
@@ -36,12 +36,14 @@ func (u Circuit) Print(prefix, indent string) string {
 				}
 			}
 		}
-		w.WriteString(") ")
 	}
 	w.WriteString("\n")
 
 	// letters
 	for _, n := range u.SortedLetters() {
+		if len(n) > 0 && n[0] == '#' { // skip sugar gates
+			continue
+		}
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
 		PrintValue(&w, prefix+indent, indent, n, p)
@@ -62,15 +64,23 @@ func (u Circuit) Print(prefix, indent string) string {
 			}
 			o.Include(sg, sv)
 			//
-			fmt.Fprintf(&w, "%s%s%s:%s = %s:%s\n", 
+			fmt.Fprintf(&w, "%s%s%s = %s\n", 
 				prefix, indent,  
-				sg, sv,
-				tg, tv,
+				u.resugar(sg, sv),
+				u.resugar(tg, tv),
 			)
 		}
 	}
 	w.WriteString(prefix + "}")
 	return w.String()
+}
+
+func (u Circuit) resugar(gate, valve Name) string {
+	g, ok := gate.(string)
+	if !ok || len(g) == 0 || g[0] != '#' {
+		return fmt.Sprintf("%s:%s", gate, valve)
+	}
+	return fmt.Sprintf("%s", u.Gate[gate])
 }
 
 func PrintValue(w io.Writer, prefix, indent string, n Name, p Value) {

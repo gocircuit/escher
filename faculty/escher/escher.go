@@ -21,7 +21,7 @@ func init() {
 	faculty.Register("escher.Memory", Memory{})
 	faculty.Register("escher.Embody", &Embody{})
 	faculty.Register("escher.Connect", &Connect{})
-	faculty.Register("escher.Shell", &Shell{})
+	faculty.Register("escher.Shell_", &Shell{})
 }
 
 // Lookup
@@ -45,7 +45,7 @@ func (Lookup) Materialize() (be.Reflex, Value) {
 type Memory struct{}
 
 func (Memory) Materialize() (be.Reflex, Value) {
-	return be.MaterializeNoun(faculty.Root())
+	return be.MaterializeNoun(Circuit(faculty.Root()))
 }
 
 // CircuitSourceDir

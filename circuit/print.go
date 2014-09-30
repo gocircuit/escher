@@ -13,13 +13,17 @@ import (
 )
 
 type Printer interface {
-	Print(prefix, indent string) string
+	Print(prefix, indent string, recurse int) string
 }
 
-func (u Circuit) Print(prefix, indent string) string {
+func (u Circuit) Print(prefix, indent string, recurse int) string {
 	if u.IsNil() {
 		return "<nil>"
 	}
+	if recurse == 0 {
+		return "{…}"
+	}
+	recurse--
 	var w bytes.Buffer
 	w.WriteString("{")
 
@@ -46,13 +50,13 @@ func (u Circuit) Print(prefix, indent string) string {
 		}
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
-		PrintValue(&w, prefix+indent, indent, n, p)
+		PrintValue(&w, prefix+indent, indent, n, p, recurse)
 	}
 	// numbers
 	for _, n := range u.SortedNumbers() {
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
-		PrintValue(&w, prefix+indent, indent, n, p)
+		PrintValue(&w, prefix+indent, indent, n, p, recurse)
 	}
 	//
 	o := make(Orient)
@@ -83,10 +87,10 @@ func (u Circuit) resugar(gate, valve Name) string {
 	return fmt.Sprintf("%s", u.Gate[gate])
 }
 
-func PrintValue(w io.Writer, prefix, indent string, n Name, p Value) {
+func PrintValue(w io.Writer, prefix, indent string, n Name, p Value, recurse int) {
 	switch t := p.(type) {
 	case Printer:
-		fmt.Fprintf(w, "%v %v\n", n, t.Print(prefix, indent))
+		fmt.Fprintf(w, "%v %v\n", n, t.Print(prefix, indent, recurse))
 	case Address:
 		fmt.Fprintf(w, "%v %s\n", n, t)
 	case string:

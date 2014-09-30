@@ -115,7 +115,7 @@ func cognizeDockerCommand(v interface{}) *dkr.Run {
 			cmd.Args = append(cmd.Args, args.StringAt(key))
 		}
 	}
-	log.Printf("circuit docker command (%v)", Linearize(img.Print("", "t")))
+	log.Printf("circuit docker command (%v)", Linearize(img.Print("", "t", -1)))
 	return cmd
 }
 

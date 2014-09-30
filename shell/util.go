@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"path"
+	// "path"
 	"strings"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -58,12 +58,14 @@ func glob(s string) (walk []string, ellipses bool, err error) {
 		ellipses = true
 		s = s[:len(s) - len("...")]
 	}
-	s = path.Clean(s)
 	walk = strings.Split(s, "/")
 	return
 }
 
 func derelativize(walk []string, pov []Name) ([]Name, bool) {
+	if len(walk) > 1 && walk[0] == "" {
+		pov = []Name{}
+	}
 	for _, w := range walk {
 		switch w {
 		case "..":
@@ -71,9 +73,7 @@ func derelativize(walk []string, pov []Name) ([]Name, bool) {
 				return nil, false
 			}
 			pov = pov[:len(pov)-1]
-		case ".":
-		case "":
-			pov = []Name{}
+		case ".", "":
 		default:
 			pov = append(pov, w)
 		}
@@ -83,8 +83,8 @@ func derelativize(walk []string, pov []Name) ([]Name, bool) {
 
 func (sh *Shell) glob(w string) (pov []Name, ell bool) {
 	walk, ell, err := glob(w)
-	if err != nil || ell {
-		fmt.Fprintf(sh.err, "glob not recognized\n")
+	if err != nil {
+		fmt.Fprintf(sh.err, "glob not recognized (%s)\n", err)
 		panic(err)
 	}
 	pov, ok := derelativize(walk, sh.focus().Path)

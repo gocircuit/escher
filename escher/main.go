@@ -79,7 +79,7 @@ func main() {
 		cd := compile(*flagX, *flagY, *flagZ).Lookup(NewAddressStrings(walk))
 		switch t := cd.(type) {
 		case Circuit:
-			fmt.Println(t.Print("", "\t"))
+			fmt.Println(t.Print("", "\t", -1))
 		// case Faculty:
 		default:
 			fmt.Printf("%T/%v\n", t, t)

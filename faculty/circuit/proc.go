@@ -81,7 +81,7 @@ func cognizeProcessCommand(v interface{}) *client.Cmd {
 			cmd.Args = append(cmd.Args, args.StringAt(key))
 		}
 	}
-	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t")))
+	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t", -1)))
 	return cmd
 }
 

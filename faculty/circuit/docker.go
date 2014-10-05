@@ -13,7 +13,7 @@ import (
 	"sync"
 
 	dkr "github.com/gocircuit/circuit/client/docker"
-	"github.com/gocircuit/escher/plumb"
+	"github.com/gocircuit/escher/kit/plumb"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 )

@@ -11,7 +11,7 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/fs"
+	"github.com/gocircuit/escher/kit/fs"
 	"github.com/gocircuit/escher/faculty"
 )
 

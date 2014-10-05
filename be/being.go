@@ -10,7 +10,7 @@ import (
 	"log"
 
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/memory"
+	. "github.com/gocircuit/escher/kit/memory"
 )
 
 func Materialize(memory Memory, design Value) (reflex Reflex, residual Value) {

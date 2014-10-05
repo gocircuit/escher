@@ -14,10 +14,10 @@ import (
 
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/memory"
+	. "github.com/gocircuit/escher/kit/memory"
 	. "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/fs"
-	"github.com/gocircuit/escher/shell"
+	. "github.com/gocircuit/escher/kit/fs"
+	"github.com/gocircuit/escher/kit/shell"
 
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/acid"

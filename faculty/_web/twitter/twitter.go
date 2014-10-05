@@ -15,11 +15,11 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/plumb"
+	"github.com/gocircuit/escher/kit/plumb"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 
-	"github.com/gocircuit/escher/github.com/ChimeraCoder/anaconda"
+	"github.com/gocircuit/escher/kit/github.com/ChimeraCoder/anaconda"
 )
 
 func init() {

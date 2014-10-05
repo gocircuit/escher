@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/memory"
+	. "github.com/gocircuit/escher/kit/memory"
 )
 
 // Root is the global faculties memory where Go packages add gate designs as side-effect of being imported.

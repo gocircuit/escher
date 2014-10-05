@@ -12,7 +12,7 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/shell"
+	"github.com/gocircuit/escher/kit/shell"
 )
 
 // Shell

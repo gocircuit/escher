@@ -15,7 +15,7 @@ import (
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/plumb"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {

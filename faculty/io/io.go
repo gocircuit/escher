@@ -18,7 +18,7 @@ import (
 )
 
 func init() {
-	faculty.Register("io.Clunk", be.NewGateMaterializer(Clunk{}, nil))
+	faculty.Register("io.Clunk", be.NewGateMaterializer(Clunk{}))
 }
 
 // Clunk…

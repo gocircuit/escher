@@ -13,10 +13,10 @@ import (
 )
 
 func init() {
-	faculty.Register("model.Hamiltonian", be.NewGateMaterializer(&Hamiltonian{}, nil))
-	faculty.Register("model.Eulerian", be.NewGateMaterializer(&Eulerian{}, nil))
-	faculty.Register("model.Reservoir", be.NewGateMaterializer(&Reservoir{}, nil))
-	faculty.Register("model.Mix", be.NewGateMaterializer(&Mix{}, nil))
-	faculty.Register("model.Range_", be.NewGateMaterializer(&Range{}, nil))
-	faculty.Register("model.IO", be.NewGateMaterializer(IO{}, nil))
+	faculty.Register("model.Hamiltonian", be.NewGateMaterializer(&Hamiltonian{}))
+	faculty.Register("model.Eulerian", be.NewGateMaterializer(&Eulerian{}))
+	faculty.Register("model.Reservoir", be.NewGateMaterializer(&Reservoir{}))
+	faculty.Register("model.Mix", be.NewGateMaterializer(&Mix{}))
+	faculty.Register("model.Range_", be.NewGateMaterializer(&Range{}))
+	faculty.Register("model.IO", be.NewGateMaterializer(IO{}))
 }

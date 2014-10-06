@@ -19,7 +19,7 @@ func init() {
 	faculty.Register("Show", MaterializeShow)
 	faculty.Register("See", Scanln{})
 	//
-	faculty.Register("Grow", be.NewGateMaterializer(&Grow{}, nil))
+	faculty.Register("Grow", be.NewGateMaterializer(&Grow{}))
 	faculty.Register("Fork", Fork{})
 }
 

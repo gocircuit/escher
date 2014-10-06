@@ -19,7 +19,7 @@ import (
 
 func init() {
 	faculty.Register("Sum", Sum{})
-	faculty.Register("IntString", be.NewGateMaterializer(IntString{}, nil))
+	faculty.Register("IntString", be.NewGateMaterializer(IntString{}))
 	// faculty.Root.Grow("Prod", Prod{})
 }
 

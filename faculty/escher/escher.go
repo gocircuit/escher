@@ -19,9 +19,9 @@ func init() {
 	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir{})
 	faculty.Register("escher.Lookup", Lookup{})
 	faculty.Register("escher.Memory", Memory{})
-	faculty.Register("escher.Embody", be.NewGateMaterializer(&Embody{}, nil))
-	faculty.Register("escher.Connect", be.NewGateMaterializer(&Connect{}, nil))
-	faculty.Register("escher.Shell_", be.NewGateMaterializer(&Shell{}, nil))
+	faculty.Register("escher.Embody", be.NewGateMaterializer(&Embody{}))
+	faculty.Register("escher.Connect", be.NewGateMaterializer(&Connect{}))
+	faculty.Register("escher.Shell_", be.NewGateMaterializer(&Shell{}))
 }
 
 // Lookup

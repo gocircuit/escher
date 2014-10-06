@@ -60,6 +60,10 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 	case int, float64, complex128, string:
 		return MaterializeNoun(t)
 	// Go-gates are materialized into runtime reflexes
+	case func() (Reflex, Value):
+		return t()
+	case func(*Matter) (Reflex, Value):
+		return t(matter)
 	case MaterializerFunc:
 		return t()
 	case MaterializerWithMatterFunc:

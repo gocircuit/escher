@@ -9,13 +9,15 @@ main {
 }
 
 header {
-	merge text.Merge
-	merge:X = `
+	f Fork
+	f:X = `
 <html><head><title>
 `
-	merge:Y = :Title
-	merge:Z = `
+	f:Y = :Title
+	f:Z = `
 </title></head></html>
 `
-	: = merge:
+	m text.Merge
+	m:In = f:
+	: = m:Out
 }

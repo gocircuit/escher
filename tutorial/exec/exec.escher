@@ -9,7 +9,7 @@ main {
 	}
 	proc:When = 1
 
-	yio os.ForkIO
+	yio Fork
 	proc:IO = yio:
 
 	yio:Stdin = io.Clunk
@@ -17,7 +17,7 @@ main {
 	yio:Stderr = os.Stderr
 	yio:When = Ignore
 
-	yexit os.ForkExit
+	yexit Fork
 	proc:Exit = yexit:
 	exit os.Exit // exit this program
 

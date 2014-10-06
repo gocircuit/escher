@@ -28,7 +28,6 @@ import (
 	_ "github.com/gocircuit/escher/faculty/escher"
 	// _ "github.com/gocircuit/escher/faculty/handbook"
 	_ "github.com/gocircuit/escher/faculty/io"
-	_ "github.com/gocircuit/escher/faculty/io/util"
 	_ "github.com/gocircuit/escher/faculty/path"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
@@ -87,7 +86,7 @@ func main() {
 
 	default:
 		mem := compile(*flagX, *flagY, *flagZ)
-		b := NewRenderer(mem)
+		b := NewRenderer(Circuit(mem))
 		defer func() {
 			if r := recover(); r != nil {
 				shell.NewShell("¡zmb!", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))

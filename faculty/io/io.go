@@ -18,13 +18,13 @@ import (
 )
 
 func init() {
-	faculty.Register("io.Clunk", Clunk{})
+	faculty.Register("io.Clunk", be.NewGateMaterializer(Clunk{}, nil))
 }
 
 // Clunk…
 type Clunk struct{}
 
-func (Clunk) Spark(*be.Matter) Value {
+func (Clunk) Spark(*be.Matter, ...interface{}) Value {
 	return Clunk{}
 }
 

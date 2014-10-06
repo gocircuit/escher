@@ -21,7 +21,7 @@ type IntSum struct{
 	x, y, sum int
 }
 
-func (s *IntSum) Spark(*be.Matter) Value {
+func (s *IntSum) Spark(*be.Matter, ...interface{}) Value {
 	return &IntSum{}
 }
 

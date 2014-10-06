@@ -19,14 +19,14 @@ import (
 
 func init() {
 	faculty.Register("Sum", Sum{})
-	faculty.Register("IntString", IntString{})
+	faculty.Register("IntString", be.NewGateMaterializer(IntString{}, nil))
 	// faculty.Root.Grow("Prod", Prod{})
 }
 
 // IntString
 type IntString struct{}
 
-func (IntString) Spark(*be.Matter) Value {
+func (IntString) Spark(*be.Matter, ...interface{}) Value {
 	return IntString{}
 }
 

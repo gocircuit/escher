@@ -9,23 +9,14 @@ package model
 
 import (
 	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/be"
 )
 
 func init() {
-	faculty.Register("model.Hamiltonian", &Hamiltonian{})
-	faculty.Register("model.Eulerian", &Eulerian{})
-	faculty.Register("model.ForkStart", MaterializeForkStart)
-	faculty.Register("model.ForkView", MaterializeForkView)
-	faculty.Register("model.ForkVector", MaterializeForkVector)
-	//
-	faculty.Register("model.Reservoir", &Reservoir{})
-	//
-	faculty.Register("model.Mix", &Mix{})
-	faculty.Register("model.ForkMix", MaterializeForkMix)
-	//
-	faculty.Register("model.Range_", &Range{})
-	faculty.Register("model.ForkRange", MaterializeForkRange)
-	faculty.Register("model.ForkRangeView", MaterializeForkRangeView)
-	//
-	faculty.Register("model.IO", IO{})
+	faculty.Register("model.Hamiltonian", be.NewGateMaterializer(&Hamiltonian{}, nil))
+	faculty.Register("model.Eulerian", be.NewGateMaterializer(&Eulerian{}, nil))
+	faculty.Register("model.Reservoir", be.NewGateMaterializer(&Reservoir{}, nil))
+	faculty.Register("model.Mix", be.NewGateMaterializer(&Mix{}, nil))
+	faculty.Register("model.Range_", be.NewGateMaterializer(&Range{}, nil))
+	faculty.Register("model.IO", be.NewGateMaterializer(IO{}, nil))
 }

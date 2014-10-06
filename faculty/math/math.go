@@ -10,10 +10,10 @@ import (
 	// "math"
 	// "math/cmplx"
 
-	// "github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("math.IntSum", &IntSum{})
+	faculty.Register("math.IntSum", be.NewGateMaterializer(&IntSum{}, nil))
 }

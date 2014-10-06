@@ -21,7 +21,7 @@ type Range struct{
 	aux plumb.Given
 }
 
-func (h *Range) Spark(*be.Matter) Value {
+func (h *Range) Spark(*be.Matter, ...interface{}) Value {
 	h.mem.Init()
 	h.aux.Init()
 	return &Range{}
@@ -61,9 +61,9 @@ func rangeOverWith(mem memory.Memory, aux Value, over Circuit, with Value) Circu
 			var x *be.Cell
 			switch t := with.(type) {
 			case Circuit:
-				x = be.NewCell(be.Materialize(mem, t))
+				x = be.NewCell(be.Materialize(Circuit(mem), t))
 			case string:
-				x = be.NewCell(be.Materialize(mem, NewAddressParse(t)))
+				x = be.NewCell(be.Materialize(Circuit(mem), NewAddressParse(t)))
 			default:
 				log.Fatalf("Unknown type at Range:With (%T)", with)
 			}

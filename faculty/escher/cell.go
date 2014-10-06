@@ -12,7 +12,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/kit/plumb"
-	"github.com/gocircuit/escher/kit/memory"
 )
 
 // Embody
@@ -21,7 +20,7 @@ type Embody struct{
 	design plumb.Given
 }
 
-func (h *Embody) Spark(*be.Matter) Value {
+func (h *Embody) Spark(*be.Matter, ...interface{}) Value {
 	h.mem.Init()
 	h.design.Init()
 	return &Embody{}
@@ -40,7 +39,7 @@ func (h *Embody) CognizeDesign(_ *be.Eye, v interface{}) {
 func (h *Embody) CognizeWhen(eye *be.Eye, w interface{}) {
 	cell := be.NewCell(
 		be.Materialize(
-			h.mem.Use().(memory.Memory), 
+			h.mem.Use().(Circuit), 
 			h.design.Use().(Value),
 		),
 	)
@@ -52,7 +51,7 @@ type Connect struct{
 	cell plumb.Given
 }
 
-func (h *Connect) Spark(*be.Matter) Value {
+func (h *Connect) Spark(*be.Matter, ...interface{}) Value {
 	h.cell.Init()
 	return &Connect{}
 }

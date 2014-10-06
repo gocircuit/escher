@@ -10,11 +10,15 @@ import (
 	"sync"
 )
 
+// Eye is a runtime facility that delivers messages by invoking gate methods and
+// provides methods that the gate can use to send messages out.
+//
 // Eye is an implementation of Leslie Valiant's “Mind's Eye”, described in
 //	http://www.probablyapproximatelycorrect.com/
 // The mind's eye is a synchronization device which sees changes as ordered
 // and thus introduces the illusory perception of time (and, eventually, of the
 // higher-level concepts of cause and effect).
+//
 type Eye struct {
 	see chan *change
 	show map[string]*nerve

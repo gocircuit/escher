@@ -15,17 +15,10 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
-// ForkForm…
-type ForkForm struct{}
+// Template …
+type Template struct{}
 
-func (ForkForm) Materialize() (be.Reflex, Value) {
-	return be.MaterializeUnion("Form", "Data")
-}
-
-// FormBlend …
-type FormBlend struct{}
-
-func (FormBlend) Materialize() (be.Reflex, Value) {
+func (Template) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "FormData" {
@@ -44,7 +37,7 @@ func (FormBlend) Materialize() (be.Reflex, Value) {
 		}, 
 		"FormData", DefaultValve,
 	)
-	return reflex, FormBlend{}
+	return reflex, Template{}
 }
 
 func gateHierarchy(u Circuit) map[string]interface{} {

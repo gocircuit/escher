@@ -14,26 +14,27 @@ import (
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
 type Reflex map[Name]*Synapse
 
-//
+type MaterializerFunc func() (Reflex, Value)
+
+type MaterializerWithMatterFunc func(*Matter) (Reflex, Value)
+
 type Materializer interface {
 	Materialize() (Reflex, Value)
 }
 
-//
 type MaterializerWithMatter interface {
 	Materialize(*Matter) (Reflex, Value)
 }
 
-//
 type Gate interface {
-	Spark(*Matter) Value // Initializer
+	Spark(*Matter, ...interface{}) Value // Initializer
 }
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
 	Address Address // Address of the materialized design in memory
 	Design interface{} // Design
-	View Circuit // Valves connected to this design in the enclosing circuit and the gate values they point to
+	View Circuit // Valves connected to this design in the enclosing program
 	Path []Name // Materialization path of this reflex, recursively following gate names
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }

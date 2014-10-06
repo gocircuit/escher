@@ -15,7 +15,7 @@ import (
 
 type Mix struct{}
 
-func (h *Mix) Spark(*be.Matter) Value {
+func (h *Mix) Spark(*be.Matter, ...interface{}) Value {
 	return &Mix{}
 }
 

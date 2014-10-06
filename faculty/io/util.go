@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package util
+package io
 
 import (
 	"bytes"
@@ -18,7 +18,7 @@ import (
 )
 
 func init() {
-	faculty.Register("io.util.WriteFile", &WriteFile{})
+	faculty.Register("io.util.WriteFile", be.NewGateMaterializer(&WriteFile{}, nil))
 }
 
 type WriteFile struct {
@@ -26,7 +26,7 @@ type WriteFile struct {
 	named chan struct{}
 }
 
-func (h *WriteFile) Spark(*be.Matter) Value {
+func (h *WriteFile) Spark(*be.Matter, ...interface{}) Value {
 	h.named = make(chan struct{})
 	return &WriteFile{}
 }

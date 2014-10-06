@@ -13,8 +13,8 @@ import (
 	. "github.com/gocircuit/escher/kit/memory"
 )
 
-func Materialize(memory Memory, design Value) (reflex Reflex, residual Value) {
-	b := &Renderer{memory}
+func Materialize(memory Circuit, design Value) (reflex Reflex, residual Value) {
+	b := NewRenderer(memory)
 	matter := &Matter{
 		Design: design,
 		View: Circuit{},
@@ -28,8 +28,8 @@ type Renderer struct {
 	mem Memory
 }
 
-func NewRenderer(m Memory) *Renderer {
-	return &Renderer{m}
+func NewRenderer(mem Circuit) *Renderer {
+	return &Renderer{Memory(mem)}
 }
 
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
@@ -60,16 +60,14 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 	case int, float64, complex128, string:
 		return MaterializeNoun(t)
 	// Go-gates are materialized into runtime reflexes
-	case func() (Reflex, Value):
+	case MaterializerFunc:
 		return t()
-	case func(*Matter) (Reflex, Value):
+	case MaterializerWithMatterFunc:
 		return t(matter)
 	case Materializer:
 		return t.Materialize()
 	case MaterializerWithMatter:
 		return t.Materialize(matter)
-	case Gate:
-		return MaterializeInterface(t, matter)
 	case Circuit:
 		if recurse {
 			return b.MaterializeCircuit(matter, t)

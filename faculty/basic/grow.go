@@ -19,7 +19,7 @@ type Grow struct{
 	u Circuit
 }
 
-func (g *Grow) Spark(*be.Matter) Value {
+func (g *Grow) Spark(*be.Matter, ...interface{}) Value {
 	g.u = New()
 	return &Grow{}
 }

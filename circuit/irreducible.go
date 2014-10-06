@@ -14,8 +14,8 @@ import (
 
 func (u Circuit) Clone() Circuit {
 	w := New()
-	for n, m := range u.Gate {
-		w.Gate[n] = Copy(m) // deep copy
+	for n, v := range u.Gate {
+		w.Gate[n] = v // shallow Go-value level copy of gate values
 	}
 	for g, h := range u.Flow {
 		x := make(map[Name]Vector)
@@ -36,32 +36,34 @@ func (x Circuit) Same(r Irreducible) bool {
 	if !ok {
 		return false
 	}
-	return x.IsContainedIn(y) && y.IsContainedIn(x)
+	return x.isWithin(y) && y.isWithin(x)
 }
 
-func (u Circuit) IsContainedIn(w Circuit) bool {
+func (u Circuit) isWithin(w Circuit) bool {
 	// gate
-	for g, y := range u.Gate {
-		yy, ok := w.Gate[g]
+	for ug, uv := range u.Gate {
+		wv, ok := w.Gate[ug]
 		if !ok {
 			return false
 		}
-		if !Same(y, yy) {
+		if uv == wv { // shallow comparison of gates is default Go-level comparison
 			return false
 		}
 	}
 	// flow
-	for g, h := range u.Flow {
-		hh, ok := w.Flow[g]
+	for ugate, ufan := range u.Flow {
+		wfan, ok := w.Flow[ugate]
 		if !ok {
 			return false
 		}
-		for a, b := range h {
-			bb, ok := hh[a]
+		for uvlv, uvec := range ufan {
+			wvec, ok := wfan[uvlv]
 			if !ok {
 				return false
 			}
-			if !Same(b, bb) {
+			_ugate, _uvlv := uvec.Reduce()
+			_wgate, _wvlv := wvec.Reduce()
+			if _ugate != _wgate || _uvlv != _wvlv { // shallow comparison, at Go value level
 				return false
 			}
 		}

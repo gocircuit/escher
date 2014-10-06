@@ -31,10 +31,6 @@ func Init(discover string) {
 	// faculty.Register("Leaving", Leaving{})
 	// faculty.Register("Joining", Joining{})
 	// faculty.Register("Channel", Chan{})
-
-	faculty.Register("ForkSpawn", ForkSpawn{})
-	faculty.Register("ForkExit", ForkExit{})
-	faculty.Register("ForkIO", ForkIO{})
 }
 
 // Program…

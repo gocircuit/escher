@@ -40,7 +40,7 @@ type Hamiltonian struct{
 	mem plumb.Given
 }
 
-func (h *Hamiltonian) Spark(*be.Matter) Value {
+func (h *Hamiltonian) Spark(*be.Matter, ...interface{}) Value {
 	h.mem.Init()
 	return &Hamiltonian{}
 }

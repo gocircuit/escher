@@ -18,23 +18,14 @@ import (
 )
 
 func init() {
-	faculty.Register("text.ForkMerge", ForkMerge{})
-	faculty.Register("text.MergeBlend", MergeBlend{})
-	faculty.Register("text.ForkForm", ForkForm{})
-	faculty.Register("text.FormBlend", FormBlend{})
+	faculty.Register("text.Merge_", Merge{})
+	faculty.Register("text.Tempate_", Template{})
 }
 
-// ForkMerge…
-type ForkMerge struct{}
+// Merge …
+type Merge struct{}
 
-func (ForkMerge) Materialize() (be.Reflex, Value) {
-	return be.MaterializeUnion("X", "Y", "Z")
-}
-
-// MergeBlend …
-type MergeBlend struct{}
-
-func (MergeBlend) Materialize() (be.Reflex, Value) {
+func (Merge) Materialize() (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve string, value interface{}) {
 			if valve != "XYZ" {
@@ -49,7 +40,7 @@ func (MergeBlend) Materialize() (be.Reflex, Value) {
 		}, 
 		"XYZ", DefaultValve,
 	)
-	return reflex, MergeBlend{}
+	return reflex, Merge{}
 }
 
 func flatten(v interface{}) string {

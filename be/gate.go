@@ -7,46 +7,80 @@
 package be
 
 import (
-	// "log"
+	"log"
 	. "reflect"
 
 	"github.com/gocircuit/escher/circuit"
 )
 
-// type RetinaCognizer func(eye *Eye, value interface{})
+const cognizePrefix = "Cognize"
+const cognizeEllipses = "OverCognize"
 
-const prefix = "Cognize"
+// NewGateMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
+func NewGateMaterializer(sample Gate, aux ...interface{}) MaterializerWithMatterFunc {
+	return func(matter *Matter) (Reflex, circuit.Value) {
+		return materializeGate(matter, sample, aux...)
+	}
+}
 
-func MaterializeInterface(v Gate, matter *Matter) (Reflex, circuit.Value) {
+func materializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circuit.Value) {
 	w := makeGate(v)
-	spark := w.Interface().(Gate).Spark(matter) // Initialize
-	r := gate{w}
-	var valve []string
-	t := r.Value.Type()
-	for i := 0; i < t.NumMethod(); i++ {
-		n := t.Method(i).Name
-		if len(n) >= len(prefix) && n[:len(prefix)] == prefix {
-			valve = append(valve, n[len(prefix):])
+	spark := w.Interface().(Gate).Spark(matter, aux...) // Initialize
+	r := gate{w, w.Type()}
+	// Enumerate the valves handled by dedicated methods.
+	dedicated := make(map[string]struct{})
+	for i := 0; i < r.Type.NumMethod(); i++ {
+		n := r.Type.Method(i).Name
+		if len(n) >= len(cognizePrefix) && n[:len(cognizePrefix)] == cognizePrefix {
+			dedicated[n[len(cognizePrefix):]] = struct{}{}
 		}
 	}
+	// Verify that all connected valves in matter have handlers or that there is a generic cognizer method.
+	var valve []string
+	_, over := r.Type.MethodByName(cognizeEllipses)
+	for vlv, _ := range matter.View.Gate {
+		valve = append(valve, vlv.(string))
+		if over {
+			continue
+		}
+		if _, ok := dedicated[vlv.(string)]; !ok {
+			log.Fatalf("gate %T does not have methods to handle the connected %s valve", v, vlv.(string))
+		}
+	}
+	// Not all handled valves need to be connected. But all connected valves need to be handled by a gate method.
 	x, _ := NewEyeCognizer(r.Cognize, valve...)
 	return x, spark
 }
 
 type gate struct {
 	Value
+	Type
 }
 
 func (r *gate) Cognize(eye *Eye, valve string, value interface{}) {
-	m := r.Value.MethodByName(prefix + valve)
+	// If there is a dedicated method for valve, use that.
+	if _, ok := r.Type.MethodByName(cognizePrefix + valve); ok {
+		m := r.Value.MethodByName(cognizePrefix + valve)
+		m.Call(
+			[]Value{
+				ValueOf(eye), 
+				ValueOf(value),
+			},
+		)
+		return
+	}
+	// Otherwise call the generic cognizer
+	m := r.Value.MethodByName(cognizeEllipses)
 	m.Call(
 		[]Value{
-			ValueOf(eye), 
+			ValueOf(eye),
+			ValueOf(valve),
 			ValueOf(value),
 		},
 	)
 }
 
+// makeGate creates a new value of the same type as like. Pointer types allocate the object pointed to.
 func makeGate(like interface{}) Value {
 	t := TypeOf(like)
 	switch t.Kind() {

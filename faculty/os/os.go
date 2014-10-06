@@ -45,9 +45,6 @@ func Init(a string) {
 	//
 	faculty.Register("os.LookPath", LookPath{})
 	faculty.Register("os.Process", Process{})
-	faculty.Register("os.ForkCommand", ForkCommand{})
-	faculty.Register("os.ForkExit", ForkExit{})
-	faculty.Register("os.ForkIO", ForkIO{})
 	//
 }
 

@@ -36,7 +36,7 @@ type Eulerian struct{
 	mem plumb.Given
 }
 
-func (e *Eulerian) Spark(*be.Matter) Value {
+func (e *Eulerian) Spark(*be.Matter, ...interface{}) Value {
 	e.mem.Init()
 	return &Eulerian{}
 }

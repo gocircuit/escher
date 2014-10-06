@@ -4,7 +4,6 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// Package text provides gates for manipulating text.
 package text
 
 import (
@@ -18,29 +17,26 @@ import (
 // Template …
 type Template struct{}
 
-func (Template) Materialize() (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve string, value interface{}) {
-			if valve != "FormData" {
-				return
-			}
-			fd := value.(Circuit)
-			t, err := template.New("").Parse(fd.StringAt("Form"))
-			if err != nil {
-				panic(err)
-			}
-			var w bytes.Buffer
-			if err = t.Execute(&w, gateHierarchy(fd.CircuitAt("Data"))); err != nil {
-				panic(err)
-			}
-			eye.Show(DefaultValve, w.String())
-		}, 
-		"FormData", DefaultValve,
-	)
-	return reflex, Template{}
+func (Template) Spark(*be.Matter, ...interface{}) Value {
+	return nil
 }
 
-func gateHierarchy(u Circuit) map[string]interface{} {
+func (Template) CognizeIn(eye *be.Eye, v interface{}) {
+	td := v.(Circuit)
+	t, err := template.New("").Parse(td.StringAt("Template"))
+	if err != nil {
+		panic(err)
+	}
+	var w bytes.Buffer
+	if err = t.Execute(&w, td.CircuitAt("Data")); err != nil {
+		panic(err)
+	}
+	eye.Show("Out", w.String())
+}
+
+func (Template) CognizeOut(eye *be.Eye, v interface{}) {}
+
+func gateHierarchy(u Circuit) map[string]interface{} { // not used
 	r := make(map[string]interface{})
 	for g, v := range u.Gates() {
 		switch t := v.(type) {

@@ -84,7 +84,21 @@ func (u Circuit) resugar(gate, valve Name) string {
 	if !ok || len(g) == 0 || g[0] != '#' {
 		return fmt.Sprintf("%s:%s", gate, valve)
 	}
-	return fmt.Sprintf("%s", u.Gate[gate])
+	return fmt.Sprintf("%s", printValueInline(u.Gate[gate]))
+}
+
+func printValueInline(v Value) string {
+	switch t := v.(type) {
+	case Address:
+		return fmt.Sprintf("%s", t)
+	case string:
+		return fmt.Sprintf("%q", t)
+	case int, float64, complex128:
+		return fmt.Sprintf("%v", t)
+	default:
+		return fmt.Sprintf("(%T)", t)
+	}
+	panic(1)
 }
 
 func PrintValue(w io.Writer, prefix, indent string, n Name, p Value, recurse int) {

@@ -18,30 +18,28 @@ import (
 )
 
 func init() {
-	faculty.Register("text.Merge_", Merge{})
-	faculty.Register("text.Tempate_", Template{})
+	faculty.Register("text.Merge", be.NewGateMaterializer(Merge{}))
+	faculty.Register("text.Tempate", be.NewGateMaterializer(Template{}))
 }
 
-// Merge …
+// Merge concatenates the string values of string-named gates into a single string output, 
+// where concatenation takes place in the lexicographic order of the gate names.
 type Merge struct{}
 
-func (Merge) Materialize() (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve string, value interface{}) {
-			if valve != "XYZ" {
-				return
-			}
-			xyz := value.(Circuit)
-			var w bytes.Buffer
-			w.WriteString(flatten(xyz.StringAt("X")))
-			w.WriteString(flatten(xyz.StringAt("Y")))
-			w.WriteString(flatten(xyz.StringAt("Z")))
-			eye.Show(DefaultValve, w.String())
-		}, 
-		"XYZ", DefaultValve,
-	)
-	return reflex, Merge{}
+func (Merge) Spark(*be.Matter, ...interface{}) Value {
+	return nil
 }
+
+func (Merge) CognizeIn(eye *be.Eye, v interface{}) {
+	var w bytes.Buffer
+	x := v.(Circuit)
+	for _, name := range x.SortedLetters() {
+		w.WriteString(flatten(x.StringAt(name)))
+	}
+	eye.Show("Out", w.String())
+}
+
+func (Merge) CognizeOut(eye *be.Eye, v interface{}) {}
 
 func flatten(v interface{}) string {
 	switch t := v.(type) {

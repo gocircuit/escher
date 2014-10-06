@@ -6,8 +6,8 @@ ProcessIgnoreIO { // Command, When, Exit
 	:Exit = proc:Exit
 	:Command = proc:Command
 
-	yio os.IO
-	yio: = proc:ForkIO
+	yio Fork
+	yio: = proc:IO
 
 	yio:When = Ignore
 	yio:Stdin = io.Clunk
@@ -22,7 +22,7 @@ ProcessRun { // Command, When, Exit
 	:Exit = proc:Exit
 	:Command = proc:Command
 
-	yio os.ForkIO
+	yio Fork
 	yio: = proc:IO
 
 	yio:When = Ignore

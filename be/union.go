@@ -12,6 +12,8 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
+// TODO: Rewrite union to not use a permanent goroutine
+
 func MaterializeUnion(field ...string) (Reflex, Value) {
 	reflex, eye := NewEye(append(field, DefaultValve)...) // add the default valve
 	go func() {

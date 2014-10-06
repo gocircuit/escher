@@ -1,24 +1,11 @@
 
-// Merge ...
-Merge {
+// ForkTemplate
+ForkTemplate {
 	fork Fork
-	fork:X = :X
-	fork:Y = :Y
-	fork:Z = :Z
-
-	merge text.MergeBlend
-	merge:XYZ = fork:
-
-	merge: = :
-}
-
-// Form ...
-Form {
-	fork Fork
-	fork:Form = :Form
+	fork:Template = :Template
 	fork:Data = :Data
 
-	form text.FormBlend
-	form:FormData = fork:
-	form: = :
+	t text.Template
+	t:In = fork:
+	t:Out = :
 }

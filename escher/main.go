@@ -9,6 +9,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"runtime/debug"
 	"strings"
 	"os"
 
@@ -89,7 +91,9 @@ func main() {
 		b := NewRenderer(Circuit(mem))
 		defer func() {
 			if r := recover(); r != nil {
-				shell.NewShell("¡zmb!", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))
+				log.Printf("Recovering: %v", r)
+				debug.PrintStack()
+				shell.NewShell("(recovered)", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))
 			}
 		}()
 		b.MaterializeAddress(NewAddressParse(*flagMain))

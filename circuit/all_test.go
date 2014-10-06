@@ -14,9 +14,7 @@ func TestSame(t *testing.T) {
 	if !Same(New().Grow("x", nil), New().Grow("x", nil)) {
 		t.Errorf("same")
 	}
-}
-
-func TestAddress(t *testing.T) {
-	m := make(map[interface{}]struct{})
-	m[NewAddressStrings([]string{"a"})] = struct{}{}
+	if !Same(New().Grow("x", ""), New().Grow("x", "")) {
+		t.Errorf("same")
+	}
 }

@@ -8,7 +8,7 @@ package circuit
 
 import (
 	// "fmt"
-	// "log"
+	"log"
 )
 
 func (u Circuit) Link(x, y Vector) {
@@ -19,9 +19,11 @@ func (u Circuit) Link(x, y Vector) {
 	}
 	xs, ys := u.valves(xg), u.valves(yg)
 	if z, ok := xs[xv]; ok && !Same(z, y) {
+		log.Fatalf("%v:%v already connected to %v, not %v", xg, xv, z, y)
 		panic("contra")
 	}
 	if z, ok := ys[yv]; ok && !Same(z, x){
+		log.Fatalf("%v:%v already connected to %v, not %v", yg, yv, z, x)
 		panic("contra")
 	}
 	xs[xv], ys[yv] = y, x

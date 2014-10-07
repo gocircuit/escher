@@ -1,0 +1,112 @@
+
+BuildSyntaxPage {
+        wf io.util.WriteFile
+        wf:Content = SyntaxPage
+        wf:Name = "syntax.html"
+        : = wf:Ready
+}
+
+SyntaxPage {
+        h Html
+        h: = :
+        h:Title = "Escher syntax"
+        h:Body = t:
+
+        t text.ForkTemplate
+        t:Data = {
+		Backquoted "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
+        }
+        t:Template = `
+<h1>Syntax and meaning</h1>
+<p>At its heart Escher is a Go package that parses a simple written syntax
+into a labeled graph data structure, called a <em>circuit</em>. If you view
+XML as a syntax that represents labeled trees, then Escher would be a 
+syntax that represents labeled graphs.
+
+<h2>Circuits</h2>
+
+<p>A circuit consists of nodes, called <em>gates</em>, which have
+a name and a value. Names are strings or integers. Gates have unique names
+within a circuit. Values are anything (representable by the underlying
+technology, in this case Go).
+
+<p>Additionally, a circuit has a set of <em>links</em> across pairs of gates.
+A link has two endpoints, called <em>vectors</em>.
+Each vector consists of a gate name and a <em>valve</em>
+name. Vectors do not overlap in the sense that all vectors with the
+same gate name have unique valve names.
+
+<h2>Symbolism</h2>
+
+<p>Circuits have a standard visual representation that fully captures
+the <em>internal</em> structure of the circuit, which consists of the
+gate names and links and excludes the gate values—the <em>external</em> structure.
+
+<h2>Grammar</h2>
+
+<p>A <em>definition</em> starts with a circuit name followed by a circuit description
+inside brackets. The name is an identifier, beginning with a non-digit.
+For instance,
+
+<pre>
+alpha {
+	…
+}
+</pre>
+
+<p>Between the brackets, one can have any number of statements which are of two kinds:
+<em>gates</em> and <em>links</em>.
+
+<h3>Gates</h3>
+
+<p>Gate statements begin on a new line with a gate name identifier, space, and a gate value expression.
+There are six value types that can be expressed:
+<ul>
+<li>Integers
+<li>Floating-point numbers
+<li>Complex numbers
+<li>Strings
+<li>Addresses
+<li>Circuits
+</ul>
+
+<p>The first four correspond to the Go types <code>int</code>, <code>float64</code>, <code>complex128</code>
+and <code>string</code> and are expressed using the same syntax. 
+Addresses have a dedicated Go type <code>Address</code>. They represent a sequence of names and are
+written as dot-separated fully-qualified names. Finally, circuits—whose dedicated Go type is <code>Circuit</code>—
+can be values of gates as well.
+
+<p>For instance,
+
+<pre>
+alpha {
+	address    fully.qualified.Name
+	integral   123
+	floating   3.14
+	complex    (1-3i)
+	quoted     "abcd\n\tefgh"
+	backquoted {{ .Gate.Backquoted }}
+	…
+}
+</pre>
+
+<p>Gate values can be circuits themselves,
+
+<pre>
+alpha {
+	circuit {
+		Hello World
+		Foo   "Bar"
+	}
+	…
+}
+</pre>
+
+<p>Go-style end-of-line comments are allowed everywhere.
+
+<h3>Links</h3>
+
+<p>…
+
+        `
+}

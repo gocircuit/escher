@@ -1,52 +1,21 @@
-Html { // Title, Class, Content, _
-	m1 text.Merge
-	m2 text.Merge
-
-	m1: = :
-	m1:X = `<!doctype html><html>`
-	m1:Y = m2:
-	m1:Z = `</html>`	
-
-	head Head
-	head:Title = :Title
-	m2:X = head:
-	m2:Y = body:
-	m2:Z = ""
-
-	body Body
-	body:Class = :Class
-	body:Content = :Content
-}
-
-Head { 
-	m text.Merge
-	m:X = `
+Html { // Title, Body, _
+	t text.ForkTemplate
+	t:Template = `<!doctype html><html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
-		<link href="css/page.css" rel="stylesheet" type="text/css" />
-		<title>`
-	m:Y = :Title
-	m:Z = `</title></head>`
-	: = m:
-}
-
-Body { // Class, Content, _
-	m1 text.Merge
-	m1:X = `<body class="`
-	m1:Y = :Class
-	m1:Z = `">`
-
-	m2 text.Merge
-	fb FacebookButton
-	bam BannerAndMenu
-	m2:X = fb:
-	m2:Y = bam:
-	m2:Z = :Content
-
-	m3 text.Merge
-	m3:X = m1:
-	m3:Y = m2:
-	m3:Z = `</body>`
-	m3: = :
+		<title>{{.Gate.Title}}</title>
+	</head>
+	<body>
+	<div class="page">
+	{{.Gate.Body}}
+	</div>
+	</body>
+	</html>
+	`
+	t:Data = d:
+	d Fork
+	d:Title = :Title
+	d:Body = :Body
+	: = t:
 }

@@ -19,7 +19,7 @@ import (
 
 func init() {
 	faculty.Register("text.Merge", be.NewGateMaterializer(Merge{}))
-	faculty.Register("text.Tempate", be.NewGateMaterializer(Template{}))
+	faculty.Register("text.Template", be.NewGateMaterializer(Template{}))
 }
 
 // Merge concatenates the string values of string-named gates into a single string output, 

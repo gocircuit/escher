@@ -1,0 +1,21 @@
+
+BuildIndexPage {
+        wf io.util.WriteFile
+        wf:Content = IndexPage
+        wf:Name = "index.html"
+        : = wf:Ready
+}
+
+IndexPage {
+        h Html
+        h: = :
+        h:Title = "Escher syntax"
+        h:Body = `
+<h1>Escher language and runtime</h1>
+
+<ul>
+<li><a href="syntax.html">Syntax and meaning</a></li>
+<li><a href="m.html">Materializing reflexes</a></li>
+</ul>
+        `
+}

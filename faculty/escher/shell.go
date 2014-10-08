@@ -15,7 +15,7 @@ import (
 	"github.com/gocircuit/escher/kit/shell"
 )
 
-// Shell
+// Shell reflexes expose their temporal valve input in the form of an interactive circuit navigation and manipulation REPL.
 type Shell struct{
 	view chan Circuit
 }
@@ -25,7 +25,7 @@ func (h *Shell) Spark(*be.Matter, ...interface{}) Value {
 	return &Shell{}
 }
 
-// { Name string, In io.Reader, Out io.WriteCloser, Err io.WriteCloser }
+// In: { Name string, In io.Reader, Out io.WriteCloser, Err io.WriteCloser }
 func (h *Shell) CognizeUser(eye *be.Eye, v interface{}) {
 	go func() {
 		x := v.(Circuit)
@@ -43,8 +43,10 @@ func (h *Shell) CognizeUser(eye *be.Eye, v interface{}) {
 	}()
 }
 
+// In: Circuit
 func (h *Shell) CognizeIn(eye *be.Eye, v interface{}) {
 	h.view <- v.(Circuit)
 }
 
+// Out: Circuit
 func (h *Shell) CognizeOut(*be.Eye, interface{}) {}

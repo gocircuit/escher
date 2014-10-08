@@ -13,19 +13,19 @@ import (
 )
 
 type Cell struct {
-	show map[string]*ReCognizer
-	see map[string]chan interface{}
-	ping chan string
+	show map[Name]*ReCognizer
+	see map[Name]chan interface{}
+	ping chan Name
 }
 
 func NewCell(r Reflex, _ Value) *Cell {
 	x := &Cell{
-		show: make(map[string]*ReCognizer),
-		see: make(map[string]chan interface{}),
-		ping: make(chan string),
+		show: make(map[Name]*ReCognizer),
+		see: make(map[Name]chan interface{}),
+		ping: make(chan Name),
 	}
 	for vlv, syn := range r {
-		v := vlv.(string)
+		v := vlv.(Name)
 		x.show[v] = syn.Focus(
 			func(w interface{}) {
 				x.cognize(v, w)
@@ -37,16 +37,16 @@ func NewCell(r Reflex, _ Value) *Cell {
 }
 
 // ReCognize
-func (x *Cell) ReCognize(valve string, value interface{}) {
+func (x *Cell) ReCognize(valve Name, value interface{}) {
 	x.show[valve].ReCognize(value)
 }
 
-func (x *Cell) cognize(valve string, value interface{}) {
+func (x *Cell) cognize(valve Name, value interface{}) {
 	x.ping <- valve
 	x.see[valve] <- value
 }
 
-func (x *Cell) Cognize() (valve string, value interface{}) {
+func (x *Cell) Cognize() (valve Name, value interface{}) {
 	valve = <- x.ping
 	return valve, <-x.see[valve]
 }

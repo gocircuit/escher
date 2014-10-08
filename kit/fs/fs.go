@@ -19,27 +19,27 @@ import (
 	. "github.com/gocircuit/escher/kit/memory"
 )
 
-func Load(into Memory, acid, filedir string) {
+func Load(into Memory, filedir string) {
 	fi, err := os.Stat(filedir)
 	if err != nil {
 		log.Fatalf("cannot read source file %s (%v)", filedir, err)
 	}
 	if fi.IsDir() {
-		loadDirectory(into, acid, filedir)
+		loadDirectory(into, filedir)
 	} else {
-		loadFile(into, acid, filedir)
+		loadFile(into, "", filedir)
 	}
 }
 
 // loadDirectory ...
-func loadDirectory(into Memory, acid, dir string) Memory {
+func loadDirectory(into Memory, dir string) Memory {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
 	//
-	addSource(into, acid, dir)
+	addSource(into, dir)
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
 		log.Fatalln(err)
@@ -48,7 +48,7 @@ func loadDirectory(into Memory, acid, dir string) Memory {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
 			fn := fileInfo.Name()
-			loadDirectory(into.Refine(fn), acid, filePath)
+			loadDirectory(into.Refine(fn), filePath)
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
@@ -59,13 +59,13 @@ func loadDirectory(into Memory, acid, dir string) Memory {
 	return into
 }
 
-func addSource(into Memory, acid, dir string) {
+func addSource(into Memory, dir string) {
 	x, ok := Circuit(into).CircuitOptionAt(Source{})
 	if !ok {
 		x = New()
 		into.Include(Source{}, x)
 	}
-	x.Include(x.Len(), New().Grow("Acid", acid).Grow("Dir", dir))
+	x.Grow("Dir", dir)
 }
 
 // loadFile ...

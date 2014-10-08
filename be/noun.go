@@ -30,3 +30,9 @@ func MaterializeNoun(v interface{}) (Reflex, Value) {
 	}()
 	return Reflex{DefaultValve: t}, t
 }
+
+func NewNoun(v interface{}) MaterializerFunc {
+	return func() (Reflex, Value) {
+		return MaterializeNoun(v)
+	}
+}

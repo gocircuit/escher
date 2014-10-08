@@ -29,14 +29,14 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 
 	// super
 	if valves := u.Valves(Super); len(valves) > 0 {
-		fmt.Fprintf(&w, " // ")
+		fmt.Fprintf(&w, " // Super valves: ")
 		if len(valves) > 0 {
 			var i int
 			for vn, _ := range valves {
-				fmt.Fprintf(&w, "%v", vn)
+				fmt.Fprintf(&w, "(%v)", vn)
 				i++
 				if i < len(valves) {
-					w.WriteString(", ")
+					w.WriteString(" ")
 				}
 			}
 		}
@@ -111,7 +111,7 @@ func PrintValue(w io.Writer, prefix, indent string, n Name, p Value, recurse int
 	case int, float64, complex128:
 		fmt.Fprintf(w, "%v %v\n", n, t)
 	default:
-		fmt.Fprintf(w, "%v (builtin/%T)\n", n, t)
+		fmt.Fprintf(w, "%v [builtin/%T]\n", n, t)
 	}
 }
 

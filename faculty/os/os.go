@@ -8,34 +8,17 @@ package os
 
 import (
 	"log"
-	"net/url"
 	"os"
 	"os/exec"
-	"strings"
 
 	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func Init(a string) {
-	args = make(map[string]string) // n1=v1,n2=v2
-	for _, p := range strings.Split(a, ",") {
-		if p == "" {
-			continue
-		}
-		nv := strings.Split(p, "=")
-		if len(nv) != 2 {
-			panic("command-line argument syntax")
-		}
-		v, err := url.QueryUnescape(nv[1])
-		if err != nil {
-			panic(err)
-		}
-		args[nv[0]] = v
-		log.Printf("Argument %s=%s", nv[0], v)
-	}
-	faculty.Register("os.Arg", Arg{})
+func Init(sourceDir string, arg []string) {
+	faculty.Register("os.Arg", Arg{argCircuit(arg)})
+	faculty.Register("os.SourceDir", be.NewNoun(sourceDir))
 	faculty.Register("os.Env", Env{})
 	faculty.Register("os.Exit", Exit{})
 	faculty.Register("os.Fatal", Fatal{})
@@ -45,29 +28,23 @@ func Init(a string) {
 	//
 	faculty.Register("os.LookPath", LookPath{})
 	faculty.Register("os.Process", Process{})
-	//
 }
 
-var args map[string]string
-
 // Arg
-type Arg struct{}
+type Arg struct {
+	arg Circuit
+}
 
-func (Arg) Materialize() (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve string, value interface{}) {
-			if valve != "Name" {
-				return
-			}
-			n, ok := value.(string)
-			if !ok {
-				panic("non-string name perceived by os.arg")
-			}
-			eye.Show("Value", args[n])
-		}, 
-		"Name", "Value",
-	)
-	return reflex, Arg{}
+func (a Arg) Materialize() (be.Reflex, Value) {
+	return be.MaterializeNoun(a.arg)
+}
+
+func argCircuit(arg []string) Circuit {
+	r := New()
+	for i, a := range arg {
+		r.Include(i, a)
+	}
+	return r
 }
 
 // Env

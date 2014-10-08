@@ -5,14 +5,8 @@
 // see history clearly.
 
 main {
-	sh escher.Shell_
-	sh:User = fu:
-	sh:In = escher.Memory
-	sh:Out = Ignore
-
-	fu Fork
-	fu:In = os.Stdin
-	fu:Out = os.Stdout
-	fu:Err = os.Stderr
-	fu:Name = "Petar"
+	shell escher.StdShell
+	shell:In = escher.Memory
+	shell:Out = Ignore
+	shell:Name = "tutorial"
 }

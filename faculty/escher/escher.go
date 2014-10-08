@@ -16,41 +16,18 @@ import (
 )
 
 func init() {
-	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir{})
-	faculty.Register("escher.Lookup", Lookup{})
-	faculty.Register("escher.Memory", Memory{})
-	faculty.Register("escher.Embody", be.NewGateMaterializer(&Embody{}))
-	faculty.Register("escher.Connect", be.NewGateMaterializer(&Connect{}))
-	faculty.Register("escher.Shell_", be.NewGateMaterializer(&Shell{}))
-}
-
-// Lookup
-type Lookup struct{}
-
-func (Lookup) Materialize() (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, dvalve string, dvalue interface{}) {
-			if dvalve != "Address" {
-				return
-			}
-			r := faculty.Root().Lookup(NewAddressParse(dvalue.(string)))
-			eye.Show("Circuit", r.(Circuit))
-		}, 
-		"Address", "Circuit",
-	)
-	return reflex, Lookup{}
+	faculty.Register("escher.Memory", Memory)
+	faculty.Register("escher.Materialize", be.NewGateMaterializer(M{}))
+	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir)
+	faculty.Register("escher.Shell", be.NewGateMaterializer(&Shell{}))
 }
 
 // Memory
-type Memory struct{}
-
-func (Memory) Materialize() (be.Reflex, Value) {
+func Memory() (be.Reflex, Value) {
 	return be.MaterializeNoun(Circuit(faculty.Root()))
 }
 
 // CircuitSourceDir
-type CircuitSourceDir struct{}
-
-func (CircuitSourceDir) Materialize(matter *be.Matter) (be.Reflex, Value) {
+func CircuitSourceDir(matter *be.Matter) (be.Reflex, Value) {
 	return be.MaterializeNoun(matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).CircuitAt(0).StringAt("Dir"))
 }

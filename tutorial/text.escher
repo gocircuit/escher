@@ -1,3 +1,6 @@
+//
+//	Run: escher TextMerge
+//
 TextMerge {
 	h header
 	h:Title = "Hello, world!"

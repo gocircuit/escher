@@ -1,7 +1,7 @@
 //
-//	escher -x tutorial/exec -y acid/escher
+//	Run: escher Exec
 //
-main {
+Exec {
 	proc os.Process
 	proc:Command = {
 		Path "/bin/ls"

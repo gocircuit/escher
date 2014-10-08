@@ -84,7 +84,7 @@ func loadFile(into Memory, dir, file string) Memory {
 		u := u_.(Circuit)
 		u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
 		if over := into.Include(n, u); over != nil {
-			panic("overwriting")
+			log.Fatalf("Source file %s/%s overwrite a pre-existing circuit", dir, file)
 		}
 	}
 	return into

@@ -1,0 +1,12 @@
+
+Range {
+	: = r:
+	r model.Range_
+	r:Memory = escher.Memory
+	r:Aux = :Aux
+	r:OverWith = f:
+
+	f Fork
+	f:Over = :Over
+	f:With = :With
+}

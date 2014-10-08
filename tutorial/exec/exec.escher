@@ -1,0 +1,26 @@
+//
+//	escher -x tutorial/exec -y acid/escher
+//
+main {
+	proc os.Process
+	proc:Command = {
+		Path "/bin/ls"
+		Args { "/" }
+	}
+	proc:When = 1
+
+	yio Fork
+	proc:IO = yio:
+
+	yio:Stdin = io.Clunk
+	yio:Stdout = os.Stdout
+	yio:Stderr = os.Stderr
+	yio:When = Ignore
+
+	yexit Fork
+	proc:Exit = yexit:
+	exit os.Exit // exit this program
+
+	yexit:Exit = exit:
+	yexit:When = Ignore
+}

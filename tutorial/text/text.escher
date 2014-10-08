@@ -1,0 +1,23 @@
+//
+//	escher -x tutorial/text -y acid/escher
+//
+main {
+	h header
+	h:Title = "Hello, world!"
+	show Show
+	show: = h:
+}
+
+header {
+	f Fork
+	f:X = `
+<html><head><title>
+`
+	f:Y = :Title
+	f:Z = `
+</title></head></html>
+`
+	m text.Merge
+	m:In = f:
+	: = m:Out
+}

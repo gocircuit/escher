@@ -1,0 +1,7 @@
+main {
+        x Fork
+        x: = os.Exit
+
+        x:syn = BuildSyntaxPage
+        x:idx = BuildIndexPage
+}

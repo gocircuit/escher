@@ -1,0 +1,13 @@
+
+Shell { // Name, In, Out
+	_ escher.Shell_
+	_:User = f:
+	_:In = :In
+	_:Out = :Out
+
+	f Fork
+	f:Name = :Name
+	f:In = os.Stdin
+	f:Out = os.Stdout
+	f:Err = os.Stderr
+}

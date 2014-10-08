@@ -14,6 +14,7 @@ IndexPage {
 <h1>Escher language and runtime</h1>
 
 <p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>.
+<p>Follow updates on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
 <ul>
 <li><a href="syntax.html">Syntax and meaning</a></li>

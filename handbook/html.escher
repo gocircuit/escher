@@ -10,6 +10,7 @@ Html { // Title, Body, _
 	<div class="page">
 	{{.Gate.Body}}
 	</div>
+	{{.Gate.Footer}}
 	</body>
 	</html>
 	`
@@ -17,5 +18,13 @@ Html { // Title, Body, _
 	d Fork
 	d:Title = :Title
 	d:Body = :Body
+	d:Footer = `
+	<div class="footer">
+	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
+	partially supported by the 
+	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
+	Sponsors and partners are welcome. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
+	</div>
+	`
 	: = t:
 }

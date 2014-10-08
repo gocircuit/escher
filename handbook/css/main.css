@@ -45,3 +45,9 @@ div.page {
 	padding: 4em;
 	width: 800px;
 }
+
+div.footer {
+	text-align: center;
+	font-size: 13px;
+	padding: 20px;
+}

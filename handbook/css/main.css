@@ -30,10 +30,11 @@ a {
 code, pre {
 	font-family: input-mono-narrow, monospace;
 	font-size: 15px;
+	font-weight: 100;
 }
 
-pre.go {color: rgb(180,90,140); }
-pre.escher {color: #2244ee; }
+pre.go {color: rgb(20,150,90); }
+pre.escher {color: rgb(170,130,150); }
 
 pre {
 	margin-left: 20px;

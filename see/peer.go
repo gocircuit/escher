@@ -12,6 +12,14 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
+func See(src *Src) (Name, Circuit) {
+	n, v := SeePeer(src)
+	if v == nil {
+		return nil, Nil
+	}
+	return n, v.(Circuit)
+}
+
 func SeePeer(src *Src) (n Name, m Value) {
 	defer func() {
 		if r := recover(); r != nil {

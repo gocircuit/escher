@@ -7,6 +7,7 @@ Html { // Title, Body, _
 		<title>{{.Gate.Title}}</title>
 	</head>
 	<body>
+	{{.Gate.Header}}
 	<div class="page">
 	{{.Gate.Body}}
 	</div>
@@ -24,6 +25,11 @@ Html { // Title, Body, _
 	partially supported by the 
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
+	</div>
+	`
+	d:Header = `
+	<div class="header">
+	<a href="http://escher.io">Escher</a> A language for connecting technologies using pure metaphors
 	</div>
 	`
 	: = t:

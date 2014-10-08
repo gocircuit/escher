@@ -1,0 +1,6 @@
+TutorialShell {
+	shell escher.StdShell
+	shell:In = escher.Memory
+	shell:Out = Ignore
+	shell:Name = "tutorial"
+}

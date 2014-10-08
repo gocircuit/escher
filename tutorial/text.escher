@@ -1,7 +1,4 @@
-//
-//	escher -x tutorial/text -y acid/escher
-//
-main {
+TextMerge {
 	h header
 	h:Title = "Hello, world!"
 	show Show

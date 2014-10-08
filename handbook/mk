@@ -1,1 +1,1 @@
-escher -x . -y ../acid/
+escher -src . main

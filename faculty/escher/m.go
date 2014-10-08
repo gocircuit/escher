@@ -24,9 +24,9 @@ func (M) Spark(*be.Matter, ...interface{}) Value {
 func (M) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
 	reflex, residual := be.Materialize(x.CircuitAt("Memory"), x.At("Design"))
-	eye.Show(DefaultValve, New().Grow("Reflex", reflex).Grow("Residual", residual))
+	eye.Show("Out", New().Grow("Reflex", reflex).Grow("Residual", residual))
 }
 
 // In: ignored
 // Out: { Reflex Reflex; Residual Circuit }
-func (M) Cognize(*be.Eye, interface{}) {}
+func (M) CognizeOut(*be.Eye, interface{}) {}

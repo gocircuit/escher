@@ -28,7 +28,7 @@ func MaterializeNoun(v interface{}) (Reflex, Value) {
 	go func() {
 		s.Focus(DontCognize).ReCognize(v)
 	}()
-	return Reflex{DefaultValve: t}, t
+	return Reflex{DefaultValve: t}, v
 }
 
 func NewNoun(v interface{}) MaterializerFunc {

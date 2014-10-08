@@ -1,0 +1,23 @@
+//
+//	Run: escher Materialize
+//
+Materialize {
+	m escher.Materialize
+	m:In = arg:
+	m:Out = shell:In
+
+	arg Fork
+	arg:Memory = {
+		a {
+			b b
+		}
+		b {
+			c "c"
+		}
+	}
+	arg:Design = { a a }
+
+	shell StdShell
+	shell:Out = Ignore
+	shell:Name = "tutorial·Materialize"
+}

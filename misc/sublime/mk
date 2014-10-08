@@ -1,2 +1,0 @@
-#!/bin/sh
-plutil -convert xml1 escher.tmLanguage.js -o escher.tmLanguage

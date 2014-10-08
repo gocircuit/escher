@@ -12,7 +12,7 @@
 <ul>
 <li><a href="#circuits">Circuits</a></li>
 <li><a href="#symbolism">Symbolism</a></li>
-<li><a href="#runtime">Runtime</a></li>
+<li><a href="#runtime">Go interface</a></li>
 <li><a href="#grammar">Grammar</a>
 	<ul>
 	<li><a href="#comments">Comments</a></li>
@@ -56,7 +56,37 @@ same gate name have unique valve names.
 the <em>internal</em> structure of the circuit, which consists of the
 gate names and links and excludes the gate values—the <em>external</em> structure.
 
-<h2 id="runtime">Runtime</h2>
+<p>To draw a circuit we start with a solid black oval, denoting the circuit's internal name space.
+White ovals—contained inside the black one and mutually non-overlapping—denote gates.
+
+<p>Links are depicted as white lines that connect the outlines of gate ovals.
+Link endpoints connecting to the <a href="links">super gate</a> are attached to 
+the outline of the surrounding black oval. 
+
+<p>Valve names are written in white within the black oval, next to their 
+respective visual connection point. Connection points where valve names
+are visually missing correspond to empty-string valves.
+
+<p>The visual space inside the white gate ovals is reserved for the visual symbolic representation
+of that value, whatever it might be. If that value is primitive (integer, float, complex, string, address),
+we just write it out in black text in the center of the oval. If that value is a circuit, we draw
+the symbolism for that circuit within the white oval recursively, but this time we switch
+white and black colors everywhere.
+
+<p><center>
+<figure class="shadowless">
+	<object data="img/NAND.svg" type="image/svg+xml" width="400px">
+		<img src="img/NAND.png" alt="" />
+	</object>
+	<div>
+	<em>In this illustration, the depicted circuit has three valves at the super gate,
+	labeled as “X”, “Y” and “” (the empty string). 
+	The <a href="#links">source for this circuit</a> given in a later section below.</em>
+	</div>
+</figure>
+</center></p>
+
+<h2 id="runtime">Go interface</h2>
 
 <p>Within the Go runtime, circuits are represented by a dedicated type <code>Circuit</code>,
 whose definition is
@@ -79,6 +109,8 @@ type Value interface{}
 
 <p>Type <code>Name</code> designates <code>string</code> or <code>int</code>.
 Type <code>Value</code> designates any Go type.
+
+?
 
 <h2 id="grammar">Grammar</h2>
 
@@ -219,8 +251,8 @@ Nand {
 
 	and:X = :X
 	and:Y = :Y
-	and:XAndY = not:X
-	not:NotX = :
+	and:XAndY = not:Z
+	not:NotZ = :
 }
 </pre>
 

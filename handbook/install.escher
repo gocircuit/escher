@@ -1,0 +1,40 @@
+
+BuildInstallPage {
+        wf io.util.WriteFile
+        wf:Content = InstallPage
+        wf:Name = "install.html"
+        : = wf:Ready
+}
+
+InstallPage {
+        h Html
+        h: = :
+        h:Title = "Building and installing Escher"
+        h:Body = t:
+
+        t ForkTemplate
+        t:Data = {}
+        t:Template = `
+<h1>Bulding and installing Escher</h1>
+
+<p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
+Fetching, building and installing Escher can then be accomplished with one command:
+
+<pre>
+	% go get github.com/gocircuit/escher/escher
+</pre>
+
+<p>To check that installation succeeded, run <code>escher</code> without arguments to get its
+default recovery shell:
+
+<pre>
+	% escher
+	…
+	(stack trace omitted)
+	…
+	recover 
+</pre>
+
+
+        `
+}

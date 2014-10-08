@@ -2,6 +2,7 @@ main {
         x Fork
         x: = os.Exit
 
-        x:syn = BuildSyntaxPage
-        x:idx = BuildIndexPage
+        x:_1 = BuildIndexPage
+        x:_2 = BuildInstallPage
+        x:_3 = BuildSyntaxPage
 }

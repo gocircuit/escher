@@ -17,6 +17,7 @@ IndexPage {
 <p>Follow updates on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
 <ul>
+<li><a href="install.html">Building and installing</a></li>
 <li><a href="syntax.html">Syntax and meaning</a></li>
 <li><a href="m.html">Materializing reflexes</a></li>
 <li><a href="cli.html">Command-line interface</a></li>

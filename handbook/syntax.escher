@@ -12,7 +12,7 @@ SyntaxPage {
         h:Title = "Escher syntax"
         h:Body = t:
 
-        t text.ForkTemplate
+        t ForkTemplate
         t:Data = {
 		Backquoted "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
         }

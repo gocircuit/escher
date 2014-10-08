@@ -11,29 +11,11 @@ import (
 )
 
 // Vector ...
-type Vector Circuit
-
-func NewVector(gate, valve Name) Vector {
-	return Vector(New().Grow("Gate", gate).Grow("Valve", valve))
-}
-
-func (v Vector) Reduce() (gate, valve Name) {
-	return Circuit(v).At("Gate"), Circuit(v).At("Valve")
-}
-
-func (v Vector) Copy() Irreducible {
-	return Vector(Circuit(v).Clone())
+type Vector struct {
+	Gate Name
+	Valve Name
 }
 
 func (v Vector) String() string {
-	g, u := v.Reduce()
-	return fmt.Sprintf("%v:%v", g, u)
-}
-
-func (v Vector) Same(x Irreducible) bool {
-	w, ok := x.(Vector)
-	if !ok {
-		return false
-	}
-	return Same(Circuit(v), Circuit(w))
+	return fmt.Sprintf("%v:%v", v.Gate, v.Valve)
 }

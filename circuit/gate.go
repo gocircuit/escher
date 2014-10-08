@@ -32,6 +32,10 @@ func (u Circuit) CircuitAt(name Name) Circuit {
 	return u.At(name).(Circuit)
 }
 
+func (u Circuit) VectorAt(name Name) Vector {
+	return u.At(name).(Vector)
+}
+
 func (u Circuit) CircuitOptionAt(name Name) (Circuit, bool) {
 	v, ok := u.OptionAt(name)
 	if ok {

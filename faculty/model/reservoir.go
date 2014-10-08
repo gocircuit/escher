@@ -52,11 +52,11 @@ func (r *Reservoir) CognizeX(eye *be.Eye, v interface{}) {
 		}
 
 	case "Link":
-		a, b := Vector(u.CircuitAt(0)), Vector(u.CircuitAt(1))
+		a, b := u.VectorAt(0), u.VectorAt(1)
 		r.focus.Link(a, b)
 
 	case "Unlink":
-		a, b := Vector(u.CircuitAt(0)), Vector(u.CircuitAt(1))
+		a, b := u.VectorAt(0), u.VectorAt(1)
 		r.focus.Unlink(a, b)
 
 	case "Yield":

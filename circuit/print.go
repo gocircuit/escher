@@ -62,8 +62,7 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 	o := make(Orient)
 	for sg, valves := range u.Flow {
 		for sv, t := range valves {
-			tg, tv := t.Reduce()
-			if o.Has(tg, tv) {
+			if o.Has(t.Gate, t.Valve) {
 				continue
 			}
 			o.Include(sg, sv)
@@ -71,7 +70,7 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 			fmt.Fprintf(&w, "%s%s%s = %s\n", 
 				prefix, indent,  
 				u.resugar(sg, sv),
-				u.resugar(tg, tv),
+				u.resugar(t.Gate, t.Valve),
 			)
 		}
 	}

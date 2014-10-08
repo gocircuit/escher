@@ -116,13 +116,12 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
-			tg, tv := t.Reduce()
-			checkLink(u, gates, g, v, tg, tv)
-			value.Link(NewVector(g, v), NewVector(tg, tv))
-			go Link(gates[g][v], gates[tg][tv])
+			checkLink(u, gates, g, v, t.Gate, t.Valve)
+			value.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
+			go Link(gates[g][v], gates[t.Gate][t.Valve])
 			// go func() {
-			// 	log.Printf("%s:%s -> %s:%s | %v %v", g, v, tg, tv, gates[g][v], gates[tg][tv])
-			// 	Link(gates[g][v], gates[tg][tv])
+			// 	log.Printf("%s:%s -> %s:%s | %v %v", g, v, t.Gate, t.Valve, gates[g][v], gates[t.Gate][t.Valve])
+			// 	Link(gates[g][v], gates[t.Gate][t.Valve])
 			// }()
 		}
 	}

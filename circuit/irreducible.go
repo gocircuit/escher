@@ -61,9 +61,7 @@ func (u Circuit) isWithin(w Circuit) bool {
 			if !ok {
 				return false
 			}
-			_ugate, _uvlv := uvec.Reduce()
-			_wgate, _wvlv := wvec.Reduce()
-			if _ugate != _wgate || _uvlv != _wvlv { // shallow comparison, at Go value level
+			if uvec.Gate != wvec.Gate || uvec.Valve != wvec.Valve { // shallow comparison, at Go value level
 				return false
 			}
 		}

@@ -59,8 +59,8 @@ func rename(u Circuit, g, h Name) Circuit {
 	u.Include(h, x)
 	// links
 	for vlv, vec := range u.Valves(g) {
-		u.Unlink(NewVector(g, vlv), vec)
-		u.Link(NewVector(h, vlv), vec)
+		u.Unlink(Vector{g, vlv}, vec)
+		u.Link(Vector{h, vlv}, vec)
 	}
 	return u
 }

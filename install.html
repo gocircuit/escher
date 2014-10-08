@@ -2,7 +2,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
-		<title>Escher syntax</title>
+		<title>Building and installing Escher</title>
 	</head>
 	<body>
 	
@@ -12,17 +12,27 @@
 	
 	<div class="page">
 	
-<h1>Escher language and runtime</h1>
+<h1>Bulding and installing Escher</h1>
 
-<p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>.
-<p>Follow updates on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
+<p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
+Fetching, building and installing Escher can then be accomplished with one command:
 
-<ul>
-<li><a href="install.html">Building and installing</a></li>
-<li><a href="syntax.html">Syntax and meaning</a></li>
-<li><a href="m.html">Materializing reflexes</a></li>
-<li><a href="cli.html">Command-line interface</a></li>
-</ul>
+<pre>
+	% go get github.com/gocircuit/escher/escher
+</pre>
+
+<p>To check that installation succeeded, run <code>escher</code> without arguments to get its
+default recovery shell:
+
+<pre>
+	% escher
+	…
+	(stack trace omitted)
+	…
+	recover 
+</pre>
+
+
         
 	</div>
 	

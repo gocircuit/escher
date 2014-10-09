@@ -14,36 +14,25 @@ MaterializePage {
 
         t ForkTemplate
         t:Data = {
-		Backquoted "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
+		Backquoted ""
         }
         t:Template = `
 <h1>Materializing</h1>
 
-<!--ul>
-<li><a href="#circuits">Circuits</a></li>
-<li><a href="#symbolism">Symbolism</a></li>
-<li><a href="#runtime">Go interface</a></li>
-<li><a href="#grammar">Grammar</a>
-	<ul>
-	<li><a href="#comments">Comments</a></li>
-	<li><a href="#gates">Gates</a>
-		<ul>
-		<li><a href="#series">Series</a></li>
-		</ul>
-	</li>
-	<li><a href="#links">Links</a>
-		<ul>
-		<li><a href="#sugar">Sugar</a></li>
-		</ul>
-	</li>
-	</ul>
-</li>
-</ul-->
+<ul>
+<li><a href="#reflex">Reflex</a></li>
+</ul>
 
 <p><br>
 
-<p>In addition 
+<p>In addition to representing data, Escher circuits can represent executable code.
+<em>Materializing</em> a circuit is a process that transforms a collection of circuits
+into a running program, consisting of independent <em>reflexes</em>
+dynamically connected according to circuit designs. We introduce these concepts here.
 
+<h2>Reflex</h2>
+
+<p>
 
         `
 }

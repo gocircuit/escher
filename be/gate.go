@@ -7,6 +7,7 @@
 package be
 
 import (
+	"fmt"
 	"log"
 	. "reflect"
 
@@ -28,7 +29,7 @@ func materializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circui
 	spark := w.Interface().(Gate).Spark(matter, aux...) // Initialize
 	r := gate{w, w.Type()}
 	// Enumerate the valves handled by dedicated methods.
-	dedicated := make(map[string]struct{})
+	dedicated := make(map[circuit.Name]struct{})
 	for i := 0; i < r.Type.NumMethod(); i++ {
 		n := r.Type.Method(i).Name
 		if len(n) >= len(cognizePrefix) && n[:len(cognizePrefix)] == cognizePrefix {
@@ -36,15 +37,15 @@ func materializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circui
 		}
 	}
 	// Verify that all connected valves in matter have handlers or that there is a generic cognizer method.
-	var valve []string
+	var valve []circuit.Name
 	_, over := r.Type.MethodByName(cognizeEllipses)
 	for vlv, _ := range matter.View.Gate {
-		valve = append(valve, vlv.(string))
+		valve = append(valve, vlv)
 		if over {
 			continue
 		}
-		if _, ok := dedicated[vlv.(string)]; !ok {
-			log.Fatalf("gate %T does not have methods to handle the connected %s valve", v, vlv.(string))
+		if _, ok := dedicated[vlv]; !ok {
+			log.Fatalf("gate %T does not have methods to handle the connected valve %v", v, vlv)
 		}
 	}
 	// Not all handled valves need to be connected. But all connected valves need to be handled by a gate method.
@@ -57,17 +58,30 @@ type gate struct {
 	Type
 }
 
-func (r *gate) Cognize(eye *Eye, valve string, value interface{}) {
+func (r *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
+	// Compute valve string
+	var alias string
+	var letter bool
+	switch valve.(type) {
+	case string, int:
+		alias = fmt.Sprintf("%v", valve)
+		letter = true
+	default:
+		letter = false
+	}
+
 	// If there is a dedicated method for valve, use that.
-	if _, ok := r.Type.MethodByName(cognizePrefix + valve); ok {
-		m := r.Value.MethodByName(cognizePrefix + valve)
-		m.Call(
-			[]Value{
-				ValueOf(eye), 
-				ValueOf(value),
-			},
-		)
-		return
+	if letter {
+		if _, ok := r.Type.MethodByName(cognizePrefix + alias); ok {
+			m := r.Value.MethodByName(cognizePrefix + alias)
+			m.Call(
+				[]Value{
+					ValueOf(eye), 
+					ValueOf(value),
+				},
+			)
+			return
+		}
 	}
 	// Otherwise call the generic cognizer
 	m := r.Value.MethodByName(cognizeEllipses)

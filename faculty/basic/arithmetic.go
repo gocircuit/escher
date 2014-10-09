@@ -68,7 +68,8 @@ func (x *sum) u(valve string) int {
 	return x.lit.IntOrZeroAt(valve)
 }
 
-func (x *sum) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
+func (x *sum) Cognize(eye *be.Eye, dv Name, dvalue interface{}) {
+	dvalve := dv.(string)
 	x.save(dvalve, plumb.AsInt(dvalue))
 	var wg sync.WaitGroup
 	defer wg.Wait()

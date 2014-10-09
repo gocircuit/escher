@@ -100,7 +100,7 @@ func (u Circuit) Refine(name string) Circuit {
 	return r
 }
 
-func (u Circuit) Abandon(name string) Circuit {
+func (u Circuit) Abandon(name Name) Circuit {
 	u.Exclude(name)
 	return u
 }

@@ -34,7 +34,7 @@ type join struct {
 	tail *string
 }
 
-func (x *join) Cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
+func (x *join) Cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
 	x.Lock()
 	defer x.Unlock()
 	switch dvalve {

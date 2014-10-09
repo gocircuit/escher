@@ -2,8 +2,9 @@ main {
         x Fork
         x: = os.Exit
 
-        x:_1 = BuildIndexPage
-        x:_2 = BuildInstallPage
-        x:_3 = BuildSyntaxPage
-        x:_4 = BuildMaterializePage
+        x:1 = BuildIndexPage
+        x:2 = BuildInstallPage
+        x:3 = BuildSyntaxPage
+        x:4 = BuildMaterializePage
+        //x:5 = BuildMaterializePage
 }

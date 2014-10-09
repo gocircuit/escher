@@ -38,9 +38,9 @@ func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 	if matter.View.Len() < 1 {
 		panic("Junction is not connected")
 	}
-	vlv := make([]string, 0, matter.View.Len())
+	vlv := make([]Name, 0, matter.View.Len())
 	for v, _ := range matter.View.Gate {
-		vlv = append(vlv, v.(string))
+		vlv = append(vlv, v)
 	}
 	j := junction{jf, vlv}
 	reflex, _ := NewEyeCognizer(j.Cognize, vlv...)
@@ -52,10 +52,10 @@ func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 
 type junction struct {
 	f func(interface{})
-	valve []string
+	valve []Name
 }
 
-func (j junction) Cognize(eye *Eye, name string, value interface{}) {
+func (j junction) Cognize(eye *Eye, name Name, value interface{}) {
 	if j.f != nil {
 		j.f(value)
 	}
@@ -74,7 +74,7 @@ func (j junction) Cognize(eye *Eye, name string, value interface{}) {
 
 type sparkChan chan struct{}
 
-func spark(ch sparkChan, eye *Eye, dvalve string, dvalue interface{}) {
+func spark(ch sparkChan, eye *Eye, dvalve Name, dvalue interface{}) {
 	eye.Show(dvalve, dvalue)
 	ch <- struct{}{}
 }

@@ -32,8 +32,8 @@ type process struct{
 	spawn chan interface{} // notify loop of spawn memes
 }
 
-func (p *process) cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
-	switch dvalve {
+func (p *process) cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
+	switch dvalve.(string) {
 	case "Command":
 		p.Once.Do(
 			func() {

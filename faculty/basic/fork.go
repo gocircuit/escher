@@ -16,13 +16,13 @@ import (
 type Fork struct{}
 
 func (Fork) Materialize(matter *be.Matter) (be.Reflex, Value) {
-	var arm []string
+	var arm []Name
 	var defaultUsed bool
 	for vlv, _ := range matter.View.Gate {
 		if vlv == "" { // 
 			defaultUsed = true
 		} else {
-			arm = append(arm, vlv.(string))
+			arm = append(arm, vlv)
 		}
 	}
 	if !defaultUsed || len(arm) == 0 {

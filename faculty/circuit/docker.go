@@ -35,7 +35,7 @@ type docker struct {
 	spawn chan interface{} // notify loop of spawn memes
 }
 
-func (p *docker) cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
+func (p *docker) cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
 	switch dvalve {
 	case "Command":
 		p.Once.Do(

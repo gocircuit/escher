@@ -50,7 +50,7 @@ type writerTo struct{
 	io.WriteCloser // sovereign writer
 }
 
-func (x *writerTo) cognize(eye *be.Eye, valve string, value interface{}) {
+func (x *writerTo) cognize(eye *be.Eye, valve Name, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
 		go CopyClose(x.WriteCloser, t, false, true)
@@ -95,7 +95,7 @@ type readFrom struct{
 	io.ReadCloser // sovereign writer
 }
 
-func (x *readFrom) cognize(eye *be.Eye, valve string, value interface{}) {
+func (x *readFrom) cognize(eye *be.Eye, valve Name, value interface{}) {
 	switch t := value.(type) {
 	case io.Writer:
 		go CopyClose(t, x.ReadCloser, true, false)

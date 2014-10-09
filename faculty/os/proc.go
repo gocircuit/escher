@@ -34,7 +34,7 @@ type process struct{
 	sync.Once // start backloop once
 }
 
-func (p *process) cognize(eye *be.Eye, dvalve string, dvalue interface{}) {
+func (p *process) cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
 	switch dvalve {
 	case "Command":
 		p.Once.Do(

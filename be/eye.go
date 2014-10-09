@@ -8,6 +8,8 @@ package be
 
 import (
 	"sync"
+
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Eye is a runtime facility that delivers messages by invoking gate methods and
@@ -21,25 +23,25 @@ import (
 //
 type Eye struct {
 	see chan *change
-	show map[string]*nerve
+	show map[Name]*nerve
 }
 
 type change struct {
-	Valve string
+	Valve Name
 	Value interface{}
 }
 
-func NewEye(valve ...string) (Reflex, *Eye) {
+func NewEye(valve ...Name) (Reflex, *Eye) {
 	return NewEyeCognizer(nil, valve...)
 }
 
-type EyeCognizer func(eye *Eye, valve string, value interface{})
+type EyeCognizer func(eye *Eye, valve Name, value interface{})
 
-func NewEyeCognizer(cog EyeCognizer, valve ...string) (Reflex, *Eye) {
+func NewEyeCognizer(cog EyeCognizer, valve ...Name) (Reflex, *Eye) {
 	r := make(Reflex)
 	eye := &Eye{
 		see: make(chan *change),
-		show: make(map[string]*nerve),
+		show: make(map[Name]*nerve),
 	}
 	for i, v_ := range valve {
 		v := v_
@@ -77,7 +79,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...string) (Reflex, *Eye) {
 	return r, eye
 }
 
-func (eye *Eye) connect(valve string, r *ReCognizer) {
+func (eye *Eye) connect(valve Name, r *ReCognizer) {
 	ch := eye.show[valve].ch 
 	ch <- r
 	close(ch)
@@ -90,7 +92,7 @@ type nerve struct {
 	*ReCognizer
 }
 
-func (eye *Eye) Show(valve string, v interface{}) {
+func (eye *Eye) Show(valve Name, v interface{}) {
 	n := eye.show[valve]
 	r, ok := <-n.ch
 	n.Lock()
@@ -103,14 +105,14 @@ func (eye *Eye) Show(valve string, v interface{}) {
 	r.ReCognize(v)
 }
 
-func (eye *Eye) cognize(valve string, v interface{}) {
+func (eye *Eye) cognize(valve Name, v interface{}) {
 	eye.see <- &change{
 		Valve: valve,
 		Value: v,
 	}
 }
 
-func (eye *Eye) See() (valve string, value interface{}) {
+func (eye *Eye) See() (valve Name, value interface{}) {
 	chg := <-eye.see
 	return chg.Valve, chg.Value
 }

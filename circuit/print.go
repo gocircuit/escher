@@ -81,13 +81,17 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 func (u Circuit) resugar(gate, valve Name) string {
 	g, ok := gate.(string)
 	if !ok || len(g) == 0 || g[0] != '#' {
-		return fmt.Sprintf("%s:%s", gate, valve)
+		return fmt.Sprintf("%v:%v", gate, valve)
 	}
 	return fmt.Sprintf("%s", printValueInline(u.Gate[gate]))
 }
 
 func printValueInline(v Value) string {
 	switch t := v.(type) {
+	case Vector:
+		return fmt.Sprintf("%#v", t)
+	case Circuit:
+		return Linearize(t.String())
 	case Address:
 		return fmt.Sprintf("%s", t)
 	case string:

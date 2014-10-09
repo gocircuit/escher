@@ -48,7 +48,8 @@ div.page {
 
 div.header {
 	padding: 20px;
-	width: 100%;
+	left: 0;
+	right: 0;
 	background: rgb(220,240,240);
 	/*color: white;*/
 }

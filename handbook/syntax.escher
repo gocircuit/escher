@@ -40,7 +40,7 @@ SyntaxPage {
 </li>
 </ul>
 
-<br><p><br>
+<p><br>
 
 <p>At its heart Escher is a Go package that parses a simple written syntax
 into a labeled graph data structure, called a <em>circuit</em>. If you view
@@ -85,7 +85,7 @@ white and black colors everywhere.
 
 <p><center>
 <figure class="shadowless">
-	<object data="img/NAND.svg" type="image/svg+xml" width="400px">
+	<object data="img/NAND.svg" type="image/svg+xml" width="500px">
 		<img src="img/NAND.png" alt="" />
 	</object>
 	<div>

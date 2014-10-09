@@ -1,0 +1,49 @@
+
+BuildMaterializePage {
+        file io.util.WriteFile
+        file:Content = MaterializePage
+        file:Name = "m.html"
+        : = file:Ready
+}
+
+MaterializePage {
+        h Html
+        h: = :
+        h:Title = "Materializing circuits into reflexes"
+        h:Body = t:
+
+        t ForkTemplate
+        t:Data = {
+		Backquoted "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
+        }
+        t:Template = `
+<h1>Materializing</h1>
+
+<!--ul>
+<li><a href="#circuits">Circuits</a></li>
+<li><a href="#symbolism">Symbolism</a></li>
+<li><a href="#runtime">Go interface</a></li>
+<li><a href="#grammar">Grammar</a>
+	<ul>
+	<li><a href="#comments">Comments</a></li>
+	<li><a href="#gates">Gates</a>
+		<ul>
+		<li><a href="#series">Series</a></li>
+		</ul>
+	</li>
+	<li><a href="#links">Links</a>
+		<ul>
+		<li><a href="#sugar">Sugar</a></li>
+		</ul>
+	</li>
+	</ul>
+</li>
+</ul-->
+
+<p><br>
+
+<p>In addition 
+
+
+        `
+}

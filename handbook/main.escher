@@ -5,4 +5,5 @@ main {
         x:_1 = BuildIndexPage
         x:_2 = BuildInstallPage
         x:_3 = BuildSyntaxPage
+        x:_4 = BuildMaterializePage
 }

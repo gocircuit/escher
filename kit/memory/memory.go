@@ -22,7 +22,7 @@ func (m Memory) Print(prefix, indent string) string {
 
 func (m Memory) Lookup(addr Address) Value {
 	var v interface{} = Circuit(m)
-	for _, name := range addr.Path() {
+	for _, name := range addr.Path {
 		v = v.(Circuit).At(name)
 	}
 	return Copy(v)

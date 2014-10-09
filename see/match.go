@@ -27,7 +27,7 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	t := src.Copy()
 	Space(t)
 	//
-	g, p, v, ok := seeJoin(t)
+	g, p, v, ok := seeEndpoint(t)
 	if !ok {
 		return nil, nil
 	}
@@ -43,7 +43,7 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	t.Match("=")
 	Whitespace(t)
 	//
-	g, p, v, ok = seeJoin(t)
+	g, p, v, ok = seeEndpoint(t)
 	if !ok {
 		return nil, nil
 	}
@@ -62,15 +62,15 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	return
 }
 
-func seeJoin(src *Src) (m Value, p, v Name, ok bool) {
-	if p, v, ok = seeJoinAddress(src); ok { // valve (or empty string)
+func seeEndpoint(src *Src) (m Value, p, v Name, ok bool) {
+	if p, v, ok = seeNameEndpoint(src); ok { // valve (or empty string)
 		return
 	}
-	m, ok = seeJoinValue(src) // int, string, etc.
+	m, ok = seeValueEndpoint(src) // int, string, etc.
 	return
 }
 
-func seeJoinValue(src *Src) (m Value, ok bool) {
+func seeValueEndpoint(src *Src) (m Value, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			ok = false
@@ -82,16 +82,17 @@ func seeJoinValue(src *Src) (m Value, ok bool) {
 	return m, true
 }
 
-func seeJoinAddress(src *Src) (peer, valve Name, ok bool) {
+func seeNameEndpoint(src *Src) (gate, valve Name, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			ok = false
 		}
 	}()
 	t := src.Copy()
-	p := SeeAddressOrEmpty(t).(Address)
+	gate = SeeName(t)
 	t.Match(string(ValveSelector))
-	v := SeeAddressOrEmpty(t).(Address)
+	valve = SeeName(t)
 	src.Become(t)
-	return p.Simplify(), v.Simplify(), true
+	ok = true
+	return
 }

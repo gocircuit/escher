@@ -33,9 +33,9 @@ code, pre {
 	font-weight: 100;
 }
 
-pre.go {color: rgb(50,90,220); }
+/*pre.go {color: #333333; }
 pre.escher {color: rgb(200,100,120); }
-
+*/
 pre {
 	margin-left: 20px;
 }

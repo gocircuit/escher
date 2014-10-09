@@ -9,7 +9,9 @@ package see
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"strconv"
+	"strings"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -55,35 +57,53 @@ func SeeValueNoCircuit(src *Src) (x Value) {
 	return nil
 }
 
-func SeeAddressOrEmpty(src *Src) interface{} {
-	return seeAddress(src, true)
+func ParseName(src string) Name {
+	t := NewSrcString(src)
+	n := SeeName(t)
+	if t.Len() != 0 {
+		log.Fatalf("Non-name characters at end of %q", src)
+	}
+	return n
+}
+
+func SeeName(src *Src) Name {
+	x := src.Consume(IsIdentifier)
+	if x == "" { // empty string is allowed as name
+		return x
+	}
+	i, err := strconv.Atoi(x) // recognize ints and return them as such
+	if err == nil {
+		return i
+	}
+	return x
+}
+
+func ParseAddress(src string) Address {
+	t := NewSrcString(src)
+	a := SeeAddress(t).(Address)
+	if t.Len() != 0 {
+		log.Fatalf("Non-address characters at end of %q", src)
+	}
+	return a
 }
 
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
-	return seeAddress(src, false)
-}
-
-func seeAddress(src *Src, allowEmpty bool) interface{} {
 	t := src.Copy()
-	var x []string
-	for {
-		id := Identifier(t)
-		x = append(x, id)
-		if !t.TryMatch(".") {
-			break
-		}
-	}
+	delimit := t.Consume(IsIdentifierOrDot)
+	x := strings.Split(delimit, ".")
 	if len(x) == 0 {
 		return nil
 	}
-	if !allowEmpty {
-		if len(x) == 1 && x[0] == "" {
-			return nil
-		}
+	if len(x) == 1 && x[0] == "" {
+		return nil
+	}
+	var addr Address
+	for _, a := range x {
+		addr.Path = append(addr.Path, ParseName(a))
 	}
 	src.Become(t)
-	return NewAddressStrings(x)
+	return addr
 }
 
 // Int …

@@ -34,24 +34,8 @@ func IsIdentifier(r rune) bool {
 	return false
 }
 
-func IsIdentifierFirst(r rune) bool {
-	switch {
-	case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z':
-		return true
-	case r == '_', r == '?':
-		return true
-	}
-	return false
-}
-
-func Identifier(src *Src) string {
-	if src.Len() == 0 {
-		return ""
-	}
-	if !IsIdentifierFirst(src.RuneAt(0)) {
-		return ""
-	}
-	return src.Consume(IsIdentifier)
+func IsIdentifierOrDot(r rune) bool {
+	return r == '.' || IsIdentifier(r)
 }
 
 // Identifier + Delimiter + Operator < Literal

@@ -21,6 +21,13 @@ func See(src *Src) (Name, Circuit) {
 }
 
 func SeePeer(src *Src) (n Name, m Value) {
+	if n, m = seeNameGate(src); n != nil {
+		return n, m
+	}
+	return seeNamelessGate(src)
+}
+
+func seeNameGate(src *Src) (n Name, m Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			n, m = nil, nil
@@ -28,23 +35,39 @@ func SeePeer(src *Src) (n Name, m Value) {
 	}()
 	t := src.Copy()
 	Space(t)
-	left := SeeValue(t)
-	if left == nil {
-		panic("peer")
+	left := SeeName(t)
+	if left == "" {
+		panic("no gate name")
 	}
 	Whitespace(t)
 	right := SeeValue(t)
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if right == nil { // one term (a value)
-		src.Become(t)
-		return Nameless{}, left
-	} else { // two terms (name and value)
-		src.Become(t)
-		return left.(Address).Simplify(), right
+	if right == nil {
+		panic("no gate value")
 	}
-	panic("peer")
+	src.Become(t)
+	return left, right
+}
+
+func seeNamelessGate(src *Src) (n Name, m Value) {
+	defer func() {
+		if r := recover(); r != nil {
+			n, m = nil, nil
+		}
+	}()
+	t := src.Copy()
+	Space(t)
+	right := SeeValue(t)
+	if !Space(t) { // require newline at end
+		return nil, nil
+	}
+	if right == nil {
+		panic("no gate value")
+	}
+	src.Become(t)
+	return Nameless{}, right
 }
 
 type Nameless struct{}

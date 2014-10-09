@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"log"
 	"runtime/debug"
-	"strings"
 	"os"
 
 	. "github.com/gocircuit/escher/faculty"
@@ -20,6 +19,7 @@ import (
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/kit/fs"
 	"github.com/gocircuit/escher/kit/shell"
+	"github.com/gocircuit/escher/see"
 
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/circuit"
@@ -63,11 +63,7 @@ func main() {
 	switch {
 
 	case *flagShow:
-		walk := strings.Split(flagMain, ".")
-		if len(walk) == 2 && walk[0] == "" && walk[1] == "" { // -show .
-			walk = nil
-		}
-		cd := compile(*flagSrc).Lookup(NewAddressStrings(walk))
+		cd := compile(*flagSrc).Lookup(see.ParseAddress(flagMain))
 		switch t := cd.(type) {
 		case Circuit:
 			fmt.Println(t.Print("", "\t", -1))
@@ -86,7 +82,7 @@ func main() {
 				shell.NewShell("(recovered)", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))
 			}
 		}()
-		b.MaterializeAddress(NewAddressParse(flagMain))
+		b.MaterializeAddress(see.ParseAddress(flagMain))
 		select {} // wait forever
 	}
 }

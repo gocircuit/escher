@@ -12,6 +12,7 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/see"
 	"github.com/gocircuit/escher/kit/plumb"
 	"github.com/gocircuit/escher/kit/memory"
 )
@@ -63,7 +64,7 @@ func rangeOverWith(mem memory.Memory, aux Value, over Circuit, with Value) Circu
 			case Circuit:
 				x = be.NewCell(be.Materialize(Circuit(mem), t))
 			case string:
-				x = be.NewCell(be.Materialize(Circuit(mem), NewAddressParse(t)))
+				x = be.NewCell(be.Materialize(Circuit(mem), see.ParseAddress(t)))
 			default:
 				log.Fatalf("Unknown type at Range:With (%T)", with)
 			}

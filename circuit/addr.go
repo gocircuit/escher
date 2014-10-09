@@ -9,7 +9,6 @@ package circuit
 import (
 	"bytes"
 	"fmt"
-	"strings"
 )
 
 // DefaultValve
@@ -17,25 +16,7 @@ const DefaultValve = ""
 
 // Address ...
 type Address struct {
-	path []Name
-}
-
-func NewAddress(nn []Name) (a Address) {
-	a = Address{make([]Name, len(nn))}
-	copy(a.path, nn)
-	return a
-}
-
-func NewAddressParse(src string) Address {
-	return NewAddressStrings(strings.Split(src, "."))
-}
-
-func NewAddressStrings(ss []string) (a Address) {
-	nn := make([]Name, len(ss))
-	for i, s := range ss {
-		nn[i] = s
-	}
-	return NewAddress(nn)
+	Path []Name
 }
 
 func (a Address) Same(r Irreducible) bool {
@@ -43,11 +24,11 @@ func (a Address) Same(r Irreducible) bool {
 	if !ok {
 		return false
 	}
-	if len(a.path) != len(b.path) {
+	if len(a.Path) != len(b.Path) {
 		return false
 	}
-	for i, j := range a.path {
-		if !Same(j, b.path[i]) {
+	for i, j := range a.Path {
+		if !Same(j, b.Path[i]) {
 			return false
 		}
 	}
@@ -55,30 +36,30 @@ func (a Address) Same(r Irreducible) bool {
 }
 
 func (a Address) Copy() Irreducible {
-	b := Address{make([]Name, len(a.path))}
-	copy(b.path, a.path)
+	b := Address{make([]Name, len(a.Path))}
+	copy(b.Path, a.Path)
 	return b
 }
 
 func (a Address) Simplify() interface{} {
-	if len(a.path) == 1 {
+	if len(a.Path) == 1 {
 		return a.Simple()
 	}
 	return a
 }
 
 func (a Address) Simple() string {
-	if len(a.path) != 1 {
+	if len(a.Path) != 1 {
 		panic("address not simple")
 	}
-	return a.path[0].(string)
+	return a.Path[0].(string)
 }
 
 func (a Address) String() string {
 	var w bytes.Buffer
-	for i, x := range a.path {
+	for i, x := range a.Path {
 		fmt.Fprintf(&w, "%v", x)
-		if i + 1 < len(a.path) {
+		if i + 1 < len(a.Path) {
 			w.WriteString(".")
 		}
 	}
@@ -86,17 +67,13 @@ func (a Address) String() string {
 }
 
 func (a Address) Strings() []string {
-	var s = make([]string, len(a.path))
-	for i, x := range a.path {
+	var s = make([]string, len(a.Path))
+	for i, x := range a.Path {
 		s[i] = x.(string)
 	}
 	return s
 }
 
-func (a Address) Path() []Name {
-	return a.path
-}
-
 func (a Address) Name() string {
-	return a.path[len(a.path)-1].(string)
+	return a.Path[len(a.Path)-1].(string)
 }

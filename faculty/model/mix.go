@@ -37,14 +37,14 @@ func combine(pos, neg Circuit) Circuit {
 	for gname, gvalue := range pos.Gates() {
 		switch t := gvalue.(type) {
 		case Address:
-			if len(t.Path()) > 0 && t.Path()[0] == "" { // If the gate meaning is a substitution address
-				pos.ReGrow(gname, neg.Goto(t.Path()[1:]...))
+			if len(t.Path) > 0 && t.Path[0] == "" { // If the gate meaning is a substitution address
+				pos.ReGrow(gname, neg.Goto(t.Path[1:]...))
 			}
 		case Circuit:
 			pos.ReGrow(gname, combine(t, neg))
 		}
-		if s, ok := gname.(Address); ok && len(s.Path()) > 0 && s.Path()[0] == "" { // If the gate name is a substitution address
-			rename(pos, gname, neg.Goto(s.Path()[1:]...))
+		if s, ok := gname.(Address); ok && len(s.Path) > 0 && s.Path[0] == "" { // If the gate name is a substitution address
+			rename(pos, gname, neg.Goto(s.Path[1:]...))
 		}
 	}
 	return pos

@@ -19,5 +19,29 @@ Materialize {
 
 	shell StdShell
 	shell:Out = Ignore
-	shell:Name = "tutorial·Materialize"
+	shell:Name = "tutorial"
+}
+
+MaterializeDepth {
+	m escher.Materialize
+	m:In = arg:
+	m:Out = fork:
+
+	fork Fork
+	fork:Reflex = Ignore
+	fork:Residual = depth:Circuit
+
+	depth model.DepthFirst
+	depth: = Show
+
+	arg Fork
+	arg:Memory = {
+		a {
+			b b
+		}
+		b {
+			c "c"
+		}
+	}
+	arg:Design = { a a }
 }

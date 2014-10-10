@@ -6,5 +6,5 @@ main {
         x:2 = BuildInstallPage
         x:3 = BuildSyntaxPage
         x:4 = BuildMaterializePage
-        //x:5 = BuildMaterializePage
+        x:5 = BuildCommandPage
 }

@@ -13,9 +13,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-/*
-	{ In *, Out *, _ * }
-*/
 type IO struct{}
 
 func (IO) Spark(*be.Matter, ...interface{}) Value {

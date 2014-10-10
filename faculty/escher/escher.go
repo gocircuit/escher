@@ -18,8 +18,8 @@ import (
 func init() {
 	faculty.Register("escher.Memory", Memory)
 	faculty.Register("escher.Materialize", be.NewGateMaterializer(M{}))
-	faculty.Register("escher.CircuitSourceDir", CircuitSourceDir)
 	faculty.Register("escher.Shell", be.NewGateMaterializer(&Shell{}))
+	// faculty.Register("escher.CircuitSourceDir", CircuitSourceDir)
 }
 
 // Memory

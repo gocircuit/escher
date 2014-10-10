@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-// Package model provides a basis of gates for circuit transformations.
+// Package model provides a basis of gates for circuit traversal and transformation.
 package model
 
 import (
@@ -13,10 +13,6 @@ import (
 )
 
 func init() {
-	faculty.Register("model.Hamiltonian", be.NewGateMaterializer(&Hamiltonian{}))
-	faculty.Register("model.Eulerian", be.NewGateMaterializer(&Eulerian{}))
-	faculty.Register("model.Reservoir", be.NewGateMaterializer(&Reservoir{}))
-	faculty.Register("model.Mix", be.NewGateMaterializer(&Mix{}))
-	faculty.Register("model.Range_", be.NewGateMaterializer(&Range{}))
 	faculty.Register("model.IO", be.NewGateMaterializer(IO{}))
+	faculty.Register("model.DepthFirst", be.NewGateMaterializer(DepthFirst{}))
 }

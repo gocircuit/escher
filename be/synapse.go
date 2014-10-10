@@ -10,7 +10,7 @@ import (
 	// "fmt"
 	"sync"
 
-	. "github.com/gocircuit/escher/circuit"
+	// . "github.com/gocircuit/escher/circuit"
 )
 
 // Cognize routines are called when a change in value is to be delivered to a reflex.
@@ -62,17 +62,17 @@ func Link(m1, m2 *Synapse) {
 // The two endpoints of a Synapse are ReCognizer objects.
 type ReCognizer struct {
 	q Cognize
-	sync.Mutex
-	memory interface{}
+	// sync.Mutex
+	// memory interface{}
 }
 
 // ReCognize sends value to the reciprocal side of this synapse.
 func (s *ReCognizer) ReCognize(value interface{}) {
-	s.Lock()
-	defer s.Unlock()
-	if Same(s.memory, value) {
-		return
-	}
-	s.memory = Copy(value)
+	// s.Lock()
+	// defer s.Unlock()
+	// if Same(s.memory, value) {
+	// 	return
+	// }
+	// s.memory = Copy(value)
 	s.q(value)
 }

@@ -24,7 +24,6 @@ import (
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/circuit"
 	_os "github.com/gocircuit/escher/faculty/os"
-	
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/io"
@@ -32,8 +31,6 @@ import (
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	_ "github.com/gocircuit/escher/faculty/time"
-	// _ "github.com/gocircuit/escher/faculty/web/twitter"
-	// _ "github.com/gocircuit/escher/faculty/xml"
 )
 
 // usage: escher [-a dir] [-show] address arguments...

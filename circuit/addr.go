@@ -77,3 +77,11 @@ func (a Address) Strings() []string {
 func (a Address) Name() string {
 	return a.Path[len(a.Path)-1].(string)
 }
+
+func (a Address) Circuit() Circuit {
+	x := New()
+	for i, j := range a.Path {
+		x.Grow(i, j)
+	}
+	return x
+}

@@ -46,7 +46,7 @@ func (u Circuit) isWithin(w Circuit) bool {
 		if !ok {
 			return false
 		}
-		if uv != wv { // shallow comparison of gates is default Go-level comparison
+		if !Same(uv, wv) {
 			return false
 		}
 	}

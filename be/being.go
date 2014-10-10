@@ -111,7 +111,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 	for v, _ := range u.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
-	value.Gate["#Matter"] = matter.Circuit()
+	// value.Gate["#Matter"] = matter.Circuit()
 	for _, g_ := range append(u.Letters(), Super) {
 		g := g_
 		for v_, t := range u.Valves(g) {

@@ -20,17 +20,98 @@ MaterializePage {
 <h1>Materializing</h1>
 
 <ul>
-<li><a href="#reflex">Reflex</a></li>
+<li><a href="#expanding">Expanding circuits</a></li>
+<li><a href="#links">Telescoping links</a></li>
 </ul>
 
 <p><br>
 
 <p>In addition to representing data, Escher circuits can represent executable code.
 
+<p>Escher's syntax is intended to facilitate manual codification of small circuits
+by a human operator. In typical use cases, like for instance the codification of
+datacenter service topologies, the graphs to be described are huge. To facilitate
+building such graphs, Escher provides a mechanism for building out large complex
+graphs modularly and recursively from smaller circuits.
 
-<h2>Reflex</h2>
+<p>This mechanism, called <em>materialization</em>, will also optionally convert
+the nodes of the resulting circuits into running services, called <em>reflexes</em>,
+interconnected according to the circuit design.
 
-<p>
+<h2 id="expanding">Expanding circuits</h2>
+
+<p>Consider the following input circuit:
+
+<pre class="escher">
+Employees {
+	Manager Eric
+	Engineer Petar
+	Project "XData"
+	Manager:Supervises = Engineer:SupervisedBy
+}
+</pre>
+
+<p>Here the gates <code>Engineer</code> and <code>Manager</code> have address values.
+Suppose further that circuits named <code>Eric</code> and <code>Petar</code> are
+defined within an enclosing circuit <code>Memory</code>:
+
+<pre class="escher">
+Memory {
+	Eric {
+		First "Eric"
+		Last "Whyne"
+	}
+	Petar {
+		First "Petar"
+		Last "Maymounkov"
+		Home Brooklyn
+		First:Lives = Home:
+	}
+	Brooklyn {
+		Address "Brooklyn, NY"
+	}
+}
+</pre>
+
+<p>Starting from the input circuit, we would like to expand every address gate value into its
+respective definition from <code>Memory</code>, and do so <em>recursively</em> 
+until no unexpanded addresses are left, to get:
+
+<pre class="escher">
+Employees {
+	Manager {
+		First "Eric"
+		Last "Whyne"
+	}
+	Engineer {
+		First "Petar"
+		Last "Maymounkov"
+		Home {
+			Address "Brooklyn, NY"
+		}
+		First:Lives = Home:
+	}
+	Project "XData"
+	Manager:Supervises = Engineer:SupervisedBy
+}
+</pre>
+
+<p>Note that circuit links are merely copied during expansion.
+
+<p>Escher's Go package <code>"github.com/gocircuit/escher/be"</code> provides
+a function for performing the aforemention expansion:
+
+<pre class="go">
+func Materialize(memory Circuit, design Value) (reflex Reflex, residual Value)
+</pre>
+
+<p>Ignoring the returned value <code>reflex</code> for now,
+the value of <code>residual</code> will equal the expanded circuit.
+It is unlikely that Escher users will call this function directly, as we explain later on.
+
+<h2 id="links">Telescoping links</h2>
+
+<p>In package <code>"github.com/gocircuit/escher/be"</code>
 
         `
 }

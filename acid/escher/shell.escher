@@ -1,4 +1,11 @@
 
+QuickShell {
+	shell escher.StdShell
+	shell:Name = "quick"
+	shell:Out = Ignore
+	shell:In = :
+}
+
 StdShell { // Name, In, Out
 	shell escher.Shell
 	shell:In = :In

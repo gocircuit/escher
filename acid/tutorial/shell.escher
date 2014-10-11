@@ -2,8 +2,5 @@
 //	Run: escher Shell
 //
 Shell {
-	shell escher.StdShell
-	shell:In = escher.Faculties
-	shell:Out = Ignore
-	shell:Name = "tutorial"
+	escher.QuickShell = escher.Faculties
 }

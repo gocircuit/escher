@@ -2,7 +2,7 @@
 //	Run: escher TextMerge
 //
 TextMerge {
-	h header
+	h tutorial.header
 	h:Title = "Hello, world!"
 	show Show
 	show: = h:

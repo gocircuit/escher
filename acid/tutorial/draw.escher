@@ -1,0 +1,15 @@
+
+
+Vertex {
+	m escher.Materialize
+	m:Lookup = escher.Memory
+	m:Design = {
+		a draw.Vertex
+		b draw.Vertex
+		c draw.Vertex
+		a:ab = b:ba
+		b:bc = c:cb
+		c:ca = a:ac
+	}
+	m: = escher.QuickShell
+}

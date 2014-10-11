@@ -20,15 +20,12 @@ Materialize { // .
 
 // Browse the output of materialization in a shell
 MaterializeShell {
-	shell escher.StdShell
-	shell:In = Materialize
-	shell:Out = Ignore
-	shell:Name = "tutorial"
+	escher.QuickShell = tutorial.Materialize
 }
 
 MaterializeDepth {
 	fork Fork
-	fork: = Materialize
+	fork: = tutorial.Materialize
 	fork:Reflex = Ignore
 	fork:Residual = depth:Circuit
 

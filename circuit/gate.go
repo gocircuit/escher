@@ -20,6 +20,14 @@ func (u Circuit) IntOrZeroAt(name Name) int {
 	return i.(int)
 }
 
+func (u Circuit) NameAt(name Name) Name {
+	return u.At(name).(Name)
+}
+
+func (u Circuit) FloatAt(name Name) float64 {
+	return u.At(name).(float64)
+}
+
 func (u Circuit) FloatOrZeroAt(name Name) float64 {
 	f, ok := u.OptionAt(name)
 	if !ok {

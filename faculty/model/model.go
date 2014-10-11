@@ -14,5 +14,6 @@ import (
 
 func init() {
 	faculty.Register("model.IO", be.NewGateMaterializer(IO{}))
+	faculty.Register("model.Reservoir", be.NewGateMaterializer(&Reservoir{}))
 	faculty.Register("model.DepthFirst", be.NewGateMaterializer(DepthFirst{}))
 }

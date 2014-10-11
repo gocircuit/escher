@@ -36,7 +36,7 @@ import (
 // usage: escher [-a dir] [-show] address arguments...
 var (
 	flagShow     = flag.Bool("show", false, "print only")
-	flagSrc        = flag.String("src", ".", "source directory")
+	flagSrc        = flag.String("src", "", "source directory")
 	flagDiscover = flag.String("d", "", "multicast UDP discovery address for gocircuit.org faculty")
 )
 

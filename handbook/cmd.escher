@@ -19,17 +19,29 @@ CommandPage {
         t:Template = `
 <h1>Command-line tool</h1>
 
-<ul>
+<!--ul>
 <li><a href="#reflex">Reflex</a></li>
-</ul>
+</ul -->
 
 <p><br>
 
-<p>XX
-
-<h2>Reflex</h2>
-
 <p>
+
+<ol>
+	<li>Register built-in gates into a single namespace circuit. (Built-in gates are 
+	implemented in <code>github.com/gocircuit/escher/faculty</code>.)
+	<li>Load circuit definitions from a given source directory and its descendants and add them to the 
+	namespace circuit
+	<li>Using the namespace, materialize a chosen <em>main</em> circuit
+	<li>If an error occurs, or no circuit is designated as main, the tool will default to
+	its “recovery” shell
+</ol>
+
+<h3>Usage</h3>
+
+<pre>
+escher [-src SourceDirectory] [-show] [-d CircuitDiscoveryAddr] MainCircuit Arguments*
+</pre>
 
         `
 }

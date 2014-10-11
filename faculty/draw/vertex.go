@@ -25,59 +25,63 @@ type Vertex struct{
 	view Circuit
 	eye *be.Eye
 	sync.Mutex
-	mass map[*Vertex]float64
+	mass map[*Vertex]*mass
+}
+
+type mass struct {
+	Residual float64
+	Stationary float64
 }
 
 func (x *Vertex) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	x.n = float64(len(matter.Super.Design.(Circuit).Gate)) // number of vertices in enclosing circuit
 	x.view = matter.View
 	x.eye = eye
-	x.mass = make(map[*Vertex]float64)
-	x.mass[x] = 1
+	x.mass = make(map[*Vertex]*mass)
+	x.mass[x] = &mass{1, 0}
 	go x.push(x)
 	return nil
 }
 
 const teleport = 0.11
 
-func (x *Vertex) push(vertex *Vertex) {
+func (x *Vertex) pushHere(vertex *Vertex) float64 {
 	x.Lock()
-	amt := x.mass[vertex]
-	if amt <= 1 / (x.n * x.n) { // if error is small enough
-		amt = 0
-	} else {
-		x.mass[vertex] = amt / 2 // lazy random walk
-		amt = amt / 2
+	defer x.Unlock()
+	m := x.mass[vertex]
+	if m.Residual <= 1 / (x.n * x.n) { // if error is small enough, no update necessary
+		return 0
 	}
-	x.Unlock()
+	m.Stationary += teleport * m.Residual
+	m.Residual = (1 - teleport) * m.Residual / 2 // lazy random walk
+	return m.Residual
+}
+
+func (x *Vertex) push(vertex *Vertex) {
+	amt := x.pushHere(vertex)
 	if amt == 0 {
 		return
 	}
+	d := float64(len(x.view.Gate))
 	for nbr, _ := range x.view.Gate {
-		p := (1 - teleport) * amt / float64(len(x.view.Gate))
 		x.eye.Show(
 			nbr, 
 			New().
 				Grow("Vertex", vertex).
-				Grow("Mass", p),
+				Grow("Mass", amt / d),
 		)
 	}
-	vertex.OverCognize(
-		nil, nil, 
-		New().
-			Grow("Vertex", vertex).
-			Grow("Mass", teleport * amt),
-	)
 }
 
 func (x *Vertex) OverCognize(_ *be.Eye, _ Name, val interface{}) {
 	vertex := val.(Circuit).At("Vertex").(*Vertex)
 	x.Lock()
-	u, ok := x.mass[vertex]
+	defer x.Unlock()
+	m, ok := x.mass[vertex]
 	if !ok {
-		u = 0
+		m = &mass{0, 0}
+		x.mass[vertex] = m
 	}
-	x.mass[vertex] = u + val.(Circuit).FloatAt("Mass")
-	x.Unlock()
+	m.Residual += val.(Circuit).FloatAt("Mass")
 	go x.push(vertex)
 }

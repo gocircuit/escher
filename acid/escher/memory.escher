@@ -1,0 +1,6 @@
+
+Memory { // Lookup
+	memorize escher.Memorize
+	memorize:Circuit = escher.Faculties
+	memorize:Lookup = :Lookup
+}

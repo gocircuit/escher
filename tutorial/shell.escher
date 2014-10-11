@@ -3,7 +3,7 @@
 //
 Shell {
 	shell StdShell
-	shell:In = escher.Memory
+	shell:In = escher.Faculties
 	shell:Out = Ignore
 	shell:Name = "tutorial"
 }

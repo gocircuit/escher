@@ -20,7 +20,7 @@ Materialize { // .
 
 // Browse the output of materialization in a shell
 MaterializeShell {
-	shell StdShell
+	shell escher.StdShell
 	shell:In = Materialize
 	shell:Out = Ignore
 	shell:Name = "tutorial"

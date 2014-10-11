@@ -26,7 +26,6 @@ func NewGateMaterializer(sample Gate, aux ...interface{}) MaterializerWithMatter
 
 func materializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circuit.Value) {
 	w := makeGate(v)
-	spark := w.Interface().(Gate).Spark(matter, aux...) // Initialize
 	r := gate{w, w.Type()}
 	// Enumerate the valves handled by dedicated methods.
 	dedicated := make(map[circuit.Name]struct{})
@@ -49,8 +48,8 @@ func materializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circui
 		}
 	}
 	// Not all handled valves need to be connected. But all connected valves need to be handled by a gate method.
-	x, _ := NewEyeCognizer(r.Cognize, valve...)
-	return x, spark
+	reflex, eye := NewEyeCognizer(r.Cognize, valve...)
+	return reflex, w.Interface().(Gate).Spark(eye, matter, aux...)
 }
 
 type gate struct {

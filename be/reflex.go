@@ -27,7 +27,7 @@ type MaterializerWithMatter interface {
 }
 
 type Gate interface {
-	Spark(*Matter, ...interface{}) Value // Initializer
+	Spark(*Eye, *Matter, ...interface{}) Value // Initializer
 }
 
 // Matter describes the circuit context that commissioned the present materialization.

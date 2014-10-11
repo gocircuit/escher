@@ -20,7 +20,7 @@ type Shell struct{
 	view chan Circuit
 }
 
-func (h *Shell) Spark(*be.Matter, ...interface{}) Value {
+func (h *Shell) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	h.view = make(chan Circuit, 1)
 	return &Shell{}
 }

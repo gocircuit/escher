@@ -10,11 +10,14 @@ import (
 	"log"
 
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/kit/memory"
 )
 
-func Materialize(memory Circuit, design Value) (reflex Reflex, residual Value) {
-	b := NewRenderer(memory)
+type Lookup interface {
+	Lookup(Address) Value
+}
+
+func Materialize(lookup Lookup, design Value) (reflex Reflex, residual Value) {
+	b := NewRenderer(lookup)
 	matter := &Matter{
 		Design: design,
 		View: Circuit{},
@@ -25,11 +28,11 @@ func Materialize(memory Circuit, design Value) (reflex Reflex, residual Value) {
 }
 
 type Renderer struct {
-	mem Memory
+	lookup Lookup
 }
 
-func NewRenderer(mem Circuit) *Renderer {
-	return &Renderer{Memory(mem)}
+func NewRenderer(lookup Lookup) *Renderer {
+	return &Renderer{lookup}
 }
 
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
@@ -42,7 +45,7 @@ func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 }
 
 func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
-	val := b.mem.Lookup(addr)
+	val := b.lookup.Lookup(addr)
 	if val == nil {
 		panicf("Address %v is dangling", addr)
 	}

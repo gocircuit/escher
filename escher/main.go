@@ -71,7 +71,7 @@ func main() {
 
 	default:
 		mem := compile(*flagSrc)
-		b := NewRenderer(Circuit(mem))
+		b := NewRenderer(Memory(mem))
 		defer func() {
 			if r := recover(); r != nil {
 				debug.PrintStack()

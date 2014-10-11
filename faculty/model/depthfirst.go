@@ -15,7 +15,7 @@ import (
 
 type DepthFirst struct{}
 
-func (DepthFirst) Spark(*be.Matter, ...interface{}) Value {
+func (DepthFirst) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return DepthFirst{}
 }
 

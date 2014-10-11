@@ -24,7 +24,7 @@ func init() {
 // Clunk…
 type Clunk struct{}
 
-func (Clunk) Spark(*be.Matter, ...interface{}) Value {
+func (Clunk) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return Clunk{}
 }
 

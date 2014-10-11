@@ -16,14 +16,15 @@ import (
 )
 
 func init() {
-	faculty.Register("escher.Memory", Memory)
-	faculty.Register("escher.Materialize", be.NewGateMaterializer(M{}))
+	faculty.Register("escher.Memorize", be.NewGateMaterializer(&Memorize{}))
+	faculty.Register("escher.Faculties", Faculties)
+	faculty.Register("escher.Materialize", be.NewGateMaterializer(&Materialize{}))
 	faculty.Register("escher.Shell", be.NewGateMaterializer(&Shell{}))
 	// faculty.Register("escher.CircuitSourceDir", CircuitSourceDir)
 }
 
-// Memory
-func Memory() (be.Reflex, Value) {
+// Faculties
+func Faculties() (be.Reflex, Value) {
 	return be.MaterializeNoun(Circuit(faculty.Root()))
 }
 

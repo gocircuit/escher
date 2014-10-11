@@ -26,7 +26,7 @@ func init() {
 // IntString
 type IntString struct{}
 
-func (IntString) Spark(*be.Matter, ...interface{}) Value {
+func (IntString) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return IntString{}
 }
 

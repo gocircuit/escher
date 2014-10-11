@@ -26,7 +26,7 @@ type WriteFile struct {
 	named chan struct{}
 }
 
-func (h *WriteFile) Spark(*be.Matter, ...interface{}) Value {
+func (h *WriteFile) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	h.named = make(chan struct{})
 	return &WriteFile{}
 }

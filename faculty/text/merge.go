@@ -26,7 +26,7 @@ func init() {
 // where concatenation takes place in the lexicographic order of the gate names.
 type Merge struct{}
 
-func (Merge) Spark(*be.Matter, ...interface{}) Value {
+func (Merge) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return nil
 }
 

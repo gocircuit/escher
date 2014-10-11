@@ -17,7 +17,7 @@ import (
 // Template …
 type Template struct{}
 
-func (Template) Spark(*be.Matter, ...interface{}) Value {
+func (Template) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return nil
 }
 

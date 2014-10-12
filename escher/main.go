@@ -25,7 +25,7 @@ import (
 	"github.com/gocircuit/escher/faculty/circuit"
 	_os "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/basic"
-	_ "github.com/gocircuit/escher/faculty/draw"
+	// _ "github.com/gocircuit/escher/faculty/exp/draw"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/path"

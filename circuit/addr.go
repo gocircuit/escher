@@ -19,6 +19,16 @@ type Address struct {
 	Path []Name
 }
 
+func (a Address) Append(b Address) Address {
+	c := Address{make([]Name, len(a.Path) + len(b.Path))}
+	n := copy(c.Path, a.Path)
+	m := copy(c.Path[n:], b.Path)
+	if n != len(a.Path) || m != len(b.Path) {
+		panic(0)
+	}
+	return c
+}
+
 func (a Address) Same(r Irreducible) bool {
 	b, ok := r.(Address)
 	if !ok {

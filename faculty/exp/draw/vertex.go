@@ -26,6 +26,7 @@ type Vertex struct{
 	eye *be.Eye
 	sync.Mutex
 	mass map[*Vertex]*mass
+	done bool
 }
 
 type mass struct {
@@ -45,11 +46,30 @@ func (x *Vertex) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value
 
 const teleport = 0.11
 
+func (x *Vertex) term() {
+	if x.done {
+		return
+	}
+	eps := 1 / (x.n * x.n)
+	for _, m := range x.mass {
+		if m.Residual > eps {
+			return
+		}
+	}
+	x.done = true
+	fmt.Printf("%v -> ", )
+}
+
 func (x *Vertex) pushHere(vertex *Vertex) float64 {
 	x.Lock()
 	defer x.Unlock()
 	m := x.mass[vertex]
 	if m.Residual <= 1 / (x.n * x.n) { // if error is small enough, no update necessary
+		return 0
+	}
+	if len(x.view.Gate) == 0 { // no neighbors
+		m.Stationary += m.Residual
+		m.Residual = 0
 		return 0
 	}
 	m.Stationary += teleport * m.Residual

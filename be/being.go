@@ -45,7 +45,21 @@ func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 }
 
 func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
-	val := b.lookup.Lookup(addr)
+	// looking up locally first: starting from enclosing circuit's parent (a directory circuit)
+	var val Value
+	if matter != nil && matter.Super != nil {
+		enclosing := matter.Super.Address
+		abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
+		abs = abs.Append(addr)
+		val = b.lookup.Lookup(abs)
+		if val != nil {
+			addr = abs
+		}
+	}
+	// lookup from root, if local lookup not resolved
+	if val == nil {
+		val = b.lookup.Lookup(addr)
+	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)
 	}

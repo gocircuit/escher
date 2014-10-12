@@ -20,8 +20,13 @@ func (m Memory) Print(prefix, indent string) string {
 	return "(Memory)"
 }
 
-func (m Memory) Lookup(addr Address) Value {
-	var v interface{} = Circuit(m)
+func (m Memory) Lookup(addr Address) (v Value) {
+	defer func() {
+		if r := recover(); r != nil {
+			v = nil
+		}
+	}()
+	v = Circuit(m)
 	for _, name := range addr.Path {
 		v = v.(Circuit).At(name)
 	}

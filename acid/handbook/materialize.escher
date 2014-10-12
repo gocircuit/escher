@@ -98,20 +98,15 @@ Employees {
 
 <p>Note that circuit links are merely copied during expansion.
 
-<p>Escher's Go package <code>"github.com/gocircuit/escher/be"</code> provides
-a function for performing the aforemention expansion:
-
-<pre class="go">
-func Materialize(memory Circuit, design Value) (reflex Reflex, residual Value)
-</pre>
-
-<p>Ignoring the returned value <code>reflex</code> for now,
-the value of <code>residual</code> will equal the expanded circuit.
-It is unlikely that Escher users will call this function directly, as we explain later on.
-
 <h2 id="links">Telescoping links</h2>
 
-<p>In package <code>"github.com/gocircuit/escher/be"</code>
+<p>We would like to use the mechanism of expanding circuits to build
+large circuits from smaller ones. Roughly speaking, after expanding
+a circuit program recursively, we want to flatten the resulting deep
+circuit to get a depth-1 circuit that respects all gate and link structure of the
+expanded design.
+
+<p>
 
         `
 }

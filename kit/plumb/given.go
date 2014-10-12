@@ -26,6 +26,17 @@ func (a *Given) Fix(v interface{}) {
 	a.cycle <- v
 }
 
+func (a *Given) Flush() {
+	for {
+		select {
+		case <-a.cycle:
+			continue
+		default:
+		}
+		break
+	}
+}
+
 func (a *Given) Use() interface{} {
 	v := <-a.cycle
 	for { // drain the cycle until the latest value is gotten

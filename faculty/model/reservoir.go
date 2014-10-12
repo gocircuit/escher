@@ -17,13 +17,29 @@ import (
 // TODO: Add test
 
 /*
-	Reservoir is a gate with valves: Ground, Gate, Lookup and the empty-string.
+	Reservoir has valves Ground, Change, Lookup and the empty-string.
 
-	Reservoir accepts path-value pairs on valve Gate, of the form
-	{
-		Path { "a", "b", "c" }
-		Value 3.14
-	}
+	Reservoir receives a ground circuit on valve Ground as a prerequisite.
+	Valve Lookup must be connected to a lookup server, like escher.Memory.
+
+	Reservoir accepts a stream of updates on valve Change and applies them
+	to the ground circuit. After a “flush” update, the ground circuit is sent out
+	the default valve.
+
+	Updates are of the form:
+
+		{
+			Op "Gate"			// Indicates gate update
+			Path { "a", "b", "c" }	// Path to gate in expanded circuit
+			Value 3.14			// Value of gate
+		}
+
+	Or,
+
+		{
+			Op "Flush"
+		}
+
 */
 type Reservoir struct {
 	ground plumb.Given
@@ -41,11 +57,27 @@ func (rsv *Reservoir) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 }
 
 func (rsv *Reservoir) CognizeGround(eye *be.Eye, v interface{}) {
-	rsv.ground.Fix(v)
+	rsv.ground.Fix(v.(Circuit).Clone())
 }
 
-// { Path { "a", "b", "c"}; Value * }
-func (rsv *Reservoir) CognizeGate(eye *be.Eye, v interface{}) {
+func (rsv *Reservoir) CognizeChange(eye *be.Eye, v interface{}) {
+	switch v.(Circuit).StringAt("Op") {
+	case "Flush":
+		rsv.cognizeFlushChange(eye, v)
+	case "Gate":
+		rsv.cognizeGateChange(eye, v)
+	default:
+		panic(1)
+	}
+}
+
+func (rsv *Reservoir) cognizeFlushChange(eye *be.Eye, v interface{}) {
+	ground := rsv.ground.Use().(Circuit)
+	rsv.ground.Flush()
+	eye.Show(DefaultValve, ground)
+}
+
+func (rsv *Reservoir) cognizeGateChange(eye *be.Eye, v interface{}) {
 	p := v.(Circuit).CircuitAt("Path")
 	ground := rsv.ground.Use().(Circuit)
 	view := ground
@@ -62,7 +94,6 @@ func (rsv *Reservoir) CognizeGate(eye *be.Eye, v interface{}) {
 		}
 	}
 	view.Include(p.Gate[numbers[len(numbers)-1]], v.(Circuit).At("Value"))
-	eye.Show(DefaultValve, ground)
 }
 
 func (rsv *Reservoir) CognizeLookup(eye *be.Eye, v interface{}) {

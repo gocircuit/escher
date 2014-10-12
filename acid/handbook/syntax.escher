@@ -70,7 +70,7 @@ gate names and links and excludes the gate values—the <em>external</em> struct
 White ovals—contained inside the black one and mutually non-overlapping—denote gates.
 
 <p>Links are depicted as white lines that connect the outlines of gate ovals.
-Link endpoints connecting to the <a href="links">super gate</a> are attached to 
+Link endpoints connecting to the <a href="#links">super gate</a> are attached to 
 the outline of the surrounding black oval. 
 
 <p>Valve names are written in white within the black oval, next to their 
@@ -156,7 +156,7 @@ Note that parsing errors result in panics.
 <h2 id="grammar">Grammar</h2>
 
 <p>A <em>definition</em> starts with a circuit name followed by a circuit description
-inside brackets. The name is an identifier, beginning with a non-digit.
+inside brackets. The name is an alpha-numeric identifier.
 For instance,
 
 <pre class="escher">

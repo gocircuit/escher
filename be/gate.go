@@ -20,11 +20,11 @@ const cognizeEllipses = "OverCognize"
 // NewGateMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
 func NewGateMaterializer(sample Gate, aux ...interface{}) MaterializerWithMatterFunc {
 	return func(matter *Matter) (Reflex, circuit.Value) {
-		return materializeGate(matter, sample, aux...)
+		return MaterializeGate(matter, sample, aux...)
 	}
 }
 
-func materializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circuit.Value) {
+func MaterializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circuit.Value) {
 	w := makeGate(v)
 	r := gate{w, w.Type()}
 	// Enumerate the valves handled by dedicated methods.

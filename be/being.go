@@ -75,7 +75,7 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 		return b.materializeAddress(matter, t)
 	// Irreducible types are materialized as gates that emit the irreducible values
 	case int, float64, complex128, string:
-		return MaterializeNoun(t)
+		return MaterializeNoun(matter, t)
 	// Go-gates are materialized into runtime reflexes
 	case func() (Reflex, Value):
 		return t()
@@ -93,7 +93,7 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 		if recurse {
 			return b.MaterializeCircuit(matter, t)
 		}
-		return MaterializeNoun(t)
+		return MaterializeNoun(matter, t)
 	case nil:
 		panic("report error")
 	default:

@@ -24,11 +24,11 @@ func init() {
 }
 
 // Faculties
-func Faculties() (be.Reflex, Value) {
-	return be.MaterializeNoun(Circuit(faculty.Root()))
+func Faculties(matter *be.Matter) (be.Reflex, Value) {
+	return be.MaterializeNoun(matter, Circuit(faculty.Root()))
 }
 
 // CircuitSourceDir
 func CircuitSourceDir(matter *be.Matter) (be.Reflex, Value) {
-	return be.MaterializeNoun(matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).CircuitAt(0).StringAt("Dir"))
+	return be.MaterializeNoun(matter, matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).CircuitAt(0).StringAt("Dir"))
 }

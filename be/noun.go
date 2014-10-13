@@ -21,18 +21,24 @@ func (Ignore) Materialize(*Matter) (Reflex, Value) {
 	return Reflex{DefaultValve: t}, nil
 }
 
-func DontCognize(interface{}) {}
+func MaterializeNoun(matter *Matter, v interface{}) (Reflex, Value) {
+	return MaterializeGate(matter, Noun{}, v)
+}
 
-func MaterializeNoun(v interface{}) (Reflex, Value) {
-	s, t := NewSynapse()
+func NewNoun(v interface{}) MaterializerWithMatterFunc {
+	return NewGateMaterializer(Noun{}, v)
+}
+
+// Noun
+type Noun struct{}
+
+func (n Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 	go func() {
-		s.Focus(DontCognize).ReCognize(v)
+		for vlv, _ := range matter.View.Gate {
+			eye.Show(vlv, aux[0])
+		}
 	}()
-	return Reflex{DefaultValve: t}, nil
+	return nil
 }
 
-func NewNoun(v interface{}) MaterializerFunc {
-	return func() (Reflex, Value) {
-		return MaterializeNoun(v)
-	}
-}
+func (n Noun) OverCognize(*Eye, Name, interface{}) {}

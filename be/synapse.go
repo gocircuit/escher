@@ -16,6 +16,9 @@ import (
 // Cognize routines are called when a change in value is to be delivered to a reflex.
 type Cognize func(value interface{})
 
+// Nop cognizer for the synapse interface
+func DontCognize(interface{}) {}
+
 // Synapse is the “wire” connecting two reflexes.
 // It remembers the last value transmitted in order to stop propagation of same-value messages.
 type Synapse struct {

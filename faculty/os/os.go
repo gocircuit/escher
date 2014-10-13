@@ -17,7 +17,7 @@ import (
 )
 
 func Init(sourceDir string, arg []string) {
-	faculty.Register("os.Arg", Arg{argCircuit(arg)})
+	faculty.Register("os.Arg", be.NewNoun(argCircuit(arg)))
 	faculty.Register("os.SourceDir", be.NewNoun(sourceDir))
 	faculty.Register("os.Env", Env{})
 	faculty.Register("os.Exit", Exit{})
@@ -28,15 +28,6 @@ func Init(sourceDir string, arg []string) {
 	//
 	faculty.Register("os.LookPath", LookPath{})
 	faculty.Register("os.Process", Process{})
-}
-
-// Arg
-type Arg struct {
-	arg Circuit
-}
-
-func (a Arg) Materialize() (be.Reflex, Value) {
-	return be.MaterializeNoun(a.arg)
 }
 
 func argCircuit(arg []string) Circuit {

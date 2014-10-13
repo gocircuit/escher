@@ -13,18 +13,50 @@ MaterializePage {
 	h:Body = t:
 
 	f Fork
-	f:ImgScanPrint = fig:
+	f:ImgScanPrint = fig1:
+	f:ImgTelescope1 = fig2:
 
-	fig FigurePngSvgRight
-	fig:Image = "scanprint"
-	fig:Width = "400px"
-	fig:Caption = `*`
-	fig:Right = `
+	fig1 FigurePngSvgRight
+	fig1:Image = "scanprint"
+	fig1:Width = "400px"
+	fig1:Caption = `*`
+	fig1:Right = `
 	<pre class="escher">
 	main {
 		scanln os.Scanln
 		println os.Println
 		scanln:Read = println:Write
+	}
+	</pre>
+	`
+
+	fig2 FigurePngSvgRight
+	fig2:Image = "telescope"
+	fig2:Width = "500px"
+	fig2:Caption = `*`
+	fig2:Right = `
+	<pre class="escher">
+	Database {
+		cache Cache
+		left Shard
+		right Shard
+		link Link
+		cache:Web = :Web
+		left:Cache = cache:Left
+		right:Cache = cache:Right
+		left:Backup = link:Left
+		right:Backup = link:Right
+		link: = :Backup
+	}
+	App {
+		web Web
+		left Database
+		right Database
+		backup Backup
+		left:Web = web:Left
+		right:Web = web:Right
+		left:Backup = backup:Left
+		right:Backup = backup:Right
 	}
 	</pre>
 	`
@@ -141,6 +173,8 @@ Consider the following abstract circuit:
 {{.Gate.ImgScanPrint}}
 
 <h2 id="links">Telescoping links</h2>
+
+{{.Gate.ImgTelescope1}}
 
 <p>We would like to use the mechanism of expanding circuits to build
 large circuits from smaller ones. Roughly speaking, after expanding

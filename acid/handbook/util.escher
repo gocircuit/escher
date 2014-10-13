@@ -1,10 +1,40 @@
 
-FigurePngSvg { // Caption, Image
+FigurePngSvgRight { // Caption, Image, Width, Right and default
+	fig Figure
+	fig:Caption = :Caption
+	fig:Body = lr:
+	fig: = :
+
+	lr LeftRight
+	lr:Right = :Right
+	lr:Left = ps:
+
+	ps PngSvg
+	ps:Name = :Image
+	ps:Width = :Width
+}
+
+LeftRight { // Left, Right and default valves
+	t Template
+	t:Data = f:
+	f Fork
+	f:Left = :Left
+	f:Right = :Right
+	t:Template = `
+	<table>
+	<tr><td>{{.Gate.Left}}</td><td>{{.Gate.Right}}</td></tr>
+	</table>
+	`
+	t: = :
+}
+
+FigurePngSvg { // Caption, Image, Width and default
 	fig Figure
 	fig:Caption = :Caption
 
 	ps PngSvg	
 	ps:Name = :Image
+	ps:Width = :Width
 	fig:Body = ps:
 
 	fig: = :
@@ -37,13 +67,14 @@ TestFigure {
 
 PngSvg { // Name and default valves
 	t Template
-	t:Template = `<object data="img/{{.}}.svg" type="image/svg+xml" width="500px">
+	t:Template = `<object data="img/{{.Gate.Name}}.svg" type="image/svg+xml" width="{{.Gate.Width}}">
 		<img src="img/{{.Gate.Name}}.png" alt="" />
 	</object>`
 	t:Data = f:
 
 	f Fork
 	f:Name = :Name
+	f:Width = :Width
 
 	t: = :
 }
@@ -51,6 +82,7 @@ PngSvg { // Name and default valves
 TestPngSvg {
 	ps PngSvg
 	ps:Name = "NAME"
+	ps:Width = "300px"
 	ps: = Show
 }
 

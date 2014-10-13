@@ -8,40 +8,62 @@ package be
 
 import (
 	// "fmt"
+	"log"
+	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// TODO: Rewrite union to not use a permanent goroutine
+func MaterializeUnion(matter *Matter) (Reflex, Value) {
+	return MaterializeGate(matter, &Union{})
+}
 
-func MaterializeUnion(field ...Name) (Reflex, Value) {
-	reflex, eye := NewEye(append(field, DefaultValve)...) // add the default valve
-	go func() {
-		conj := New()
-		for {
-			dvalve, dvalue := eye.See()
-			if dvalve == DefaultValve { // conjunction updated
-				y := make(chan struct{}) // block and
-				for _, f_ := range field { // send updated conjunction to all field valves
-					f := f_
-					go func() {
-						eye.Show(f, dvalue.(Circuit).At(f))
-						y <- struct{}{}
-					}()
-				}
-				for _ = range field {
-					<-y
-				}
-			} else { // field updated
-				conj.Abandon(dvalve).Grow(dvalve, dvalue)
-				if conj.Len() == len(field) {
-					eye.Show(DefaultValve, conj)
-				}
-			}
+type Union struct {
+	field []Name
+	sync.Mutex
+	union Circuit
+}
+
+func (u *Union) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+	var defaultConnected bool
+	for vlv, _ := range matter.View.Gate {
+		if vlv == DefaultValve {
+			defaultConnected = true
+		} else {
+			u.field = append(u.field, vlv)
 		}
-	}()
-	return reflex, 
-		func() (Reflex, Value) {
-			return MaterializeUnion(field...)
-		}
+	}
+	if !defaultConnected || len(u.field) == 0 {
+		log.Fatalf("Fork gate's default valve not linked or has no partition valves. In:\n%v\n", matter.Super.Design.(Circuit))
+	}
+	//
+	u.union = New()
+	return nil
+}
+
+func (u *Union) Cognize(eye *Eye, value interface{}) {
+	y := make(chan struct{}) // block and
+	for f_, _ := range u.field { // send updated conjunction to all field valves
+		f := f_
+		go func() {
+			eye.Show(f, value.(Circuit).At(f))
+			y <- struct{}{}
+		}()
+	}
+	for _ = range u.field {
+		<-y
+	}
+}
+
+func (u *Union) OverCognize(eye *Eye, valve Name, value interface{}) {
+	u.Lock()
+	defer u.Unlock()
+	if valve == DefaultValve {
+		panic(1)
+	}
+	u.union.Include(valve, value)
+	if u.union.Len() == len(u.field) {
+		w := u.union.Clone()
+		eye.Show(DefaultValve, w)
+	}
 }

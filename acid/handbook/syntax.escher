@@ -18,6 +18,7 @@ SyntaxPage {
 
 	fig FigurePngSvg
 	fig:Image = "NAND"
+	fig:Width = "500px"
 	fig:Caption = `
 		In this illustration, the depicted circuit has three valves at the super gate,
 		labeled as “X”, “Y” and “” (the empty string). 

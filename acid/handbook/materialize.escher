@@ -15,9 +15,19 @@ MaterializePage {
 	f Fork
 	f:ImgScanPrint = fig:
 
-	fig FigurePngSvg
+	fig FigurePngSvgRight
 	fig:Image = "scanprint"
+	fig:Width = "400px"
 	fig:Caption = `*`
+	fig:Right = `
+	<pre class="escher">
+	main {
+		scanln os.Scanln
+		println os.Println
+		scanln:Read = println:Write
+	}
+	</pre>
+	`
 
 	t Template
 	t:Data = f:
@@ -90,7 +100,9 @@ Memory {
 using the circuit <code>Memory</code> for lookup, is the process of
 substituting every address gate value with the
 respective value found in <code>Memory</code> at this address.
-In our case, the result would be:
+The result is called the <em>residue</em>.
+
+<p>In our case, the residue would be:
 
 <pre class="escher">
 Employees {
@@ -120,7 +132,11 @@ is not expanded, since <code>Project</code> is not the circuit being expanded—
 
 <h2 id="links">Reflexes</h2>
 
-<p>
+<p>We would like to use circuits not merely to represent abstract data, but also
+to help us connect and execute complex pipelines of independent processing units.
+
+<p>We piggy-back the circuit expansion mechanism for this purpose.
+Consider the following abstract circuit:
 
 {{.Gate.ImgScanPrint}}
 

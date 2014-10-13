@@ -1,6 +1,61 @@
 
-// ForkTemplate
-ForkTemplate {
+FigurePngSvg { // Caption, Image
+	fig Figure
+	fig:Caption = :Caption
+
+	ps PngSvg	
+	ps:Name = :Image
+	fig:Body = ps:
+
+	fig: = :
+}
+
+Figure { // Body, Caption and default valves
+	t Template
+	t:Template = `
+	<p><center>
+	<figure class="shadowless">
+		{{.Gate.Body}}
+		<div><em>{{.Gate.Caption}}</em></div>
+	</figure>
+	</center></p>
+	`
+	fork Fork
+	fork:Body = :Body
+	fork:Caption = :Caption
+	t:Data = fork:
+
+	t: = :
+}
+
+TestFigure {
+	fig Figure
+	fig:Body = "body"
+	fig:Caption = "caption"
+	fig: = Show
+}
+
+PngSvg { // Name and default valves
+	t Template
+	t:Template = `<object data="img/{{.}}.svg" type="image/svg+xml" width="500px">
+		<img src="img/{{.Gate.Name}}.png" alt="" />
+	</object>`
+	t:Data = f:
+
+	f Fork
+	f:Name = :Name
+
+	t: = :
+}
+
+TestPngSvg {
+	ps PngSvg
+	ps:Name = "NAME"
+	ps: = Show
+}
+
+// Template has valves ForkTemplate, Data and the default.
+Template {
 	fork Fork
 	fork:Template = :Template
 	fork:Data = :Data

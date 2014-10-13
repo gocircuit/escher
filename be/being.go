@@ -47,7 +47,6 @@ func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
 	// looking up locally first: starting from enclosing circuit's parent (a directory circuit)
 	var val Value
-	log.Printf("materializing: %v", addr)
 	if matter != nil && matter.Super != nil {
 		enclosing := matter.Super.Address
 		if len(enclosing.Path) > 0 {

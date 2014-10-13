@@ -7,16 +7,25 @@ BuildSyntaxPage {
 }
 
 SyntaxPage {
-        h Html
-        h: = :
-        h:Title = "Escher syntax"
-        h:Body = t:
+	h Html
+	h: = :
+	h:Title = "Escher syntax"
+	h:Body = t:
 
-        t ForkTemplate
-        t:Data = {
-		Backquoted "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
-        }
-        t:Template = `
+	f Fork
+	f:Backquoted = "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
+	f:ImgNand = fig:
+
+	fig FigurePngSvg
+	fig:Image = "NAND"
+	fig:Caption = `
+		In this illustration, the depicted circuit has three valves at the super gate,
+		labeled as “X”, “Y” and “” (the empty string). 
+		The <a href="#links">source for this circuit</a> is given in a later section below.`
+
+	t Template
+	t:Data = f:
+	t:Template = `
 <h1>Syntax and meaning</h1>
 
 <ul>
@@ -83,18 +92,7 @@ we just write it out in black text in the center of the oval. If that value is a
 the symbolism for that circuit within the white oval recursively, but this time we switch
 white and black colors everywhere.
 
-<p><center>
-<figure class="shadowless">
-	<object data="img/NAND.svg" type="image/svg+xml" width="500px">
-		<img src="img/NAND.png" alt="" />
-	</object>
-	<div>
-	<em>In this illustration, the depicted circuit has three valves at the super gate,
-	labeled as “X”, “Y” and “” (the empty string). 
-	The <a href="#links">source for this circuit</a> is given in a later section below.</em>
-	</div>
-</figure>
-</center></p>
+{{.Gate.ImgNand}}
 
 <h2 id="runtime">Go interface</h2>
 

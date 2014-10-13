@@ -7,16 +7,21 @@ BuildMaterializePage {
 }
 
 MaterializePage {
-        h Html
-        h: = :
-        h:Title = "Materializing circuits into reflexes"
-        h:Body = t:
+	h Html
+	h: = :
+	h:Title = "Materializing circuits into reflexes"
+	h:Body = t:
 
-        t ForkTemplate
-        t:Data = {
-		Backquoted ""
-        }
-        t:Template = `
+	f Fork
+	f:ImgScanPrint = fig:
+
+	fig FigurePngSvg
+	fig:Image = "scanprint"
+	fig:Caption = `*`
+
+	t Template
+	t:Data = f:
+	t:Template = `
 <h1>Materializing</h1>
 
 <ul>
@@ -28,40 +33,46 @@ MaterializePage {
 
 <p><br>
 
-<p>In addition to representing data, Escher circuits can represent executable code.
-
 <p>Escher's syntax is intended to facilitate manual codification of small circuits
 by a human operator. In typical use cases, like for instance the codification of
 datacenter service topologies, the graphs to be described are huge. To facilitate
 building such graphs, Escher provides a mechanism for building out large complex
 graphs modularly and recursively from smaller circuits.
 
-<p>This mechanism, called <em>materialization</em>, will also optionally convert
-the nodes of the resulting circuits into running services, called <em>reflexes</em>,
-interconnected according to the circuit design.
-
 <h2 id="expanding">Expanding circuits</h2>
+
+<blockquote>
+Expanding a source circuit is the process of substituting each address-valued gate
+with a value found at the corresponding address within a <em>memory</em>, which is
+a hierarchical namespace of values.
+</blockquote>
 
 <p>Consider the following input circuit:
 
 <pre class="escher">
 Employees {
-	Manager Eric
+	Manager gov.Eric
 	Engineer Petar
-	Project "XData"
+	Project {
+		Name "XData"
+		Location Arlington
+	}
 	Manager:Supervises = Engineer:SupervisedBy
 }
 </pre>
 
-<p>Here the gates <code>Engineer</code> and <code>Manager</code> have address values.
+<p>Here the gates <code>Engineer</code> and <code>Manager</code> have address values 
+(<code>Petar</code> and <code>gov.Eric</code>, respectively).
 Suppose further that circuits named <code>Eric</code> and <code>Petar</code> are
-defined within an enclosing circuit <code>Memory</code>:
+defined within an enclosing circuit <code>Memory</code> like so:
 
 <pre class="escher">
 Memory {
-	Eric {
-		First "Eric"
-		Last "Whyne"
+	gov {
+		Eric {
+			First "Eric"
+			Last "Whyne"
+		}
 	}
 	Petar {
 		First "Petar"
@@ -75,9 +86,11 @@ Memory {
 }
 </pre>
 
-<p>Starting from the input circuit, we would like to expand every address gate value into its
-respective definition from <code>Memory</code>, and do so <em>recursively</em> 
-until no unexpanded addresses are left, to get:
+<p><em>Expanding</em> the circuit <code>Employees</code>,
+using the circuit <code>Memory</code> for lookup, is the process of
+substituting every address gate value with the
+respective value found in <code>Memory</code> at this address.
+In our case, the result would be:
 
 <pre class="escher">
 Employees {
@@ -93,16 +106,23 @@ Employees {
 		}
 		First:Lives = Home:
 	}
-	Project "XData"
+	Project {
+		Name "XData"
+		Location Arlington
+	}
 	Manager:Supervises = Engineer:SupervisedBy
 }
 </pre>
 
-<p>Note that circuit links are merely copied during expansion.
+<p>Note that circuit links are also copied during expansion. Also note that
+the address-valued gate <code>Location</code> in circuit <code>Project</code>
+is not expanded, since <code>Project</code> is not the circuit being expanded—<code>Employees</code> is.
 
 <h2 id="links">Reflexes</h2>
 
 <p>
+
+{{.Gate.ImgScanPrint}}
 
 <h2 id="links">Telescoping links</h2>
 

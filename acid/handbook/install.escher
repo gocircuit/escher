@@ -12,7 +12,7 @@ InstallPage {
         h:Title = "Building and installing Escher"
         h:Body = t:
 
-        t ForkTemplate
+        t Template
         t:Data = {}
         t:Template = `
 <h1>Bulding and installing Escher</h1>

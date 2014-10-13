@@ -12,7 +12,7 @@ CommandPage {
         h:Title = "Command-line tool"
         h:Body = t:
 
-        t ForkTemplate
+        t Template
         t:Data = {
 		Backquoted ""
         }

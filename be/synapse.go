@@ -50,6 +50,7 @@ func (m *Synapse) String() string {
 
 func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
 	m.teach <- cognize
+	close(m.teach)
 	q := <-m.learn
 	m.Lock()
 	defer m.Unlock()

@@ -21,7 +21,9 @@ MaterializePage {
 
 <ul>
 <li><a href="#expanding">Expanding circuits</a></li>
+<li><a href="#reflexes">Reflexes</a></li>
 <li><a href="#links">Telescoping links</a></li>
+<li><a href="#m">Materializing</a></li>
 </ul>
 
 <p><br>
@@ -98,6 +100,10 @@ Employees {
 
 <p>Note that circuit links are merely copied during expansion.
 
+<h2 id="links">Reflexes</h2>
+
+<p>
+
 <h2 id="links">Telescoping links</h2>
 
 <p>We would like to use the mechanism of expanding circuits to build
@@ -105,6 +111,10 @@ large circuits from smaller ones. Roughly speaking, after expanding
 a circuit program recursively, we want to flatten the resulting deep
 circuit to get a depth-1 circuit that respects all gate and link structure of the
 expanded design.
+
+<p>
+
+<h2 id="m">Materializing</h2>
 
 <p>
 

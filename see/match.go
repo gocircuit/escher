@@ -7,7 +7,7 @@
 package see
 
 import (
-	"fmt"
+	// "fmt"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -32,9 +32,9 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 		return nil, nil
 	}
 	if g != nil {
-		sugar := fmt.Sprintf("#%d", nsugar)
-		carry[0] = &Carry{sugar, g}
-		x[0] = Vector{sugar, DefaultValve}
+		carry[0] = &Carry{nsugar, g}
+		x[0] = Vector{nsugar, DefaultValve}
+		nsugar++
 	} else {
 		x[0] = Vector{p, v}
 	}
@@ -48,9 +48,9 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 		return nil, nil
 	}
 	if g != nil {
-		sugar := fmt.Sprintf("#%d", nsugar+1)
-		carry[1] = &Carry{sugar, g}
-		x[1] = Vector{sugar, DefaultValve}
+		carry[1] = &Carry{nsugar, g}
+		x[1] = Vector{nsugar, DefaultValve}
+		nsugar++
 	} else {
 		x[1] = Vector{p, v}
 	}

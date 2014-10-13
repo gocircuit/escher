@@ -22,22 +22,22 @@ func SeeCircuit(src *Src) (u Circuit) {
 	t := src.Copy()
 	t.Match("{")
 	Space(t)
-	var i, j int
+	var j int
 	for {
 		q := t.Copy()
 		Space(q)
 		if pn, pm := SeePeer(q); pn != nil { // parse peer
-			if _, ok := pn.(Nameless); ok { // if peer is nameless, this is a slice element
+			if _, ok := pn.(Nameless); ok { // if peer is nameless, give it the next numeric index
 				u.Include(j, pm)
 				j++
 			} else {
 				u.Include(pn, pm) // record the order of definition in the same namespace but with number keys
 			}
-		} else if x, carry := SeeLink(q, 2*i); x != nil { // parse matching
-			i++
+		} else if x, carry := SeeLink(q, j); x != nil { // parse matching
 			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
 					u.Include(c.Name, c.Value)
+					j++ // one numeric gate index is used in each carry
 				}
 			}
 			u.Link(x[0], x[1])

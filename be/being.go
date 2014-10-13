@@ -105,7 +105,7 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
 	value := New()
 	gates := make(map[Name]Reflex)
-	for _, g := range u.Letters() {
+	for g, _ := range u.Gate {
 		if g == Super {
 			log.Fatalf("Circuit design overwrites the %s gate. In:\n%v\n", Super, u)
 		}
@@ -129,7 +129,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		super[v], gates[Super][v] = NewSynapse()
 	}
 	// value.Gate[Genus] = matter.Circuit()
-	for _, g_ := range append(u.Letters(), Super) {
+	for _, g_ := range append(u.Names(), Super) {
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
@@ -137,7 +137,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			value.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
 			go Link(gates[g][v], gates[t.Gate][t.Valve])
 			// go func() {
-			// 	log.Printf("%s:%s -> %s:%s | %v %v", g, v, t.Gate, t.Valve, gates[g][v], gates[t.Gate][t.Valve])
+			//	log.Printf("%v:%v -> %v:%v | %v %v", g, v, t.Gate, t.Valve, gates[g][v], gates[t.Gate][t.Valve])
 			// 	Link(gates[g][v], gates[t.Gate][t.Valve])
 			// }()
 		}

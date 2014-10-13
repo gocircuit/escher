@@ -16,92 +16,37 @@ import (
 )
 
 func init() {
-	faculty.Register("draw.Vertex", be.NewGateMaterializer(&Vertex{}))
+	faculty.Register("draw.Circuit", be.NewGateMaterializer(&Circuit{}))
 }
 
-// Vertex…
-type Vertex struct{
-	n float64
-	view Circuit
-	eye *be.Eye
-	sync.Mutex
-	mass map[*Vertex]*mass
-	done bool
-}
+// Circuit…
+type Circuit struct{}
 
-type mass struct {
-	Residual float64
-	Stationary float64
-}
-
-func (x *Vertex) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	x.n = float64(len(matter.Super.Design.(Circuit).Gate)) // number of vertices in enclosing circuit
-	x.view = matter.View
-	x.eye = eye
-	x.mass = make(map[*Vertex]*mass)
-	x.mass[x] = &mass{1, 0}
-	go x.push(x)
+func (x *Circuit) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	return nil
 }
 
-const teleport = 0.11
-
-func (x *Vertex) term() {
-	if x.done {
-		return
-	}
-	eps := 1 / (x.n * x.n)
-	for _, m := range x.mass {
-		if m.Residual > eps {
-			return
-		}
-	}
-	x.done = true
-	fmt.Printf("%v -> ", )
-}
-
-func (x *Vertex) pushHere(vertex *Vertex) float64 {
-	x.Lock()
-	defer x.Unlock()
-	m := x.mass[vertex]
-	if m.Residual <= 1 / (x.n * x.n) { // if error is small enough, no update necessary
-		return 0
-	}
-	if len(x.view.Gate) == 0 { // no neighbors
-		m.Stationary += m.Residual
-		m.Residual = 0
-		return 0
-	}
-	m.Stationary += teleport * m.Residual
-	m.Residual = (1 - teleport) * m.Residual / 2 // lazy random walk
-	return m.Residual
-}
-
-func (x *Vertex) push(vertex *Vertex) {
-	amt := x.pushHere(vertex)
-	if amt == 0 {
-		return
-	}
-	d := float64(len(x.view.Gate))
-	for nbr, _ := range x.view.Gate {
-		x.eye.Show(
-			nbr, 
-			New().
-				Grow("Vertex", vertex).
-				Grow("Mass", amt / d),
+func (x *Circuit) CognizeCircuit(_ *be.Eye, _ Name, val interface{}) {
+	v := val.(Circuit)
+	r := New()
+	// colors
+	var color = []string{"white", "black"}
+	// add circles for gates
+	var i int
+	for _, name := range v.SortedLetters() {
+		r.Grow(i, New().
+			Grow("cx", ?).
+			Grow("cy", ?).
+			Grow("r", ?).
+			Grow("fill", ?).
 		)
+		i++
 	}
+	for _, name := range v.SortedLetters() {
+		??
+	}
+
+	eye.Show(DefaultValve, r)
 }
 
-func (x *Vertex) OverCognize(_ *be.Eye, _ Name, val interface{}) {
-	vertex := val.(Circuit).At("Vertex").(*Vertex)
-	x.Lock()
-	defer x.Unlock()
-	m, ok := x.mass[vertex]
-	if !ok {
-		m = &mass{0, 0}
-		x.mass[vertex] = m
-	}
-	m.Residual += val.(Circuit).FloatAt("Mass")
-	go x.push(vertex)
-}
+func (x *Circuit) Cognize(_ *be.Eye, _ Name, val interface{}) {}

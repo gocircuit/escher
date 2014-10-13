@@ -66,6 +66,14 @@ func (u Circuit) Numbers() []int {
 	return l
 }
 
+func (u Circuit) Names() []Name {
+	var r []Name
+	for n, _ := range u.Gate {
+		r = append(r, n)
+	}
+	return r
+}
+
 func (u Circuit) Gates() map[Name]Value {
 	return u.Gate
 }

@@ -38,7 +38,7 @@ func (n Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 			eye.Show(vlv, aux[0])
 		}
 	}()
-	return nil
+	return aux[0]
 }
 
 func (n Noun) OverCognize(*Eye, Name, interface{}) {}

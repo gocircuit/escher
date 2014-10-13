@@ -20,16 +20,21 @@ type Memorize struct {
 	back plumb.Given
 }
 
-func (m *Memorize) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (m *Memorize) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	m.back.Init()
-	return &Memorize{}
+	go func() {
+		eye.Show("Lookup", m)
+	}()
+	return nil
 }
 
 // Circuit: { * }
 func (m *Memorize) CognizeCircuit(eye *be.Eye, v interface{}) {
-	m.back.Fix(v)
+	m.back.Fix(memory.Memory(v.(Circuit)))
 }
 
-func (m *Memorize) CognizeLookup(eye *be.Eye, v interface{}) {
-	eye.Show("Lookup", memory.Memory(m.back.Use().(Circuit)).Lookup(v.(Address)))
+func (m *Memorize) CognizeLookup(eye *be.Eye, v interface{}) {}
+
+func (m *Memorize) Lookup(addr Address) Value {
+	return m.back.Use().(memory.Memory).Lookup(addr)
 }

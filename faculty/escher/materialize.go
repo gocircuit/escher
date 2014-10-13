@@ -16,36 +16,24 @@ import (
 
 // Materialize
 type Materialize struct {
-	lookup plumb.Client
+	lookup plumb.Given
 }
 
 func (m *Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
-	m.lookup.Init(
-		func (v interface{}) {
-			eye.Show("Lookup", v)
-		},
-	)
-	return &Materialize{}
+	m.lookup.Init()
+	return nil
 }
 
 // Design: { * }
 func (m *Materialize) CognizeDesign(eye *be.Eye, v interface{}) {
-	reflex, residual := be.Materialize(lookupClient{&m.lookup}, v.(Circuit))
+	reflex, residual := be.Materialize(m.lookup.Use().(be.Lookup), v.(Circuit))
 	eye.Show(DefaultValve, New().Grow("Reflex", reflex).Grow("Residual", residual))
 }
 
 func (m *Materialize) CognizeLookup(eye *be.Eye, v interface{}) {
-	m.lookup.Cognize(v)
+	m.lookup.Fix(v)
 }
 
 // In: ignored
 // Out: { Reflex Reflex; Residual Circuit }
 func (m *Materialize) Cognize(*be.Eye, interface{}) {}
-
-type lookupClient struct {
-	*plumb.Client
-}
-
-func (c lookupClient) Lookup(addr Address) Value {
-	return c.Client.Fetch(addr)
-}

@@ -17,6 +17,7 @@ import (
 func init() {
 	faculty.Register("draw.Age", be.NewNativeMaterializer(Age{}))
 	faculty.Register("draw.Split", be.NewNativeMaterializer(&Split{}))
+	faculty.Register("draw.Die", be.NewNativeMaterializer(&Die{}))
 	faculty.Register("draw.Dilate", be.NewNativeMaterializer(&Dilate{}))
 }
 

@@ -15,7 +15,7 @@ import (
 )
 
 func MaterializeUnion(matter *Matter) (Reflex, Value) {
-	return MaterializeGate(matter, &Union{})
+	return MaterializeNative(matter, &Union{})
 }
 
 type Union struct {

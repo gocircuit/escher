@@ -16,10 +16,10 @@ import (
 )
 
 func init() {
-	faculty.Register("escher.Memorize", be.NewGateMaterializer(&Memorize{}))
+	faculty.Register("escher.Memorize", be.NewNativeMaterializer(&Memorize{}))
 	faculty.Register("escher.Faculties", Faculties)
-	faculty.Register("escher.Materialize", be.NewGateMaterializer(&Materialize{}))
-	faculty.Register("escher.Shell", be.NewGateMaterializer(&Shell{}))
+	faculty.Register("escher.Materialize", be.NewNativeMaterializer(&Materialize{}))
+	faculty.Register("escher.Shell", be.NewNativeMaterializer(&Shell{}))
 	// faculty.Register("escher.CircuitSourceDir", CircuitSourceDir)
 }
 

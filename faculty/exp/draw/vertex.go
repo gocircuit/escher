@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	faculty.Register("draw.Circuit", be.NewGateMaterializer(&Circuit{}))
+	faculty.Register("draw.Circle", be.NewNativeMaterializer(&Circuit{}))
 }
 
 // Circuit…

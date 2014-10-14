@@ -22,11 +22,11 @@ func (Ignore) Materialize(*Matter) (Reflex, Value) {
 }
 
 func MaterializeNoun(matter *Matter, v interface{}) (Reflex, Value) {
-	return MaterializeGate(matter, Noun{}, v)
+	return MaterializeNative(matter, Noun{}, v)
 }
 
 func NewNoun(v interface{}) MaterializerWithMatterFunc {
-	return NewGateMaterializer(Noun{}, v)
+	return NewNativeMaterializer(Noun{}, v)
 }
 
 // Noun

@@ -17,15 +17,15 @@ import (
 const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
-// NewGateMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewGateMaterializer(sample Gate, aux ...interface{}) MaterializerWithMatterFunc {
+// NewNativeMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
+func NewNativeMaterializer(sample Native, aux ...interface{}) MaterializerWithMatterFunc {
 	return func(matter *Matter) (Reflex, circuit.Value) {
-		return MaterializeGate(matter, sample, aux...)
+		return MaterializeNative(matter, sample, aux...)
 	}
 }
 
-func MaterializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circuit.Value) {
-	w := makeGate(v)
+func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value) {
+	w := makeNative(v)
 	r := gate{w, w.Type()}
 	// Enumerate the valves handled by dedicated methods.
 	dedicated := make(map[circuit.Name]struct{})
@@ -49,7 +49,7 @@ func MaterializeGate(matter *Matter, v Gate, aux ...interface{}) (Reflex, circui
 	}
 	// Not all handled valves need to be connected. But all connected valves need to be handled by a gate method.
 	reflex, eye := NewEyeCognizer(r.Cognize, valve...)
-	return reflex, w.Interface().(Gate).Spark(eye, matter, aux...)
+	return reflex, w.Interface().(Native).Spark(eye, matter, aux...)
 }
 
 type gate struct {
@@ -93,8 +93,8 @@ func (r *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 	)
 }
 
-// makeGate creates a new value of the same type as like. Pointer types allocate the object pointed to.
-func makeGate(like interface{}) Value {
+// makeNative creates a new value of the same type as like. Pointer types allocate the object pointed to.
+func makeNative(like interface{}) Value {
 	t := TypeOf(like)
 	switch t.Kind() {
 	case Ptr: // Pointer types are allocated

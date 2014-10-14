@@ -26,7 +26,8 @@ type MaterializerWithMatter interface {
 	Materialize(*Matter) (Reflex, Value)
 }
 
-type Gate interface {
+// Native represents a materializable object implemented as a Go type.
+type Native interface {
 	Spark(*Eye, *Matter, ...interface{}) Value // Initializer
 }
 

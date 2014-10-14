@@ -15,5 +15,5 @@ import (
 )
 
 func init() {
-	faculty.Register("math.IntSum", be.NewGateMaterializer(&IntSum{}))
+	faculty.Register("math.IntSum", be.NewNativeMaterializer(&IntSum{}))
 }

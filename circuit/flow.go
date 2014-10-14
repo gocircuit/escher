@@ -50,6 +50,14 @@ func (u Circuit) Valves(gate Name) map[Name]Vector {
 	return u.Flow[gate]
 }
 
+func (u Circuit) ValveNames(gate Name) []Name {
+	var r []Name
+	for n, _ := range u.Flow[gate] {
+		r = append(r, n)
+	}
+	return r
+}
+
 func (u Circuit) View(gate Name) Circuit {
 	x := New()
 	for vlv, vec := range u.Flow[gate] {

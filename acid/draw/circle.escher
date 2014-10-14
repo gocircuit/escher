@@ -1,7 +1,6 @@
 
-Circle {
-	w use.WriteTo
-	w: = form:
+Circle { // :View :WriteTo :
+	:WriteTo = form:
 
 	form text.Form
 	form:Form = `<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`

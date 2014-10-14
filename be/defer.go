@@ -13,14 +13,16 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func NewDefer(r Reflex, v Value) MaterializerWithMatter {
-	return &Defer{Reflex: r, Value: v}
-}
-
+// Defer is a materializer which holds on to a reflex and connects it on materialization.
+// Defers can be materialized only once. Repeat materializations will return a nil reflex and value.
 type Defer struct {
 	sync.Mutex
 	Reflex
 	Value
+}
+
+func NewDefer(r Reflex, v Value) MaterializerWithMatter {
+	return &Defer{Reflex: r, Value: v}
 }
 
 func (d *Defer) Materialize(*Matter) (r Reflex, v Value) {

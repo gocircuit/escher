@@ -72,7 +72,6 @@ func main() {
 
 	default:
 		mem := compile(*flagSrc)
-		b := NewRenderer(Memory(mem))
 		defer func() {
 			if r := recover(); r != nil {
 				debug.PrintStack()
@@ -80,7 +79,7 @@ func main() {
 				shell.NewShell("(recovered)", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))
 			}
 		}()
-		b.MaterializeAddress(see.ParseAddress(flagMain))
+		Materialize(mem, see.ParseAddress(flagMain))
 		select {} // wait forever
 	}
 }

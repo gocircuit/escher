@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package math
+package view
 
 import (
 	"github.com/gocircuit/escher/be"
@@ -12,6 +12,5 @@ import (
 )
 
 func init() {
-	faculty.Register("math.IntSum", be.NewNativeMaterializer(&IntSum{}))
-	faculty.Register("math.ComplexPlanar", be.NewNativeMaterializer(ComplexPlanar{}))
+	faculty.Register("view.Focus", be.NewNativeMaterializer(&Focus{}))
 }

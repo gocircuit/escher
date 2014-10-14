@@ -1,11 +1,11 @@
 
-// ForkTemplate
-ForkTemplate {
+// ForkForm
+ForkForm {
 	fork Fork
-	fork:Template = :Template
+	fork:Form = :Form
 	fork:Data = :Data
 
-	t text.Template
+	t text.Form
 	t:In = fork:
 	t:Out = :
 }

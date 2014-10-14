@@ -12,9 +12,9 @@ InstallPage {
         h:Title = "Building and installing Escher"
         h:Body = t:
 
-        t Template
+        t Form
         t:Data = {}
-        t:Template = `
+        t:Form = `
 <h1>Bulding and installing Escher</h1>
 
 <p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.

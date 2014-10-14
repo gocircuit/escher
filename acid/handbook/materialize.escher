@@ -61,9 +61,9 @@ MaterializePage {
 	</pre>
 	`
 
-	t Template
+	t Form
 	t:Data = f:
-	t:Template = `
+	t:Form = `
 <h1>Materializing</h1>
 
 <ul>

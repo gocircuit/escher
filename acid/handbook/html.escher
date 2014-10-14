@@ -1,6 +1,6 @@
 Html { // Title, Body, _
-	t Template
-	t:Template = `<!doctype html><html>
+	t Form
+	t:Form = `<!doctype html><html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href="css/main.css" rel="stylesheet" type="text/css" />

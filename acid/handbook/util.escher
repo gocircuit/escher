@@ -15,12 +15,12 @@ FigurePngSvgRight { // Caption, Image, Width, Right and default
 }
 
 LeftRight { // Left, Right and default valves
-	t Template
+	t Form
 	t:Data = f:
 	f Fork
 	f:Left = :Left
 	f:Right = :Right
-	t:Template = `
+	t:Form = `
 	<table>
 	<tr><td>{{.Gate.Left}}</td><td>{{.Gate.Right}}</td></tr>
 	</table>
@@ -41,8 +41,8 @@ FigurePngSvg { // Caption, Image, Width and default
 }
 
 Figure { // Body, Caption and default valves
-	t Template
-	t:Template = `
+	t Form
+	t:Form = `
 	<p><center>
 	<figure class="shadowless">
 		{{.Gate.Body}}
@@ -66,8 +66,8 @@ TestFigure {
 }
 
 PngSvg { // Name and default valves
-	t Template
-	t:Template = `<object data="img/{{.Gate.Name}}.svg" type="image/svg+xml" width="{{.Gate.Width}}">
+	t Form
+	t:Form = `<object data="img/{{.Gate.Name}}.svg" type="image/svg+xml" width="{{.Gate.Width}}">
 		<img src="img/{{.Gate.Name}}.png" alt="" />
 	</object>`
 	t:Data = f:
@@ -86,13 +86,13 @@ TestPngSvg {
 	ps: = Show
 }
 
-// Template has valves ForkTemplate, Data and the default.
-Template {
+// Form has valves ForkForm, Data and the default.
+Form {
 	fork Fork
-	fork:Template = :Template
+	fork:Form = :Form
 	fork:Data = :Data
 
-	t text.Template
+	t text.Form
 	t:In = fork:
 	t:Out = :
 }

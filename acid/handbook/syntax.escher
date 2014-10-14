@@ -24,9 +24,9 @@ SyntaxPage {
 		labeled as “X”, “Y” and “” (the empty string). 
 		The <a href="#links">source for this circuit</a> is given in a later section below.`
 
-	t Template
+	t Form
 	t:Data = f:
-	t:Template = `
+	t:Form = `
 <h1>Syntax and meaning</h1>
 
 <ul>

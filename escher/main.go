@@ -29,6 +29,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/path"
+	_ "github.com/gocircuit/escher/faculty/view"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	_ "github.com/gocircuit/escher/faculty/time"

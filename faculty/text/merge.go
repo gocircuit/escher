@@ -19,7 +19,7 @@ import (
 
 func init() {
 	faculty.Register("text.Merge", be.NewNativeMaterializer(Merge{}))
-	faculty.Register("text.Template", be.NewNativeMaterializer(Template{}))
+	faculty.Register("text.Form", be.NewNativeMaterializer(Form{}))
 }
 
 // Merge concatenates the string values of string-named gates into a single string output, 

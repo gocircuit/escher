@@ -12,11 +12,11 @@ CommandPage {
         h:Title = "Command-line tool"
         h:Body = t:
 
-        t Template
+        t Form
         t:Data = {
 		Backquoted ""
         }
-        t:Template = `
+        t:Form = `
 <h1>Command-line tool</h1>
 
 <!--ul>

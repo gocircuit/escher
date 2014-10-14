@@ -14,16 +14,16 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
-// Template …
-type Template struct{}
+// Form …
+type Form struct{}
 
-func (Template) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Form) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return nil
 }
 
-func (Template) CognizeIn(eye *be.Eye, v interface{}) {
+func (Form) CognizeIn(eye *be.Eye, v interface{}) {
 	td := v.(Circuit)
-	t, err := template.New("").Parse(td.StringAt("Template"))
+	t, err := template.New("").Parse(td.StringAt("Form"))
 	if err != nil {
 		panic(err)
 	}
@@ -34,7 +34,7 @@ func (Template) CognizeIn(eye *be.Eye, v interface{}) {
 	eye.Show("Out", w.String())
 }
 
-func (Template) CognizeOut(eye *be.Eye, v interface{}) {}
+func (Form) CognizeOut(eye *be.Eye, v interface{}) {}
 
 func gateHierarchy(u Circuit) map[string]interface{} { // not used
 	r := make(map[string]interface{})

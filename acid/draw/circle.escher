@@ -1,0 +1,46 @@
+
+Circle {
+	w use.WriteTo
+	w: = form:
+
+	form text.Form
+	form:Form = `<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
+	form:Data = data:
+
+	data Fork
+	data:R = rad:R
+	data:X = planar:X
+	data:Y = planar:Y
+
+	planar Fork
+	planar: = cp:Planar
+
+	cp cmplx.Planar
+	cp:Complex = pos:
+
+	pos view.Focus
+	pos:Name = "Position"
+	pos:View = j:0
+
+	j Junction
+	j: = :View
+	j:1 = orient:View
+	j:2 = : // drawing is decoupled from continuation
+
+	orient view.Focus
+	orient:Name = "Orientation"
+	orient: = polar:Complex
+
+	polar cmplx.Polar
+	polar:Polar = rad:
+
+	rad Fork
+}
+
+TestCircle {
+	??
+	circle Circle
+	circle:View = {
+		??
+	}
+}

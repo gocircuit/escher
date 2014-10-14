@@ -14,11 +14,20 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
+/*
+	View {
+		Time int
+		Position complex128
+		Orientation complex128 // dilation and rotation
+	}
+*/
+
 func init() {
 	faculty.Register("draw.Age", be.NewNativeMaterializer(Age{}))
-	faculty.Register("draw.Split", be.NewNativeMaterializer(&Split{}))
 	faculty.Register("draw.Die", be.NewNativeMaterializer(&Die{}))
+	faculty.Register("draw.Split", be.NewNativeMaterializer(&Split{}))
 	faculty.Register("draw.Dilate", be.NewNativeMaterializer(&Dilate{}))
+	faculty.Register("draw.Move", be.NewNativeMaterializer(Move{}))
 }
 
 // Age…

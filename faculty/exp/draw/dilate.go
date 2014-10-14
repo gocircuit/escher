@@ -27,7 +27,7 @@ func (f *Dilate) CognizeFactor(eye *be.Eye, v interface{}) {
 
 func (f *Dilate) CognizeView(eye *be.Eye, v interface{}) {
 	w := v.(Circuit)
-	w.Include("Position", w.ComplexAt("Position") * complex(f.factor.Use().(float64), 0))
+	w.Include("Orientation", w.ComplexAt("Orientation") * f.factor.Use().(complex128))
 	eye.Show(DefaultValve, w)
 }
 

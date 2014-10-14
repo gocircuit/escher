@@ -16,4 +16,5 @@ import (
 
 func init() {
 	faculty.Register("math.IntSum", be.NewNativeMaterializer(&IntSum{}))
+	faculty.Register("math.ComplexPlanar", be.NewNativeMaterializer(ComplexPlanar{}))
 }

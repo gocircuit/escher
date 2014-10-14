@@ -18,6 +18,7 @@ type Die struct {
 }
 
 func (d *Die) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+	d.at.Init()
 	return nil
 }
 

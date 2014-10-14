@@ -18,6 +18,7 @@ type Focus struct {
 }
 
 func (f *Focus) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+	f.name.Init()
 	return nil
 }
 

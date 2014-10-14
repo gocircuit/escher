@@ -43,9 +43,14 @@ func (u *Union) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 
 func (u *Union) Cognize(eye *Eye, value interface{}) {
 	y := make(chan struct{}) // block and
-	for f_, _ := range u.field { // send updated conjunction to all field valves
+	for _, f_ := range u.field { // send updated conjunction to all field valves
 		f := f_
 		go func() {
+			defer func() {
+				if r := recover(); r != nil {
+					log.Fatalf("Union over %v panic on %v: %v", u.field, value, r)
+				}
+			}()
 			eye.Show(f, value.(Circuit).At(f))
 			y <- struct{}{}
 		}()

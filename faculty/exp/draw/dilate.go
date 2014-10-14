@@ -18,6 +18,7 @@ type Dilate struct {
 }
 
 func (f *Dilate) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+	f.factor.Init()
 	return nil
 }
 

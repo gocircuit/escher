@@ -54,6 +54,8 @@ func (x *writerTo) cognize(eye *be.Eye, valve Name, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
 		go CopyClose(x.WriteCloser, t, false, true)
+	case string:
+		x.WriteCloser.Write([]byte(t))
 	default:
 		log.Printf("unexpected type at writer origin (%T)", t)
 	}

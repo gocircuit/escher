@@ -1,8 +1,15 @@
 
-Circle { // :View :WriteTo :
+Circle {
+	circle CircleWrite
+	circle: = :
+	circle:View = :View
+	circle:WriteTo = use.Output // use.Output should be planted by the materializer
+}
+
+CircleWrite { // : :View :WriteTo
 	:WriteTo = form:
 
-	form text.Form
+	form text.ForkForm
 	form:Form = `<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
 	form:Data = data:
 
@@ -36,10 +43,12 @@ Circle { // :View :WriteTo :
 	rad Fork
 }
 
-TestCircle {
-	??
-	circle Circle
+TestCircleWrite {
+	circle CircleWrite
+	circle:WriteTo = os.Stdout
 	circle:View = {
-		??
+		Position -1.200000-.400000i
+		Orientation -1.200000+3.400000i
 	}
+	circle: = Show
 }

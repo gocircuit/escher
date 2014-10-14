@@ -24,6 +24,10 @@ func (u Circuit) NameAt(name Name) Name {
 	return u.At(name).(Name)
 }
 
+func (u Circuit) ComplexAt(name Name) complex128 {
+	return u.At(name).(complex128)
+}
+
 func (u Circuit) FloatAt(name Name) float64 {
 	return u.At(name).(float64)
 }

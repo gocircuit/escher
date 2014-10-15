@@ -29,7 +29,7 @@ func (a Address) Append(b Address) Address {
 	return c
 }
 
-func (a Address) Same(r Irreducible) bool {
+func (a Address) Same(r Value) bool {
 	b, ok := r.(Address)
 	if !ok {
 		return false
@@ -45,7 +45,7 @@ func (a Address) Same(r Irreducible) bool {
 	return true
 }
 
-func (a Address) Copy() Irreducible {
+func (a Address) Copy() Address {
 	b := Address{make([]Name, len(a.Path))}
 	copy(b.Path, a.Path)
 	return b

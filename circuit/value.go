@@ -8,33 +8,31 @@ package circuit
 
 import (
 	// "log"
+	"reflect"
 )
-
-// Name is one of: int or string
-type Name interface{}
 
 // Value is one of: see.Address, string, int, float64, complex128, Circuit
 type Value interface{}
 
-// Irreducible
-type Irreducible interface {
-	Copy() Irreducible
-	Same(Irreducible) bool
+func Copy(x Value) (y Value) {
+	defer func() {
+		if r := recover(); r != nil {
+			y = x // If no Copy method, use Go copy semantic
+		}
+	}()
+	return reflect.ValueOf(x).MethodByName("Copy").Call(nil)[0].Interface()
 }
 
-func Copy(x Value) Value {
-	switch t := x.(type) {
-	case Irreducible:
-		return t.Copy()
-	}
-	return x
+type sameness interface{
+	Same(Value) bool
 }
 
 func Same(x, y Value) bool {
-	xr, x_ := x.(Irreducible)
-	yr, y_ := y.(Irreducible)
-	if x_ && y_ {
-		return xr.Same(yr)
+	if xx, ok := x.(sameness); ok {
+		return xx.Same(y)
+	}
+	if yy, ok := y.(sameness); ok {
+		return yy.Same(x)
 	}
 	return x == y
 }

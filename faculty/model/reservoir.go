@@ -57,7 +57,7 @@ func (rsv *Reservoir) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 }
 
 func (rsv *Reservoir) CognizeGround(eye *be.Eye, v interface{}) {
-	rsv.ground.Fix(v.(Circuit).Clone())
+	rsv.ground.Fix(v.(Circuit).Copy())
 }
 
 func (rsv *Reservoir) CognizeChange(eye *be.Eye, v interface{}) {

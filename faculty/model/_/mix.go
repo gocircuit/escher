@@ -33,7 +33,7 @@ func (h *Mix) Cognize(*be.Eye, interface{}) {}
 
 // combine substitutes dot-prefix addresses in the pos with corresponding data from the neg.
 func combine(pos, neg Circuit) Circuit {
-	pos = pos.Clone()
+	pos = pos.Copy()
 	for gname, gvalue := range pos.Gates() {
 		switch t := gvalue.(type) {
 		case Address:

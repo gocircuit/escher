@@ -11,6 +11,10 @@ import (
 	"sort"
 )
 
+// Name represents a gate name within a circuit.
+type Name interface{}
+
+// SortNames sorts the argument slice of names, prioritizing strings before ints and everything else after.
 func SortNames(names []Name) {
 	sort.Sort(sortNames(names))
 }

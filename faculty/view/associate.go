@@ -21,7 +21,7 @@ func (Associate) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 
 func (Associate) CognizeView(eye *be.Eye, v interface{}) {
 	w := v.(Circuit)
-	eye.Show(DefaultValve, w.CircuitAt("Root").Clone().ReGrow(w.NameAt("Name"), w.At("Value")))
+	eye.Show(DefaultValve, w.CircuitAt("Root").Copy().ReGrow(w.NameAt("Name"), w.At("Value")))
 }
 
 func (Associate) Cognize(eye *be.Eye, v interface{}) {}

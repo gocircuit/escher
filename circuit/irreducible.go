@@ -10,9 +10,9 @@ import (
 	// "fmt"
 )
 
-// Circuit is irreducible
+// Circuit is an irreducible. An irreducible is an object with a Copy and Same methods.
 
-func (u Circuit) Clone() Circuit {
+func (u Circuit) Copy() Circuit {
 	w := New()
 	for n, v := range u.Gate {
 		w.Gate[n] = v // shallow Go-value level copy of gate values
@@ -27,12 +27,8 @@ func (u Circuit) Clone() Circuit {
 	return w
 }
 
-func (u Circuit) Copy() Irreducible {
-	return u.Clone()
-}
-
-func (x Circuit) Same(r Irreducible) bool {
-	y, ok := r.(Circuit)
+func (x Circuit) Same(v Value) bool {
+	y, ok := v.(Circuit)
 	if !ok {
 		return false
 	}

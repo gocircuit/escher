@@ -28,7 +28,7 @@ func (s *Split) Cognize(eye *be.Eye, val interface{}) {
 		if arm == DefaultValve {
 			continue
 		}
-		go eye.Show(arm, val.(Circuit).Clone())
+		go eye.Show(arm, val.(Circuit).Copy())
 	}
 }
 

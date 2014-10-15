@@ -51,5 +51,5 @@ func (g *Grow) fire(eye *be.Eye) {
 	if g.u.Len() != 3 {
 		return
 	}
-	eye.Show("", g.u.CircuitAt("Img").Clone().ReGrow(g.u.At("Key"), g.u.At("Value")))
+	eye.Show("", g.u.CircuitAt("Img").Copy().ReGrow(g.u.At("Key"), g.u.At("Value")))
 }

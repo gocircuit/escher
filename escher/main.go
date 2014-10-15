@@ -76,8 +76,10 @@ func main() {
 		mem := compile(*flagSrc)
 		defer func() {
 			if r := recover(); r != nil {
-				debug.PrintStack()
-				log.Printf("Recovered: %v\n", r)
+				if flagMain != "" {
+					debug.PrintStack()
+					log.Printf("Recovered: %v\n", r)
+				}
 				shell.NewShell("(recovered)", os.Stdin, os.Stdout, os.Stderr).Loop(Circuit(mem))
 			}
 		}()

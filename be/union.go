@@ -68,7 +68,7 @@ func (u *Union) OverCognize(eye *Eye, valve Name, value interface{}) {
 	}
 	u.union.Include(valve, value)
 	if u.union.Len() == len(u.field) {
-		w := u.union.Clone()
+		w := u.union.Copy()
 		eye.Show(DefaultValve, w)
 	}
 }

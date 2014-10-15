@@ -24,5 +24,11 @@ TestAssociate {
 	a:Root = { A "abc" }
 	a:Name = "B"
 	a:Value = "def"
-	a: = Show
+	a: = match:X
+	match:Y = {
+		A "abc"
+		B "def"
+	}
+	match testing.Match
+	match: = os.Exit
 }

@@ -12,16 +12,16 @@ import (
 	// "github.com/gocircuit/escher/kit/plumb"
 )
 
-// Focus
-type Focus struct{}
+// Associate
+type Associate struct{}
 
-func (Focus) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Associate) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return nil
 }
 
-func (Focus) CognizeView(eye *be.Eye, v interface{}) {
+func (Associate) CognizeView(eye *be.Eye, v interface{}) {
 	w := v.(Circuit)
-	eye.Show(DefaultValve, w.CircuitAt("Root").At(w.NameAt("Name")))
+	eye.Show(DefaultValve, w.CircuitAt("Root").Clone().ReGrow(w.NameAt("Name"), w.At("Value")))
 }
 
-func (Focus) Cognize(eye *be.Eye, v interface{}) {}
+func (Associate) Cognize(eye *be.Eye, v interface{}) {}

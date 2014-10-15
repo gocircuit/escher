@@ -24,16 +24,16 @@ CircleWrite { // : :View :WriteTo
 	cp cmplx.Planar
 	cp:Complex = pos:
 
-	pos view.Focus
+	pos view.QuickFocus
 	pos:Name = "Position"
-	pos:View = j:0
+	pos:Root = j:0
 
 	j Junction
 	j: = :View
-	j:1 = orient:View
+	j:1 = orient:Root
 	j:2 = : // drawing is decoupled from continuation
 
-	orient view.Focus
+	orient view.QuickFocus
 	orient:Name = "Orientation"
 	orient: = polar:Complex
 

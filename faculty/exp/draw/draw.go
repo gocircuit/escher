@@ -37,7 +37,7 @@ func (Age) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	return nil
 }
 
-func (Age) CognizeAge(eye *be.Eye, val interface{}) {
+func (Age) CognizeView(eye *be.Eye, val interface{}) {
 	v := val.(Circuit)
 	v.Gate["Time"] = v.IntAt("Time") + 1
 	eye.Show(DefaultValve, v)

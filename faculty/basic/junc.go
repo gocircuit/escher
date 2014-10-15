@@ -26,13 +26,13 @@ func MaterializeJunction(matter *Matter) (Reflex, Value) {
 func MaterializeShow(matter *Matter) (Reflex, Value) {
 	return MaterializeJunctionWithFunc(
 		matter, 
-		func (v interface{}) {
-			fmt.Printf("%v\n", v)
+		func (name Name, v interface{}) {
+			fmt.Printf(":%v = %v\n", name, v)
 		},
 	)
 }
 
-type JuncFunc func(interface{})
+type JuncFunc func(Name, interface{})
 
 func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 	if matter.View.Len() < 1 {
@@ -51,13 +51,13 @@ func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 }
 
 type junction struct {
-	f func(interface{})
+	f JuncFunc
 	valve []Name
 }
 
 func (j junction) Cognize(eye *Eye, name Name, value interface{}) {
 	if j.f != nil {
-		j.f(value)
+		j.f(name, value)
 	}
 	ch := make(sparkChan, len(j.valve)-1)
 	for _, u_ := range j.valve {

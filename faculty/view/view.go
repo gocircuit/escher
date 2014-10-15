@@ -12,5 +12,6 @@ import (
 )
 
 func init() {
-	faculty.Register("view.Focus", be.NewNativeMaterializer(&Focus{}))
+	faculty.Register("view.Focus", be.NewNativeMaterializer(Focus{}))
+	faculty.Register("view.Associate", be.NewNativeMaterializer(Associate{}))
 }

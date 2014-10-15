@@ -1,15 +1,40 @@
 
 
-Vertex {
-	m escher.Materialize
-	m:Lookup = escher.Memory
-	m:Design = {
-		a exp.draw.Vertex
-		b exp.draw.Vertex
-		c exp.draw.Vertex
-		a:ab = b:ba
-		b:bc = c:cb
-		c:ca = a:ac
+Draw {
+	z escher.Materialize
+	z:Lookup = mem:Lookup
+
+	mem escher.Memorize
+	mem:Circuit = ss:X
+	ss:Y = assoc:
+	ss Show
+
+	assoc view.QuickAssociate
+	assoc:Root = escher.Faculties
+	assoc:Name = "use"
+	assoc:Value = { // plant circuit output, which sends to os.Stdout
+		Output {
+			: = os.Stdout
+		}
 	}
-	m: = escher.QuickShell
+
+	z:Design = {
+		start Junction
+		start:0 = {
+			Time 0
+			Position 0+1i
+			Orientation -0.01+0i
+		}
+		start:1 = circle:View
+
+		circle draw.Circle
+		circle: = age:View
+
+		age draw.Age
+		age: = move:View
+
+		move draw.Move
+		move: = start:2
+	}
+	z: = Show
 }

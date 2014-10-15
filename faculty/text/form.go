@@ -32,7 +32,12 @@ func (Form) CognizeIn(eye *be.Eye, v interface{}) {
 		panic(err)
 	}
 	eye.Show("Out", w.String())
+	if when, ok := td.OptionAt("When"); ok {
+		eye.Show("Done", when)
+	}
 }
+
+func (Form) CognizeDone(eye *be.Eye, v interface{}) {}
 
 func (Form) CognizeOut(eye *be.Eye, v interface{}) {}
 

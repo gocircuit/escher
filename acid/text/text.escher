@@ -1,11 +1,21 @@
 
-// ForkForm
-ForkForm {
+ForkFormWithDone {
 	fork Fork
 	fork:Form = :Form
 	fork:Data = :Data
+	fork:When = :When
 
 	t text.Form
 	t:In = fork:
 	t:Out = :
+	t:Done = :Done
+}
+
+ForkForm {
+	ff ForkFormWithDone
+	ff:Form = :Form
+	ff:Data = :Data
+	ff:When = 0
+	ff:Done = Ignore
+	ff: = :
 }

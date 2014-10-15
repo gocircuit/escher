@@ -42,6 +42,7 @@ func (u *Union) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 }
 
 func (u *Union) Cognize(eye *Eye, value interface{}) {
+	// log.Printf("%p u: %v", u, value)
 	y := make(chan struct{}) // block and
 	for _, f_ := range u.field { // send updated conjunction to all field valves
 		f := f_
@@ -61,6 +62,7 @@ func (u *Union) Cognize(eye *Eye, value interface{}) {
 }
 
 func (u *Union) OverCognize(eye *Eye, valve Name, value interface{}) {
+	// log.Printf("%p u:%v %v", u, valve, value)
 	u.Lock()
 	defer u.Unlock()
 	if valve == DefaultValve {

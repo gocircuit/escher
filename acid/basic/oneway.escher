@@ -1,0 +1,21 @@
+
+OneWay { // : :Strobe :Value
+	in Fork
+	in:X = :Value
+	in:S = :Strobe
+	in: = out:
+
+	out Fork
+	out:X = :
+}
+
+TestOneWay {
+	x OneWay
+	x:Value = 3
+	x: = m:0
+	x:Strobe = 0
+
+	m testing.Match
+	m:1 = 3
+	m: = os.Exit
+}

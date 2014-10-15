@@ -9,8 +9,10 @@ Circle {
 CircleWrite { // : :View :WriteTo
 	:WriteTo = form:
 
-	form text.ForkForm
-	form:Form = `<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
+	form text.ForkFormWithDone
+	form:When = 1
+	form:Form = `
+	<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
 	form:Data = data:
 
 	data Fork
@@ -31,7 +33,11 @@ CircleWrite { // : :View :WriteTo
 	j Junction
 	j: = :View
 	j:1 = orient:Root
-	j:2 = : // drawing is decoupled from continuation
+
+	ow basic.OneWay
+	ow: = :
+	ow:Value = j:2
+	ow:Strobe = form:Done
 
 	orient view.QuickFocus
 	orient:Name = "Orientation"

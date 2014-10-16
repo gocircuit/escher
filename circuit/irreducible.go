@@ -27,6 +27,14 @@ func (u Circuit) Copy() Circuit {
 	return w
 }
 
+func (u Circuit) DeepCopy() Circuit {
+	u = u.Copy()
+	for n, v := range u.Gate {
+		u.Gate[n] = DeepCopy(v)
+	}
+	return u
+}
+
 func (x Circuit) Same(v Value) bool {
 	y, ok := v.(Circuit)
 	if !ok {

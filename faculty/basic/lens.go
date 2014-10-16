@@ -17,29 +17,34 @@ import (
 type Lens struct{
 	valve []Name
 	sync.Mutex
-	history []? Circuit // histories in both directions
+	history Circuit // histories from both valves { ValveOne { … }, ValveTwo { … } }
 }
 
-// need deep circuit copy 
-
 func (g *Lens) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	if len(matter.View.Gate) > 2 {
+	mvg := matter.View.Gate
+	if len(mvg) < 1 || len(mvg) > 2 {
 		panic("lens can have one or two endpoints")
 	}
-	for vlv, _ := range matter.View.Gate {
+	g.history = New()
+	for vlv, _ := range mvg {
 		g.valve = append(g.valve, vlv)
+		g.history.Grow(vlv, New())
 	}
-	g.history = make([]Circuit, len(g.valve))
-	for i, _ := range g.history {
-		g.history[i] = New()
-	}
-	return ?? // 
+	return g // return self in residual to expose query interface
 }
 
 func (g *Lens) OverCognize(eye *be.Eye, valve Name, value interface{}) {
+	g.remember(valve, value)
+	for _, v := range g.valve {
+		if v != valve {
+			eye.Show(v, value)
+		}
+	}
+}
+
+func (g *Lens) remember(valve Name, value Value) {
 	g.Lock()
-	i := len(g.history.Gate)
-	g.history.Gate[i] = Copy(value)
-	g.Unlock()
-	??
+	defer g.Unlock()
+	h := g.history.CircuitAt(valve) // valve history circuit
+	h.Grow(h.Len(), DeepCopy(value))
 }

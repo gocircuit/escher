@@ -1,0 +1,11 @@
+
+DemoLens {
+	z escher.Materialize
+	z:Design = {
+		lens Lens
+		lens:X = 3
+		lens:Y = Ignore
+	}
+	z:Lookup = escher.Memory
+	z: = escher.QuickShell
+}

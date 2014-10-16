@@ -8,31 +8,37 @@ package circuit
 
 import (
 	// "log"
-	"reflect"
 )
 
 // Value is one of: see.Address, string, int, float64, complex128, Circuit
 type Value interface{}
 
-func Copy(x Value) (y Value) {
-	defer func() {
-		if r := recover(); r != nil {
-			y = x // If no Copy method, use Go copy semantic
-		}
-	}()
-	return reflect.ValueOf(x).MethodByName("Copy").Call(nil)[0].Interface()
+func DeepCopy(x Value) (y Value) {
+	switch t := x.(type) {
+	case Circuit:
+		return t.DeepCopy()
+	case Address:
+		return t.Copy()
+	}
+	return x
 }
 
-type sameness interface{
-	Same(Value) bool
+func Copy(x Value) (y Value) {
+	switch t := x.(type) {
+	case Circuit:
+		return t.Copy()
+	case Address:
+		return t.Copy()
+	}
+	return x
 }
 
 func Same(x, y Value) bool {
-	if xx, ok := x.(sameness); ok {
-		return xx.Same(y)
-	}
-	if yy, ok := y.(sameness); ok {
-		return yy.Same(x)
+	switch t := x.(type) {
+	case Circuit:
+		return t.Same(y)
+	case Address:
+		return t.Same(y)
 	}
 	return x == y
 }

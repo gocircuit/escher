@@ -163,17 +163,25 @@ its value is left as is, unexpanded.
 
 <h2 id="links">Reflexes</h2>
 
+<h3 id="rationale">Rationale</h3>
+
 <p>It is becoming increasingly apparent
 that entire “planes” in the software stack are being “programmed” (albeit not
-explicitly) in metaphors that are very different from those of traditional
-programming languages.
+explicitly) in metaphors that are very different from those that programming
+tools usually offer.
 
 <p>Service-level cluster topologies—for instance—are
 thought of, designed and described as graphs of independently acting processes
 that only make sense (in terms of what they do) together as one whole.
 And while we build these objects using current languages <em>sequentially</em>,
 this method of constructing them often has little to do with how we think of them
-and what they mean. This mismatch imposes an unnoticable slow-down
+and what they mean. 
+
+<p>The burden of translating from one semantic (how we imagine and manipulate
+idea objects) into another (how languages expect us to codify them) falls on
+the engineer each time they iterate on their idea.
+
+<p>This imposed “manual translation detour” imposes an unnoticable slow-down
 in the ability to iterate quickly on software designs that are
 scalable, reliable and non-trivial, all at the same time.
 
@@ -191,7 +199,15 @@ operations over composing parts (edges and vertices).
 <p>This is no co-incidence, needless to say: The data structures inside OS processes
 are modelling the physical objects of the same structure (data center topologies,
 Web subgraphs, information processing pipelines, etc.), simply because OS processes
-are often simply trying to represent and/or control exactly those physical objects.
+are often just trying to represent and/or control those same external physical objects.
+
+<p>To sum up, full circle:
+
+<blockquote>
+??
+</blockquote>
+
+<p>
 
 <h3>Live modelling</h3>
 

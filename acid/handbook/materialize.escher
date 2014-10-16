@@ -32,36 +32,12 @@ MaterializePage {
 	</pre>
 	`
 
-	fig2 FigurePngSvgRight
+	fig2 FigurePngSvg
 	fig2:Image = "telescope"
 	fig2:Width = "600px"
-	fig2:Caption = `*`
-	fig2:Right = `
-	<pre class="escher">
-	Database {
-		cache Cache
-		left Shard
-		right Shard
-		link Link
-		cache:Web = :Web
-		left:Cache = cache:Left
-		right:Cache = cache:Right
-		left:Backup = link:Left
-		right:Backup = link:Right
-		link: = :Backup
-	}
-	App {
-		web Web
-		left Database
-		right Database
-		backup Backup
-		left:Web = web:Left
-		right:Web = web:Right
-		left:Backup = backup:Left
-		right:Backup = backup:Right
-	}
-	</pre>
-	`
+	fig2:Caption = `This is a <a href="syntax.html">symbolic representation</a> 
+	of two circuit designs, named <code>App</code> and <code>Database</code>.
+	The illustration omits valve names.`
 
 	fig3 FigurePngSvg
 	fig3:Image = "expanded"
@@ -227,6 +203,32 @@ Consider the following abstract circuit:
 <h2 id="links">Telescoping links</h2>
 
 {{.Gate.ImgTelescope1}}
+
+<pre class="escher">
+Database {
+	cache Cache
+	left Shard
+	right Shard
+	link Link
+	cache:Web = :Web
+	left:Cache = cache:Left
+	right:Cache = cache:Right
+	left:Backup = link:Left
+	right:Backup = link:Right
+	link: = :Backup
+}
+App {
+	web Web
+	left Database
+	right Database
+	backup Backup
+	left:Web = web:Left
+	right:Web = web:Right
+	left:Backup = backup:Left
+	right:Backup = backup:Right
+}
+</pre>
+
 
 After expanding the circuit <code>App</code>, using a memory object containing
 a definition for <code>Database</code>, using circuit expansion as described

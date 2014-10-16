@@ -15,6 +15,8 @@ MaterializePage {
 	f Fork
 	f:ImgScanPrint = fig1:
 	f:ImgTelescope1 = fig2:
+	f:ImgExpanded = fig3:
+	f:ImgFlattened = fig4:
 
 	fig1 FigurePngSvgRight
 	fig1:Image = "scanprint"
@@ -32,7 +34,7 @@ MaterializePage {
 
 	fig2 FigurePngSvgRight
 	fig2:Image = "telescope"
-	fig2:Width = "500px"
+	fig2:Width = "600px"
 	fig2:Caption = `*`
 	fig2:Right = `
 	<pre class="escher">
@@ -60,6 +62,16 @@ MaterializePage {
 	}
 	</pre>
 	`
+
+	fig3 FigurePngSvg
+	fig3:Image = "expanded"
+	fig3:Width = "500px"
+	fig3:Caption = `*`
+
+	fig4 FigurePngSvg
+	fig4:Image = "flattened"
+	fig4:Width = "500px"
+	fig4:Caption = `*`
 
 	t Form
 	t:Data = f:
@@ -175,6 +187,14 @@ Consider the following abstract circuit:
 <h2 id="links">Telescoping links</h2>
 
 {{.Gate.ImgTelescope1}}
+
+After ...
+
+{{.Gate.ImgExpanded}}
+
+Or....
+
+{{.Gate.ImgFlattened}}
 
 <p>We would like to use the mechanism of expanding circuits to build
 large circuits from smaller ones. Roughly speaking, after expanding

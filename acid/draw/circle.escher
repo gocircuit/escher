@@ -10,7 +10,7 @@ CircleWrite { // : :View :WriteTo
 	:WriteTo = form:
 
 	form text.ForkFormWithDone
-	form:When = 1
+	form:When = rad:Theta
 	form:Form = `
 	<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
 	form:Data = data:

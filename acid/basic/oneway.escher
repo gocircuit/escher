@@ -9,7 +9,7 @@ OneWay { // : :Strobe :Value
 	out:X = :
 }
 
-TestOneWay {
+TestOneWay { // test repeated application
 	x OneWay
 	x:Value = 3
 	x: = m:0

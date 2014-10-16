@@ -2,7 +2,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href="css/main.css" rel="stylesheet" type="text/css" />
-		<title>Building and installing Escher</title>
+		<title>Command-line tool</title>
 	</head>
 	<body>
 	
@@ -12,26 +12,31 @@
 	
 	<div class="page">
 	
-<h1>Bulding and installing Escher</h1>
+<h1>Command-line tool</h1>
 
-<p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
-Fetching, building and installing Escher can then be accomplished with one command:
+<!--ul>
+<li><a href="#reflex">Reflex</a></li>
+</ul -->
+
+<p><br>
+
+<p>
+
+<ol>
+	<li>Register built-in gates into a single namespace circuit. (Built-in gates are 
+	implemented in <code>github.com/gocircuit/escher/faculty</code>.)
+	<li>Load circuit definitions from a given source directory and its descendants and add them to the 
+	namespace circuit
+	<li>Using the namespace, materialize a chosen <em>main</em> circuit
+	<li>If an error occurs, or no circuit is designated as main, the tool will default to
+	its “recovery” shell
+</ol>
+
+<h3>Usage</h3>
 
 <pre>
-	% go get github.com/gocircuit/escher/escher
+escher [-src SourceDirectory] [-show] [-d CircuitDiscoveryAddr] MainCircuit Arguments*
 </pre>
-
-<p>To check that installation succeeded, run <code>escher</code> without arguments to get its
-default recovery shell:
-
-<pre>
-	% escher
-	…
-	(stack trace omitted)
-	…
-	recover 
-</pre>
-
 
         
 	</div>

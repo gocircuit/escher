@@ -65,7 +65,7 @@ gate names and links and excludes the gate values—the <em>external</em> struct
 White ovals—contained inside the black one and mutually non-overlapping—denote gates.
 
 <p>Links are depicted as white lines that connect the outlines of gate ovals.
-Link endpoints connecting to the <a href="links">super gate</a> are attached to 
+Link endpoints connecting to the <a href="#links">super gate</a> are attached to 
 the outline of the surrounding black oval. 
 
 <p>Valve names are written in white within the black oval, next to their 
@@ -78,18 +78,19 @@ we just write it out in black text in the center of the oval. If that value is a
 the symbolism for that circuit within the white oval recursively, but this time we switch
 white and black colors everywhere.
 
-<p><center>
-<figure class="shadowless">
-	<object data="img/NAND.svg" type="image/svg+xml" width="500px">
+
+	<p><center>
+	<figure class="shadowless">
+		<object data="img/NAND.svg" type="image/svg+xml" width="500px">
 		<img src="img/NAND.png" alt="" />
 	</object>
-	<div>
-	<em>In this illustration, the depicted circuit has three valves at the super gate,
-	labeled as “X”, “Y” and “” (the empty string). 
-	The <a href="#links">source for this circuit</a> is given in a later section below.</em>
-	</div>
-</figure>
-</center></p>
+		<div><em>
+		In this illustration, the depicted circuit has three valves at the super gate,
+		labeled as “X”, “Y” and “” (the empty string). 
+		The <a href="#links">source for this circuit</a> is given in a later section below.</em></div>
+	</figure>
+	</center></p>
+	
 
 <h2 id="runtime">Go interface</h2>
 
@@ -151,7 +152,7 @@ Note that parsing errors result in panics.
 <h2 id="grammar">Grammar</h2>
 
 <p>A <em>definition</em> starts with a circuit name followed by a circuit description
-inside brackets. The name is an identifier, beginning with a non-digit.
+inside brackets. The name is an alpha-numeric identifier.
 For instance,
 
 <pre class="escher">
@@ -334,7 +335,7 @@ This will expand to:
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
 	partially supported by the 
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
-	Sponsors and partners are welcome. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
+	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>
 	
 	</body>

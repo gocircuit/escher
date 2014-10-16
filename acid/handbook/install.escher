@@ -29,9 +29,6 @@ default recovery shell:
 
 <pre>
 	% escher
-	…
-	(stack trace omitted)
-	…
 	recover 
 </pre>
 

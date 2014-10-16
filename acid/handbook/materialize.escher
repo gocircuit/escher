@@ -66,12 +66,18 @@ MaterializePage {
 	fig3 FigurePngSvg
 	fig3:Image = "expanded"
 	fig3:Width = "500px"
-	fig3:Caption = `*`
+	fig3:Caption = `The inversion of colors—from white-on-black in the enclosing circuit, to
+	black-on-white in the substituted circuits—is a visual symbolism indicating that 
+	the substitutions are separate data-structures from the enclosing one. Specifically,
+	the visual links that cross circuits are not explicitly represented in the data structure.
+	This can be accomplished by flattening (see below).`
 
 	fig4 FigurePngSvg
 	fig4:Image = "flattened"
 	fig4:Width = "500px"
-	fig4:Caption = `*`
+	fig4:Caption = `After flattening circuits recursively, all gates end up in the same giant circuit.
+	In order to preserve the circuit invariant that no two gates have the same name,
+	gates are automatically renamed to reflect the root-to-leaf path to them in the unflattened circuit.`
 
 	t Form
 	t:Data = f:
@@ -91,14 +97,14 @@ MaterializePage {
 by a human operator. In typical use cases, like for instance the codification of
 datacenter service topologies, the graphs to be described are huge. To facilitate
 building such graphs, Escher provides a mechanism for building out large complex
-graphs modularly and recursively from smaller circuits.
+graphs modularly and recursively from smaller circuit designs.
 
 <h2 id="expanding">Expanding circuits</h2>
 
 <blockquote>
-Expanding a source circuit is the process of substituting each address-valued gate
-with a value found at the corresponding address within a <em>memory</em>, which is
-a hierarchical namespace of values.
+<em>Expanding</em> a source circuit is the process of substituting each address-valued gate
+with a value found at the corresponding address within a <em>memory</em> object.
+A memory is a hierarchical namespace of values.
 </blockquote>
 
 <p>Consider the following input circuit:
@@ -117,8 +123,10 @@ Employees {
 
 <p>Here the gates <code>Engineer</code> and <code>Manager</code> have address values 
 (<code>Petar</code> and <code>gov.Eric</code>, respectively).
-Suppose further that circuits named <code>Eric</code> and <code>Petar</code> are
-defined within an enclosing circuit <code>Memory</code> like so:
+
+<p>Suppose further that circuits named <code>Eric</code> and <code>Petar</code> are
+defined within an enclosing circuit <code>Memory</code>, which we will use as a memory
+object:
 
 <pre class="escher">
 Memory {
@@ -172,12 +180,44 @@ Employees {
 
 <p>Note that circuit links are also copied during expansion. Also note that
 the address-valued gate <code>Location</code> in circuit <code>Project</code>
-is not expanded, since <code>Project</code> is not the circuit being expanded—<code>Employees</code> is.
+is not expanded. Tha rationale is that we are expanding the gate values of 
+circuit <code>Employees</code>. This does not work recursively.
+Since <code>Location</code> is a gate inside <code>Project</code> (and not inside <code>Employees</code>),
+its value is left as is, unexpanded.
 
 <h2 id="links">Reflexes</h2>
 
-<p>We would like to use circuits not merely to represent abstract data, but also
-to help us connect and execute complex pipelines of independent processing units.
+<p>It is becoming increasingly apparent
+that entire “planes” in the software stack are being “programmed” (albeit not
+explicitly) in metaphors that are very different from those of traditional
+programming languages.
+
+<p>Service-level cluster topologies—for instance—are
+thought of, designed and described as graphs of independently acting processes
+that only make sense (in terms of what they do) together as one whole.
+And while we build these objects using current languages <em>sequentially</em>,
+this method of constructing them often has little to do with how we think of them
+and what they mean. This mismatch imposes an unnoticable slow-down
+in the ability to iterate quickly on software designs that are
+scalable, reliable and non-trivial, all at the same time.
+
+<p>Beyond data centers, even though we don't get to “program the Internet”
+we reason about it in that same manner: independent “cloud” services
+communicating over TCP links.
+
+<p>Interestingly, going beyond the data center in the other direction—software
+structure within an OS process—one notices a similar tendency. More and more
+internal data structures and manipulations are trying to model 
+graph-like objects “as a whole”: They are mutated through operations that
+make sense for graphs and cannot be broken down meaningfully to
+operations over composing parts (edges and vertices).
+
+<p>This is no co-incidence, needless to say: The data structures inside OS processes
+are modelling the physical objects of the same structure (data center topologies,
+Web subgraphs, information processing pipelines, etc.), simply because OS processes
+are often simply trying to represent and/or control exactly those physical objects.
+
+<h3>Live modelling</h3>
 
 <p>We piggy-back the circuit expansion mechanism for this purpose.
 Consider the following abstract circuit:
@@ -188,7 +228,11 @@ Consider the following abstract circuit:
 
 {{.Gate.ImgTelescope1}}
 
-After ...
+After expanding the circuit <code>App</code>, using a memory object containing
+a definition for <code>Database</code>, using circuit expansion as described
+earlier, but visualizing the result using the visual symbolism introduced in the 
+<a href="syntax.html">section on syntax</a>, we obtain the following suggestive 
+result:
 
 {{.Gate.ImgExpanded}}
 

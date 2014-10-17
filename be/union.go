@@ -42,9 +42,8 @@ func (u *Union) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 }
 
 func (u *Union) Cognize(eye *Eye, value interface{}) {
-	// log.Printf("%p u: %v", u, value)
 	y := make(chan struct{}) // block and
-	for _, f_ := range u.field { // send updated conjunction to all field valves
+	for _, f_ := range u.field { // send updated values to all field valves
 		f := f_
 		go func() {
 			defer func() {
@@ -68,9 +67,10 @@ func (u *Union) OverCognize(eye *Eye, valve Name, value interface{}) {
 	if valve == DefaultValve {
 		panic(1)
 	}
-	u.union.Include(valve, value)
+	u.union.Grow(valve, value) // grow will panic, if gate already exists
 	if u.union.Len() == len(u.field) {
-		w := u.union.Copy()
+		w := u.union
+		u.union = New() // flush
 		eye.Show(DefaultValve, w)
 	}
 }

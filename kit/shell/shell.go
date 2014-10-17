@@ -9,6 +9,7 @@ package shell
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"io"
 	"path"
 	"sort"
@@ -22,42 +23,35 @@ import (
 )
 
 type Shell struct {
-	name string
-	memory Memory
-	in io.Reader
+	in io.Reader // io channels for interaction with user
 	out io.WriteCloser
 	err io.WriteCloser
 	scan *bufio.Scanner
-	foci map[string]*Focus
-	current string
+	foci map[string]*Focus // list of foci under management
+	current string // current focus
 }
 
 type Focus struct {
 	Name string
 	Path []Name
+	Memory Memory
 }
 
-func NewShell(name string, in io.Reader, out, err io.WriteCloser) *Shell {
+func NewShell(in io.Reader, out, err io.WriteCloser) *Shell {
 	sh := &Shell{
-		name: name,
 		in: in,
 		out: out,
 		err: err,
 		scan: bufio.NewScanner(in),
 		foci: make(map[string]*Focus),
-		current: "a",
-	}
-	for _, c := range "a" {
-		sh.foci[string(c)] = &Focus{
-			Name: string(c),
-			Path: []Name{},
-		}
+		current: "",
 	}
 	return sh
 }
 
-func (sh *Shell) Loop(memory Circuit) {
-	sh.memory = Memory(memory)
+func (sh *Shell) StartSession(name string, memory Circuit) {
+	sh.attach(name, memory)
+	sh.jump([]string{name})
 	sh.prompt()
 	for sh.scan.Scan() {
 		words := split(sh.scan.Text())
@@ -79,7 +73,7 @@ func (sh *Shell) Loop(memory Circuit) {
 		case "p", "pwd":
 			sh.path(words[1:])
 		case "v", "view":
-			sh.what(words[1:])
+			sh.view(words[1:])
 		case "jump", "jmp", "j":
 			sh.jump(words[1:])
 		case "l", "link":
@@ -87,6 +81,8 @@ func (sh *Shell) Loop(memory Circuit) {
 		case "u", "unlink":
 			sh.unlink(words[1:])
 		case "recycle", "r":
+			// exit the shell loop, thereby blocking the user experience until
+			// the next session is started
 			return
 		case "peek":
 			sh.peek(words[1:])
@@ -97,12 +93,29 @@ func (sh *Shell) Loop(memory Circuit) {
 	}
 }
 
+func (sh *Shell) memory() Memory {
+	return sh.foci[sh.current].Memory
+}
+
 func (sh *Shell) focus() *Focus {
 	return sh.foci[sh.current]
 }
 
 func (sh *Shell) prompt() {
-	fmt.Fprintf(sh.err, "%s ", sh.name)
+	fmt.Fprintf(sh.err, "%s·%s ", sh.current, printPath(sh.focus().Path))
+}
+
+func (sh *Shell) attach(name string, value Circuit) {
+	f, ok := sh.foci[name]
+	if ok {
+		log.Fatalf("shell already has focus named %s", name)
+	}
+	f = &Focus{
+		Name: name,
+		Path: []Name{},
+		Memory: Memory(value),
+	}
+	sh.foci[name] = f
 }
 
 func (sh *Shell) jump(w []string) {
@@ -115,17 +128,14 @@ func (sh *Shell) jump(w []string) {
 		f = &Focus{
 			Name: w[0],
 			Path: sh.focus().Path,
+			Memory: Memory(New()),
 		}
 		sh.foci[w[0]] = f
 	}
-	var past string // remove old focus if path at root
-	sh.current, past = w[0], sh.current
-	if g, ok := sh.foci[past]; ok && len(g.Path) == 0 {
-		delete(sh.foci, past)
-	}
+	sh.current = w[0]
 }
 
-func (sh *Shell) what(w []string) {
+func (sh *Shell) view(w []string) {
 	var ord []string
 	for f, _ := range sh.foci {
 		ord = append(ord, f)
@@ -133,13 +143,10 @@ func (sh *Shell) what(w []string) {
 	sort.Strings(ord)
 	for _, f := range ord {
 		x := sh.foci[f]
-		if len(x.Path) == 0 && f != sh.current {
-			continue
-		}
 		if f == sh.current {
-			fmt.Fprintf(sh.err, "*%s:%s\n", f, printPath(x.Path))
+			fmt.Fprintf(sh.err, "* %s:%s\n", f, printPath(x.Path))
 		} else {
-			fmt.Fprintf(sh.err, "%s:%s\n", f, printPath(x.Path))
+			fmt.Fprintf(sh.err, "  %s:%s\n", f, printPath(x.Path))
 		}
 	}
 }
@@ -155,7 +162,7 @@ func (sh *Shell) cd(w []string) {
 		sh.focus().Path = []Name{}
 	case len(w) == 1:
 		pov, _ := sh.glob(w[0])
-		sh.memory.Goto(pov...)
+		sh.memory().Goto(pov...)
 		sh.focus().Path = pov
 	default:
 		fmt.Fprintf(sh.err, "cd accepts at most one argument\n")
@@ -169,16 +176,20 @@ func (sh *Shell) peek(w []string) {
 		}
 	}()
 	switch {
-	case len(w) == 1:
+	case len(w) == 2:
 		pov, _ := sh.glob(w[0])
-		x := sh.memory.Lookup(Address{pov})
-		if p, ok := x.(interface{ Peek() Value }); ok {
-			fmt.Fprintf(sh.err, "%v\n", p.Peek())
+		x := sh.memory().Lookup(Address{pov})
+		if p, ok := x.(interface{ Peek() Circuit }); ok {
+			if _, ok := sh.foci[w[1]]; ok {
+				fmt.Fprintf(sh.err, "focus name %q already in use", w[1])
+				return
+			}
+			sh.attach(w[1], p.Peek())
 		} else {
 			fmt.Fprintf(sh.err, "object of type %T does not have a peek method", x)
 		}
 	default:
-		fmt.Fprintf(sh.err, "peek accepts one path argument\n")
+		fmt.Fprintf(sh.err, "peek accepts two arguments: a path and a new unique focus name\n")
 	}
 }
 
@@ -188,7 +199,7 @@ func (sh *Shell) at() Memory {
 			fmt.Fprintf(sh.err, "current path is disconnected from root\n")
 		}
 	}()
-	return sh.memory.Goto(sh.focus().Path...)
+	return sh.memory().Goto(sh.focus().Path...)
 }
 
 func (sh *Shell) ls(w []string) {
@@ -206,7 +217,7 @@ func (sh *Shell) ls(w []string) {
 		if ell {
 			recurse = -1
 		}
-		fmt.Fprintf(sh.err, "%v\n", Circuit(sh.memory.Goto(pov...)).Print("", "   ", recurse))
+		fmt.Fprintf(sh.err, "%v\n", Circuit(sh.memory().Goto(pov...)).Print("", "   ", recurse))
 	default:
 		fmt.Fprintf(sh.err, "ls accepts at most one argument\n")
 	}
@@ -283,29 +294,22 @@ func (sh *Shell) rm(w []string) {
 		fmt.Fprintf(sh.err, "cannot remove root\n")
 		return
 	}
-	sh.memory.Goto(pov[:len(pov)-1]...).Exclude(pov[len(pov)-1])
+	sh.memory().Goto(pov[:len(pov)-1]...).Exclude(pov[len(pov)-1])
 }
 
 func (sh *Shell) help(w []string) {
 	const help = `
-ACT
 r             Recycle the current view
-
-VIEW
 p             Show current path
 v             Show all foci
 j b           Change current focus to "b"
 ls            Show circuit in current focus
 ls ../ef/     Show circuit at path relative to current
 peek x/y  Peek addressed object if peeking supported
-
-NAVIGATE
 cd            Move current focus to root memory circuit
 cd /          "
 cd ef/gh      Move current focus relative to itself
 cd ..         Move current focus to parent memory circuit
-
-CHANGE
 mk xyz        Make a memory gate named "xyz"
 mk xyz "abc"  Make a gate named "xyz"
 mk xyz 123    "

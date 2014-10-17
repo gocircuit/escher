@@ -49,8 +49,8 @@ func (g *Lens) remember(valve Name, value Value) {
 	h.Grow(h.Len(), DeepCopy(value))
 }
 
-func (g *Lens) Peek() Value {
+func (g *Lens) Peek() Circuit {
 	g.Lock()
 	defer g.Unlock()
-	return DeepCopy(g.history)
+	return DeepCopy(g.history).(Circuit)
 }

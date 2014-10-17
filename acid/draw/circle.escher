@@ -19,6 +19,7 @@ CircleWrite { // : :View :WriteTo
 	data:R = rad:R
 	data:X = planar:X
 	data:Y = planar:Y
+	lens Lens
 
 	planar Fork
 	planar: = cp:Planar
@@ -31,7 +32,8 @@ CircleWrite { // : :View :WriteTo
 	pos:Root = j:0
 
 	j Junction
-	j: = :View
+	j: = lens:dY
+	lens:pY = :View
 	j:1 = orient:Root
 
 	ow basic.OneWay

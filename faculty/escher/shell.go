@@ -7,7 +7,7 @@
 package escher
 
 import (
-	// "fmt"
+	"fmt"
 	"io"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -30,14 +30,13 @@ func (h *Shell) CognizeUser(eye *be.Eye, v interface{}) {
 	go func() {
 		x := v.(Circuit)
 		sh := shell.NewShell(
-			x.StringAt("Name"),
+			// x.StringAt("Name"),
 			x.At("In").(io.Reader),
 			x.At("Out").(io.WriteCloser),
 			x.At("Err").(io.WriteCloser),
 		)
-		for {
-			view := <-h.view
-			sh.Loop(view)
+		for i := 0; ; i++ {
+			sh.StartSession(fmt.Sprintf("session-%d", i), <-h.view)
 			eye.Show("Out", v)
 		}
 	}()

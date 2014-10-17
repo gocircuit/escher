@@ -38,5 +38,5 @@ Draw {
 		die:At = 3
 		die: = start:2
 	}
-	z: = Ignore //Show
+	z: = escher.QuickShell //Show
 }

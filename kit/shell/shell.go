@@ -297,6 +297,7 @@ v             Show all foci
 j b           Change current focus to "b"
 ls            Show circuit in current focus
 ls ../ef/     Show circuit at path relative to current
+peek x/y  Peek addressed object if peeking supported
 
 NAVIGATE
 cd            Move current focus to root memory circuit

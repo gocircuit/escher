@@ -36,7 +36,7 @@ func (h *Shell) CognizeUser(eye *be.Eye, v interface{}) {
 			x.At("Err").(io.WriteCloser),
 		)
 		for i := 0; ; i++ {
-			sh.StartSession(fmt.Sprintf("session-%d", i), <-h.view)
+			sh.StartSession(fmt.Sprintf("view-%d", i), <-h.view)
 			eye.Show("Out", v)
 		}
 	}()

@@ -158,56 +158,34 @@ Employees {
 the address-valued gate <code>Location</code> in circuit <code>Project</code>
 is not expanded. Tha rationale is that we are expanding the gate values of 
 circuit <code>Employees</code>. This does not work recursively.
-Since <code>Location</code> is a gate inside <code>Project</code> (and not inside <code>Employees</code>),
+Since <code>Location</code> is a gate inside <code>Project</code> 
+(and not inside <code>Employees</code>),
 its value is left as is, unexpanded.
 
 <h2 id="links">Reflexes</h2>
 
-<h3 id="rationale">Rationale</h3>
+<p>In designing programs that control (or merely interact with) distributed systems
+(as in, for instance, orchestration software) it is virtually always the case
+that despite the language used, the resulting programs contain a “live”
+image of the external object they model (e.g. a cluster),
+found somewhere in their runtime in the form of data structures and their
+methods.
 
-<p>It is becoming increasingly apparent
-that entire “planes” in the software stack are being “programmed” (albeit not
-explicitly) in metaphors that are very different from those that programming
-tools usually offer.
+<p>We call this a <em>live</em> image, because not only are these data structures
+interlinked liked the object they model (the cluster and its topology). Much
+like the parts of the cluster (hosts, containers and DNS records, for instance)
+that they model, they behave like independent processing units (like services)
+but within the runtime of the program in question.
 
-<p>Service-level cluster topologies—for instance—are
-thought of, designed and described as graphs of independently acting processes
-that only make sense (in terms of what they do) together as one whole.
-And while we build these objects using current languages <em>sequentially</em>,
-this method of constructing them often has little to do with how we think of them
-and what they mean. 
+<p>This has lead us to notice an engineering practice, especially in control software,
+which is generally not explicit anywhere, but seems implicit everywhere: 
+We call it <em>live modelling</em>.
 
-<p>The burden of translating from one semantic (how we imagine and manipulate
-idea objects) into another (how languages expect us to codify them) falls on
-the engineer each time they iterate on their idea.
+<p>Live modelling is a high-level architecture paradigm in software design:
 
-<p>This imposed “manual translation detour” imposes an unnoticable slow-down
-in the ability to iterate quickly on software designs that are
-scalable, reliable and non-trivial, all at the same time.
-
-<p>Beyond data centers, even though we don't get to “program the Internet”
-we reason about it in that same manner: independent “cloud” services
-communicating over TCP links.
-
-<p>Interestingly, going beyond the data center in the other direction—software
-structure within an OS process—one notices a similar tendency. More and more
-internal data structures and manipulations are trying to model 
-graph-like objects “as a whole”: They are mutated through operations that
-make sense for graphs and cannot be broken down meaningfully to
-operations over composing parts (edges and vertices).
-
-<p>This is no co-incidence, needless to say: The data structures inside OS processes
-are modelling the physical objects of the same structure (data center topologies,
-Web subgraphs, information processing pipelines, etc.), simply because OS processes
-are often just trying to represent and/or control those same external physical objects.
-
-<p>To sum up, full circle:
-
-<blockquote>
-??
-</blockquote>
-
-<p>
+<ol>
+<li>?</li>
+</ol>
 
 <h3>Live modelling</h3>
 

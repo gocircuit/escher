@@ -22,6 +22,8 @@ func init() {
 	faculty.Register("Grow", be.NewNativeMaterializer(&Grow{}))
 	faculty.Register("Fork", be.MaterializeUnion)
 	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
+	//
+	faculty.Register("Yield", be.NewNativeMaterializer(Yield{}))
 }
 
 // Scanln

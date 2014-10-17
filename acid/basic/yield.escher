@@ -1,0 +1,29 @@
+
+
+// For every circuit incoming on valve Circuit, YieldValues produces
+// a sequence enumerating the gate values of the argument circuit
+// over the default valve.
+//
+YieldValues { // : :Circuit
+	yield Yield
+	yield:Circuit = :Circuit
+	yield: = filter:
+
+	filter Fork
+	filter:Value = :
+}
+
+TestYieldValues {
+	s testYieldValues
+	t testYieldValues
+	m Match
+	m:S = s:
+	m:T = t:
+	m: = os.Exit
+}
+
+testYieldValues {
+	t YieldValues
+	t:Circuit = { 1, 2, 3 }
+	t: = :
+}

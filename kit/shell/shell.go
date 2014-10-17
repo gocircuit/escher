@@ -88,6 +88,8 @@ func (sh *Shell) Loop(memory Circuit) {
 			sh.unlink(words[1:])
 		case "recycle", "r":
 			return
+		case "peek":
+			sh.peek(words[1:])
 		default:
 			fmt.Fprintf(sh.err, "command not recognized; try help\n")
 		}
@@ -157,6 +159,26 @@ func (sh *Shell) cd(w []string) {
 		sh.focus().Path = pov
 	default:
 		fmt.Fprintf(sh.err, "cd accepts at most one argument\n")
+	}
+}
+
+func (sh *Shell) peek(w []string) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Fprintf(sh.err, "path not found\n")
+		}
+	}()
+	switch {
+	case len(w) == 1:
+		pov, _ := sh.glob(w[0])
+		x := sh.memory.Lookup(Address{pov})
+		if p, ok := x.(interface{ Peek() Value }); ok {
+			fmt.Fprintf(sh.err, "%v\n", p.Peek())
+		} else {
+			fmt.Fprintf(sh.err, "object of type %T does not have a peek method", x)
+		}
+	default:
+		fmt.Fprintf(sh.err, "peek accepts one path argument\n")
 	}
 }
 

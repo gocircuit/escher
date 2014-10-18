@@ -48,32 +48,56 @@ func split(src string) (r []string) {
 	return
 }
 
-func glob(s string) (walk []string, ellipses bool, err error) {
+func glob(s string) (walk []Name, ellipses bool, err error) {
+	// check for invalid characters
 	for _, b := range s {
 		if !see.IsIdentifier(rune(b)) && b != '/' && b != '.' {
 			return nil, false, errors.New("glob characters")
 		}
 	}
+	// parse out ellipses
 	if strings.HasSuffix(s, "...") {
 		ellipses = true
 		s = s[:len(s) - len("...")]
 	}
-	walk = strings.Split(s, "/")
+	//
+	defer func() {
+		if r := recover(); r != nil {
+			err = errors.New("problem parsing path")
+		}
+	}()
+	addr := see.ParseAddress(rotate(s))
+	walk = addr.Path
 	return
 }
 
-func derelativize(walk []string, pov []Name) ([]Name, bool) {
+func rotate(s string) string {
+	t := []byte(s)
+	for i, x := range t {
+		switch x {
+		case '/':
+			t[i] = '.'
+		case '.':
+			t[i] = ','
+		default:
+			t[i] = x
+		}
+	}
+	return string(t)
+}
+
+func derelativize(walk, pov []Name) ([]Name, bool) {
 	if len(walk) > 1 && walk[0] == "" {
 		pov = []Name{}
 	}
 	for _, w := range walk {
 		switch w {
-		case "..":
+		case ",,":
 			if len(pov) == 0 {
 				return nil, false
 			}
 			pov = pov[:len(pov)-1]
-		case ".", "":
+		case ",", "":
 		default:
 			pov = append(pov, w)
 		}

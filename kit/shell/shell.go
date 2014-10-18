@@ -10,7 +10,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"path"
 	"strings"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -114,9 +113,11 @@ func (sh *Shell) peek(w []string) {
 	switch {
 	case len(w) == 2:
 		pov, _ := sh.glob(w[0])
+		to, _ := sh.glob(w[1])
+		//
 		x := sh.memory().Lookup(Address{pov})
 		if p, ok := x.(interface{ Peek() Circuit }); ok {
-			sh.memoryAt().Include(w[1], p.Peek())
+			sh.space.Goto(to[:len(to)-1]...).Include(to[len(to)-1], p.Peek())
 		} else {
 			fmt.Fprintf(sh.err, "object of type %T does not have a peek method\n", x)
 		}
@@ -182,30 +183,22 @@ func (sh *Shell) mk(w []string) {
 	case len(w) == 0:
 		fmt.Fprintf(sh.err, "mk command needs arguments\n")
 	case len(w) == 1:
-		for _, b := range w[0] {
-			if !see.IsIdentifier(rune(b)) {
-				fmt.Fprintf(sh.err, "name must be an identifier\n")
-				return
-			}
+		t, _ := sh.glob(w[0])
+		dir := sh.memory().Goto(t[:len(t)-1]...)
+		if old := Circuit(dir).Include(t[len(t)-1], New()); old != nil {
+			fmt.Fprintf(sh.err, "Displaced: %v\n", old)
 		}
-		dir, file := path.Split(w[0])
-		if dir != "" {
-			fmt.Fprintf(sh.err, "mk argument cannot be a path\n")
-			return
-		}
-		sh.memoryAt().Refine(file)
 	case len(w) == 2:
-		dir, file := path.Split(w[0])
-		if dir != "" {
-			fmt.Fprintf(sh.err, "mk argument cannot be a path\n")
-			return
-		}
+		t, _ := sh.glob(w[0])
 		x := see.SeeValueOrNil(see.NewSrcString(w[1]))
 		if x == nil {
 			fmt.Fprintf(sh.err, "Value not recognized\n")
 			return
 		}
-		sh.memoryAt().Include(file, x)
+		dir := sh.memory().Goto(t[:len(t)-1]...)
+		if old := Circuit(dir).Include(t[len(t)-1], x); old != nil {
+			fmt.Fprintf(sh.err, "Displaced: %v\n", old)
+		}
 	default:
 		fmt.Fprintf(sh.err, "mk accepts at most two arguments\n")
 	}

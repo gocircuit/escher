@@ -82,7 +82,8 @@ func ParseAddress(src string) Address {
 	t := NewSrcString(src)
 	a := SeeAddress(t).(Address)
 	if t.Len() != 0 {
-		log.Fatalf("Non-address characters at end of %q", src)
+		log.Printf("Non-address characters at end of %q", src)
+		panic(1)
 	}
 	return a
 }

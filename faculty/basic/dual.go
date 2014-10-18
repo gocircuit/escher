@@ -24,6 +24,7 @@ func init() {
 	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
 	//
 	faculty.Register("Yield", be.NewNativeMaterializer(Yield{}))
+	faculty.Register("Wait", be.NewNativeMaterializer(&Wait{}))
 }
 
 // Scanln

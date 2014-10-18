@@ -11,9 +11,6 @@ import (
 	"sort"
 )
 
-// Term is a general-purpose terminator (end-of-stream) symbol.
-var Term struct{}
-
 // Circuit ...
 type Circuit struct {
 	Gate map[Name]Value

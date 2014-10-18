@@ -24,7 +24,6 @@ func (Yield) CognizeCircuit(eye *be.Eye, value interface{}) {
 	for name, _ := range u.SortedNames() {
 		eye.Show(DefaultValve, New().Grow("Name", name).Grow("Value", u.At(name)))
 	}
-	eye.Show(DefaultValve, Term)
 }
 
 func (Yield) Cognize(eye *be.Eye, value interface{}) {}

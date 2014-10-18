@@ -39,6 +39,7 @@ import (
 
 // usage: escher [-a dir] [-show] address arguments...
 var (
+	flagShell     = flag.Bool("shell", false, "attach a shell after materializing the main circuit")
 	flagShow     = flag.Bool("show", false, "print only")
 	flagSrc        = flag.String("src", "", "source directory")
 	flagDiscover = flag.String("d", "", "multicast UDP discovery address for gocircuit.org faculty")
@@ -84,7 +85,10 @@ func main() {
 				shell.NewShell("escher", os.Stdin, os.Stdout, os.Stderr).Start(Circuit(mem))
 			}
 		}()
-		Materialize(mem, see.ParseAddress(flagMain))
+		_, residue := Materialize(mem, see.ParseAddress(flagMain))
+		if *flagShell {
+			shell.NewShell(flagMain, os.Stdin, os.Stdout, os.Stderr).Start(residue.(Circuit))
+		}
 		select {} // wait forever
 	}
 }

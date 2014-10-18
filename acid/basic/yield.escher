@@ -1,5 +1,4 @@
 
-
 // For every circuit incoming on valve Circuit, YieldValues produces
 // a sequence enumerating the gate values of the argument circuit
 // over the default valve.
@@ -13,21 +12,35 @@ YieldValues { // : :Circuit
 	filter:Value = :
 }
 
+// escher -src acid -shell basic.PlayYield
 PlayYield {
 	y Yield
 	y:Circuit = {1, 2, 3 }
-	y: = escher.QuickShell
+	y: = Lens
 }
 
-TestYieldValues {
+// escher -src acid -shell basic.PlayYieldValues
+PlayYieldValues {
+	y YieldValues
+	y:Circuit = {1, 2, 3 }
+	y: = Lens
+}
+
+TestYieldValues { // no valves
 	s testYieldValues
 	t testYieldValues
 	m testing.Match
 	m:S = s:
 	m:T = t:
-	m: = os.Exit
+	m: = wait:View
+
+	wait Wait
+	wait:For = 3
+	wait: = os.Exit
 }
 
+// testYieldValues streams a list of values on its default valve.
+// The last streamed value is 3.
 testYieldValues {
 	t YieldValues
 	t:Circuit = { 1, 2, 3 }

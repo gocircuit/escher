@@ -18,6 +18,10 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
+// TODO:
+// * mk take path arguments
+// * peek's second (destination) argument can be path
+
 type Shell struct {
 	name string
 	in io.Reader // io channels for interaction with user
@@ -114,7 +118,7 @@ func (sh *Shell) peek(w []string) {
 		if p, ok := x.(interface{ Peek() Circuit }); ok {
 			sh.memoryAt().Include(w[1], p.Peek())
 		} else {
-			fmt.Fprintf(sh.err, "object of type %T does not have a peek method", x)
+			fmt.Fprintf(sh.err, "object of type %T does not have a peek method\n", x)
 		}
 	default:
 		fmt.Fprintf(sh.err, "peek accepts two arguments: a path and a new unique focus name\n")

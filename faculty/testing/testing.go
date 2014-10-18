@@ -58,12 +58,9 @@ func (m *Match) OverCognize(eye *be.Eye, name Name, v interface{}) {
 		return
 	}
 	if !Same(g.At(h.Len()-1), v) {
-		log.Fatalf("mismatch between %v and %v\n%v\n%v\n", g.At(h.Len()-1), v, h, g)
+		log.Fatalf("mismatch between %v and %v\n", g.At(h.Len()-1), v)
 	}
-	if v == Term { // EOF indicator
-		eye.Show(DefaultValve, Term)
-	}
-	// eye.Show(DefaultValve, h.Len()) // send number of matches so far
+	eye.Show(DefaultValve, v) // emit the matched object
 }
 
 func (m *Match) Cognize(eye *be.Eye, v interface{}) {}

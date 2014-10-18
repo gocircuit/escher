@@ -87,7 +87,7 @@ func (sh *Shell) glob(w string) (pov []Name, ell bool) {
 		fmt.Fprintf(sh.err, "glob not recognized (%s)\n", err)
 		panic(err)
 	}
-	pov, ok := derelativize(walk, sh.focus().Path)
+	pov, ok := derelativize(walk, sh.at)
 	if !ok {
 		fmt.Fprintf(sh.err, "path not valid\n")
 		panic(0)

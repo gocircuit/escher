@@ -11,6 +11,9 @@ import (
 	"sort"
 )
 
+// Term is a general-purpose terminator (end-of-stream) symbol.
+var Term struct{}
+
 // Circuit ...
 type Circuit struct {
 	Gate map[Name]Value
@@ -72,6 +75,12 @@ func (u Circuit) Names() []Name {
 		r = append(r, n)
 	}
 	return r
+}
+
+func (u Circuit) SortedNames() []Name {
+	n := u.Names()
+	SortNames(n)
+	return n
 }
 
 func (u Circuit) Gates() map[Name]Value {

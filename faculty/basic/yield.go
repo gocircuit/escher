@@ -20,9 +20,11 @@ func (Yield) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 }
 
 func (Yield) CognizeCircuit(eye *be.Eye, value interface{}) {
-	for n, v := range value.(Circuit).Gate {
-		eye.Show(DefaultValve, New().Grow("Name", n).Grow("Value", v))
+	u := value.(Circuit)
+	for name, _ := range u.SortedNames() {
+		eye.Show(DefaultValve, New().Grow("Name", name).Grow("Value", u.At(name)))
 	}
+	eye.Show(DefaultValve, Term)
 }
 
 func (Yield) Cognize(eye *be.Eye, value interface{}) {}

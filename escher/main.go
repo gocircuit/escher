@@ -81,7 +81,7 @@ func main() {
 					debug.PrintStack()
 					log.Printf("Recovered: %v\n", r)
 				}
-				shell.NewShell(os.Stdin, os.Stdout, os.Stderr).StartSession("escher", Circuit(mem))
+				shell.NewShell("escher", os.Stdin, os.Stdout, os.Stderr).Start(Circuit(mem))
 			}
 		}()
 		Materialize(mem, see.ParseAddress(flagMain))

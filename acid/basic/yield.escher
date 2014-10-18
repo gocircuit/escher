@@ -13,10 +13,16 @@ YieldValues { // : :Circuit
 	filter:Value = :
 }
 
+PlayYield {
+	y Yield
+	y:Circuit = {1, 2, 3 }
+	y: = escher.QuickShell
+}
+
 TestYieldValues {
 	s testYieldValues
 	t testYieldValues
-	m Match
+	m testing.Match
 	m:S = s:
 	m:T = t:
 	m: = os.Exit

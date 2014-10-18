@@ -21,11 +21,24 @@ func init() {
 
 type Match struct {
 	sync.Mutex
-	loaded bool
-	value Value
+	sign map[Name]int
+	history []Circuit
 }
 
 func (m *Match) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+	m.sign = make(map[Name]int)
+	var i int
+	for vlv, _ := range matter.View.Gate {
+		if vlv == DefaultValve {
+			continue
+		}
+		m.sign[vlv] = i
+		m.history = append(m.history, New())
+		i++
+	}
+	if len(m.sign) != 2 {
+		panic("match gates need exactly two opposing non-default valves")
+	}
 	return nil
 }
 
@@ -35,14 +48,22 @@ func (m *Match) OverCognize(eye *be.Eye, name Name, v interface{}) {
 	}
 	m.Lock()
 	defer m.Unlock()
-	if !m.loaded {
-		m.value, m.loaded = v, true
+	//
+	i := m.sign[name]
+	h := m.history[i]
+	h.Grow(h.Len(), v)
+	//
+	g := m.history[1-i]
+	if g.Len() < h.Len() {
 		return
 	}
-	if !Same(m.value, v) {
-		log.Fatalf("mismatch between %v and %v", m.value, v)
+	if !Same(g.At(h.Len()-1), v) {
+		log.Fatalf("mismatch between %v and %v\n%v\n%v\n", g.At(h.Len()-1), v, h, g)
 	}
-	eye.Show(DefaultValve, nil)
+	if v == Term { // EOF indicator
+		eye.Show(DefaultValve, Term)
+	}
+	// eye.Show(DefaultValve, h.Len()) // send number of matches so far
 }
 
 func (m *Match) Cognize(eye *be.Eye, v interface{}) {}

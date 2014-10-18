@@ -65,3 +65,7 @@ func (m Memory) Link(u, v Vector) {
 func (m Memory) Unlink(u, v Vector) {
 	Circuit(m).Unlink(u, v)
 }
+
+func (m Memory) Len() int {
+	return Circuit(m).Len()
+}

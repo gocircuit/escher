@@ -7,8 +7,8 @@
 package escher
 
 import (
-	"fmt"
 	"io"
+	"log"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
@@ -17,12 +17,13 @@ import (
 
 // Shell reflexes expose their temporal valve input in the form of an interactive circuit navigation and manipulation REPL.
 type Shell struct{
-	view chan Circuit
+	view chan interface{}
+	shell *shell.Shell
 }
 
 func (h *Shell) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
-	h.view = make(chan Circuit, 1)
-	return &Shell{}
+	h.view = make(chan interface{}, 1)
+	return nil
 }
 
 // In: { Name string, In io.Reader, Out io.WriteCloser, Err io.WriteCloser }
@@ -30,22 +31,19 @@ func (h *Shell) CognizeUser(eye *be.Eye, v interface{}) {
 	go func() {
 		x := v.(Circuit)
 		sh := shell.NewShell(
-			// x.StringAt("Name"),
+			x.StringAt("Name"),
 			x.At("In").(io.Reader),
 			x.At("Out").(io.WriteCloser),
 			x.At("Err").(io.WriteCloser),
 		)
-		for i := 0; ; i++ {
-			sh.StartSession(fmt.Sprintf("view-%d", i), <-h.view)
-			eye.Show("Out", v)
+		u := <-h.view
+		if _, ok := u.(Circuit); !ok {
+			log.Fatalf("Shell gate received non-circuit value: %v", u)
 		}
+		sh.Start(u.(Circuit)) // shell attaches to first value on default valve
 	}()
 }
 
-// In: Circuit
-func (h *Shell) CognizeIn(eye *be.Eye, v interface{}) {
-	h.view <- v.(Circuit)
+func (h *Shell) Cognize(eye *be.Eye, v interface{}) {
+	h.view <- v
 }
-
-// Out: Circuit
-func (h *Shell) CognizeOut(*be.Eye, interface{}) {}

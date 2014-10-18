@@ -1,15 +1,14 @@
 
-QuickShell {
+// QuickShell attaches a user shell to the first value received on the default valve.
+QuickShell { // :
 	shell escher.StdShell
-	shell:Name = "quick"
-	shell:Out = Ignore
-	shell:In = :
+	shell:Name = "escher"
+	shell: = :
 }
 
-StdShell { // Name, In, Out
+StdShell { // : :Name
 	shell escher.Shell
-	shell:In = :In
-	shell:Out = :Out
+	shell: = :
 	shell:User = arg:
 
 	arg Fork

@@ -11,7 +11,6 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/memory"
 )
 
 // Materialize
@@ -23,7 +22,7 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	v := value.(Circuit)
-	mem := memory.Memory(v.CircuitAt("Memory"))
+	mem := v.CircuitAt("Memory")
 	op := v.At("Op")
 	residual := be.Materialize(mem, op)
 	after :=  New().

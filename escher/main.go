@@ -70,7 +70,7 @@ func main() {
 			}
 		}
 	}()
-	Materialize(mem, see.ParseAddress(flagMain))
+	Materialize(Circuit(mem), see.ParseAddress(flagMain))
 	select {} // wait forever
 }
 

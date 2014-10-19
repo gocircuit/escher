@@ -10,23 +10,20 @@ import (
 	"log"
 
 	. "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/kit/memory"
 )
 
-type Lookup interface {
-	Lookup(Address) Value
-}
-
-func Materialize(lookup Lookup, design Value) (residual Value) {
+func Materialize(memory Circuit, design Value) (residual Value) {
 	var reflex Reflex
-	reflex, residual = materialize(lookup, design)
+	reflex, residual = materialize(memory, design)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func materialize(lookup Lookup, design Value) (reflex Reflex, residual Value) {
-	b := NewRenderer(lookup)
+func materialize(memory Circuit, design Value) (reflex Reflex, residual Value) {
+	b := NewRenderer(memory)
 	matter := &Matter{
 		Design: design,
 		View: Circuit{},
@@ -37,11 +34,11 @@ func materialize(lookup Lookup, design Value) (reflex Reflex, residual Value) {
 }
 
 type Renderer struct {
-	lookup Lookup
+	memory Circuit
 }
 
-func NewRenderer(lookup Lookup) *Renderer {
-	return &Renderer{lookup}
+func NewRenderer(memory Circuit) *Renderer {
+	return &Renderer{memory}
 }
 
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
@@ -61,7 +58,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 		if len(enclosing.Path) > 0 {
 			abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
 			abs = abs.Append(addr)
-			val = b.lookup.Lookup(abs)
+			val = Memory(b.memory).Lookup(abs)
 			if val != nil {
 				addr = abs
 			}
@@ -69,7 +66,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	}
 	// lookup from root, if local lookup not resolved
 	if val == nil {
-		val = b.lookup.Lookup(addr)
+		val = Memory(b.memory).Lookup(addr)
 	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)
@@ -112,6 +109,9 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 }
 
 func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
+	// show circuit's own design in memory at address .
+	b.memory.ReGrow(Super, u.Copy().ReGrow(Super, u.Copy()))
+	//
 	residual := New()
 	gates := make(map[Name]Reflex)
 	for g, _ := range u.Gate {

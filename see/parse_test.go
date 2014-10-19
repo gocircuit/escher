@@ -19,6 +19,7 @@ var testValue = []string{
 	`1-2i`,
 	`name`,
 	`name.family`,
+	`.`,
 }
 
 func TestValue(t *testing.T) {

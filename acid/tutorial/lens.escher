@@ -1,11 +1,14 @@
 
 DemoLens {
 	z escher.Materialize
-	z:Design = {
+	z:Before = b:
+	z:After = escher.QuickShell
+
+	b Fork
+	b:Design = {
 		lens Lens
 		lens:X = 3
 		lens:Y = Ignore
 	}
-	z:Lookup = escher.Memory
-	z: = escher.QuickShell
+	b:Memory = escher.Faculties
 }

@@ -85,5 +85,5 @@ func (u Circuit) Gates() map[Name]Value {
 }
 
 func (u Circuit) String() string {
-	return u.Print("", "\t", 2)
+	return u.Print("", "\t", -1)
 }

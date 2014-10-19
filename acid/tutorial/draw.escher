@@ -2,10 +2,10 @@
 
 Draw {
 	z escher.Materialize
-	z:Lookup = mem:Lookup
+	z:Before = before:
 
-	mem escher.Memorize
-	mem:Circuit = assoc:
+	before Fork
+	before:Memory = assoc:
 
 	assoc view.QuickAssociate
 	assoc:Root = escher.Faculties
@@ -16,7 +16,7 @@ Draw {
 		}
 	}
 
-	z:Design = {
+	before:Design = {
 		start Junction
 		start:0 = {
 			Time 0
@@ -38,5 +38,6 @@ Draw {
 		die:At = 3
 		die: = start:2
 	}
-	z: = escher.QuickShell //Show
+
+	z:After = escher.QuickShell //Show
 }

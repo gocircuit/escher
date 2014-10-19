@@ -1,7 +1,7 @@
 
-OneWay { // : :Strobe :Value
+OneWay { // : :Strobe :View
 	in Fork
-	in:X = :Value
+	in:X = :View
 	in:S = :Strobe
 	in: = out:
 
@@ -11,7 +11,7 @@ OneWay { // : :Strobe :Value
 
 TestOneWay { // test repeated application
 	x OneWay
-	x:Value = 3
+	x:View = 3
 	x: = m:0
 	x:Strobe = 0
 

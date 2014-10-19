@@ -3,12 +3,12 @@
 //
 Materialize { // .
 	m escher.Materialize
-	m:Design = { a a }
-	m:Lookup = u:Lookup
-	m: = :
+	m:Before = before:
+	m:After = :
 
-	u escher.Memorize
-	u:Circuit = {
+	before Fork
+	before:Design = { a a }
+	before:Memory = {
 		a {
 			b b
 		}
@@ -18,9 +18,8 @@ Materialize { // .
 	}
 }
 
-// Browse the output of materialization in a shell
-MaterializeShell {
-	escher.QuickShell = tutorial.Materialize
+MaterializeShow {
+	Show = tutorial.Materialize
 }
 
 MaterializeDepth {

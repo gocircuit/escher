@@ -7,6 +7,27 @@ Circle {
 }
 
 CircleWrite { // : :View :WriteTo
+	lens Lens
+
+	j Junction
+	j: = lens:X
+	lens:Y = :View
+	j:0 = oneway:View
+	j:1 = show:X
+
+	oneway basic.OneWay
+	oneway: = :
+	oneway:Strobe = show:Y
+
+	show Show
+
+	:WriteTo = Ignore
+}
+
+
+
+
+CircleWriteFull { // : :View :WriteTo
 	:WriteTo = form:
 
 	form text.ForkFormWithDone

@@ -11,29 +11,31 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/kit/memory"
 )
 
 // Materialize
-type Materialize struct {
-	lookup plumb.Given
-}
+type Materialize struct{}
 
-func (m *Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
-	m.lookup.Init()
+func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 	return nil
 }
 
-// Design: { * }
-func (m *Materialize) CognizeDesign(eye *be.Eye, v interface{}) {
-	reflex, residual := be.Materialize(m.lookup.Use().(be.Lookup), v.(Circuit))
-	eye.Show(DefaultValve, New().Grow("Reflex", reflex).Grow("Residual", residual))
+func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
+	v := value.(Circuit)
+	mem := memory.Memory(v.CircuitAt("Memory"))
+	op := v.At("Op")
+	residual := be.Materialize(mem, op)
+	after :=  New().
+		Grow("Memory", mem).
+		Grow("Op", op).
+		Grow("Residual", residual)
+	// if len(reflex) > 0 {
+	// 	after.Grow("Unconnected", reflex).Grow("u", reflex)
+	// }
+	eye.Show("After", after)
 }
 
-func (m *Materialize) CognizeLookup(eye *be.Eye, v interface{}) {
-	m.lookup.Fix(v)
+func (Materialize) CognizeAfter(eye *be.Eye, v interface{}) {
+	panic("time goes forward")
 }
-
-// In: ignored
-// Out: { Reflex Reflex; Residual Circuit }
-func (m *Materialize) Cognize(*be.Eye, interface{}) {}

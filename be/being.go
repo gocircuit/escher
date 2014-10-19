@@ -16,7 +16,16 @@ type Lookup interface {
 	Lookup(Address) Value
 }
 
-func Materialize(lookup Lookup, design Value) (reflex Reflex, residual Value) {
+func Materialize(lookup Lookup, design Value) (residual Value) {
+	var reflex Reflex
+	reflex, residual = materialize(lookup, design)
+	if len(reflex) > 0 {
+		panic("circuit not closed")
+	}
+	return
+}
+
+func materialize(lookup Lookup, design Value) (reflex Reflex, residual Value) {
 	b := NewRenderer(lookup)
 	matter := &Matter{
 		Design: design,
@@ -96,16 +105,14 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 			return b.MaterializeCircuit(matter, t)
 		}
 		return MaterializeNoun(matter, t)
-	case nil:
-		panic("report error")
 	default:
-		log.Fatalf("Not knowing how to materialize %v/%T", t, t)
+		return MaterializeNoun(matter, t)
 	}
 	panic(0)
 }
 
 func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
-	value := New()
+	residual := New()
 	gates := make(map[Name]Reflex)
 	for g, _ := range u.Gate {
 		if g == Super {
@@ -123,20 +130,20 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			},
 			m, false,
 		)
-		value.Gate[g] = gv
+		residual.Gate[g] = gv
 	}
 	var super Reflex
 	super, gates[Super] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
-	// value.Gate[Genus] = matter.Circuit()
+	// residual.Gate[Genus] = matter.Circuit()
 	for _, g_ := range append(u.Names(), Super) {
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
 			checkLink(u, gates, g, v, t.Gate, t.Valve)
-			value.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
+			residual.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
 			go Link(gates[g][v], gates[t.Gate][t.Valve])
 			// go func() {
 			//	log.Printf("%v:%v -> %v:%v | %v %v", g, v, t.Gate, t.Valve, gates[g][v], gates[t.Gate][t.Valve])
@@ -144,7 +151,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			// }()
 		}
 	}
-	return super, value
+	return super, CleanUp(residual)
 }
 
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {

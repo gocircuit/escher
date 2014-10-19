@@ -85,7 +85,7 @@ func main() {
 				shell.NewShell("escher", os.Stdin, os.Stdout, os.Stderr).Start(Circuit(mem))
 			}
 		}()
-		_, residue := Materialize(mem, see.ParseAddress(flagMain))
+		residue := Materialize(mem, see.ParseAddress(flagMain))
 		if *flagShell {
 			shell.NewShell(flagMain, os.Stdin, os.Stdout, os.Stderr).Start(residue.(Circuit))
 		}

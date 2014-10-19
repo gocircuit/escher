@@ -18,7 +18,6 @@ import (
 	. "github.com/gocircuit/escher/kit/memory"
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/kit/fs"
-	"github.com/gocircuit/escher/kit/shell"
 	"github.com/gocircuit/escher/see"
 
 	// Load faculties
@@ -39,8 +38,6 @@ import (
 
 // usage: escher [-a dir] [-show] address arguments...
 var (
-	flagShell     = flag.Bool("shell", false, "attach a shell after materializing the main circuit")
-	flagShow     = flag.Bool("show", false, "print only")
 	flagSrc        = flag.String("src", "", "source directory")
 	flagDiscover = flag.String("d", "", "multicast UDP discovery address for gocircuit.org faculty")
 )
@@ -48,7 +45,7 @@ var (
 func main() {
 	// parse flags
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: %v [-src Dir] [-show] [-d NetAddress] MainCircuit Arguments...\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %v [-src Dir] [-d NetAddress] MainCircuit Arguments...\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -56,41 +53,25 @@ func main() {
 	var flagArgs = flag.Args()
 	if len(flagArgs) > 0 {
 		flagMain, flagArgs = flagArgs[0], flagArgs[1:]
+	} else {
+		flagMain = "escher.Shell" // escher assembler shell
 	}
 
 	// initialize faculties
 	_os.Init(*flagSrc, flagArgs)
 	circuit.Init(*flagDiscover)
 	//
-	switch {
-
-	case *flagShow:
-		cd := compile(*flagSrc).Lookup(see.ParseAddress(flagMain))
-		switch t := cd.(type) {
-		case Circuit:
-			fmt.Println(t.Print("", "\t", -1))
-		// case Faculty:
-		default:
-			fmt.Printf("%T/%v\n", t, t)
-		}
-
-	default:
-		mem := compile(*flagSrc)
-		defer func() {
-			if r := recover(); r != nil {
-				if flagMain != "" {
-					debug.PrintStack()
-					log.Printf("Recovered: %v\n", r)
-				}
-				shell.NewShell("escher", os.Stdin, os.Stdout, os.Stderr).Start(Circuit(mem))
+	mem := compile(*flagSrc)
+	defer func() {
+		if r := recover(); r != nil {
+			if flagMain != "" {
+				debug.PrintStack()
+				log.Printf("Recovered: %v\n", r)
 			}
-		}()
-		residue := Materialize(mem, see.ParseAddress(flagMain))
-		if *flagShell {
-			shell.NewShell(flagMain, os.Stdin, os.Stdout, os.Stderr).Start(residue.(Circuit))
 		}
-		select {} // wait forever
-	}
+	}()
+	Materialize(mem, see.ParseAddress(flagMain))
+	select {} // wait forever
 }
 
 func compile(dir string) Memory {

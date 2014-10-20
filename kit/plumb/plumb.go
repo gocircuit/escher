@@ -45,6 +45,8 @@ func AsInt(v interface{}) int {
 
 func AsString(v interface{}) string {
 	switch t := v.(type) {
+	case []byte:
+		return string(t)
 	case string:
 		return t
 	case bytes.Buffer:

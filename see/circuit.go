@@ -24,8 +24,9 @@ func SeeCircuit(src *Src) (v Value) {
 	if v = SeeChamber(t); v == nil {
 		return nil
 	}
-	t.Match("}")
 	Space(t)
+	t.Match("}")
+	// Space(t)
 	src.Become(t)
 	return
 }

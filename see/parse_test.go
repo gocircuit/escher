@@ -135,13 +135,13 @@ func TestPeer(t *testing.T) {
 
 var testCircuit = []string{
 	`{}`,
+	`{ a {}}`,
 	`{
 		a:y = b:z
 	}`,
 	`{
 		g {}
 		a:y = b:z
-		x {}
 	}`,
 	`{
 		a b
@@ -194,7 +194,28 @@ var testCircuit = []string{
 func TestCircuit(t *testing.T) {
 	for _, q := range testCircuit {
 		x := SeeCircuit(NewSrcString(q))
-		if x.IsNil() {
+		if x == nil {
+			t.Errorf("problem parsing: %s", q)
+			continue
+		}
+		// fmt.Printf("CIR=\n%v\n", x)
+	}
+}
+
+var testChamber = []string{
+	`BuildIndexPage {
+	        wf io.util.WriteFile
+	        wf:Content = IndexPage
+	        wf:Name = "index.html"
+	        : = wf:Ready
+	}
+	`,
+}
+
+func TestChamber(t *testing.T) {
+	for _, q := range testChamber {
+		x := SeeChamber(NewSrcString(q))
+		if x == nil {
 			t.Errorf("problem parsing: %s", q)
 			continue
 		}

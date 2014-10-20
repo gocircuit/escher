@@ -11,22 +11,13 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/fs"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("e.Faculties", Faculties)
 	faculty.Register("e.Materialize", be.NewNativeMaterializer(Materialize{}))
 	faculty.Register("e.Parse", be.NewNativeMaterializer(Parse{}))
-}
-
-// Faculties
-func Faculties(matter *be.Matter) (be.Reflex, Value) {
-	return be.MaterializeNoun(matter, Circuit(faculty.Root()))
-}
-
-// CircuitSourceDir
-func CircuitSourceDir(matter *be.Matter) (be.Reflex, Value) {
-	return be.MaterializeNoun(matter, matter.Super.Design.(Circuit).At(fs.Source{}).(Circuit).CircuitAt(0).StringAt("Dir"))
+	// shortcuts
+	faculty.Register("e.M", be.NewNativeMaterializer(Materialize{}))
+	faculty.Register("e.P", be.NewNativeMaterializer(Parse{}))
 }

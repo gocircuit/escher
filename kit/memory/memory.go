@@ -20,6 +20,10 @@ func (m Memory) Print(prefix, indent string) string {
 	return "(Memory)"
 }
 
+func (m Memory) Dump() Circuit {
+	return Circuit(m).DeepCopy()
+}
+
 func (m Memory) Lookup(addr Address) (v Value) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -33,6 +37,20 @@ func (m Memory) Lookup(addr Address) (v Value) {
 	return Copy(v)
 }
 
+func (m Memory) Save(addr Address, value Value) Value {
+	if len(addr.Path) == 0 {
+		panic("no path")
+	}
+	x := m
+	for i, g := range addr.Path {
+		if i+1 == len(a) {
+			break
+		}
+		x = x.Refine(g)
+	}
+	return x.Include(addr.Path[len(addr.Path)-1], value)
+}
+
 func (m Memory) Goto(gate ...Name) Memory {
 	for _, name := range gate {
 		m = Memory(Circuit(m).CircuitAt(name))
@@ -41,9 +59,11 @@ func (m Memory) Goto(gate ...Name) Memory {
 }
 
 func (m Memory) Refine(name Name) Memory {
-	v, ok := Circuit(m).CircuitOptionAt(name)
+	v, ok := Circuit(m).OptionAt(name)
 	if ok {
-		return Memory(v)
+		if w, ok := v.(Circuit); ok {
+			return Memory(w)
+		}
 	}
 	k := New()
 	Circuit(m).Include(name, k)

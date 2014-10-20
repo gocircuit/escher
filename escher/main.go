@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"runtime/debug"
 	"os"
 
 	. "github.com/gocircuit/escher/faculty"
@@ -18,11 +17,12 @@ import (
 	. "github.com/gocircuit/escher/kit/memory"
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/kit/fs"
+	kio "github.com/gocircuit/escher/kit/io"
 	"github.com/gocircuit/escher/see"
 
 	// Load faculties
 	"github.com/gocircuit/escher/faculty/circuit"
-	_os "github.com/gocircuit/escher/faculty/os"
+	fos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/cmplx"
 	_ "github.com/gocircuit/escher/faculty/exp/draw"
@@ -53,25 +53,46 @@ func main() {
 	var flagArgs = flag.Args()
 	if len(flagArgs) > 0 {
 		flagMain, flagArgs = flagArgs[0], flagArgs[1:]
-	} else {
-		flagMain = "escher.Shell" // escher assembler shell
 	}
 
 	// initialize faculties
-	_os.Init(*flagSrc, flagArgs)
+	fos.Init(flagArgs)
 	circuit.Init(*flagDiscover)
 	//
 	mem := compile(*flagSrc)
+	// run main
+	if flagMain != "" {
+		exec(Circuit(mem), see.ParseAddress(flagMain))
+	}
+	// standard loop
+	r := kio.NewChunkReader(os.Stdin)
+	for {
+		chunk, err := r.Read()
+		if err != nil {
+			log.Fatalf("End of session (%v)", err)
+		}
+		src := see.NewSrcString(string(chunk))
+		for src.Len() > 0 {
+			u := see.SeeChamber(src)
+			if u == nil {
+				break
+			}
+			fmt.Printf("Executing %v\n\n", u)
+			exec(Circuit(mem), u)
+		}
+	}
+}
+
+func exec(mem Circuit, v Value) {
+	if u, ok := v.(Circuit); ok && u.Len() == 0 { // optimization on empty circuits
+		return
+	}
 	defer func() {
 		if r := recover(); r != nil {
-			if flagMain != "" {
-				debug.PrintStack()
-				log.Printf("Recovered: %v\n", r)
-			}
+			log.Printf("Execution error (%v)", r)
 		}
 	}()
-	Materialize(Circuit(mem), see.ParseAddress(flagMain))
-	select {} // wait forever
+	Materialize(Circuit(mem), v)
 }
 
 func compile(dir string) Memory {

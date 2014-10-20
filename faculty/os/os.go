@@ -16,9 +16,8 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func Init(sourceDir string, arg []string) {
+func Init(arg []string) {
 	faculty.Register("os.Arg", be.NewNoun(argCircuit(arg)))
-	faculty.Register("os.SourceDir", be.NewNoun(sourceDir))
 	faculty.Register("os.Env", Env{})
 	faculty.Register("os.Exit", Exit{})
 	faculty.Register("os.Fatal", Fatal{})

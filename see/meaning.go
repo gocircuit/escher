@@ -17,8 +17,8 @@ import (
 )
 
 func SeeValue(src *Src) (x Value) {
-	if u := SeeCircuit(src); !u.IsNil() {
-		return u
+	if x = SeeCircuit(src); x != nil {
+		return
 	}
 	if x = SeeValueNoCircuit(src); x != nil {
 		return

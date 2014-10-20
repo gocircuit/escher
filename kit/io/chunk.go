@@ -7,6 +7,7 @@
 package io
 
 import (
+	// "fmt"
 	"bufio"
 	"bytes"
 	"io"
@@ -26,11 +27,10 @@ func (r *ChunkReader) Read() (chunk []byte, err error) {
 	for r.Scanner.Scan() {
 		t := r.Scanner.Text()
 		w.WriteString(t)
-		if t == "\n" {
-			n++
-		} else {
+		if t != "" {
 			n = 0
 		}
+		n++
 		if n == 2 {
 			return w.Bytes(), nil
 		}

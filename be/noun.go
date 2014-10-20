@@ -38,6 +38,9 @@ func (n Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 			eye.Show(vlv, aux[0])
 		}
 	}()
+	if matter.View.Len() == 0 {
+		return aux[0]
+	}
 	return nil
 }
 

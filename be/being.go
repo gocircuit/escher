@@ -11,6 +11,7 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/kit/memory"
+	"github.com/gocircuit/escher/see"
 )
 
 func Materialize(memory Circuit, design Value) (residual Value) {
@@ -50,7 +51,28 @@ func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 	return b.materializeAddress(matter, addr)
 }
 
+func filter(a Address) (addr Address, monkey bool) {
+	if len(a.Path) == 0 {
+		return a, false
+	}
+	f, ok := a.Path[0].(string)
+	if !ok {
+		return a, false
+	}
+	if len(f) == 0 {
+		return a, false
+	}
+	if f[0] != '@' {
+		return a, false
+	}
+	a.Path[0] = see.ParseName(f[1:])
+	return a, true
+}
+
 func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
+	// parse @-sign out from front of address
+	addr, monkey := filter(addr)
+
 	// looking up locally first: starting from enclosing circuit's parent (a directory circuit)
 	var val Value
 	if matter != nil && matter.Super != nil {
@@ -73,7 +95,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	}
 	matter.Address = addr
 	matter.Design = val
-	return b.Materialize(matter, val, true)
+	return b.Materialize(matter, val, !monkey)
 }
 
 func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, Value) {

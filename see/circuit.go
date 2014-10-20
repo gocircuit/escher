@@ -12,15 +12,32 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func SeeCircuit(src *Src) (u Circuit) {
+func SeeCircuit(src *Src) (v Value) {
 	defer func() {
 		if r := recover(); r != nil {
-			u = Nil
+			v = nil
 		}
 	}()
-	u = New()
 	t := src.Copy()
+	Space(t)
 	t.Match("{")
+	if v = SeeChamber(t); v == nil {
+		return nil
+	}
+	t.Match("}")
+	Space(t)
+	src.Become(t)
+	return
+}
+
+func SeeChamber(src *Src) (v Value) {
+	defer func() {
+		if r := recover(); r != nil {
+			v = nil
+		}
+	}()
+	u := New()
+	t := src.Copy()
 	Space(t)
 	var j int
 	for {
@@ -48,7 +65,6 @@ func SeeCircuit(src *Src) (u Circuit) {
 		t.Become(q)
 	}
 	Space(t)
-	t.Match("}")
 	src.Become(t)
-	return
+	return u
 }

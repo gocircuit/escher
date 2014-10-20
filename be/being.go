@@ -109,9 +109,6 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 }
 
 func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
-	// show circuit's own design in memory at address .
-	b.memory.ReGrow(Super, u.Copy().ReGrow(Super, u.Copy()))
-	//
 	residual := New()
 	gates := make(map[Name]Reflex)
 	for g, _ := range u.Gate {

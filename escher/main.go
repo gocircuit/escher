@@ -14,7 +14,6 @@ import (
 
 	. "github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/kit/memory"
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/kit/fs"
 	kio "github.com/gocircuit/escher/kit/io"
@@ -59,10 +58,12 @@ func main() {
 	fos.Init(flagArgs)
 	circuit.Init(*flagDiscover)
 	//
-	mem := compile(*flagSrc)
+	if *flagSrc != "" {
+		Load(Root(), *flagSrc)
+	}
 	// run main
 	if flagMain != "" {
-		exec(Circuit(mem), see.ParseAddress(flagMain))
+		exec(see.ParseAddress(flagMain))
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -78,12 +79,12 @@ func main() {
 				break
 			}
 			fmt.Printf("Executing %v\n\n", u)
-			exec(Circuit(mem), u)
+			exec(u)
 		}
 	}
 }
 
-func exec(mem Circuit, v Value) {
+func exec(v Value) {
 	if u, ok := v.(Circuit); ok && u.Len() == 0 { // optimization on empty circuits
 		return
 	}
@@ -92,12 +93,5 @@ func exec(mem Circuit, v Value) {
 			log.Printf("Execution error (%v)", r)
 		}
 	}()
-	Materialize(Circuit(mem), v)
-}
-
-func compile(dir string) Memory {
-	if dir != "" {
-		Load(Root(), dir)
-	}
-	return Root()
+	Materialize(Root(), v)
 }

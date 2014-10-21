@@ -19,6 +19,10 @@ type Address struct {
 	Path []Name
 }
 
+func NewAddress(name ...Name) Address {
+	return Address{name}
+}
+
 func (a Address) Append(b Address) Address {
 	c := Address{make([]Name, len(a.Path) + len(b.Path))}
 	n := copy(c.Path, a.Path)

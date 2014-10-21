@@ -15,9 +15,18 @@ import (
 )
 
 func init() {
-	faculty.Register("e.Materialize", be.NewNativeMaterializer(Materialize{}))
-	faculty.Register("e.Parse", be.NewNativeMaterializer(Parse{}))
-	// shortcuts
-	faculty.Register("e.M", be.NewNativeMaterializer(Materialize{}))
-	faculty.Register("e.P", be.NewNativeMaterializer(Parse{}))
+	faculty.Register("Materialize", be.NewNativeMaterializer(Materialize{}))
+	faculty.Register("Parse", be.NewNativeMaterializer(Parse{}))
+	// reservoir 
+	faculty.Register("escher.Reservoir", be.NewNativeMaterializer(&ReservoirNoun{}))
+	faculty.Register("escher.Put", be.NewNativeMaterializer(&ReservoirVerb{}))
+	faculty.Register("escher.Get", be.NewNativeMaterializer(&ReservoirVerb{}))
+	faculty.Register("escher.Forget", be.NewNativeMaterializer(&ReservoirVerb{}))
+	faculty.Register("escher.Dump", be.NewNativeMaterializer(&ReservoirVerb{}))
+	// memory
+	faculty.Register("Memory", be.NewNativeMaterializer(&ReservoirNoun{}, faculty.Root()))
+	faculty.Register("Put", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
+	faculty.Register("Get", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
+	faculty.Register("Forget", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
+	faculty.Register("Dump", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
 }

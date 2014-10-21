@@ -10,11 +10,14 @@ import (
 	"log"
 
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/kit/memory"
 	"github.com/gocircuit/escher/see"
 )
 
-func Materialize(memory Circuit, design Value) (residual Value) {
+type Getter interface {
+	Get(Address) Value
+}
+
+func Materialize(memory Getter, design Value) (residual Value) {
 	var reflex Reflex
 	reflex, residual = materialize(memory, design)
 	if len(reflex) > 0 {
@@ -23,7 +26,7 @@ func Materialize(memory Circuit, design Value) (residual Value) {
 	return
 }
 
-func materialize(memory Circuit, design Value) (reflex Reflex, residual Value) {
+func materialize(memory Getter, design Value) (reflex Reflex, residual Value) {
 	b := NewRenderer(memory)
 	matter := &Matter{
 		Design: design,
@@ -35,10 +38,10 @@ func materialize(memory Circuit, design Value) (reflex Reflex, residual Value) {
 }
 
 type Renderer struct {
-	memory Circuit
+	memory Getter
 }
 
-func NewRenderer(memory Circuit) *Renderer {
+func NewRenderer(memory Getter) *Renderer {
 	return &Renderer{memory}
 }
 
@@ -80,7 +83,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 		if len(enclosing.Path) > 0 {
 			abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
 			abs = abs.Append(addr)
-			val = Memory(b.memory).Lookup(abs)
+			val = b.memory.Get(abs)
 			if val != nil {
 				addr = abs
 			}
@@ -88,7 +91,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	}
 	// lookup from root, if local lookup not resolved
 	if val == nil {
-		val = Memory(b.memory).Lookup(addr)
+		val = b.memory.Get(addr)
 	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)

@@ -7,16 +7,17 @@
 package faculty
 
 import (
+	. "github.com/gocircuit/escher/see"
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/kit/memory"
+	. "github.com/gocircuit/escher/kit/reservoir"
 )
 
 var root = NewReservoir()
 
-func Root() Circuit {
-	return root.Copy()
+func Root() Reservoir {
+	return root
 }
 
 func Register(name string, v interface{}) {
-	root.Register(name, v)
+	root.Put(ParseAddress(name), v)
 }

@@ -20,11 +20,7 @@ func (m Memory) Print(prefix, indent string) string {
 	return "(Memory)"
 }
 
-func (m Memory) Dump() Circuit {
-	return Circuit(m).DeepCopy()
-}
-
-func (m Memory) Lookup(addr Address) (v Value) {
+func (m Memory) Get(addr Address) (v Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			v = nil
@@ -34,21 +30,42 @@ func (m Memory) Lookup(addr Address) (v Value) {
 	for _, name := range addr.Path {
 		v = v.(Circuit).At(name)
 	}
-	return Copy(v)
+	return DeepCopy(v)
 }
 
-func (m Memory) Save(addr Address, value Value) Value {
+func (m Memory) Put(addr Address, value Value) Value {
 	if len(addr.Path) == 0 {
 		panic("no path")
 	}
 	x := m
 	for i, g := range addr.Path {
-		if i+1 == len(a) {
+		if i+1 == len(addr.Path) {
 			break
 		}
 		x = x.Refine(g)
 	}
-	return x.Include(addr.Path[len(addr.Path)-1], value)
+	return x.Include(addr.Path[len(addr.Path)-1], DeepCopy(value))
+}
+
+func (m Memory) Forget(addr Address) Value {
+	if len(addr.Path) == 0 {
+		panic("no path")
+	}
+	x := Circuit(m)
+	for i, g := range addr.Path {
+		if i+1 == len(addr.Path) {
+			break
+		}
+		u, ok := x.OptionAt(g)
+		if !ok {
+			return nil
+		}
+		x, ok = u.(Circuit)
+		if !ok {
+			return nil
+		}
+	}
+	return x.Exclude(addr.Path[len(addr.Path)-1])
 }
 
 func (m Memory) Goto(gate ...Name) Memory {

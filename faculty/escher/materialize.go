@@ -8,6 +8,7 @@ package escher
 
 import (
 	// "fmt"
+	"log"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
@@ -22,7 +23,7 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	v := value.(Circuit)
-	mem := v.CircuitAt("Memory")
+	mem := v.At("Memory").(be.Getter)
 	op := v.At("Op")
 	residual := be.Materialize(mem, op)
 	after :=  New().
@@ -36,5 +37,5 @@ func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 }
 
 func (Materialize) CognizeAfter(eye *be.Eye, v interface{}) {
-	panic("time goes forward")
+	log.Printf("(glitch) materialize gate received on :After")
 }

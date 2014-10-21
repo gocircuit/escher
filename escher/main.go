@@ -75,7 +75,7 @@ func main() {
 		src := see.NewSrcString(string(chunk))
 		for src.Len() > 0 {
 			u := see.SeeChamber(src)
-			if u == nil {
+			if u == nil || u.(Circuit).Len() == 0 {
 				break
 			}
 			fmt.Printf("Executing %v\n\n", u)
@@ -85,9 +85,6 @@ func main() {
 }
 
 func exec(v Value) {
-	if u, ok := v.(Circuit); ok && u.Len() == 0 { // optimization on empty circuits
-		return
-	}
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("Execution error (%v)", r)

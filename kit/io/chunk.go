@@ -27,6 +27,7 @@ func (r *ChunkReader) Read() (chunk []byte, err error) {
 	for r.Scanner.Scan() {
 		t := r.Scanner.Text()
 		w.WriteString(t)
+		w.WriteRune('\n')
 		if t != "" {
 			n = 0
 		}

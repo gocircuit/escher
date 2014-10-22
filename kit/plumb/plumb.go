@@ -12,6 +12,9 @@ import (
 	"io"
 	"math"
 	"strconv"
+
+	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/see"
 )
 
 // AsInt accepts an int or float64 value and converts it to an int value.
@@ -57,4 +60,26 @@ func AsString(v interface{}) string {
 		return w.String()
 	}
 	panic(4)
+}
+
+func AsAddress(v interface{}) Address {
+	switch t := v.(type) {
+	case Address:
+		return t
+	case string:
+		return see.ParseAddress(t)
+	case Circuit:
+		// Either pass addresses as: { Value abc.def }
+		value, ok := t.OptionAt("Value")
+		if ok {
+			return value.(Address)
+		}
+		// Or as: { "abc", "def" }
+		var addr Address
+		for _, name := range t.SortedNumbers() {
+			addr.Path = append(addr.Path, t.Gate[name])
+		}
+		return addr
+	}
+	panic("no address discernable")
 }

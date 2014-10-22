@@ -15,5 +15,8 @@ Spark { // :Value :Residue
 TestSpark {
 	s escher.Spark
 	s:Residue = Show
-	s:Value = { Show = "hola" }
+	s:Value = { 
+		Show = escher.Spirit
+		x "x"
+	}
 }

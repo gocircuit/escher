@@ -22,11 +22,9 @@ func init() {
 	faculty.Register("escher.Put", be.NewNativeMaterializer(&ReservoirVerb{}))
 	faculty.Register("escher.Get", be.NewNativeMaterializer(&ReservoirVerb{}))
 	faculty.Register("escher.Forget", be.NewNativeMaterializer(&ReservoirVerb{}))
-	faculty.Register("escher.Dump", be.NewNativeMaterializer(&ReservoirVerb{}))
 	// memory
 	faculty.Register("Memory", be.NewNativeMaterializer(&ReservoirNoun{}, faculty.Root()))
 	faculty.Register("Put", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
 	faculty.Register("Get", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
 	faculty.Register("Forget", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
-	faculty.Register("Dump", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
 }

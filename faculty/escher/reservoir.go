@@ -60,12 +60,12 @@ func (r *ReservoirVerb) OverCognize(eye *be.Eye, valve Name, value interface{}) 
 	rsrv := r.receiver.Use().(Reservoir)
 	switch valve {
 	case "Put":
-		rsrv.Put(v.AddressAt("Address"), v.At("Value"))
+		rsrv.Put(plumb.AsAddress(v.At("Address")), v.At("Value"))
 	case "Get":
-		addr := v.AddressAt("Address")
+		addr := plumb.AsAddress(v.At("Address"))
 		eye.Show(DefaultValve, New().Grow("Address", addr).Grow("Value", rsrv.Get(addr)))
 	case "Forget":
-		rsrv.Forget(v.AddressAt("Address"))
+		rsrv.Forget(plumb.AsAddress(v.At("Address")))
 	default:
 		panic("unkonwn reservoir command")
 	}

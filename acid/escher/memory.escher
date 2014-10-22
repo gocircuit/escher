@@ -1,6 +1,19 @@
 
-Memory { //
-	memorize escher.Memorize
-	memorize:Circuit = escher.Faculties
-	memorize:Lookup = :
+Spark { // :Value :Residue
+	x escher.Materialize
+	x:Before = before:
+	x:After = after:
+
+	before Fork
+	before:Memory = Memory
+	before:Value = :Value
+
+	after Fork
+	after:Residue = :Residue
+}
+
+TestSpark {
+	s escher.Spark
+	s:Residue = Show
+	s:Value = { Show = "hola" }
 }

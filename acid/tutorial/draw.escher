@@ -1,8 +1,7 @@
-
-
 Draw {
-	z escher.Materialize
-	z:Before = before:
+	x escher.Materialize
+	x:Before = before:
+	x:After = Show
 
 	before Fork
 	before:Memory = assoc:
@@ -38,6 +37,4 @@ Draw {
 		die:At = 3
 		die: = start:2
 	}
-
-	z:After = escher.QuickShell //Show
 }

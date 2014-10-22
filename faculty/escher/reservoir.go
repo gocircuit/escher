@@ -20,12 +20,17 @@ type ReservoirNoun struct{
 	Reservoir
 }
 
-func (r *ReservoirNoun) Spark(eye *be.Eye, _ *be.Matter, aux ...interface{}) Value {
+func (r *ReservoirNoun) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	if len(aux) == 1 {
 		r.Reservoir = aux[0].(Reservoir)
 	} else {
 		r.Reservoir = NewReservoir()
 	}
+	go func() {
+		for vlv, _ := range matter.View.Gate {
+			eye.Show(vlv, r.Reservoir)
+		}
+	}()
 	return New().
 		Grow("Reservoir", be.NewNativeMaterializer(&ReservoirNoun{}, r.Reservoir)).
 		Grow("Put", be.NewNativeMaterializer(&ReservoirVerb{}, r.Reservoir)).

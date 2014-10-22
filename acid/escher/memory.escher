@@ -1,11 +1,21 @@
 
-Spark { // :Value :Residue
+MemoryShadow { // : :Shadow
+	shadow escher.Shadow
+	shadow:View = sv:
+	shadow: = :
+
+	sv Fork
+	sv:Shadow = :Shadow
+	sv:Reservoir = Memory
+}
+
+Spark { // :Memory :Value :Residue
 	x escher.Materialize
 	x:Before = before:
 	x:After = after:
 
 	before Fork
-	before:Memory = Memory
+	before:Memory = :Memory
 	before:Value = :Value
 
 	after Fork
@@ -14,6 +24,7 @@ Spark { // :Value :Residue
 
 TestSpark {
 	s escher.Spark
+	s:Memory = Memory
 	s:Residue = Show
 	s:Value = { 
 		Show = escher.Spirit

@@ -24,8 +24,14 @@ type reservoir struct {
 	Memory
 }
 
-func NewReservoir() Reservoir {
-	return &reservoir{Memory: Memory(New())}
+func NewReservoir(u ...Circuit) Reservoir {
+	if len(u) == 0 {
+		return &reservoir{Memory: Memory(New())}
+	}
+	if len(u) == 1 {
+		return &reservoir{Memory: Memory(DeepCopy(u[0]).(Circuit))}
+	}
+	panic(1)
 }
 
 func (r *reservoir) Get(addr Address) Value {

@@ -8,6 +8,7 @@ package basic
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
@@ -15,16 +16,16 @@ import (
 )
 
 func init() {
-	faculty.Register("Junction", MaterializeJunction)
+	faculty.Register("Star", MaterializeStar)
 }
 
-// MaterializeJunction
-func MaterializeJunction(matter *Matter) (Reflex, Value) {
-	return MaterializeJunctionWithFunc(matter, nil)
+// MaterializeStar
+func MaterializeStar(matter *Matter) (Reflex, Value) {
+	return MaterializeStarWithFunc(matter, nil)
 }
 
 func MaterializeShow(matter *Matter) (Reflex, Value) {
-	return MaterializeJunctionWithFunc(
+	return MaterializeStarWithFunc(
 		matter, 
 		func (name Name, v interface{}) {
 			fmt.Printf(":%v = %v\n", name, v)
@@ -34,9 +35,10 @@ func MaterializeShow(matter *Matter) (Reflex, Value) {
 
 type JuncFunc func(Name, interface{})
 
-func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
+func MaterializeStarWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 	if matter.View.Len() < 1 {
-		panic("Junction is not connected")
+		log.Printf("Star not connected")
+		return nil, nil
 	}
 	vlv := make([]Name, 0, matter.View.Len())
 	for v, _ := range matter.View.Gate {

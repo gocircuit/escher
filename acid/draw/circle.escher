@@ -9,7 +9,7 @@ Circle {
 CircleWrite { // : :View :WriteTo
 	lens Lens
 
-	j Junction
+	j Star
 	j: = lens:X
 	lens:Y = :View
 	j:0 = oneway:View
@@ -50,7 +50,7 @@ CircleWriteFull { // : :View :WriteTo
 	pos:Name = "Position"
 	pos:Root = j:0
 
-	j Junction
+	j Star
 	j: = lens:dY
 	lens:pY = :View
 	j:1 = orient:Root

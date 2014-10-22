@@ -1,22 +1,18 @@
 Draw {
-	x escher.Materialize
-	x:Before = before:
-	x:After = Show
-
-	before Fork
-	before:Memory = assoc:
-
-	assoc view.QuickAssociate
-	assoc:Root = escher.Faculties
-	assoc:Name = "use"
-	assoc:Value = { // plant circuit output, which sends to os.Stdout
-		Output {
-			: = os.Stdout
+	// Plant use.Output over the default Escher memory.
+	// Drawing circuits (below) use use.Output to write their stream output.
+	shadow escher.MemoryShadow
+	shadow:Shadow = {
+		use {
+			Output { : = os.Stdout }
 		}
 	}
+	shadow: = x:Memory
 
-	before:Design = {
-		start Junction
+	x escher.Spark
+	x:Residue = Ignore
+	x:Value = {
+		start Star
 		start:0 = {
 			Time 0
 			Position 0+1i

@@ -32,11 +32,13 @@ You should see something like this
 	% escher
 	Show = "Hello world"
 
-	Executing {
+	executing {
 	    0 Show
 	    1 "Hello world"
 	    0: = 1:
 	}
+
+	residue &lt;nil&gt;
 
 	: = Hello world
 </pre>

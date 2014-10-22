@@ -25,11 +25,20 @@ Fetching, building and installing Escher can then be accomplished with one comma
 </pre>
 
 <p>To check that installation succeeded, run <code>escher</code> without arguments to get its
-default recovery shell:
+default shell, and type in <code>Show = "Hello world"</code> followed by two new lines.
+You should see something like this
 
 <pre>
 	% escher
-	recover 
+	Show = "Hello world"
+
+	Executing {
+	    0 Show
+	    1 "Hello world"
+	    0: = 1:
+	}
+
+	: = Hello world
 </pre>
 
 

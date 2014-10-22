@@ -305,8 +305,8 @@ and a link to its default gate in sugar-free syntax. For example,
 Will be expanded into
 
 <pre class="escher">
-	#0 123
-	sum:Summand = #0:
+	0 123
+	sum:Summand = 0:
 </pre>
 
 <p>In another example both sides of the equation are sugared:
@@ -318,9 +318,9 @@ Will be expanded into
 This will expand to:
 
 <pre class="escher">
-	#0 os.Scanln
-	#1 os.Println
-	#0: = #1:
+	0 os.Scanln
+	1 os.Println
+	0: = 1:
 </pre>
 
         `

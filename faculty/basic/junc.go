@@ -44,10 +44,7 @@ func MaterializeJunctionWithFunc(matter *Matter, jf JuncFunc) (Reflex, Value) {
 	}
 	j := junction{jf, vlv}
 	reflex, _ := NewEyeCognizer(j.Cognize, vlv...)
-	return reflex, 
-		func(matter_ *Matter) (Reflex, Value) {
-			return MaterializeJunctionWithFunc(matter_, jf)
-		}
+	return reflex, nil
 }
 
 type junction struct {

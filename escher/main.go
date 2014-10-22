@@ -70,7 +70,7 @@ func main() {
 	for {
 		chunk, err := r.Read()
 		if err != nil {
-			log.Fatalf("End of session (%v)", err)
+			fmt.Fprintf(os.Stderr, "end of session (%v)", err)
 		}
 		src := see.NewSrcString(string(chunk))
 		for src.Len() > 0 {
@@ -78,7 +78,7 @@ func main() {
 			if u == nil || u.(Circuit).Len() == 0 {
 				break
 			}
-			fmt.Printf("Executing %v\n\n", u)
+			fmt.Fprintf(os.Stderr, "executing %v\n\n", u)
 			exec(u)
 		}
 	}
@@ -87,8 +87,8 @@ func main() {
 func exec(v Value) {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Printf("Execution error (%v)", r)
+			log.Printf("execution glitch (%v)", r)
 		}
 	}()
-	Materialize(Root(), v)
+	fmt.Fprintf(os.Stderr, "residue %v\n\n", Materialize(Root(), v))
 }

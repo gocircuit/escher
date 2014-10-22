@@ -45,3 +45,25 @@ func (n Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 }
 
 func (n Noun) OverCognize(*Eye, Name, interface{}) {}
+
+// Future
+type Future struct {
+	eye *Eye
+	view Circuit
+}
+
+func (f *Future) Spark(eye *Eye, matter *Matter, _ ...interface{}) Value {
+	f.eye = eye
+	f.view = matter.View
+	return nil
+}
+
+func (f *Future) Charge(v Value) {
+	go func() {
+		for vlv, _ := range f.view.Gate {
+			f.eye.Show(vlv, DeepCopy(v))
+		}
+	}()
+}
+
+func (f *Future) OverCognize(*Eye, Name, interface{}) {}

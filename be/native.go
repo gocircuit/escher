@@ -24,7 +24,12 @@ func NewNativeMaterializer(sample Native, aux ...interface{}) MaterializerWithMa
 	}
 }
 
-func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value) {
+func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (reflex Reflex, residue circuit.Value) {
+	reflex, residue, _ = MaterializeNativeInstance(matter, v, aux...)
+	return
+}
+
+func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value, interface{}) {
 	w := makeNative(v)
 	r := gate{w, w.Type()}
 	// Enumerate the valves handled by dedicated methods.
@@ -49,7 +54,7 @@ func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (Reflex, ci
 	}
 	// Not all handled valves need to be connected. But all connected valves need to be handled by a gate method.
 	reflex, eye := NewEyeCognizer(r.Cognize, valve...)
-	return reflex, w.Interface().(Native).Spark(eye, matter, aux...)
+	return reflex, w.Interface().(Native).Spark(eye, matter, aux...), w.Interface()
 }
 
 type gate struct {

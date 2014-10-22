@@ -133,34 +133,53 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 	panic(0)
 }
 
+var SpiritAddress = NewAddress("escher", "Spirit")
+
 func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
 	residual := New()
 	gates := make(map[Name]Reflex)
-	for g, _ := range u.Gate {
+	spirit := make(map[Name]interface{})
+
+	for g, _ := range u.Gate { // iterate and materialize gates
 		if g == Super {
 			log.Fatalf("Circuit design overwrites the %s gate. In:\n%v\n", Super, u)
 		}
 		m := u.At(g)
 		var gv Value
-		gates[g], gv = b.Materialize(
-			&Matter{
-				Address: Address{},
-				Design: m,
-				View: u.View(g),
-				Path: append(matter.Path, g),
-				Super: matter,
-			},
-			m, false,
-		)
+		if Same(m, SpiritAddress) { // create spirit gates
+			gates[g], gv, spirit[g] = MaterializeNativeInstance(
+				&Matter{
+					Address: Address{},
+					Design: m,
+					View: u.View(g),
+					Path: append(matter.Path, g),
+					Super: matter,
+				},
+				&Future{},
+			)
+		} else {
+			gates[g], gv = b.Materialize(
+				&Matter{
+					Address: Address{},
+					Design: m,
+					View: u.View(g),
+					Path: append(matter.Path, g),
+					Super: matter,
+				},
+				m,
+				false,
+			)
+		}
 		residual.Gate[g] = gv
 	}
+	// 
 	var super Reflex
 	super, gates[Super] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
 	// residual.Gate[Genus] = matter.Circuit()
-	for _, g_ := range append(u.Names(), Super) {
+	for _, g_ := range append(u.Names(), Super) { // link up all gates
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
@@ -173,7 +192,13 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			// }()
 		}
 	}
-	return super, CleanUp(residual)
+	res := CleanUp(residual)
+	go func() {
+		for _, f := range spirit {
+			f.(*Future).Charge(res)
+		}
+	}()
+	return super, res
 }
 
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {

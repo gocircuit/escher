@@ -63,7 +63,7 @@ func main() {
 	}
 	// run main
 	if flagMain != "" {
-		exec(see.ParseAddress(flagMain))
+		exec(see.ParseAddress(flagMain), false)
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -79,16 +79,19 @@ func main() {
 				break
 			}
 			fmt.Fprintf(os.Stderr, "executing %v\n\n", u)
-			exec(u)
+			exec(u, true)
 		}
 	}
 }
 
-func exec(v Value) {
+func exec(v Value, showResidue bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("execution glitch (%v)", r)
 		}
 	}()
-	fmt.Fprintf(os.Stderr, "residue %v\n\n", Materialize(Root(), v))
+	residue := Materialize(Root(), v)
+	if showResidue {
+		fmt.Fprintf(os.Stderr, "residue %v\n\n", residue)
+	}
 }

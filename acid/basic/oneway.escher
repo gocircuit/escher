@@ -1,12 +1,12 @@
 TestOneWayDoor {
 	x OneWayDoor
 	x:From = testValues
-	x:To = m:0
+	x:To = match:0
 	x:Door = testValues
 
-	m testing.Match
-	m:1 = testValues
-	m: = wait:View
+	match testing.Match
+	match:1 = testValues
+	match: = wait:View
 
 	wait Wait
 	wait:For = "a"

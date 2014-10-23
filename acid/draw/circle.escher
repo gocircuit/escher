@@ -6,39 +6,25 @@ Circle {
 	circle:WriteTo = use.Output // use.Output should be planted by the materializer
 }
 
-CircleWrite { // : :View :WriteTo
-	lens Show
-
-	s Star
-	s: = lens:X
-	lens:Y = :View
-	s:0 = oneway:View
-
-	oneway basic.OneWay
-	oneway: = show:Q
-	show:W = :
-	oneway:Strobe = s:1
-
-	show Show
-
-	:WriteTo = Ignore
-}
-
-
 CircleWriteFull { // : :View :WriteTo
 	:WriteTo = form:
 
 	form text.ForkFormWithDone
 	form:When = rad:Theta
-	form:Form = `
+	form:Form = ss:To
+	ss OneWayDoor
+	ss:Door = s:3
+	ss:From = repeat:
+	repeat:View = `
 	<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
+	repeat Repeat // ?? causes overwriting in fork
 	form:Data = data:
 
 	data Fork
 	data:R = rad:R
 	data:X = planar:X
 	data:Y = planar:Y
-	lens Lens
+	lens Show
 
 	planar Fork
 	planar: = cp:Planar
@@ -48,17 +34,19 @@ CircleWriteFull { // : :View :WriteTo
 
 	pos view.QuickFocus
 	pos:Name = "Position"
-	pos:Root = j:0
+	pos:Root = s:0
 
-	j Star
-	j: = lens:dY
-	lens:pY = :View
-	j:1 = orient:Root
+	s Star
+	s: = lens:Star
+	lens:CircleEnter = :View
+	s:1 = orient:Root
 
-	ow basic.OneWay
-	ow: = :
-	ow:View = j:2
-	ow:Strobe = form:Done
+	ow OneWayDoor
+	ow:To = xx:CircleLeave
+	xx:B = :
+	xx Show
+	ow:From = s:2
+	ow:Door = form:Done
 
 	orient view.QuickFocus
 	orient:Name = "Orientation"
@@ -68,14 +56,4 @@ CircleWriteFull { // : :View :WriteTo
 	polar:Polar = rad:
 
 	rad Fork
-}
-
-TestCircleWrite {
-	circle CircleWrite
-	circle:WriteTo = os.Stdout
-	circle:View = {
-		Position -1.200000-.400000i
-		Orientation -1.200000+3.400000i
-	}
-	circle: = Show
 }

@@ -68,7 +68,12 @@ func filter(a Address) (addr Address, monkey bool) {
 	if f[0] != '@' {
 		return a, false
 	}
-	a.Path[0] = see.ParseName(f[1:])
+	n := see.ParseName(f[1:]).(string) // parse name after @
+	if n == "" {
+		a.Path = a.Path[1:]
+	} else {
+		a.Path[0] = n
+	}
 	return a, true
 }
 
@@ -76,7 +81,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	// parse @-sign out from front of address
 	addr, monkey := filter(addr)
 
-	// looking up locally first: starting from enclosing circuit's parent (a directory circuit)
+	// first, looking up addr within the circuit that encloses this address reference
 	var val Value
 	if matter != nil && matter.Super != nil {
 		enclosing := matter.Super.Address
@@ -89,12 +94,15 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 			}
 		}
 	}
-	// lookup from root, if local lookup not resolved
+	// if not found locally, find the addr starting from root
 	if val == nil {
 		val = b.memory.Get(addr)
 	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)
+	}
+	if monkey {
+		return MaterializeNoun(matter, val)
 	}
 	matter.Address = addr
 	matter.Design = val

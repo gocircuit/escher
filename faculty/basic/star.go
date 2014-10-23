@@ -17,6 +17,8 @@ import (
 func init() {
 	faculty.Register("Star", be.NewNativeMaterializer(&Star{}))
 	faculty.Register("Show", be.NewNativeMaterializer(&Star{}, StarFunc(show)))
+	faculty.Register("Show1", be.NewNativeMaterializer(&Star{}, StarFunc(show1)))
+	faculty.Register("Show2", be.NewNativeMaterializer(&Star{}, StarFunc(show2)))
 }
 
 type StarFunc func(Name, interface{})
@@ -49,4 +51,22 @@ func (s *Star) OverCognize(eye *be.Eye, name Name, value interface{}) {
 
 func show(name Name, v interface{}) {
 	fmt.Printf("Show:%v = %v\n", name, v)
+}
+
+func show1(name Name, v interface{}) {
+	switch t := v.(type) {
+	case Circuit:
+		fmt.Printf("Show:%v = %s\n", name, t.Print("", "\t", 1))
+	default:
+		fmt.Printf("Show:%v = %v\n", name, v)
+	}
+}
+
+func show2(name Name, v interface{}) {
+	switch t := v.(type) {
+	case Circuit:
+		fmt.Printf("Show:%v = %s\n", name, t.Print("", "\t", 2))
+	default:
+		fmt.Printf("Show:%v = %v\n", name, v)
+	}
 }

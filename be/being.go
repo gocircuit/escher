@@ -114,21 +114,10 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 	// Addresses are materialized recursively
 	case Address:
 		return b.materializeAddress(matter, t)
-	// Irreducible types are materialized as gates that emit the irreducible values
+	// Primitive types are materialized as gates that emit their values once (these gates are called nouns)
 	case int, float64, complex128, string:
 		return MaterializeNoun(matter, t)
-	// Go-gates are materialized into runtime reflexes
-	case func() (Reflex, Value):
-		return t()
-	case func(*Matter) (Reflex, Value):
-		return t(matter)
-	case MaterializerFunc:
-		return t()
-	case MaterializerWithMatterFunc:
-		return t(matter)
 	case Materializer:
-		return t.Materialize()
-	case MaterializerWithMatter:
 		return t.Materialize(matter)
 	case Circuit:
 		if recurse {

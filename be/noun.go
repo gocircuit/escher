@@ -25,7 +25,7 @@ func MaterializeNoun(matter *Matter, v interface{}) (Reflex, Value) {
 	return MaterializeNative(matter, Noun{}, v)
 }
 
-func NewNoun(v interface{}) MaterializerWithMatterFunc {
+func NewNoun(v interface{}) Materializer {
 	return NewNativeMaterializer(Noun{}, v)
 }
 

@@ -98,6 +98,10 @@ func printValueInline(v Value) string {
 	panic(1)
 }
 
+type Stringer interface {
+	String() string
+}
+
 func PrintValue(w io.Writer, prefix, indent string, n Name, p Value, recurse int) {
 	switch t := p.(type) {
 	case Printer:
@@ -108,8 +112,10 @@ func PrintValue(w io.Writer, prefix, indent string, n Name, p Value, recurse int
 		fmt.Fprintf(w, "%v %q\n", n, t)
 	case int, float64, complex128:
 		fmt.Fprintf(w, "%v %v\n", n, t)
+	case Stringer:
+		fmt.Fprintf(w, "%v %v\n", n, t)
 	default:
-		fmt.Fprintf(w, "%v [builtin/%T]\n", n, t)
+		fmt.Fprintf(w, "%v other/%T\n", n, t)
 	}
 }
 

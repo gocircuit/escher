@@ -11,6 +11,7 @@ import (
 )
 
 // CleanUp removes nil-valued gates and their incident edges.
+// CleanUp never returns nil.
 func CleanUp(u Circuit) Value {
 	for n, g := range u.Gate {
 		if g != nil {
@@ -20,9 +21,6 @@ func CleanUp(u Circuit) Value {
 		for vlv, vec := range u.Flow[n] {
 			u.Unlink(Vector{n, vlv}, vec)
 		}
-	}
-	if u.Len() == 0 {
-		return nil
 	}
 	return u
 }

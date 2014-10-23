@@ -18,17 +18,32 @@ const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
 // NewNativeMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewNativeMaterializer(sample Native, aux ...interface{}) MaterializerWithMatterFunc {
-	return func(matter *Matter) (Reflex, circuit.Value) {
-		return MaterializeNative(matter, sample, aux...)
-	}
+func NewNativeMaterializer(sample Native, aux ...interface{}) Materializer {
+	return &NativeMaterializer{sample, aux}
 }
 
+type NativeMaterializer struct {
+	sample Native
+	aux []interface{}
+}
+
+func (x *NativeMaterializer) Materialize(matter *Matter) (Reflex, circuit.Value) {
+	return MaterializeNative(matter, x.sample, x.aux...)
+}
+
+func (x *NativeMaterializer) String() string {
+	return fmt.Sprintf("Native(%T)", x.sample)
+}
+
+// MaterializeNative materializes the native implementation v.
+// It returns the resulting reflex and residue, but not the Go-facing instance.
 func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (reflex Reflex, residue circuit.Value) {
 	reflex, residue, _ = MaterializeNativeInstance(matter, v, aux...)
 	return
 }
 
+// MaterializeNativeInstance materializes the native implementation v.
+// It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value, interface{}) {
 	w := makeNative(v)
 	r := gate{w, w.Type()}
@@ -98,7 +113,8 @@ func (r *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 	)
 }
 
-// makeNative creates a new value of the same type as like. Pointer types allocate the object pointed to.
+// makeNative creates a new value of the same type as like. 
+// Pointer types allocate the object pointed to.
 func makeNative(like interface{}) Value {
 	t := TypeOf(like)
 	switch t.Kind() {

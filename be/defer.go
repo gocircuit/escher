@@ -21,7 +21,7 @@ type Defer struct {
 	Value
 }
 
-func NewDefer(r Reflex, v Value) MaterializerWithMatter {
+func NewDefer(r Reflex, v Value) Materializer {
 	return &Defer{Reflex: r, Value: v}
 }
 

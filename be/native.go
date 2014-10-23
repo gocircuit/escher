@@ -46,7 +46,7 @@ func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (reflex Ref
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value, interface{}) {
 	w := makeNative(v)
-	r := gate{w, w.Type()}
+	r := gate{matter, w, w.Type()}
 	// Enumerate the valves handled by dedicated methods.
 	dedicated := make(map[circuit.Name]struct{})
 	for i := 0; i < r.Type.NumMethod(); i++ {
@@ -72,12 +72,21 @@ func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Re
 	return reflex, w.Interface().(Native).Spark(eye, matter, aux...), w.Interface()
 }
 
+// gate is a materialized native reflex.
 type gate struct {
+	*Matter
 	Value
 	Type
 }
 
-func (r *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
+func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
+	// Catch panics during cognizing and report their context to the user
+	defer func() {
+		if r := recover(); r != nil {
+			log.Fatalf("Panic\n%v\nRecovered: %v", g.Matter, r)
+		}
+	}()
+
 	// Compute valve string
 	var alias string
 	var letter bool
@@ -91,8 +100,8 @@ func (r *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 
 	// If there is a dedicated method for valve, use that.
 	if letter {
-		if _, ok := r.Type.MethodByName(cognizePrefix + alias); ok {
-			m := r.Value.MethodByName(cognizePrefix + alias)
+		if _, ok := g.Type.MethodByName(cognizePrefix + alias); ok {
+			m := g.Value.MethodByName(cognizePrefix + alias)
 			m.Call(
 				[]Value{
 					ValueOf(eye), 
@@ -103,7 +112,7 @@ func (r *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 		}
 	}
 	// Otherwise call the generic cognizer
-	m := r.Value.MethodByName(cognizeEllipses)
+	m := g.Value.MethodByName(cognizeEllipses)
 	m.Call(
 		[]Value{
 			ValueOf(eye),

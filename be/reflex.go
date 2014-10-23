@@ -28,8 +28,12 @@ type Matter struct {
 	Address Address // Address of the materialized design in memory
 	Design interface{} // Design
 	View Circuit // Valves connected to this design in the enclosing program
-	Path []Name // Materialization path of this reflex, recursively following gate names
+	Path []Name // Path to this reflex within the residual, recursively following gate names
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
+}
+
+func (m *Matter) String() string {
+	return New().Grow("Residue", NewAddress(m.Path...)).Grow("Memory", m.Address).String()
 }
 
 func (m *Matter) Circuit() Circuit {

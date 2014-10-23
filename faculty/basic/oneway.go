@@ -13,6 +13,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
+// OneWay
 type OneWay struct{}
 
 func (OneWay) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
@@ -24,3 +25,24 @@ func (OneWay) CognizeFrom(eye *be.Eye, value interface{}) {
 }
 
 func (OneWay) CognizeTo(eye *be.Eye, value interface{}) {}
+
+// OneWayDoor
+type OneWayDoor struct {
+	ch chan struct{}
+}
+
+func (x *OneWayDoor) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+	x.ch = make(chan struct{}, 1)
+	return nil
+}
+
+func (x *OneWayDoor) CognizeDoor(eye *be.Eye, value interface{}) {
+	x.ch <- struct{}{}
+}
+
+func (x *OneWayDoor) CognizeFrom(eye *be.Eye, value interface{}) {
+	<-x.ch
+	eye.Show("To", value)
+}
+
+func (x *OneWayDoor) CognizeTo(eye *be.Eye, value interface{}) {}

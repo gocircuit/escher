@@ -23,6 +23,8 @@ func init() {
 	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
 	//
 	faculty.Register("OneWay", be.NewNativeMaterializer(OneWay{}))
+	faculty.Register("OneWayDoor", be.NewNativeMaterializer(&OneWayDoor{}))
+	//
 	faculty.Register("Yield", be.NewNativeMaterializer(Yield{}))
 	faculty.Register("Wait", be.NewNativeMaterializer(&Wait{}))
 }

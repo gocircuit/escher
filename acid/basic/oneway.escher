@@ -1,27 +1,16 @@
-
-Door { // : :Strobe :View
-	in Fork
-	in:X = :View
-	in:S = :Strobe
-	in: = out:
-
-	out Fork
-	out:X = :
-}
-
-TestDoor { // test repeated application
-	x Door
-	x:View = testValues
-	x: = m:0
-	x:Strobe = 1 // testValues
+TestOneWayDoor {
+	x OneWayDoor
+	x:From = testValues
+	x:To = m:0
+	x:Door = testValues
 
 	m testing.Match
 	m:1 = testValues
-	m: = Show //wait:View
+	m: = wait:View
 
-//	wait Wait
-//	wait:For = "a"
-//	wait: = os.Exit
+	wait Wait
+	wait:For = "a"
+	wait: = os.Exit
 }
 
 testValues {

@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package draw
+package spin
 
 import (
 	. "github.com/gocircuit/escher/circuit"

@@ -52,7 +52,8 @@ func (m *Matter) Source() Value {
 func (m *Matter) String() string {
 	r := New().
 		Grow("Residue", pathCircuit(m.Path)).
-		Grow("Memory", m.Address)
+		Grow("Memory", m.Address).
+		Grow("View", m.View)
 	if src := m.Source(); src != nil {
 		r.Grow("Source", src)
 	}

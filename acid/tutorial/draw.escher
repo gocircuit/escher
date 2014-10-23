@@ -9,16 +9,17 @@ Draw {
 	}
 	shadow: = x:Memory
 
+	// Materialize the drawing circuit, using the shadowed memory prepared above
 	x escher.Spark
 	x:Residue = Ignore
 	x:Value = {
-		start Star
-		start:0 = {
+		s Star
+		s:0 = {
 			Time 0
 			Position 0+1i
 			Orientation -0.02+0i
 		}
-		start:1 = circle:View
+		s:1 = circle:View
 
 		circle draw.Circle
 		circle: = age:View
@@ -31,6 +32,6 @@ Draw {
 
 		die draw.Die
 		die:At = 3
-		die: = start:2
+		die: = s:2
 	}
 }

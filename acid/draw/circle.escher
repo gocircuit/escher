@@ -1,23 +1,23 @@
 
 Circle {
-	circle CircleWrite
+	circle CircleWriteFull
 	circle: = :
 	circle:View = :View
 	circle:WriteTo = use.Output // use.Output should be planted by the materializer
 }
 
 CircleWrite { // : :View :WriteTo
-	lens Lens
+	lens Show
 
-	j Star
-	j: = lens:X
+	s Star
+	s: = lens:X
 	lens:Y = :View
-	j:0 = oneway:View
-	j:1 = show:X
+	s:0 = oneway:View
 
 	oneway basic.OneWay
-	oneway: = :
-	oneway:Strobe = show:Y
+	oneway: = show:Q
+	show:W = :
+	oneway:Strobe = s:1
 
 	show Show
 
@@ -57,7 +57,7 @@ CircleWriteFull { // : :View :WriteTo
 
 	ow basic.OneWay
 	ow: = :
-	ow:Value = j:2
+	ow:View = j:2
 	ow:Strobe = form:Done
 
 	orient view.QuickFocus

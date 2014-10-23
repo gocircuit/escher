@@ -16,13 +16,13 @@ import (
 
 func init() {
 	faculty.Register("Ignore", be.Ignore{})
-	faculty.Register("Show", MaterializeShow)
 	faculty.Register("See", Scanln{})
 	//
 	faculty.Register("Grow", be.NewNativeMaterializer(&Grow{}))
 	faculty.Register("Fork", be.MaterializeUnion)
 	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
 	//
+	faculty.Register("OneWay", be.NewNativeMaterializer(OneWay{}))
 	faculty.Register("Yield", be.NewNativeMaterializer(Yield{}))
 	faculty.Register("Wait", be.NewNativeMaterializer(&Wait{}))
 }

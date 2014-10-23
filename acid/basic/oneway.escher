@@ -1,5 +1,5 @@
 
-OneWay { // : :Strobe :View
+Door { // : :Strobe :View
 	in Fork
 	in:X = :View
 	in:S = :Strobe
@@ -9,13 +9,23 @@ OneWay { // : :Strobe :View
 	out:X = :
 }
 
-TestOneWay { // test repeated application
-	x OneWay
-	x:View = 3
+TestDoor { // test repeated application
+	x Door
+	x:View = testValues
 	x: = m:0
-	x:Strobe = 0
+	x:Strobe = 1 // testValues
 
 	m testing.Match
-	m:1 = 3
-	m: = os.Exit
+	m:1 = testValues
+	m: = Show //wait:View
+
+//	wait Wait
+//	wait:For = "a"
+//	wait: = os.Exit
+}
+
+testValues {
+	t YieldValues
+	t:Circuit = { 1, 2, 3, "a" }
+	t: = :
 }

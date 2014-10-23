@@ -9,21 +9,9 @@ YieldValues { // : :Circuit
 	yield: = filter:
 
 	filter Fork
-	filter:Value = :
-}
-
-// escher -src acid -shell basic.PlayYield
-PlayYield {
-	y Yield
-	y:Circuit = {1, 2, 3 }
-	y: = Lens
-}
-
-// escher -src acid -shell basic.PlayYieldValues
-PlayYieldValues {
-	y YieldValues
-	y:Circuit = {1, 2, 3 }
-	y: = Lens
+	filter:Value = oneway:From
+	oneway:To = :
+	oneway OneWay
 }
 
 TestYieldValues { // no valves

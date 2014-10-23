@@ -9,6 +9,7 @@ package be
 import (
 	. "github.com/gocircuit/escher/circuit"
 	// . "github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/kit/fs"
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
@@ -32,8 +33,30 @@ type Matter struct {
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }
 
+// Source returns an object describing the source location of the enclosing circuit, if available.
+func (m *Matter) Source() Value {
+	if m.Super == nil {
+		return nil
+	}
+	u, ok := m.Super.Design.(Circuit)
+	if !ok {
+		return nil
+	}
+	s, ok := u.OptionAt(fs.Source{})
+	if !ok {
+		return nil
+	}
+	return s
+}
+
 func (m *Matter) String() string {
-	return New().Grow("Residue", NewAddress(m.Path...)).Grow("Memory", m.Address).String()
+	r := New().
+		Grow("Residue", pathCircuit(m.Path)).
+		Grow("Memory", m.Address)
+	if src := m.Source(); src != nil {
+		r.Grow("Source", src)
+	}
+	return r.String()		
 }
 
 func (m *Matter) Circuit() Circuit {

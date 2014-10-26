@@ -24,7 +24,7 @@ import (
 	fos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/cmplx"
-	_ "github.com/gocircuit/escher/faculty/exp/draw"
+	_ "github.com/gocircuit/escher/faculty/spin"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/path"
@@ -58,12 +58,13 @@ func main() {
 	fos.Init(flagArgs)
 	circuit.Init(*flagDiscover)
 	//
+	idiom := Root()
 	if *flagSrc != "" {
-		Load(Root(), *flagSrc)
+		idiom.Merge(Load(*flagSrc))
 	}
 	// run main
 	if flagMain != "" {
-		exec(see.ParseAddress(flagMain), false)
+		exec(idiom, see.ParseAddress(flagMain), false)
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -79,18 +80,18 @@ func main() {
 				break
 			}
 			fmt.Fprintf(os.Stderr, "executing %v\n\n", u)
-			exec(u, true)
+			exec(idiom, u, true)
 		}
 	}
 }
 
-func exec(v Value, showResidue bool) {
+func exec(idiom Circuit, v Value, showResidue bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("execution glitch (%v)", r)
 		}
 	}()
-	residue := Materialize(Root(), v)
+	residue := Materialize(idiom, v)
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "residue %v\n\n", residue)
 	}

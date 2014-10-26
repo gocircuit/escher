@@ -106,15 +106,56 @@ func (u Circuit) Grow(name Name, value Value) Circuit {
 	return u
 }
 
-func (u Circuit) Refine(name string) Circuit {
-	r := New()
-	u.Grow(name, r)
-	return r
+func (u Circuit) Refine(name Name) Circuit {
+	x, ok := u.OptionAt(name)
+	if !ok {
+		x = New()
+		u.Grow(name, x)
+	}
+	y, ok := x.(Circuit)
+	if !ok {
+		y = New()
+		u.ReGrow(name, y)
+	}
+	return y
+}
+
+func (u Circuit) Place(addr Address, value Value) Value {
+	if len(addr.Path) == 0 {
+		panic("no path")
+	}
+	for i, g := range addr.Path {
+		if i+1 == len(addr.Path) {
+			break
+		}
+		u = u.Refine(g)
+	}
+	return u.Include(addr.Path[len(addr.Path)-1], DeepCopy(value))
 }
 
 func (u Circuit) Abandon(name Name) Circuit {
 	u.Exclude(name)
 	return u
+}
+
+func (u Circuit) Forget(addr Address) Value {
+	if len(addr.Path) == 0 {
+		panic("no path")
+	}
+	for i, g := range addr.Path {
+		if i+1 == len(addr.Path) {
+			break
+		}
+		x, ok := u.OptionAt(g)
+		if !ok {
+			return nil
+		}
+		u, ok = x.(Circuit)
+		if !ok {
+			return nil
+		}
+	}
+	return u.Exclude(addr.Path[len(addr.Path)-1])
 }
 
 func (u Circuit) Rename(x, y Name) Circuit {
@@ -126,6 +167,19 @@ func (u Circuit) Rename(x, y Name) Circuit {
 		panic("over")
 	}
 	return u
+}
+
+func (u Circuit) Lookup(addr Address) (v Value) {
+	defer func() {
+		if r := recover(); r != nil {
+			v = nil
+		}
+	}()
+	v = u
+	for _, name := range addr.Path {
+		v = v.(Circuit).At(name)
+	}
+	return DeepCopy(v)
 }
 
 func (u Circuit) Goto(gate ...Name) Value {
@@ -141,6 +195,27 @@ func (u Circuit) Goto(gate ...Name) Value {
 		}
 	}
 	return x
+}
+
+func (u Circuit) Merge(v Circuit) {
+	for n, g := range v.Gate {
+		switch t := g.(type) {
+		case Circuit:
+			h, ok := u.OptionAt(n)
+			if !ok {
+				u.Include(n, g)
+				break
+			}
+			w, ok := h.(Circuit)
+			if !ok {
+				u.Include(n, g)
+				break
+			}
+			w.Merge(t)
+		default:
+			u.Include(n, g)
+		}
+	}
 }
 
 // Assembly

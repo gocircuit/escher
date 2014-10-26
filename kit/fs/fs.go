@@ -15,31 +15,30 @@ import (
 	"path"
 
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/kit/reservoir"
 	"github.com/gocircuit/escher/see"
 )
 
-func Load(into Reservoir, filedir string) {
+func Load(filedir string) Circuit {
 	fi, err := os.Stat(filedir)
 	if err != nil {
 		log.Fatalf("cannot read source file %s (%v)", filedir, err)
 	}
 	if fi.IsDir() {
-		loadDirectory(into, filedir)
-	} else {
-		loadFile(into, "", filedir)
-	}
+		return loadDirectory(filedir)
+	} 
+	return loadFile("", filedir)
 }
 
 // loadDirectory ...
-func loadDirectory(into Reservoir, dir string) {
+func loadDirectory(dir string) Circuit {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
 	//
-	into.Put(NewAddress(Source{}), New().Grow("Dir", dir))
+	x := New()
+	x.Include(Source{}, New().Grow("Dir", dir))
 	//
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
@@ -48,23 +47,24 @@ func loadDirectory(into Reservoir, dir string) {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
-			fn := NewAddress(fileInfo.Name())
-			loadDirectory(Restrict(into, fn), filePath)
+			x.Include(fileInfo.Name(), loadDirectory(filePath))
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
 			continue
 		}
-		loadFile(into, dir, filePath)
+		x.Merge(loadFile(dir, filePath))
 	}
+	return x
 }
 
 // loadFile ...
-func loadFile(into Reservoir, dir, file string) {
+func loadFile(dir, file string) Circuit {
 	text, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", file, err)
 	}
+	x := New()
 	src := see.NewSrcString(string(text))
 	for {
 		n_, u_ := see.SeePeer(src)
@@ -74,13 +74,14 @@ func loadFile(into Reservoir, dir, file string) {
 		n := n_.(string) // n is a string
 		u := u_.(Circuit)
 		u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
-		into.Put(NewAddress(n), u)
+		x.Include(n, u)
 	}
+	return x
 }
 
 // Source is a name type for a genus structure.
 type Source struct{}
 
 func (Source) String() string {
-	return "Source"
+	return "(SourceInfo)"
 }

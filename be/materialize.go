@@ -13,40 +13,38 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
-type Getter interface {
-	Get(Address) Value
-}
-
-func Materialize(memory Getter, design Value) (residual Value) {
+func Materialize(idiom Circuit, design Value) (residual Value) {
 	var reflex Reflex
-	reflex, residual = materialize(memory, design)
+	reflex, residual = materialize(idiom, design)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func materialize(memory Getter, design Value) (reflex Reflex, residual Value) {
-	b := NewRenderer(memory)
+func materialize(idiom Circuit, design Value) (reflex Reflex, residual Value) {
+	renderer := NewRenderer(idiom)
 	matter := &Matter{
+		Idiom: idiom,
 		Design: design,
 		View: Circuit{},
 		Path: []Name{},
 		Super: nil,
 	}
-	return b.Materialize(matter, design, true)
+	return renderer.Materialize(matter, design, true)
 }
 
 type Renderer struct {
-	memory Getter
+	idiom Circuit
 }
 
-func NewRenderer(memory Getter) *Renderer {
-	return &Renderer{memory}
+func NewRenderer(idiom Circuit) *Renderer {
+	return &Renderer{idiom}
 }
 
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 	matter := &Matter{
+		Idiom: b.idiom,
 		View: Circuit{},
 		Path: []Name{},
 		Super: nil,
@@ -88,7 +86,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 		if len(enclosing.Path) > 0 {
 			abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
 			abs = abs.Append(addr)
-			val = b.memory.Get(abs)
+			val = b.memory.Lookup(abs)
 			if val != nil {
 				addr = abs
 			}
@@ -96,7 +94,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	}
 	// if not found locally, find the addr starting from root
 	if val == nil {
-		val = b.memory.Get(addr)
+		val = b.memory.Lookup(addr)
 	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)
@@ -146,6 +144,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		if Same(m, SpiritAddress) { // create spirit gates
 			gates[g], gv, spirit[g] = MaterializeNativeInstance(
 				&Matter{
+					Idiom: b.idiom,
 					Address: Address{},
 					Design: m,
 					View: u.View(g),
@@ -157,6 +156,7 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		} else {
 			gates[g], gv = b.Materialize(
 				&Matter{
+					Idiom: b.idiom,
 					Address: Address{},
 					Design: m,
 					View: u.View(g),

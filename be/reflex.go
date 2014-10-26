@@ -26,6 +26,7 @@ type Native interface {
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
+	Idiom Circuit // Idiom used to materialize
 	Address Address // Address of the materialized design in memory
 	Design interface{} // Design
 	View Circuit // Valves connected to this design in the enclosing program

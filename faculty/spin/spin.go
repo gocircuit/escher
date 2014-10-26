@@ -23,11 +23,12 @@ import (
 */
 
 func init() {
-	faculty.Register("draw.Age", be.NewNativeMaterializer(Age{}))
-	faculty.Register("draw.Die", be.NewNativeMaterializer(&Die{}))
-	faculty.Register("draw.Split", be.NewNativeMaterializer(&Split{}))
-	faculty.Register("draw.Dilate", be.NewNativeMaterializer(&Dilate{}))
-	faculty.Register("draw.Move", be.NewNativeMaterializer(Move{}))
+	faculty.Register("spin.Age", be.NewNativeMaterializer(Age{}))
+	faculty.Register("spin.Die", be.NewNativeMaterializer(&Die{}))
+	faculty.Register("spin.Split", be.NewNativeMaterializer(&Split{}))
+	//
+	faculty.Register("spin.Dilate", be.NewNativeMaterializer(&Dilate{}))
+	faculty.Register("spin.Move", be.NewNativeMaterializer(Move{}))
 }
 
 // Age…

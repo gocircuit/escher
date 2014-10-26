@@ -17,16 +17,5 @@ import (
 func init() {
 	faculty.Register("escher.Materialize", be.NewNativeMaterializer(Materialize{}))
 	faculty.Register("escher.Parse", be.NewNativeMaterializer(Parse{}))
-	// reservoir 
-	faculty.Register("escher.Reservoir", be.NewNativeMaterializer(&ReservoirNoun{}))
-	faculty.Register("escher.Put", be.NewNativeMaterializer(&ReservoirVerb{}))
-	faculty.Register("escher.Get", be.NewNativeMaterializer(&ReservoirVerb{}))
-	faculty.Register("escher.Forget", be.NewNativeMaterializer(&ReservoirVerb{}))
-	// 
-	faculty.Register("escher.Shadow", be.NewNativeMaterializer(ReservoirShadow{}))
-	// default memory
-	faculty.Register("Memory", be.NewNativeMaterializer(&ReservoirNoun{}, faculty.Root()))
-	faculty.Register("Put", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
-	faculty.Register("Get", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
-	faculty.Register("Forget", be.NewNativeMaterializer(&ReservoirVerb{}, faculty.Root()))
+	faculty.Register("escher.Idiom", be.NewNativeMaterializer(Idiom{}))
 }

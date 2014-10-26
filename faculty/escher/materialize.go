@@ -23,11 +23,11 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	v := value.(Circuit)
-	mem := v.At("Memory").(be.Getter)
+	idiom := v.At("Idiom").(be.Idiom)
 	op := v.At("Value")
-	residual := be.Materialize(mem, op)
+	residual := be.Materialize(idiom, op)
 	after :=  New().
-		Grow("Memory", mem).
+		Grow("Idiom", idiom).
 		Grow("Value", op).
 		Grow("Residue", residual)
 	// if len(reflex) > 0 {

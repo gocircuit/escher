@@ -7,17 +7,23 @@
 package faculty
 
 import (
+	"sync"
+
 	. "github.com/gocircuit/escher/see"
 	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/kit/reservoir"
 )
 
-var root = NewReservoir()
+var lk sync.Mutex
+var root = New()
 
-func Root() Reservoir {
-	return root
+func Root() Circuit {
+	lk.Lock()
+	defer lk.Unlock()
+	return root.DeepCopy()
 }
 
 func Register(name string, v interface{}) {
-	root.Put(ParseAddress(name), v)
+	lk.Lock()
+	defer lk.Unlock()
+	root.Place(ParseAddress(name), v)
 }

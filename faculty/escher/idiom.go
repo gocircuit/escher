@@ -11,25 +11,23 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
-	"github.com/gocircuit/escher/kit/plumb"
 )
 
 type Idiom struct {
 	Circuit
 }
 
-func (n Idiom) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
-	n.Idiom = matter.Idiom.DeepCopy()
+func (n Idiom) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+	n.Circuit = matter.Idiom.DeepCopy()
 	go func() {
 		for vlv, _ := range matter.View.Gate {
-			eye.Show(vlv, n.Idiom)
+			eye.Show(vlv, n.Circuit)
 		}
 	}()
 	if matter.View.Len() == 0 {
-		return n.Idiom
+		return n.Circuit
 	}
 	return nil
 }
 
-func (n Idiom) OverCognize(*Eye, Name, interface{}) {}
+func (n Idiom) OverCognize(*be.Eye, Name, interface{}) {}

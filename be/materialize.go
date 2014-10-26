@@ -86,7 +86,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 		if len(enclosing.Path) > 0 {
 			abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
 			abs = abs.Append(addr)
-			val = b.memory.Lookup(abs)
+			val = b.idiom.Lookup(abs)
 			if val != nil {
 				addr = abs
 			}
@@ -94,7 +94,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	}
 	// if not found locally, find the addr starting from root
 	if val == nil {
-		val = b.memory.Lookup(addr)
+		val = b.idiom.Lookup(addr)
 	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)

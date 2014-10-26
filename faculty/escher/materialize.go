@@ -23,7 +23,7 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	v := value.(Circuit)
-	idiom := v.At("Idiom").(be.Idiom)
+	idiom := v.CircuitAt("Idiom")
 	op := v.At("Value")
 	residual := be.Materialize(idiom, op)
 	after :=  New().

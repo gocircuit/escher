@@ -14,10 +14,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func MaterializeUnion(matter *Matter) (Reflex, Value) {
-	return MaterializeNative(matter, &Union{})
-}
-
 type Union struct {
 	field []Name
 	sync.Mutex

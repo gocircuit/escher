@@ -19,6 +19,7 @@ func init() {
 	faculty.Register("testing.Match", be.NewNativeMaterializer(&Match{}))
 }
 
+// 
 type Match struct {
 	sync.Mutex
 	sign map[Name]int

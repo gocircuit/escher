@@ -18,19 +18,19 @@ import (
 
 type Stdin struct{}
 
-func (Stdin) Materialize() (be.Reflex, Value) {
+func (Stdin) Materialize(*be.Matter) (be.Reflex, Value) {
 	return MaterializeReadFrom(os.Stdin)
 }
 
 type Stdout struct{}
 
-func (Stdout) Materialize() (be.Reflex, Value) {
+func (Stdout) Materialize(*be.Matter) (be.Reflex, Value) {
 	return MaterializeWriteTo(os.Stdout)
 }
 
 type Stderr struct{}
 
-func (Stderr) Materialize() (be.Reflex, Value) {
+func (Stderr) Materialize(*be.Matter) (be.Reflex, Value) {
 	return MaterializeWriteTo(os.Stderr)
 }
 

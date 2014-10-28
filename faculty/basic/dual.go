@@ -19,7 +19,7 @@ func init() {
 	faculty.Register("See", Scanln{})
 	//
 	faculty.Register("Grow", be.NewNativeMaterializer(&Grow{}))
-	faculty.Register("Fork", be.MaterializeUnion)
+	faculty.Register("Fork", be.NewNativeMaterializer(&be.Union{}))
 	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
 	//
 	faculty.Register("OneWay", be.NewNativeMaterializer(OneWay{}))

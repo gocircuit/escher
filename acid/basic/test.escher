@@ -1,0 +1,13 @@
+
+TestFork {
+	x Fork
+	x:Data = {1, 2, 3}
+	x:Form = "hello"
+	x: = match:Got
+	match:Expected = {
+		Data {1, 2, 3}
+		Form "hello"
+	}
+	match testing.Match
+	match: = os.Exit
+}

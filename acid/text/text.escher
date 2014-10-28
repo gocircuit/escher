@@ -17,10 +17,3 @@ TestForm {
 	x:Data = {}
 	x:Form = "hello"
 }
-
-TestFork {
-	x Fork
-	x:Data = {}
-	x:Form = "hello"
-	x: = Show
-}

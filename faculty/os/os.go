@@ -40,7 +40,7 @@ func argCircuit(arg []string) Circuit {
 // Env
 type Env struct{}
 
-func (Env) Materialize() (be.Reflex, Value) {
+func (Env) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve Name, value interface{}) {
 			if valve != "Name" {
@@ -62,7 +62,7 @@ func (Env) Materialize() (be.Reflex, Value) {
 // Exit
 type Exit struct{}
 
-func (Exit) Materialize() (be.Reflex, Value) {
+func (Exit) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve Name, value interface{}) {
 			switch t := value.(type) {
@@ -80,7 +80,7 @@ func (Exit) Materialize() (be.Reflex, Value) {
 // Fatal
 type Fatal struct{}
 
-func (Fatal) Materialize() (be.Reflex, Value) {
+func (Fatal) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve Name, value interface{}) {
 			log.Fatalln(value)
@@ -93,7 +93,7 @@ func (Fatal) Materialize() (be.Reflex, Value) {
 // LookPath
 type LookPath struct{}
 
-func (LookPath) Materialize() (be.Reflex, Value) {
+func (LookPath) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer(
 		func(eye *be.Eye, valve Name, value interface{}) {
 			if valve != "Name" {

@@ -29,9 +29,7 @@ func (Form) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 }
 
 func (Form) CognizeIn(eye *be.Eye, v interface{}) {
-	println("xxx")
 	td := v.(Circuit)
-	println("xxx")
 	t, err := template.New("").Parse(td.StringAt("Form"))
 	if err != nil {
 		panic(err)

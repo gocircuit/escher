@@ -1,4 +1,4 @@
-SimpleForm { // : :Form :Data
+QuickForm { // : :Form :Data
 	form text.Form
 	form:In = x:
 	form:Out = :
@@ -9,11 +9,8 @@ SimpleForm { // : :Form :Data
 }
 
 TestForm {
-	form text.Form
-	form:In = x:
-	form:Out = Show
-
-	x Fork
-	x:Data = {}
-	x:Form = "hello"
+	form QuickForm
+	form:Data = {Who "world"}
+	form:Form = "hello {{.Gate.Who}}"
+	form: = os.Exit
 }

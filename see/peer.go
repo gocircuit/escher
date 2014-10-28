@@ -35,7 +35,9 @@ func seeNameGate(src *Src) (n Name, m Value) {
 	if left == "" {
 		panic("no gate name")
 	}
-	Whitespace(t)
+	if len(Whitespace(t)) == 0 {
+		panic("no whitespace after name")
+	}
 	right := SeeValue(t)
 	if !Space(t) { // require newline at end
 		return nil, nil

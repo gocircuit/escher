@@ -92,6 +92,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 			}
 		}
 	}
+
 	// if not found locally, find the addr starting from root
 	if val == nil {
 		val = b.idiom.Lookup(addr)
@@ -104,7 +105,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 	}
 	matter.Address = addr
 	matter.Design = val
-	return b.Materialize(matter, val, !monkey)
+	return b.Materialize(matter, val, true)
 }
 
 func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, Value) {
@@ -201,15 +202,15 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
 	// log.Printf(" %v:%v <=> %v:%v", sg, sv, tg, tv)
 	if _, ok := gates[sg]; !ok {
-		log.Fatalf("Unknown gate %v in circuit:\n%v\n", sg, u)
+		log.Fatalf("In circuit:\n%v\nHas no gate %v\n",u,  sg)
 	}
 	if _, ok := gates[tg]; !ok {
-		log.Fatalf("Unknown gate %v in circuit:\n%v\n", tg, u)
+		log.Fatalf("In circuit:\n%v\nHas no gate %v\n",u,  tg)
 	}
 	if _, ok := gates[sg][sv]; !ok {
-		log.Fatalf("Unknown valve %v:%v in circuit:\n%v\n", sg, sv, u)
+		log.Fatalf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  sg, sv)
 	}
 	if _, ok := gates[tg][tv]; !ok {
-		log.Fatalf("Unknown valve %v:%v in circuit:\n%v\n", tg, tv, u)
+		log.Fatalf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  tg, tv)
 	}
 }

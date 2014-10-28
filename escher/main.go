@@ -79,7 +79,7 @@ func main() {
 			if u == nil || u.(Circuit).Len() == 0 {
 				break
 			}
-			fmt.Fprintf(os.Stderr, "executing %v\n\n", u)
+			fmt.Fprintf(os.Stderr, "EXECUTING %v\n\n", u)
 			exec(idiom, u, true)
 		}
 	}
@@ -93,6 +93,6 @@ func exec(idiom Circuit, v Value, showResidue bool) {
 	}()
 	residue := Materialize(idiom, v)
 	if showResidue {
-		fmt.Fprintf(os.Stderr, "residue %v\n\n", residue)
+		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)
 	}
 }

@@ -72,9 +72,10 @@ func loadFile(dir, file string) Circuit {
 			break
 		}
 		n := n_.(string) // n is a string
-		u := u_.(Circuit)
-		u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
-		x.Include(n, u)
+		if u, ok := u_.(Circuit); ok {
+			u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
+		}
+		x.Include(n, u_)
 	}
 	return x
 }

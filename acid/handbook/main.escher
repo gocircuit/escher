@@ -1,10 +1,14 @@
 main {
-        x Fork
-        x: = os.Exit
+	x Fork
+	x: = os.Exit
 
-        x:1 = BuildIndexPage
-        x:2 = BuildInstallPage
-        x:3 = BuildSyntaxPage
-        x:4 = BuildMaterializePage
-        x:5 = BuildCommandPage
+	x:1 = BuildIndexPage
+	x:2 = BuildInstallPage
+	x:3 = BuildSyntaxPage
+	x:4 = BuildMaterializePage
+	x:5 = BuildCommandPage
+}
+
+main2 {
+	os.Exit = BuildIndexPage
 }

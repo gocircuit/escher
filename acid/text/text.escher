@@ -1,21 +1,26 @@
+SimpleForm { // : :Form :Data
+	form text.Form
+	form:In = x:
+	form:Out = :
 
-ForkFormWithDone { // : :Form :Data :When :Done
-	fork Fork
-	fork:Form = :Form
-	fork:Data = :Data
-	fork:When = :When
-
-	t text.Form
-	t:In = fork:
-	t:Out = :
-	t:Done = :Done
+	x Fork
+	x:Data = :Data
+	x:Form = :Form
 }
 
-ForkForm {
-	ff ForkFormWithDone
-	ff:Form = :Form
-	ff:Data = :Data
-	ff:When = 0
-	ff:Done = Ignore
-	ff: = :
+TestForm {
+	form text.Form
+	form:In = x:
+	form:Out = Show
+
+	x Fork
+	x:Data = {}
+	x:Form = "hello"
+}
+
+TestFork {
+	x Fork
+	x:Data = {}
+	x:Form = "hello"
+	x: = Show
 }

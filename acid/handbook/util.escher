@@ -85,14 +85,3 @@ TestPngSvg {
 	ps:Width = "300px"
 	ps: = Show
 }
-
-// Form has valves ForkForm, Data and the default.
-Form {
-	fork Fork
-	fork:Form = :Form
-	fork:Data = :Data
-
-	t text.Form
-	t:In = fork:
-	t:Out = :
-}

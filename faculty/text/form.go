@@ -14,7 +14,14 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
-// Form …
+// Form has two valves In and Out.
+// The In valve expects circuits of the form:
+//	{
+//		Form string
+//		Data interface{}
+//	}
+// The Out valve emits the rendered string.
+//
 type Form struct{}
 
 func (Form) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
@@ -22,7 +29,9 @@ func (Form) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 }
 
 func (Form) CognizeIn(eye *be.Eye, v interface{}) {
+	println("xxx")
 	td := v.(Circuit)
+	println("xxx")
 	t, err := template.New("").Parse(td.StringAt("Form"))
 	if err != nil {
 		panic(err)
@@ -32,24 +41,19 @@ func (Form) CognizeIn(eye *be.Eye, v interface{}) {
 		panic(err)
 	}
 	eye.Show("Out", w.String())
-	if when, ok := td.OptionAt("When"); ok {
-		eye.Show("Done", when)
-	}
 }
-
-func (Form) CognizeDone(eye *be.Eye, v interface{}) {}
 
 func (Form) CognizeOut(eye *be.Eye, v interface{}) {}
 
-func gateHierarchy(u Circuit) map[string]interface{} { // not used
-	r := make(map[string]interface{})
-	for g, v := range u.Gates() {
-		switch t := v.(type) {
-		case Circuit:
-			r[g.(string)] = gateHierarchy(t)
-		default:
-			r[g.(string)] = v
-		}
-	}
-	return r
-}
+// func gateHierarchy(u Circuit) map[string]interface{} { // not used
+// 	r := make(map[string]interface{})
+// 	for g, v := range u.Gates() {
+// 		switch t := v.(type) {
+// 		case Circuit:
+// 			r[g.(string)] = gateHierarchy(t)
+// 		default:
+// 			r[g.(string)] = v
+// 		}
+// 	}
+// 	return r
+// }

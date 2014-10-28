@@ -20,6 +20,9 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 	if u.IsNil() {
 		return "<nil>"
 	}
+	if len(u.Gate) + len(u.Flow) == 0 {
+		return "{}"
+	}
 	if recurse == 0 {
 		return "{…}"
 	}

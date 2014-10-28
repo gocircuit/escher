@@ -19,7 +19,7 @@ import (
 // Process
 type Process struct{}
 
-func (x Process) Materialize() (be.Reflex, Value) {
+func (x Process) Materialize(*be.Matter) (be.Reflex, Value) {
 	p := &process{
 		spawn: make(chan interface{}),
 	}

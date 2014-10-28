@@ -124,7 +124,8 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 		}
 		return MaterializeNoun(matter, t)
 	default:
-		return MaterializeNoun(matter, t)
+		log.Fatalf("Source address %v points to unknown type %T", matter.Address, x)
+		// return MaterializeNoun(matter, t)
 	}
 	panic(0)
 }

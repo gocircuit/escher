@@ -22,7 +22,7 @@ func init() {
 // Delay…
 type Delay struct{}
 
-func (Delay) Materialize() (be.Reflex, Value) {
+func (Delay) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, eye := be.NewEye("X", "Y", "Duration")
 	go func() {
 		ds := make(chan time.Duration, 2)

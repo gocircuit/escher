@@ -21,7 +21,7 @@ import (
 // Docker
 type Docker struct{}
 
-func (x Docker) Materialize() (be.Reflex, Value) {
+func (x Docker) Materialize(*be.Matter) (be.Reflex, Value) {
 	p := &docker{
 		spawn: make(chan interface{}),
 	}

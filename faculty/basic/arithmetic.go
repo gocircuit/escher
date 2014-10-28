@@ -44,7 +44,7 @@ func (IntString) CognizeString(eye *be.Eye, v interface{}) {
 // Sum
 type Sum struct{}
 
-func (Sum) Materialize() (be.Reflex, Value) {
+func (Sum) Materialize(*be.Matter) (be.Reflex, Value) {
 	x := &sum{lit: New()}
 	reflex, _ := be.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
 	return reflex, Sum{}

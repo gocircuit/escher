@@ -16,7 +16,7 @@ import (
 
 func init() {
 	faculty.Register("Ignore", be.Ignore{})
-	faculty.Register("See", Scanln{})
+	faculty.Register("Scanln", Scanln{})
 	//
 	faculty.Register("Grow", be.NewNativeMaterializer(&Grow{}))
 	faculty.Register("Fork", be.NewNativeMaterializer(&be.Union{}))
@@ -33,7 +33,7 @@ func init() {
 // Scanln
 type Scanln struct{}
 
-func (Scanln) Materialize() (be.Reflex, Value) {
+func (Scanln) Materialize(*be.Matter) (be.Reflex, Value) {
 	s, t := be.NewSynapse()
 	go func() {
 		r := s.Focus(be.DontCognize)
@@ -51,7 +51,7 @@ func (Scanln) Materialize() (be.Reflex, Value) {
 // Println
 type Println struct{}
 
-func (Println) Materialize() (be.Reflex, Value) {
+func (Println) Materialize(*be.Matter) (be.Reflex, Value) {
 	s, t := be.NewSynapse()
 	go func() {
 		s.Focus(

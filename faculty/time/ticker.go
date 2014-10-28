@@ -17,7 +17,7 @@ import (
 // Ticker
 type Ticker struct{}
 
-func (Ticker) Materialize() (be.Reflex, Value) {
+func (Ticker) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, eye := be.NewEye("Tick", "Duration")
 	go func() {
 		for {

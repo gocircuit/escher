@@ -1,5 +1,5 @@
 Html { // : :Title :Body
-	t Form
+	t text.QuickForm
 	t:Form = `<!doctype html><html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">

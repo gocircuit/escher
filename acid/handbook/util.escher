@@ -15,7 +15,7 @@ FigurePngSvgRight { // Caption, Image, Width, Right and default
 }
 
 LeftRight { // Left, Right and default valves
-	t Form
+	t text.QuickForm
 	t:Data = f:
 	f Fork
 	f:Left = :Left
@@ -41,7 +41,7 @@ FigurePngSvg { // Caption, Image, Width and default
 }
 
 Figure { // Body, Caption and default valves
-	t Form
+	t text.QuickForm
 	t:Form = `
 	<p><center>
 	<figure class="shadowless">
@@ -66,7 +66,7 @@ TestFigure {
 }
 
 PngSvg { // Name and default valves
-	t Form
+	t text.QuickForm
 	t:Form = `<object data="img/{{.Gate.Name}}.svg" type="image/svg+xml" width="{{.Gate.Width}}">
 		<img src="img/{{.Gate.Name}}.png" alt="" />
 	</object>`

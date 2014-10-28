@@ -12,7 +12,7 @@ InstallPage {
         h:Title = "Building and installing Escher"
         h:Body = t:
 
-        t Form
+        t text.QuickForm
         t:Data = {}
         t:Form = `
 <h1>Bulding and installing Escher</h1>

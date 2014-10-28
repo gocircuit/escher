@@ -24,7 +24,7 @@ SyntaxPage {
 		labeled as “X”, “Y” and “” (the empty string). 
 		The <a href="#links">source for this circuit</a> is given in a later section below.`
 
-	t Form
+	t text.QuickForm
 	t:Data = f:
 	t:Form = `
 <h1>Syntax and meaning</h1>

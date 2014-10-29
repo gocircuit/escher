@@ -1,33 +1,12 @@
-
-MemoryShadow { // : :Shadow
-	shadow escher.Shadow
-	shadow:View = sv:
-	shadow: = :
-
-	sv Fork
-	sv:Shadow = :Shadow
-	sv:Reservoir = Memory
-}
-
-Spark { // :Memory :Value :Residue
+QuickMaterialize { // :Idiom :Value -> :Residue
 	x escher.Materialize
-	x:Before = before:
-	x:After = after:
+	x:Before = ybefore:
+	x:After = yafter:
 
-	before Fork
-	before:Memory = :Memory
-	before:Value = :Value
+	ybefore Fork
+	ybefore:Idiom = :Idiom
+	ybefore:Value = :Value
 
-	after Fork
-	after:Residue = :Residue
-}
-
-_TestSpark {
-	s escher.Spark
-	s:Memory = Memory
-	s:Residue = Show
-	s:Value = { 
-		Show = escher.Spirit
-		x "x"
-	}
+	yafter Fork
+	yafter:Residue = :Residue
 }

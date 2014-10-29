@@ -7,12 +7,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"os"
 	"os/signal"
 	"runtime"
-	"runtime/pprof"
 	"time"
 )
 
@@ -48,11 +46,4 @@ func InstallGoroutineWatch() {
 func fatalf(format string, arg ...interface{}) {
 	println(fmt.Sprintf(format, arg...))
 	os.Exit(1)
-}
-
-func stack() {
-	var w bytes.Buffer
-	p := pprof.Lookup("goroutine")
-	p.WriteTo(&w, 1)
-	println(w.String())
 }

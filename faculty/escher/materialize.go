@@ -15,6 +15,20 @@ import (
 )
 
 // Materialize
+//
+// On Before, Materialize receives:
+//	{
+//		Idiom Circuit	// namespace of values
+//		Value Value	// value to materialize
+//	}
+//
+// On After, Materialize sends:
+//	{
+//		Idiom Circuit
+//		Value Value
+//		Residue Value
+//	}
+//
 type Materialize struct{}
 
 func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {

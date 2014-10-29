@@ -16,3 +16,15 @@ MatchOneAndExit { // :Expected :Got
 	door:From = 0 // send 0 to os.Exit on success
 	door:To = os.Exit
 }
+
+// All runs all test circuits within the idiom.
+// Test circuits are named Test*, wherein * must be non-empty
+// and must begin with an upper case letter.
+All {
+	depth model.DepthFirst
+	depth:Circuit = escher.Idiom
+	depth: = filter:In
+
+	filter testing.FilterAll
+	filter:Out = Show
+}

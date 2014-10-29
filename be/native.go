@@ -9,9 +9,11 @@ package be
 import (
 	"fmt"
 	"log"
+	"os"
 	. "reflect"
 
 	"github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/kit/runtime"
 )
 
 const cognizePrefix = "Cognize"
@@ -83,7 +85,9 @@ func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 	// Catch panics during cognizing and report their context to the user
 	defer func() {
 		if r := recover(); r != nil {
-			log.Fatalf("Panic\n%v\nRecovered: %v", g.Matter, r)
+			log.Printf("Panic:\n%v\nRecovered: %v\n\n", g.Matter, r)
+			runtime.PrintStack()
+			os.Exit(1)
 		}
 	}()
 

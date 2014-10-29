@@ -92,6 +92,11 @@ func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 	return Address{}, false
 }
 
+func (u Circuit) Has(name Name) bool {
+	_, ok := u.Gate[name]
+	return ok
+}
+
 // Series-application methods
 
 func (u Circuit) ReGrow(name Name, value Value) Circuit {

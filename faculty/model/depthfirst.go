@@ -16,7 +16,7 @@ import (
 type DepthFirst struct{}
 
 func (DepthFirst) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
-	return DepthFirst{}
+	return nil
 }
 
 func (DepthFirst) CognizeCircuit(eye *be.Eye, v interface{}) {
@@ -31,15 +31,22 @@ func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
 	for n, v := range x.Gate {
 		depthFirst(eye, append(walk, n), v)
 	}
-	eye.Show(
-		DefaultValve, 
-		New().
-			Grow("Path", (Address{walk}).Circuit()).
-			Grow("View", x),
-	)
-	if len(walk) == 0 {
-		eye.Show(DefaultValve, nil) // EOF
+
+	var nm Name = "" // The root circuit is shown with the empty name
+	if len(walk) > 0 {
+		nm = walk[len(walk)-1]
 	}
+	
+	r := New().
+		Grow("Path", (Address{walk}).Circuit()).
+		Grow("Name", nm).
+		Grow("View", x)
+	
+	if len(walk) == 0 {
+		r.Grow("#Root", 1).Grow("#End", 1)
+	}
+
+	eye.Show(DefaultValve, r)
 }
 
 func (DepthFirst) Cognize(eye *be.Eye, v interface{}) {}

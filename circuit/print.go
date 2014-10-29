@@ -42,9 +42,6 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 
 	// letters
 	for _, n := range u.SortedLetters() {
-		if len(n) > 0 && n[0] == '#' { // skip sugar gates
-			continue
-		}
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
 		PrintValue(&w, prefix+indent, indent, n, p, recurse)

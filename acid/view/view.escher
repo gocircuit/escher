@@ -19,7 +19,7 @@ QuickAssociate {
 	y:Value = :Value
 }
 
-TestAssociate {
+_TestAssociate {
 	a QuickAssociate
 	a:Root = { A "abc" }
 	a:Name = "B"

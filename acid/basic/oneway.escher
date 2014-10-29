@@ -1,4 +1,4 @@
-TestOneWayDoor {
+_TestOneWayDoor {
 	x OneWayDoor
 	x:From = testValues
 	x:To = match:0

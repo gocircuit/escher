@@ -58,7 +58,7 @@ Figure { // Body, Caption and default valves
 	t: = :
 }
 
-TestFigure {
+_TestFigure {
 	fig Figure
 	fig:Body = "body"
 	fig:Caption = "caption"
@@ -79,7 +79,7 @@ PngSvg { // Name and default valves
 	t: = :
 }
 
-TestPngSvg {
+_TestPngSvg {
 	ps PngSvg
 	ps:Name = "NAME"
 	ps:Width = "300px"

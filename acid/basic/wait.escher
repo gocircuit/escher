@@ -1,7 +1,6 @@
 
 
-
-TestWait {
+_TestWait {
 	wait Wait
 	wait:View = 1
 	wait:For = 1

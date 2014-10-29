@@ -22,7 +22,7 @@ Spark { // :Memory :Value :Residue
 	after:Residue = :Residue
 }
 
-TestSpark {
+_TestSpark {
 	s escher.Spark
 	s:Memory = Memory
 	s:Residue = Show

@@ -19,6 +19,9 @@ func init() {
 	faculty.Register("testing.Match", be.NewNativeMaterializer(&Match{}))
 }
 
+// TODO: Make sure matching works when opposing streams come at different speeds
+// Rename gates to Got and Expected.
+
 // 
 type Match struct {
 	sync.Mutex

@@ -8,7 +8,3 @@ main {
 	x:4 = BuildMaterializePage
 	x:5 = BuildCommandPage
 }
-
-main2 {
-	os.Exit = BuildIndexPage
-}

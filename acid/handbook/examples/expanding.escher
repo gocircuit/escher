@@ -1,0 +1,30 @@
+
+Employees {
+	Manager gov.Eric
+	Engineer Petar
+	Project {
+		Name "XData"
+		Location Arlington
+	}
+	Manager:Supervises = Engineer:SupervisedBy
+}
+
+gov {
+	Eric {
+		First "Eric"
+		Last "Whyne"
+		:Supervises = Ignore
+	}
+}
+
+Petar {
+	First "Petar"
+	Last "Maymounkov"
+	Home "Brooklyn"
+	First:Lives = Home:
+	:SupervisedBy = Ignore
+}
+
+Brooklyn {
+	Address "Brooklyn, NY"
+}

@@ -9,5 +9,5 @@ TestFork {
 		Form "hello"
 	}
 
-	match testing.MatchAndExit
+	match testing.MatchOneAndExit
 }

@@ -1,5 +1,8 @@
-
-MatchAndExit { // :Expected :Got
+//
+// MatchOneAndExit matches the singular values incoming 
+// on :Expected and :Got and then exits successfully (with exit code 0).
+//
+MatchOneAndExit { // :Expected :Got
 	match testing.Match
 	match:Expected = :Expected
 	match:Got = :Got

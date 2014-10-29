@@ -12,5 +12,8 @@ TestForm {
 	form QuickForm
 	form:Data = {Who "world"}
 	form:Form = "hello {{.Gate.Who}}"
-	form: = os.Exit
+	form: = match:Got
+
+	match testing.MatchOneAndExit
+	match:Expected = "hello world"
 }

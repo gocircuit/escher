@@ -25,8 +25,8 @@ func init() {
 // 
 type Match struct {
 	sync.Mutex
-	sign map[Name]int
-	history []Circuit
+	sign map[Name]int // name -> index in history slice
+	history []Circuit // histories of the two opposing valves
 }
 
 func (m *Match) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {

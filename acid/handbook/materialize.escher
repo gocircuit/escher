@@ -1,4 +1,3 @@
-
 BuildMaterializePage {
         file io.util.WriteFile
         file:Content = MaterializePage
@@ -13,238 +12,26 @@ MaterializePage {
 	h:Body = t:
 
 	f Fork
-	f:ImgScanPrint = fig1:
-	f:ImgTelescope1 = fig2:
-	f:ImgExpanded = fig3:
-	f:ImgFlattened = fig4:
-
-	fig1 FigurePngSvgRight
-	fig1:Image = "scanprint"
-	fig1:Width = "400px"
-	fig1:Caption = `*`
-	fig1:Right = `
-	<pre class="escher">
-	main {
-		scanln os.Scanln
-		println os.Println
-		scanln:Read = println:Write
-	}
-	</pre>
-	`
-
-	fig2 FigurePngSvg
-	fig2:Image = "telescope"
-	fig2:Width = "600px"
-	fig2:Caption = `This is a <a href="syntax.html">symbolic representation</a> 
-	of two circuit designs, named <code>App</code> and <code>Database</code>.
-	The illustration omits valve names.`
-
-	fig3 FigurePngSvg
-	fig3:Image = "expanded"
-	fig3:Width = "500px"
-	fig3:Caption = `The inversion of colors—from white-on-black in the enclosing circuit, to
-	black-on-white in the substituted circuits—is a visual symbolism indicating that 
-	the substitutions are separate data-structures from the enclosing one. Specifically,
-	the visual links that cross circuits are not explicitly represented in the data structure.
-	This can be accomplished by flattening (see below).`
-
-	fig4 FigurePngSvg
-	fig4:Image = "flattened"
-	fig4:Width = "500px"
-	fig4:Caption = `After flattening circuits recursively, all gates end up in the same giant circuit.
-	In order to preserve the circuit invariant that no two gates have the same name,
-	gates are automatically renamed to reflect the root-to-leaf path to them in the unflattened circuit.`
+	f:ImgScanPrint = FigureScanPrint
+	f:ImgTelescope1 = FigureTelescope
+	f:ImgExpanded = FigureExpanded
+	f:ImgFlattened = FigureFlattened
 
 	t text.QuickForm
 	t:Data = f:
 	t:Form = `
 <h1>Materializing</h1>
 
-<ul>
+<!--ul>
 <li><a href="#expanding">Expanding circuits</a></li>
 <li><a href="#reflexes">Reflexes</a></li>
 <li><a href="#links">Telescoping links</a></li>
 <li><a href="#m">Materializing</a></li>
-</ul>
+</ul-->
 
 <p><br>
 
-<p>Escher's syntax is intended to facilitate manual codification of small circuits
-by a human operator. In typical use cases, like for instance the codification of
-datacenter service topologies, the graphs to be described are huge. To facilitate
-building such graphs, Escher provides a mechanism for building out large complex
-graphs modularly and recursively from smaller circuit designs.
-
-<h2 id="expanding">Expanding circuits</h2>
-
-<blockquote>
-<em>Expanding</em> a source circuit is the process of substituting each address-valued gate
-with a value found at the corresponding address within a <em>memory</em> object.
-A memory is a hierarchical namespace of values.
-</blockquote>
-
-<p>Consider the following input circuit:
-
-<pre class="escher">
-Employees {
-	Manager gov.Eric
-	Engineer Petar
-	Project {
-		Name "XData"
-		Location Arlington
-	}
-	Manager:Supervises = Engineer:SupervisedBy
-}
-</pre>
-
-<p>Here the gates <code>Engineer</code> and <code>Manager</code> have address values 
-(<code>Petar</code> and <code>gov.Eric</code>, respectively).
-
-<p>Suppose further that circuits named <code>Eric</code> and <code>Petar</code> are
-defined within an enclosing circuit <code>Memory</code>, which we will use as a memory
-object:
-
-<pre class="escher">
-Memory {
-	gov {
-		Eric {
-			First "Eric"
-			Last "Whyne"
-		}
-	}
-	Petar {
-		First "Petar"
-		Last "Maymounkov"
-		Home Brooklyn
-		First:Lives = Home:
-	}
-	Brooklyn {
-		Address "Brooklyn, NY"
-	}
-}
-</pre>
-
-<p><em>Expanding</em> the circuit <code>Employees</code>,
-using the circuit <code>Memory</code> for lookup, is the process of
-substituting every address gate value with the
-respective value found in <code>Memory</code> at this address.
-The result is called the <em>residue</em>.
-
-<p>In our case, the residue would be:
-
-<pre class="escher">
-Employees {
-	Manager {
-		First "Eric"
-		Last "Whyne"
-	}
-	Engineer {
-		First "Petar"
-		Last "Maymounkov"
-		Home {
-			Address "Brooklyn, NY"
-		}
-		First:Lives = Home:
-	}
-	Project {
-		Name "XData"
-		Location Arlington
-	}
-	Manager:Supervises = Engineer:SupervisedBy
-}
-</pre>
-
-<p>Note that circuit links are also copied during expansion. Also note that
-the address-valued gate <code>Location</code> in circuit <code>Project</code>
-is not expanded. Tha rationale is that we are expanding the gate values of 
-circuit <code>Employees</code>. This does not work recursively.
-Since <code>Location</code> is a gate inside <code>Project</code> 
-(and not inside <code>Employees</code>),
-its value is left as is, unexpanded.
-
-<h2 id="links">Reflexes</h2>
-
-<p>In designing programs that control (or merely interact with) distributed systems
-(as in, for instance, orchestration software) it is virtually always the case
-that despite the language used, the resulting programs contain a “live”
-image of the external object they model (e.g. a cluster),
-found somewhere in their runtime in the form of data structures and their
-methods.
-
-<p>We call this a <em>live</em> image, because not only are these data structures
-interlinked liked the object they model (the cluster and its topology). Much
-like the parts of the cluster (hosts, containers and DNS records, for instance)
-that they model, they behave like independent processing units (like services)
-but within the runtime of the program in question.
-
-<p>This has lead us to notice an engineering practice, especially in control software,
-which is generally not explicit anywhere, but seems implicit everywhere: 
-We call it <em>live modelling</em>.
-
-<p>Live modelling is a high-level architecture paradigm in software design:
-
-<ol>
-<li>?</li>
-</ol>
-
-<h3>Live modelling</h3>
-
-<p>We piggy-back the circuit expansion mechanism for this purpose.
-Consider the following abstract circuit:
-
-{{.Gate.ImgScanPrint}}
-
-<h2 id="links">Telescoping links</h2>
-
-{{.Gate.ImgTelescope1}}
-
-<pre class="escher">
-Database {
-	cache Cache
-	left Shard
-	right Shard
-	link Link
-	cache:Web = :Web
-	left:Cache = cache:Left
-	right:Cache = cache:Right
-	left:Backup = link:Left
-	right:Backup = link:Right
-	link: = :Backup
-}
-App {
-	web Web
-	left Database
-	right Database
-	backup Backup
-	left:Web = web:Left
-	right:Web = web:Right
-	left:Backup = backup:Left
-	right:Backup = backup:Right
-}
-</pre>
-
-
-After expanding the circuit <code>App</code>, using a memory object containing
-a definition for <code>Database</code>, using circuit expansion as described
-earlier, but visualizing the result using the visual symbolism introduced in the 
-<a href="syntax.html">section on syntax</a>, we obtain the following suggestive 
-result:
-
-{{.Gate.ImgExpanded}}
-
-Or....
-
-{{.Gate.ImgFlattened}}
-
-<p>We would like to use the mechanism of expanding circuits to build
-large circuits from smaller ones. Roughly speaking, after expanding
-a circuit program recursively, we want to flatten the resulting deep
-circuit to get a depth-1 circuit that respects all gate and link structure of the
-expanded design.
-
-<p>
-
-<h2 id="m">Materializing</h2>
+<h2 id="m">Introduction</h2>
 
 <p>
 

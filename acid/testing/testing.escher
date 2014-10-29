@@ -1,0 +1,11 @@
+
+MatchAndExit { // :Expected :Got
+	match testing.Match
+	match:Expected = :Expected
+	match:Got = :Got
+	match: = door:Door
+
+	door OneWayDoor
+	door:From = 0 // send 0 to os.Exit on success
+	door:To = os.Exit
+}

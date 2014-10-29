@@ -8,6 +8,6 @@ TestFork {
 		Data {1, 2, 3}
 		Form "hello"
 	}
-	match testing.Match
-	match: = os.Exit
+
+	match testing.MatchAndExit
 }

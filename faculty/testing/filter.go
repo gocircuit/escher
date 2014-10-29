@@ -24,7 +24,11 @@ func (FilterAll) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value
 
 func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
-	name, view := x.StringAt("Name"), x.CircuitAt("View")
+	name_, view := x.NameAt("Name"), x.CircuitAt("View")
+	name, ok := name_.(string)
+	if !ok {
+		return
+	}
 	if !strings.HasPrefix(name, "Test") {
 		return
 	}

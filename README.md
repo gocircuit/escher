@@ -8,9 +8,9 @@ XML is a (not-so-simple) syntax for representing generic labeled trees.
 Escher graphs can also be interpreted as executable circuits of independent processing
 units. In this way, Escher circuits (used as code) can manipulate Escher circuits (representing data),
 thus achieving linguistic uniformity between algorithm and data.
-In contrast, XML (and HTML) in the after-the-fact design of Web standards are
-usually manipulated by JavaScript: a semantic and syntax entirely unrelated to
-those of their subject—XML.
+
+In contrast, the standard language for manipulating XML—JavaScript—being designed
+after-the-fact, constitutes an altogether unrelated semantic and syntax compared to XML.
 
 ## Sponsors and credits
 

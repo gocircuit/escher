@@ -16,11 +16,13 @@ import (
 
 type Union struct {
 	field []Name
+	flow map[Name]chan struct{}
 	sync.Mutex
 	union Circuit
 }
 
 func (u *Union) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+	// check whether default valve is connected and extract names of connected non-default valves
 	var defaultConnected bool
 	for vlv, _ := range matter.View.Gate {
 		if vlv == DefaultValve {
@@ -31,6 +33,12 @@ func (u *Union) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 	}
 	if !defaultConnected || len(u.field) == 0 {
 		log.Fatalf("Fork gate's default valve not linked or has no partition valves. In:\n%v\n", matter.Super.Design.(Circuit))
+	}
+	// allocate flow control channels
+	u.flow = make(map[Name]chan struct{})
+	for _, f := range u.field {
+		u.flow[f] = make(chan struct{}, 1)
+		u.flow[f] <- struct{}{} // send initial flow tokens
 	}
 	//
 	u.union = New()
@@ -56,20 +64,18 @@ func (u *Union) Cognize(eye *Eye, value interface{}) {
 	}
 }
 
-// XXX: Block on field valves if they have been set, but the value hasn't been flushed
-// ??
-
 func (u *Union) OverCognize(eye *Eye, valve Name, value interface{}) {
 	// log.Printf("%p u:%v %v", u, valve, value)
+	<-u.flow[valve] // obtain flow token
 	u.Lock()
 	defer u.Unlock()
-	if valve == DefaultValve {
-		panic(1)
-	}
 	u.union.Grow(valve, value) // grow will panic, if gate already exists
-	if u.union.Len() == len(u.field) {
+	if u.union.Len() == len(u.field) { // flush if all the fields have been set
 		w := u.union
 		u.union = New() // flush
+		for f, _ := range u.flow {
+			u.flow[f] <- struct{}{} // replenish flow tokens
+		}
 		eye.Show(DefaultValve, w)
 	}
 }

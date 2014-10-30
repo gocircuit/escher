@@ -8,7 +8,6 @@ package testing
 
 import (
 	"log"
-	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
@@ -19,47 +18,44 @@ import (
 
 // 
 type Match struct {
-	sync.Mutex
-	sign map[Name]int // name -> index in history slice
-	history []Circuit // histories of the two opposing valves
+	name []Name
+	flow []chan interface{}
 }
 
 func (m *Match) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	m.sign = make(map[Name]int)
-	var i int
+	m.name = make([]Name, 2)
 	for vlv, _ := range matter.View.Gate {
 		if vlv == DefaultValve {
 			continue
 		}
-		m.sign[vlv] = i
-		m.history = append(m.history, New())
-		i++
+		m.name = append(m.name, vlv)
+		m.flow = append(m.flow, make(chan interface{}, 1))
 	}
-	if len(m.sign) != 2 {
+	if len(m.name) != 2 {
 		panic("match gates need exactly two opposing non-default valves")
 	}
 	return nil
 }
 
 func (m *Match) OverCognize(eye *be.Eye, name Name, v interface{}) {
-	if name == DefaultValve {
-		return
+	// compute valve index
+	var i int
+	for j, n := range m.name {
+		if Same(n, name) {
+			i = j
+			break
+		}
 	}
-	m.Lock()
-	defer m.Unlock()
-	//
-	i := m.sign[name]
-	h := m.history[i]
-	h.Grow(h.Len(), v)
-	//
-	g := m.history[1-i]
-	if g.Len() < h.Len() {
-		return
+	// match
+	select {
+	case u := <-m.flow[1-i]: // if the opposing channel is ready
+		if !Same(u, v) {
+			log.Fatalf("mismatch %v vs %v: %v vs %v\n", m.name[1-i], name, u, v)
+		}
+		eye.Show(DefaultValve, v) // emit the matched object
+	default: // otherwise, offer our value
+		m.flow[i] <- v
 	}
-	if !Same(g.At(h.Len()-1), v) {
-		log.Fatalf("mismatch between %v and %v\n", g.At(h.Len()-1), v)
-	}
-	eye.Show(DefaultValve, v) // emit the matched object
 }
 
 func (m *Match) Cognize(eye *be.Eye, v interface{}) {}

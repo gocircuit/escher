@@ -57,7 +57,7 @@ func (u *Union) Cognize(eye *Eye, value interface{}) {
 }
 
 // XXX: Block on field valves if they have been set, but the value hasn't been flushed
-//??
+// ??
 
 func (u *Union) OverCognize(eye *Eye, valve Name, value interface{}) {
 	// log.Printf("%p u:%v %v", u, valve, value)

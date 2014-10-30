@@ -26,5 +26,13 @@ All {
 	depth: = filter:In
 
 	filter testing.FilterAll
-	filter:Out = Show
+	filter:Out = exec:In
+
+	exec testing.Exec
+	exec:Out = onend:View
+	ss Show
+
+	onend OnEnd
+	onend: = ss:X
+	ss:Y = os.ExitSuccess
 }

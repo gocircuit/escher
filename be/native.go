@@ -126,8 +126,8 @@ func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 	)
 }
 
-// makeNative creates a new value of the same type as like. 
-// Pointer types allocate the object pointed to.
+// makeNative creates a copy of like.
+// Pointer types allocate the object pointed to and copy that object as well.
 func makeNative(like interface{}) Value {
 	t := TypeOf(like)
 	switch t.Kind() {

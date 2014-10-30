@@ -12,7 +12,11 @@ import (
 	"github.com/gocircuit/escher/faculty"
 )
 
-func init() {
+func Init(srcdir string) {
+	srcDir = srcdir
 	faculty.Register("testing.Match", be.NewNativeMaterializer(&Match{}))
 	faculty.Register("testing.FilterAll", be.NewNativeMaterializer(FilterAll{}))
+	faculty.Register("testing.Exec", be.NewNativeMaterializer(Exec{}))
 }
+
+var srcDir string

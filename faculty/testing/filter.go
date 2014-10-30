@@ -24,6 +24,13 @@ func (FilterAll) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value
 
 func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
+	// check for #End markers
+	if x.Has("#End") {
+		eye.Show("Out", New().Grow("#End", x.At("#End")))
+		return
+	}
+
+	//
 	name_, view := x.NameAt("Name"), x.CircuitAt("View")
 	name, ok := name_.(string)
 	if !ok {
@@ -32,14 +39,14 @@ func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
 	if !strings.HasPrefix(name, "Test") {
 		return
 	}
-	name = name[len("Test"):]
-	if len(name) == 0 || !unicode.IsUpper(rune(name[0])) {
+	sfx := name[len("Test"):]
+	if len(sfx) == 0 || !unicode.IsUpper(rune(sfx[0])) {
 		return
 	}
-	y := New().Grow("Name", name).Grow("View", view)
-	if x.Has("#End") {
-		y.Grow("#End", 1)
-	}
+	y := New().
+		Grow("Address", x.AddressAt("Address")).
+		Grow("Name", name).
+		Grow("View", view)
 	eye.Show("Out", y)
 }
 

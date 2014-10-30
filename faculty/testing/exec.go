@@ -7,13 +7,16 @@
 package testing
 
 import (
-	// "log"
+	"fmt"
+	"os"
+	"os/exec"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
 )
 
-// 
+// Exec receives values from FilterAll and executes the included test circuits
+// in separate OS processes.
 type Exec struct {}
 
 func (Exec) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
@@ -21,7 +24,29 @@ func (Exec) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 }
 
 func (Exec) CognizeIn(eye *be.Eye, v interface{}) {
-	panic(0)
+	x := v.(Circuit)
+	// check for #End markers
+	if x.Has("#End") {
+		eye.Show("Out", New().Grow("#End", x.At("#End")))
+		return
+	}
+
+	addr := x.AddressAt("Address")
+	// fmt.Printf("Running %v\n", addr)
+	cmd := exec.Command(os.Args[0], "-src", srcDir, addr.String())
+
+	var success bool
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("- Test %v (%v)\n", addr, err)
+		success = false
+	} else {
+		fmt.Printf("+ Test %v (ok)\n", addr)
+		success = true
+	}
+	r := New().
+		Grow("Address", addr).
+		Grow("Result", success)
+	eye.Show("Out", r)
 }
 
 func (Exec) CognizeOut(eye *be.Eye, v interface{}) {}

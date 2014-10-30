@@ -17,9 +17,9 @@ MatchOneAndExit { // :Expected :Got
 	door:To = os.Exit
 }
 
-// All runs all test circuits within the idiom.
-// Test circuits are named Test*, wherein * must be non-empty
-// and must begin with an upper case letter.
+// All runs all test circuits within the default idiom (provided by the -src command-line option).
+// Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
+// Each test is run in a dedicated OS process.
 All {
 	depth model.DepthFirst
 	depth:Circuit = escher.Idiom
@@ -30,9 +30,7 @@ All {
 
 	exec testing.Exec
 	exec:Out = onend:View
-	ss Show
 
 	onend OnEnd
-	onend: = ss:X
-	ss:Y = os.ExitSuccess
+	onend: = os.ExitSuccess
 }

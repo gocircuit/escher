@@ -22,9 +22,9 @@ Escher was designed to enable a new programming paradigm for software
 that needs to control large heterogenous distributed systems consisting
 of failing components and connections.
 
-With Escher, one can view the entire technology stack of a typical Internet company
+With Escher, one views the entire technology stack of a typical Internet company
 (backend services, mobile apps, outsourced cloud apps, and so on) within
-a single Escher program.
+a single program.
 
 ## Sponsors and credits
 

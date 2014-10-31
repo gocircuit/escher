@@ -24,6 +24,7 @@ import (
 	fos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/cmplx"
+	_ "github.com/gocircuit/escher/faculty/help"
 	_ "github.com/gocircuit/escher/faculty/spin"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/io"

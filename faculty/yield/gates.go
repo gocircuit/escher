@@ -31,8 +31,7 @@ func (Gates) Cognize(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
 	for name, _ := range u.SortedNames() {
 		frame := New()
-		frame.Include("Is", "Frame")
-		frame.Include("Frame", New().Grow("Name", name).Grow("Value", u.At(name)))
+		frame.Grow("Name", name).Grow("Value", u.At(name))
 		eye.Show("Frame", frame)
 	}
 	eye.Show("Control", "End")

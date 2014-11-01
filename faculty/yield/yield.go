@@ -4,16 +4,16 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package help
+package yield
 
 import (
 	// "fmt"
 
-	// . "github.com/gocircuit/escher/circuit"
-	// "github.com/gocircuit/escher/be"
-	// "github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	// faculty.Register("help.Learn", Learn{})
+	faculty.Register("yield.Gates", be.NewNativeMaterializer(Gates{}))
+	faculty.Register("yield.Flows", be.NewNativeMaterializer(Flows{}))
 }

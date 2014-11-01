@@ -22,14 +22,13 @@ func init() {
 	faculty.Register("Fork", be.NewNativeMaterializer(&be.Union{}))
 	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
 	//
-	faculty.Register("OneWay", be.NewNativeMaterializer(OneWay{}))
-	faculty.Register("OneWayDoor", be.NewNativeMaterializer(&OneWayDoor{}))
+	faculty.Register("Alternate", be.NewNativeMaterializer(&Alternate{}))
+	faculty.Register("Alt", be.NewNativeMaterializer(&Alternate{}))
 	//
-	faculty.Register("Yield", be.NewNativeMaterializer(Yield{}))
 	faculty.Register("Wait", be.NewNativeMaterializer(&Wait{}))
 	faculty.Register("Repeat", be.NewNativeMaterializer(Repeat{}))
 	//
-	faculty.Register("OnEnd", be.NewNativeMaterializer(&OnHash{}, "#End"))
+	faculty.Register("OnEnd", be.NewNativeMaterializer(&OnHash{}, "#End")) // ??
 }
 
 // Scanln

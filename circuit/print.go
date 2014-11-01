@@ -44,13 +44,13 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 	for _, n := range u.SortedLetters() {
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
-		PrintValue(&w, prefix+indent, indent, n, p, recurse)
+		printGate(&w, prefix+indent, indent, n, p, recurse)
 	}
 	// numbers
 	for _, n := range u.SortedNumbers() {
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
-		PrintValue(&w, prefix+indent, indent, n, p, recurse)
+		printGate(&w, prefix+indent, indent, n, p, recurse)
 	}
 	//
 	o := make(Orient)
@@ -102,7 +102,21 @@ type Stringer interface {
 	String() string
 }
 
-func PrintValue(w io.Writer, prefix, indent string, n Name, p Value, recurse int) {
+func String(v Value) string {
+	switch t := v.(type) {
+	case Circuit:
+		return t.String()
+	case Stringer:
+		return t.String()
+	case int, float64, complex128, bool:
+		return fmt.Sprintf("%v", t)
+	case string:
+		return fmt.Sprintf("%q", t)
+	}
+	return fmt.Sprintf("%T/%v", v, v)
+}
+
+func printGate(w io.Writer, prefix, indent string, n Name, p Value, recurse int) {
 	switch t := p.(type) {
 	case Printer:
 		fmt.Fprintf(w, "%v %v\n", n, t.Print(prefix, indent, recurse))
@@ -130,4 +144,12 @@ func Linearize(s string) string {
 		}
 	}
 	return string(x)
+}
+
+func NameString(n Name) string {
+	switch n.(type) {
+	case string, int:
+		return fmt.Sprintf("%v", n)
+	}
+	panic("non alpha-numeric name has no string representation")
 }

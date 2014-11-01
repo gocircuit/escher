@@ -9,7 +9,7 @@ package see
 import (
 	"bytes"
 	"fmt"
-	"log"
+	// "log"
 	"strconv"
 	"strings"
 
@@ -57,15 +57,6 @@ func SeeValueNoCircuit(src *Src) (x Value) {
 	return nil
 }
 
-func ParseName(src string) Name {
-	t := NewSrcString(src)
-	n := SeeName(t)
-	if t.Len() != 0 {
-		log.Fatalf("Non-name characters at end of %q", src)
-	}
-	return n
-}
-
 func SeeName(src *Src) Name {
 	x := src.Consume(IsIdentifier)
 	if x == "" { // empty string is allowed as name
@@ -76,16 +67,6 @@ func SeeName(src *Src) Name {
 		return i
 	}
 	return x
-}
-
-func ParseAddress(src string) Address {
-	t := NewSrcString(src)
-	a := SeeAddress(t).(Address)
-	if t.Len() != 0 {
-		log.Printf("Non-address characters at end of %q", src)
-		panic(1)
-	}
-	return a
 }
 
 // SeeAddress ...

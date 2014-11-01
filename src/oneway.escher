@@ -1,3 +1,11 @@
+OneWayDoor {
+	alt Alternate
+	alt:SX = :From
+	alt:TX = :To
+	alt:SY = :Door
+	alt:TY = Ignore
+}
+
 _TestOneWayDoor {
 	x OneWayDoor
 	x:From = testValues

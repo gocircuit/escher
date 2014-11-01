@@ -23,7 +23,6 @@ type Match struct {
 }
 
 func (m *Match) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	m.name = make([]Name, 2)
 	for vlv, _ := range matter.View.Gate {
 		if vlv == DefaultValve {
 			continue
@@ -32,7 +31,7 @@ func (m *Match) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value 
 		m.flow = append(m.flow, make(chan interface{}, 1))
 	}
 	if len(m.name) != 2 {
-		panic("match gates need exactly two opposing non-default valves")
+		log.Fatalf("match gates need exactly two opposing non-default valves; have %v", m.name)
 	}
 	return nil
 }

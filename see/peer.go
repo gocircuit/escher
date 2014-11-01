@@ -12,10 +12,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func Parse(src *Src) (Name, Value) {
-	return SeePeer(src)
-}
-
 func SeePeer(src *Src) (n Name, m Value) {
 	if n, m = seeNameGate(src); n != nil {
 		return n, m

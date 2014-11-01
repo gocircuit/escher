@@ -24,7 +24,6 @@ import (
 	fos "github.com/gocircuit/escher/faculty/os"
 	_ "github.com/gocircuit/escher/faculty/basic"
 	_ "github.com/gocircuit/escher/faculty/cmplx"
-	_ "github.com/gocircuit/escher/faculty/help"
 	_ "github.com/gocircuit/escher/faculty/spin"
 	_ "github.com/gocircuit/escher/faculty/escher"
 	_ "github.com/gocircuit/escher/faculty/io"
@@ -34,6 +33,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	_ "github.com/gocircuit/escher/faculty/time"
+	_ "github.com/gocircuit/escher/faculty/yield"
 )
 
 // usage: escher [-a dir] [-show] address arguments...

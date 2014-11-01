@@ -1,17 +1,21 @@
 
-// For every circuit incoming on valve Circuit, YieldValues produces
+ForkOrEnd {
+}
+
+// For every circuit incoming on valve OfCircuit, YieldValues produces
 // a sequence enumerating the gate values of the argument circuit
 // over the default valve.
 //
-YieldValues { // : :Circuit
-	yield Yield
-	yield:Circuit = :Circuit
+YieldValues { // : :OfCircuit
+}
+
+YieldNames { // : :OfCircuit
+	yield yield.Gates
+	yield:OfCircuit = :OfCircuit
 	yield: = filter:
 
 	filter Fork
-	filter:Value = oneway:From
-	oneway:To = :
-	oneway OneWay
+	filter:Name = :
 }
 
 TestYieldValues { // no valves

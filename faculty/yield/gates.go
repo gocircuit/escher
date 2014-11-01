@@ -14,19 +14,12 @@ import (
 )
 
 /*
-	Gates emits one of the following two types of values to its default valve:
-	{
-		Is "Frame"
-		Frame {
-			Name *Name
-			Value *Value
-		}
+	:Frame = {
+		Name Name
+		Value Value
 	}
 
-	{
-		Is "Control"
-		Control "End"
-	}
+	:Control = "End"
 */
 type Gates struct{}
 
@@ -34,15 +27,17 @@ func (Gates) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	return nil
 }
 
-func (Gates) CognizeOfCircuit(eye *be.Eye, value interface{}) {
+func (Gates) Cognize(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
 	for name, _ := range u.SortedNames() {
-		r := New()
-		r.Include("Is", "Frame")
-		r.Include("Frame", New().Grow("Name", name).Grow("Value", u.At(name)))
-		eye.Show(DefaultValve, r)
+		frame := New()
+		frame.Include("Is", "Frame")
+		frame.Include("Frame", New().Grow("Name", name).Grow("Value", u.At(name)))
+		eye.Show("Frame", frame)
 	}
-	eye.Show(DefaultValve, New().Grow("Is", "Control").Grow("Control", "End"))
+	eye.Show("Control", "End")
 }
 
-func (Gates) Cognize(eye *be.Eye, value interface{}) {}
+func (Gates) CognizeFrame(eye *be.Eye, value interface{}) {}
+
+func (Gates) CognizeControl(eye *be.Eye, value interface{}) {}

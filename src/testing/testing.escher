@@ -21,8 +21,8 @@ MatchOneAndExit { // :Expected :Got
 // Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
 // Each test is run in a dedicated OS process.
 All {
-	depth model.DepthFirst
-	depth:Circuit = escher.Idiom
+	depth yield.DepthFirst
+	depth:OfCircuit = escher.Idiom
 	depth: = filter:In
 
 	filter testing.FilterAll
@@ -32,5 +32,5 @@ All {
 	exec:Out = onend:View
 
 	onend OnEnd
-	onend: = os.ExitSuccess
+	onend: = Show //Ignore //os.ExitSuccess
 }

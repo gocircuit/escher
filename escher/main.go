@@ -54,6 +54,10 @@ func main() {
 	if len(flagArgs) > 0 {
 		flagMain, flagArgs = flagArgs[0], flagArgs[1:]
 	}
+	// parse env
+	if *flagSrc == "" {
+		*flagSrc = os.Getenv("ESCHER")
+	}
 
 	// initialize faculties
 	fos.Init(flagArgs)
@@ -81,7 +85,7 @@ func main() {
 			if u == nil || u.(Circuit).Len() == 0 {
 				break
 			}
-			fmt.Fprintf(os.Stderr, "EXECUTING %v\n\n", u)
+			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n\n", u)
 			exec(idiom, u, true)
 		}
 	}

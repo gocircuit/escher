@@ -14,5 +14,4 @@ import (
 
 func init() {
 	faculty.Register("model.IO", be.NewNativeMaterializer(IO{}))
-	faculty.Register("model.DepthFirst", be.NewNativeMaterializer(DepthFirst{}))
 }

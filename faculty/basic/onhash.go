@@ -23,6 +23,7 @@ func (h *OnHash) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value
 }
 
 func (h *OnHash) CognizeView(eye *be.Eye, v interface{}) {
+	//log.Printf("ON %v", v)
 	if v.(Circuit).Has(h.Tag) {
 		eye.Show(DefaultValve, v)
 	}

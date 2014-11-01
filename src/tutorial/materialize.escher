@@ -28,6 +28,6 @@ MaterializeDepth {
 	fork:Reflex = Ignore
 	fork:Residual = depth:Circuit
 
-	depth model.DepthFirst
+	depth yield.DepthFirst
 	depth: = Show
 }

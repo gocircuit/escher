@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package testing
+package test
 
 import (
 	. "github.com/gocircuit/escher/circuit"
@@ -14,9 +14,9 @@ import (
 
 func Init(srcdir string) {
 	srcDir = srcdir
-	faculty.Register("testing.Match", be.NewNativeMaterializer(&Match{}))
-	faculty.Register("testing.FilterAll", be.NewNativeMaterializer(FilterAll{}))
-	faculty.Register("testing.Exec", be.NewNativeMaterializer(Exec{}))
+	faculty.Register("test.Match", be.NewNativeMaterializer(&Match{}))
+	faculty.Register("test.FilterAll", be.NewNativeMaterializer(FilterAll{}))
+	faculty.Register("test.Exec", be.NewNativeMaterializer(Exec{}))
 }
 
 var srcDir string

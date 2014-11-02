@@ -51,14 +51,23 @@ func (m *Matter) Source() Value {
 }
 
 func (m *Matter) String() string {
+	d := New()
+	d.Grow("Gate", m.Debug())
+	if m.Super != nil {
+		d.Grow("EnclosingCircuit", m.Super.Debug())
+	}
+	return d.String()
+}
+
+func (m *Matter) Debug() Circuit {
 	r := New().
-		Grow("Residue", pathCircuit(m.Path)).
-		Grow("Idiom", m.Address).
+		Grow("ResiduePath", pathCircuit(m.Path)).
+		Grow("Address", m.Address).
 		Grow("View", m.View)
 	if src := m.Source(); src != nil {
 		r.Grow("Source", src)
 	}
-	return r.String()		
+	return r
 }
 
 func (m *Matter) Circuit() Circuit {

@@ -29,6 +29,6 @@ TestFunc {
 	func:Begin = func:End
 	func:Out = match:Got
 
-	match testing.MatchOneAndExit
+	match test.MatchOneAndExit
 	match:Expected = 1
 }

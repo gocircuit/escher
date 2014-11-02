@@ -29,6 +29,6 @@ _TestAssociate {
 		A "abc"
 		B "def"
 	}
-	match testing.Match
+	match test.Match
 	match: = os.Exit
 }

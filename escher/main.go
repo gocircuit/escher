@@ -29,7 +29,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/io"
 	_ "github.com/gocircuit/escher/faculty/path"
 	_ "github.com/gocircuit/escher/faculty/view"
-	"github.com/gocircuit/escher/faculty/testing"
+	"github.com/gocircuit/escher/faculty/test"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	_ "github.com/gocircuit/escher/faculty/time"
@@ -61,7 +61,7 @@ func main() {
 
 	// initialize faculties
 	fos.Init(flagArgs)
-	testing.Init(*flagSrc)
+	test.Init(*flagSrc)
 	circuit.Init(*flagDiscover)
 	//
 	idiom := Root()

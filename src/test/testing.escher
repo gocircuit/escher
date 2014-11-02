@@ -7,7 +7,7 @@
 // MatchOneAndExit matches the singular values incoming 
 // on :Expected and :Got and then exits successfully (with exit code 0).
 MatchOneAndExit { // :Expected :Got
-	match testing.Match
+	match test.Match
 	match:Expected = :Expected
 	match:Got = :Got
 	match: = door:Door
@@ -26,9 +26,9 @@ All {
 	depth:Frame = filter:In
 	depth:Control = os.ExitSuccess 
 
-	filter testing.FilterAll
+	filter test.FilterAll
 	filter:Out = exec:In
 
-	exec testing.Exec
+	exec test.Exec
 	exec:Out = Ignore
 }

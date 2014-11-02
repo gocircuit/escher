@@ -26,7 +26,7 @@ TestValues { // TODO: The expected side of the match gate should use a different
 	tx:Frame = match:Got
 	tx:Control = os.ExitSuccess
 
-	match testing.Match
+	match test.Match
 	match:Expected = ty:Frame
 	match: = Ignore
 

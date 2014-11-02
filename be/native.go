@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	. "reflect"
+	"reflect"
 
 	"github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/runtime"
@@ -47,41 +47,59 @@ func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (reflex Ref
 // MaterializeNativeInstance materializes the native implementation v.
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value, interface{}) {
-	w := makeNative(v)
-	r := gate{matter, w, w.Type()}
-	// Enumerate the valves handled by dedicated methods.
-	dedicated := make(map[circuit.Name]struct{})
-	for i := 0; i < r.Type.NumMethod(); i++ {
-		n := r.Type.Method(i).Name
+
+	// Build gate reflex
+	u := makeNative(v)
+	t := u.Type()
+	r := gate{
+		Matter: matter,
+		Fixed: make(map[circuit.Name]reflect.Value),
+		Ellipses: u.MethodByName(cognizeEllipses),
+	}
+
+	// Build map of valves handled by dedicated methods.
+	for i := 0; i < t.NumMethod(); i++ {
+		n := t.Method(i).Name
 		if len(n) >= len(cognizePrefix) && n[:len(cognizePrefix)] == cognizePrefix {
-			dedicated[n[len(cognizePrefix):]] = struct{}{}
+			r.Fixed[n[len(cognizePrefix):]] = u.MethodByName(n)
 		}
 	}
-	// Verify that all connected valves in matter have handlers or that there is a generic cognizer method.
-	var valve []circuit.Name
-	_, over := r.Type.MethodByName(cognizeEllipses)
+
+	// All dedicated valves need to be connected. All connected valves need to be handled (by dedicated or ellipses).
+
+	// Verify all connected valves have dedicated handlers or there is a generic handler.
+	var connected []circuit.Name
+	ellipses := r.Ellipses.IsValid()
 	for vlv, _ := range matter.View.Gate {
-		valve = append(valve, vlv)
-		if over {
+		connected = append(connected, vlv)
+		if ellipses {
 			continue
 		}
-		if _, ok := dedicated[vlv]; !ok {
-			log.Fatalf("gate %T does not have methods to handle the connected valve %v", v, vlv)
+		if _, ok := r.Fixed[vlv]; !ok {
+			log.Fatalf("%v gate does not handle connected valve (%v):\n%v\n", ellipses, vlv, matter)
 		}
 	}
-	// Not all handled valves need to be connected. But all connected valves need to be handled by a gate method.
-	reflex, eye := NewEyeCognizer(r.Cognize, valve...)
-	return reflex, w.Interface().(Native).Spark(eye, matter, aux...), w.Interface()
+
+	// Verify all dedicated valves are connected
+	for vlv, _ := range r.Fixed {
+		if _, ok := matter.View.Gate[vlv]; !ok {
+			log.Fatalf("gate valve (%v) must be connected:\n%v\n", vlv, matter)
+		}
+	}
+
+	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
+	return reflex, u.Interface().(Native).Spark(eye, matter, aux...), u.Interface()
 }
 
 // gate is a materialized native reflex.
 type gate struct {
 	*Matter
-	Value
-	Type
+	Fixed map[circuit.Name]reflect.Value // valve name -> dedicated handler
+	Ellipses reflect.Value // ellipses handler
 }
 
 func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
+
 	// Catch panics during cognizing and report their context to the user
 	defer func() {
 		if r := recover(); r != nil {
@@ -91,50 +109,42 @@ func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 		}
 	}()
 
-	// Compute valve string
-	var alias string
-	var letter bool
-	switch valve.(type) {
-	case string, int:
-		alias = fmt.Sprintf("%v", valve)
-		letter = true
-	default:
-		letter = false
-	}
-
-	// If there is a dedicated method for valve, use that.
-	if letter {
-		if _, ok := g.Type.MethodByName(cognizePrefix + alias); ok {
-			m := g.Value.MethodByName(cognizePrefix + alias)
-			m.Call(
-				[]Value{
-					ValueOf(eye), 
-					ValueOf(value),
-				},
-			)
-			return
+	// Resolve handler
+	handler, ell := g.Ellipses, true
+	if _, ok := valve.(string); ok {
+		if h, ok := g.Fixed[valve]; ok {
+			handler, ell = h, false
 		}
 	}
-	// Otherwise call the generic cognizer
-	m := g.Value.MethodByName(cognizeEllipses)
-	m.Call(
-		[]Value{
-			ValueOf(eye),
-			ValueOf(valve),
-			ValueOf(value),
-		},
-	)
+
+	// Invoke handler
+	if ell {
+		handler.Call(
+			[]reflect.Value{
+				reflect.ValueOf(eye),
+				reflect.ValueOf(valve),
+				reflect.ValueOf(value),
+			},
+		)
+	} else {
+		handler.Call(
+			[]reflect.Value{
+				reflect.ValueOf(eye), 
+				reflect.ValueOf(value),
+			},
+		)
+	}
 }
 
 // makeNative creates a copy of like.
 // Pointer types allocate the object pointed to and copy that object as well.
-func makeNative(like interface{}) Value {
-	t := TypeOf(like)
+func makeNative(like interface{}) reflect.Value {
+	t := reflect.TypeOf(like)
 	switch t.Kind() {
-	case Ptr: // Pointer types are allocated
-		return New(t.Elem()).Convert(t)
+	case reflect.Ptr: // Pointer types are allocated
+		return reflect.New(t.Elem()).Convert(t)
 	default: // Value-based types are used as is
-		return ValueOf(like)
+		return reflect.ValueOf(like)
 	}
 	panic(0)
 }

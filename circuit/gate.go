@@ -53,7 +53,7 @@ func (u Circuit) CircuitOptionAt(name Name) (Circuit, bool) {
 	if ok {
 		return v.(Circuit), ok
 	}
-	return Circuit{}, false
+	return New(), false
 }
 
 func (u Circuit) IntAt(name Name) int {

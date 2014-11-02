@@ -27,7 +27,7 @@ func materialize(idiom Circuit, design Value) (reflex Reflex, residual Value) {
 	matter := &Matter{
 		Idiom: idiom,
 		Design: design,
-		View: Circuit{},
+		View: New(),
 		Path: []Name{},
 		Super: nil,
 	}
@@ -45,7 +45,7 @@ func NewRenderer(idiom Circuit) *Renderer {
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
 	matter := &Matter{
 		Idiom: b.idiom,
-		View: Circuit{},
+		View: New(), // empty view
 		Path: []Name{},
 		Super: nil,
 	}

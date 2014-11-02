@@ -24,8 +24,6 @@ func New() Circuit {
 	}
 }
 
-var Nil Circuit // the nil circuit
-
 func (u Circuit) IsNil() bool {
 	return u.Gate == nil || u.Flow == nil
 }

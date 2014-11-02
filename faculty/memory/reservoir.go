@@ -48,5 +48,5 @@ func (r *memory) Forget(addr Address) Value {
 func (r *memory) Put(addr Address, value Value) Value {
 	r.Lock()
 	defer r.Unlock()
-	return r.Circuit.Place(addr, value)
+	return r.Circuit.RePlace(addr, value)
 }

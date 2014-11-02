@@ -3,6 +3,7 @@
 	color: rgba(95,95,95, 0.98);
 	font-family: times, serif;
 	font-weight: 400;
+	line-height: 1.3em;
 }
 
 body, div {
@@ -22,9 +23,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 { font-size: 34px; }
-h2 { font-size: 30px; }
-h3 { font-size: 28px; }
-h4 { font-size: 26px; }
+h2 { font-size: 28px; }
+h3 { font-size: 26px; }
+h4 { font-size: 24px; }
 
 a {
 	font-family: inherit;

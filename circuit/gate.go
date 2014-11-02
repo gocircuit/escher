@@ -125,7 +125,7 @@ func (u Circuit) Refine(name Name) Circuit {
 	return y
 }
 
-func (u Circuit) Place(addr Address, value Value) Value {
+func (u Circuit) RePlace(addr Address, value Value) Value {
 	if len(addr.Path) == 0 {
 		panic("no path")
 	}
@@ -136,6 +136,13 @@ func (u Circuit) Place(addr Address, value Value) Value {
 		u = u.Refine(g)
 	}
 	return u.Include(addr.Path[len(addr.Path)-1], DeepCopy(value))
+}
+
+func (u Circuit) Place(addr Address, value Value) Value {
+	if u.RePlace(addr, value) != nil {
+		panic("place is replacing")
+	}
+	return value
 }
 
 func (u Circuit) Abandon(name Name) Circuit {

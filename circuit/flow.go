@@ -58,6 +58,10 @@ func (u Circuit) ValveNames(gate Name) []Name {
 	return r
 }
 
+func (u Circuit) Degree(gate Name) int {
+	return len(u.Flow[gate])
+}
+
 func (u Circuit) View(gate Name) Circuit {
 	x := New()
 	for vlv, vec := range u.Flow[gate] {

@@ -1,21 +1,39 @@
 
-// For every circuit incoming on valve OfCircuit, YieldValues produces
-// a sequence enumerating the gate values of the argument circuit
-// over the default valve.
-//
-YieldValues { // : :Frame :Control
+// Values yields all gate values of its default valve circuit argument.
+Values { // : :Frame :Control
+	yield Gates
+	yield: = :
+	yield:Control = :Control
+	yield:Frame = fork:
+
+	fork Fork
+	fork:Value = :Frame
 }
 
-YieldNames { // : :Frame :Control
+// Names yields all gate names of its default valve circuit argument.
+Names { // : :Frame :Control
+	yield Gates
+	yield: = :
+	yield:Control = :Control
+	yield:Frame = fork:
+
+	fork Fork
+	fork:Name = :Frame
 }
 
-TestYieldValues {
+TestValues { // TODO: The expected side of the match gate should use a different method to compute the result.
+	tx testValues
+	tx:Frame = match:Got
+	tx:Control = os.ExitSuccess
+
+	match testing.Match
+	match:Expected = ty:Frame
+	ty:Control = Ignore
+	ty testValues
 }
 
-// yieldTestValues streams a list of values on its default valve.
-// The last streamed value is 3.
-yieldTestValues {
-	t YieldValues
+testValues { // :Frame :Control
+	t Values
 	t: = { 1, 2, 3 }
 	t:Frame = :Frame
 	t:Control = :Control

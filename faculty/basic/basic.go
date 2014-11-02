@@ -24,6 +24,7 @@ func init() {
 	//
 	faculty.Register("Alternate", be.NewNativeMaterializer(&Alternate{}))
 	faculty.Register("Alt", be.NewNativeMaterializer(&Alternate{}))
+	faculty.Register("OneWayDoor", be.NewNativeMaterializer(&OneWayDoor{}))
 	//
 	faculty.Register("Wait", be.NewNativeMaterializer(&Wait{}))
 	faculty.Register("Repeat", be.NewNativeMaterializer(Repeat{}))

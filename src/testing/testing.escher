@@ -22,15 +22,13 @@ MatchOneAndExit { // :Expected :Got
 // Each test is run in a dedicated OS process.
 All {
 	depth yield.DepthFirst
-	depth:OfCircuit = escher.Idiom
-	depth: = filter:In
+	depth: = escher.Idiom
+	depth:Frame = filter:In
+	depth:Control = os.ExitSuccess 
 
 	filter testing.FilterAll
 	filter:Out = exec:In
 
 	exec testing.Exec
-	exec:Out = onend:View
-
-	onend OnEnd
-	onend: = Show //Ignore //os.ExitSuccess
+	exec:Out = Ignore
 }

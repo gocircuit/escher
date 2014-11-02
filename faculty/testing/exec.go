@@ -25,14 +25,8 @@ func (Exec) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 
 func (Exec) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
-	// check for #End markers
-	if x.Has("#End") {
-		eye.Show("Out", New().Grow("#End", x.At("#End")))
-		return
-	}
-
+	//
 	addr := x.AddressAt("Address")
-	// fmt.Printf("Running %v\n", addr)
 	cmd := exec.Command(os.Args[0], "-src", srcDir, addr.String())
 
 	var success bool

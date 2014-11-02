@@ -21,15 +21,16 @@ Fetching, building and installing Escher can then be accomplished with one comma
 	% go get github.com/gocircuit/escher/escher
 </pre>
 
-<p>To check that installation succeeded, run <code>escher</code> without arguments to get its
-default recovery shell:
+<p>To check that installation succeeded, run 
 
 <pre>
-	% escher
-	recover 
+	% escher test.All
+	+ Test basic.TestFork (ok)
+	+ Test basic.TestFunc (ok)
+	+ Test text.TestForm (ok)
+	+ Test yield.TestValues (ok)
+	…
 </pre>
-
-
         
 	</div>
 	

@@ -85,7 +85,7 @@ func main() {
 			if u == nil || u.(Circuit).Len() == 0 {
 				break
 			}
-			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n\n", u)
+			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n", u)
 			exec(idiom, u, true)
 		}
 	}

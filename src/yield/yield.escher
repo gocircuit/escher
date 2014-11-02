@@ -28,6 +28,8 @@ TestValues { // TODO: The expected side of the match gate should use a different
 
 	match testing.Match
 	match:Expected = ty:Frame
+	match: = Ignore
+
 	ty:Control = Ignore
 	ty testValues
 }

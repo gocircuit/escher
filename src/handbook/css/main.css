@@ -1,36 +1,52 @@
-@import url('font/itc-franklin/itc-franklin.css');
-@import url('font/input.css');
+*, body, li, ul, table, td, ul, ol, dt, dd {
+	background: rgb(235,255,255);
+	color: rgba(95,95,95, 0.98);
+	font-family: times, serif;
+	font-weight: 400;
+}
 
-body {
+body, div {
 	padding: 0;
 	margin: 0;
-	background: rgb(235,255,255);
-	color: rgb(90,90,90);
-	font-family: 'itc-franklin', serif;
-	font-weight: 200;
 	font-size: 19px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-family: itc-franklin, sans-serif;
-	color: rgb(170,190,205);
-	letter-spacing: -0.01em;
-	font-weight: 500;
+ul {
+	list-style-type: none;
 }
 
-a {
-	color: rgb(90,90,90);
-	text-decoration: none;
+h1, h2, h3, h4, h5, h6 {
+	font-family: lato, sans-serif;
+	color: rgba(0,0, 200, 0.6);
 	font-weight: 400;
+}
+
+h1 { font-size: 34px; }
+h2 { font-size: 30px; }
+h3 { font-size: 28px; }
+h4 { font-size: 26px; }
+
+a {
+	font-family: inherit;
+	margin: 0;
+	//color: rgba(180,0,80, 0.7);
+	text-decoration: none;
+	font-weight: bold;
 	/*border-bottom: 1px solid rgba(90,90,90,0.9);*/
 	/*background: rgb(215,235,245);*/
 	/*padding: 2px;*/
 }
 
+a:hover {
+	text-decoration: underline;
+}
+
 code, pre {
-	font-family: input-mono-narrow, monospace;
+	color: rgba(0, 150, 130, 0.99);
+	font-family: 'source code pro', monospace;
 	font-size: 15px;
-	font-weight: 100;
+	font-weight: 400;
+	letter-spacing: -0.04em;
 }
 
 /*pre.go {color: #333333; }
@@ -47,6 +63,7 @@ div.page {
 }
 
 div.header {
+	font-family: lato, sans-serif;
 	padding: 20px;
 	left: 0;
 	right: 0;
@@ -55,10 +72,12 @@ div.header {
 }
 
 div.header a {
+	background: none;
 	/*color: white;*/
 }
 
 div.footer {
+	font-family: lato, sans-serif;
 	text-align: center;
 	font-size: 13px;
 	padding: 20px;

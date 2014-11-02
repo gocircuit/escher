@@ -24,25 +24,18 @@ Fetching, building and installing Escher can then be accomplished with one comma
 	% go get github.com/gocircuit/escher/escher
 </pre>
 
-<p>To check that installation succeeded, run <code>escher</code> without arguments to get its
-default shell, and type in <code>Show = "Hello world"</code> followed by two new lines.
-You should see something like this
+<p>To check that installation succeeded, run
 
 <pre>
-	% escher
-	Show = "Hello world"
-
-	executing {
-	    0 Show
-	    1 "Hello world"
-	    0: = 1:
-	}
-
-	residue &lt;nil&gt;
-
-	: = Hello world
+	% ESCHER=github.com/gocircuit/escher/src escher test.All
+	+ Test basic.TestFork (ok)
+	+ Test basic.TestFunc (ok)
+	+ Test text.TestForm (ok)
+	+ Test yield.TestValues (ok)
+	…
 </pre>
 
-
+<p>Note that the environment <code>ESCHER</code> must point to the <code>src</code>
+subdirectory of the main Escher repo on your host.
         `
 }

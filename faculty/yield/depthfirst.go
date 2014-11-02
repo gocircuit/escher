@@ -32,8 +32,12 @@ func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
 	if !ok {
 		return
 	}
-	for n, v := range x.Gate {
-		depthFirst(eye, append(walk, n), v)
+	for _, n := range x.SortedNames() {
+		switch n.(type) { // skip non alpha-numeric names
+		case int, string:
+			v := x.At(n)
+			depthFirst(eye, append(walk, n), v)
+		}
 	}
 
 	var nm Name = "" // The root circuit is shown with the empty name

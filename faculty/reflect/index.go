@@ -55,6 +55,8 @@ func (x *Index) remember(frame Circuit, i int) (index int) {
 		g = x.gv.Refine("float64")
 	case complex128:
 		g = x.gv.Refine("complex128")
+	case Circuit:
+		g = x.gv.Refine("meaningless")
 	default:
 		g = x.gv.Refine("unknown")
 	}

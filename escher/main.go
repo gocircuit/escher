@@ -30,6 +30,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/path"
 	_ "github.com/gocircuit/escher/faculty/view"
 	"github.com/gocircuit/escher/faculty/test"
+	_ "github.com/gocircuit/escher/faculty/reflect"
 	_ "github.com/gocircuit/escher/faculty/text"
 	_ "github.com/gocircuit/escher/faculty/model"
 	_ "github.com/gocircuit/escher/faculty/time"

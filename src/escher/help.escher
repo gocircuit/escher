@@ -5,11 +5,11 @@
 // see history clearly.
 
 BuildIndex {
+	__ Show1
+
 	depth yield.DepthFirst
 	depth: = escher.Idiom
-	__ Show1
-	depth:Frame = __:X
-	__:Y = flow:
+	depth:Frame = flow:
 	depth:Control = Ignore //
 	Ignore = index:Flush //
 
@@ -19,4 +19,8 @@ BuildIndex {
 
 	index reflect.Index
 	index: = :
+}
+
+TestIndex {
+	BuildIndex = Show1
 }

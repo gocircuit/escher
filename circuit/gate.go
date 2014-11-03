@@ -111,7 +111,14 @@ func (u Circuit) Grow(name Name, value Value) Circuit {
 	return u
 }
 
-func (u Circuit) Refine(name Name) Circuit {
+func (u Circuit) Refine(walk ...Name) Circuit {
+	for _, g := range walk {
+		u = u.refine(g)
+	}
+	return u
+}
+
+func (u Circuit) refine(name Name) Circuit {
 	x, ok := u.OptionAt(name)
 	if !ok {
 		x = New()

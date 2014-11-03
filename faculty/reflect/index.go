@@ -7,7 +7,7 @@
 package reflect
 
 import (
-	// "fmt"
+	"fmt"
 
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
@@ -25,11 +25,11 @@ func (x *Index) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 }
 
 func (x *Index) CognizeFlowFrame(eye *be.Eye, v interface{}) {
-	
-	println("flowframe")
 
 	// place involved gates in dictionary
 	f := v.(Circuit)
+	println(fmt.Sprintf("-> %v\n", f.Print("", "  ", 2)))
+
 	ag := x.remember(f, 0)
 	bg := x.remember(f, 1)
 
@@ -48,7 +48,7 @@ func (x *Index) remember(frame Circuit, i int) (index int) {
 	var g Circuit
 	switch t := half.At("Value").(type) {
 	case Address:
-		g = x.gv.Place(t, New()).(Circuit)
+		g = x.gv.Refine(t.Path...)
 	case int:
 		g = x.gv.Refine("int")
 	case string:
@@ -59,6 +59,8 @@ func (x *Index) remember(frame Circuit, i int) (index int) {
 		g = x.gv.Refine("complex128")
 	case Circuit:
 		g = x.gv.Refine("meaningless")
+	case nil:
+		g = x.gv.Refine("missing")
 	default:
 		g = x.gv.Refine("unknown")
 	}

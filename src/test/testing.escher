@@ -23,9 +23,7 @@ MatchOneAndExit { // :Expected :Got
 All {
 	depth yield.DepthFirst
 	depth: = escher.Idiom
-	depth:Frame = _:X 
-	_:Y = filter:In
-	_ Show1
+	depth:Frame = filter:In
 	depth:Control = os.ExitSuccess 
 
 	filter test.FilterAll

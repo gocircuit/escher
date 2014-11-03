@@ -40,3 +40,17 @@ testValues { // :Frame :Control
 	t:Frame = :Frame
 	t:Control = :Control
 }
+
+TestFlows {
+	y yield.Flows
+	y: = {
+		and And
+		not Not
+		and:X = :X
+		and:Y = :Y
+		and: = not:A
+		not: = :
+	}
+	y:Control = Ignore
+	y:Frame = Show
+}

@@ -35,15 +35,28 @@ func (Flows) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	return nil
 }
 
+func sanitizeValue(u Circuit, name Name) Value {
+	value, ok := u.Gate[name]
+	if !ok {
+		return NewAddress("missing")
+	}
+	if value == nil {
+		return NewAddress("nil")
+	}
+	return value
+}
+
 func (Flows) Cognize(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
 	for xname, xview := range u.Flow {
 		for xvalve, xvec := range xview {
 			yname, yvalve := xvec.Gate, xvec.Valve
 			//
+			xvalue, yvalue := sanitizeValue(u, xname), sanitizeValue(u, yname)
+			//
 			frame := New()
-			xy := New().Grow("Name", xname).Grow("Value", u.Gate[xname]).Grow("Valve", xvalve)
-			yx := New().Grow("Name", xname).Grow("Value", u.Gate[yname]).Grow("Valve", yvalve)
+			xy := New().Grow("Name", xname).Grow("Value", xvalue).Grow("Valve", xvalve)
+			yx := New().Grow("Name", xname).Grow("Value", yvalue).Grow("Valve", yvalve)
 			frame.Grow(0, xy).Grow(1, yx)
 			eye.Show("Frame", frame)
 		}

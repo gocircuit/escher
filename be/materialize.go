@@ -14,16 +14,22 @@ import (
 )
 
 func Materialize(idiom Circuit, design Value) (residual Value) {
+	return MaterializeTransform(idiom, design, nil)
+}
+
+type Transform func(Value) Value
+
+func MaterializeTransform(idiom Circuit, design Value, transform Transform) (residual Value) {
 	var reflex Reflex
-	reflex, residual = materialize(idiom, design)
+	reflex, residual = materialize(idiom, design, transform)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func materialize(idiom Circuit, design Value) (reflex Reflex, residual Value) {
-	renderer := NewRenderer(idiom)
+func materialize(idiom Circuit, design Value, transform Transform) (reflex Reflex, residual Value) {
+	renderer := NewRenderer(idiom, transform)
 	matter := &Matter{
 		Idiom: idiom,
 		Design: design,
@@ -36,10 +42,14 @@ func materialize(idiom Circuit, design Value) (reflex Reflex, residual Value) {
 
 type Renderer struct {
 	idiom Circuit
+	transform Transform
 }
 
-func NewRenderer(idiom Circuit) *Renderer {
-	return &Renderer{idiom}
+func NewRenderer(idiom Circuit, transform Transform) *Renderer {
+	if transform == nil {
+		transform = func(v Value) Value { return v }
+	}
+	return &Renderer{idiom, transform}
 }
 
 func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
@@ -75,6 +85,10 @@ func filter(a Address) (addr Address, monkey bool) {
 	return a, true
 }
 
+func (b *Renderer) lookup(addr Address) Value {
+	return b.transform(b.idiom.Lookup(addr))
+}
+
 func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
 	// parse @-sign out from front of address
 	addr, monkey := filter(addr)
@@ -86,7 +100,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 		if len(enclosing.Path) > 0 {
 			abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
 			abs = abs.Append(addr)
-			val = b.idiom.Lookup(abs)
+			val = b.lookup(abs)
 			if val != nil {
 				addr = abs
 			}
@@ -95,7 +109,7 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 
 	// if not found locally, find the addr starting from root
 	if val == nil {
-		val = b.idiom.Lookup(addr)
+		val = b.lookup(addr)
 	}
 	if val == nil {
 		panicf("Address %v is dangling", addr)

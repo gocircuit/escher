@@ -52,5 +52,5 @@ TestFlows {
 		not: = :
 	}
 	y:Control = Ignore
-	y:Frame = Show
+	y:Frame = Ignore
 }

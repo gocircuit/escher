@@ -9,6 +9,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 
@@ -78,7 +79,10 @@ func main() {
 	for {
 		chunk, err := r.Read()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "end of session (%v)", err)
+			fmt.Fprintf(os.Stderr, "end of session (%v)\n", err)
+			if err == io.EOF || err == io.ErrUnexpectedEOF {
+				break
+			}
 		}
 		src := see.NewSrcString(string(chunk))
 		for src.Len() > 0 {

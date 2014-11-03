@@ -7,6 +7,7 @@
 package escher
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 
@@ -30,11 +31,15 @@ func (h *Help) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 }
 
 func (h *Help) Cognize(eye *be.Eye, v interface{}) {
+	h.value(v)
+}
+
+func (h *Help) value(v interface{}) {
 	switch u := v.(type) {
-	case Address:
-		h.address(u)
 	case Circuit:
 		h.circuit(u)
+	case Address:
+		fmt.Fprintf(os.Stderr, "\nThis is  an address constant equal to %v.\n\n", u)
 	case int:
 		fmt.Fprintf(os.Stderr, "\nThis is  an integer constant equal to %v.\n\n", u)
 	case float64:
@@ -49,10 +54,20 @@ func (h *Help) Cognize(eye *be.Eye, v interface{}) {
 }
 
 func (h *Help) circuit(u Circuit) {
-	fmt.Fprintf(os.Stderr, "\nWe are looking at a circuit design (in desugared syntax):\n%v\n", u)
-}
+	var w bytes.Buffer
+	fmt.Fprintf(&w, "\nWe are looking at a circuit design (in desugared syntax):\n%v\n\n", u)
 
-func (h *Help) address(addr Address) {
+	valves := u.ValveNames(Super)
+	if len(valves) == 0 {
+		fmt.Fprintf(&w, "The circuit has no super valves.\n\n")
+	} else {
+		fmt.Fprintf(&w, "The circuit has %d super valve(s) ", len(valves))
+		SortNames(valves)
+		for _, vn := range valves {
+			fmt.Fprintf(&w, ":%v ", vn)
+		}
+		w.WriteString("\n\n")
+	}
 
-	fmt.Fprintf(os.Stderr, "\nAddress %v resolves to ??", addr)
+	os.Stderr.Write(w.Bytes())
 }

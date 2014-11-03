@@ -13,7 +13,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// TODO: This is first order germ projection. It can be extended to infinite order.
+// TODO: This is a first order graph projection. It can be extended to any order.
 type Index struct {
 	gv Circuit // Gate-Valve dictionary
 	shadow Circuit
@@ -25,6 +25,8 @@ func (x *Index) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 }
 
 func (x *Index) CognizeFlowFrame(eye *be.Eye, v interface{}) {
+	
+	println("flowframe")
 
 	// place involved gates in dictionary
 	f := v.(Circuit)
@@ -74,7 +76,8 @@ func (x *Index) remember(frame Circuit, i int) (index int) {
 	return index
 }
 
-func (x *Index) CognizeControl(eye *be.Eye, v interface{}) {
+func (x *Index) CognizeFlush(eye *be.Eye, v interface{}) {
+	println("flush")
 	gv, shadow := x.gv, x.shadow
 	x.gv, x.shadow = New(), New()
 	eye.Show(DefaultValve, New().Grow("GateValve", gv).Grow("Shadow", shadow))

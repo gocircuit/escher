@@ -1,0 +1,22 @@
+// Written in 2014 by Petar Maymounkov.
+//
+// It helps future understanding of past knowledge to save
+// this notice, so peers of other times and backgrounds can
+// see history clearly.
+
+BuildIndex {
+	depth yield.DepthFirst
+	depth: = escher.Idiom
+	__ Show1
+	depth:Frame = __:X
+	__:Y = flow:
+	depth:Control = Ignore //
+	Ignore = index:Flush //
+
+	flow yield.Flows
+	flow:Frame = index:FlowFrame
+	flow:Control = Ignore
+
+	index reflect.Index
+	index: = :
+}

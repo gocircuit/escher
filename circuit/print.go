@@ -31,13 +31,13 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 	w.WriteString("{")
 
 	// super
-	if valves := u.ValveNames(Super); len(valves) > 0 {
-		fmt.Fprintf(&w, " // ")
-		SortNames(valves)
-		for _, vn := range valves {
-			fmt.Fprintf(&w, ":%v ", vn)
-		}
-	}
+	// if valves := u.ValveNames(Super); len(valves) > 0 {
+	// 	fmt.Fprintf(&w, " // ")
+	// 	SortNames(valves)
+	// 	for _, vn := range valves {
+	// 		fmt.Fprintf(&w, ":%v ", vn)
+	// 	}
+	// }
 	w.WriteString("\n")
 
 	// letters

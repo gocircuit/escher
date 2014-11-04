@@ -10,26 +10,19 @@ import (
 	"log"
 
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/see"
 )
 
-func Materialize(idiom Circuit, design Value) (residual Value) {
-	return MaterializeTransform(idiom, design, nil)
-}
-
-type Transform func(Value) Value
-
-func MaterializeTransform(idiom Circuit, design Value, transform Transform) (residual Value) {
+func Materialize(idiom Circuit, design Value) (residue Value) {
 	var reflex Reflex
-	reflex, residual = materialize(idiom, design, transform)
+	reflex, residue = MaterializeTransform(idiom, design, nil)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func materialize(idiom Circuit, design Value, transform Transform) (reflex Reflex, residual Value) {
-	renderer := NewRenderer(idiom, transform)
+func MaterializeTransform(idiom Circuit, design Value, transformer Transformer) (reflex Reflex, residue Value) {
+	renderer := newRenderer(idiom, transformer)
 	matter := &Matter{
 		Idiom: idiom,
 		Design: design,
@@ -40,58 +33,28 @@ func materialize(idiom Circuit, design Value, transform Transform) (reflex Refle
 	return renderer.Materialize(matter, design, true)
 }
 
-type Renderer struct {
+type renderer struct {
 	idiom Circuit
-	transform Transform
+	transformer Transformer
 }
 
-func NewRenderer(idiom Circuit, transform Transform) *Renderer {
-	if transform == nil {
-		transform = func(v Value) Value { return v }
+func newRenderer(idiom Circuit, transformer Transformer) *renderer {
+	if transformer == nil {
+		transformer = nilTransformer{}
 	}
-	return &Renderer{idiom, transform}
+	return &renderer{idiom, transformer}
 }
 
-func (b *Renderer) MaterializeAddress(addr Address) (Reflex, Value) {
-	matter := &Matter{
-		Idiom: b.idiom,
-		View: New(), // empty view
-		Path: []Name{},
-		Super: nil,
-	}
-	return b.materializeAddress(matter, addr)
+func (b *renderer) form(addr Address, source Value) Value {
+	return b.transformer.Transform(addr, source)
 }
 
-func filter(a Address) (addr Address, monkey bool) {
-	if len(a.Path) == 0 {
-		return a, false
-	}
-	f, ok := a.Path[0].(string)
-	if !ok {
-		return a, false
-	}
-	if len(f) == 0 {
-		return a, false
-	}
-	if f[0] != '@' {
-		return a, false
-	}
-	n := see.ParseName(f[1:]).(string) // parse name after @
-	if n == "" {
-		a.Path = a.Path[1:]
-	} else {
-		a.Path[0] = n
-	}
-	return a, true
+func (b *renderer) lookup(addr Address) Value {
+	return b.idiom.Lookup(addr)
 }
 
-func (b *Renderer) lookup(addr Address) Value {
-	return b.transform(b.idiom.Lookup(addr))
-}
-
-func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Value) {
-	// parse @-sign out from front of address
-	addr, monkey := filter(addr)
+func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
+	addr, monkey := filterMonkey(addr) // parse @-sign out from front of address
 
 	// first, looking up addr within the circuit that encloses this address reference
 	var val Value
@@ -112,29 +75,36 @@ func (b *Renderer) materializeAddress(matter *Matter, addr Address) (Reflex, Val
 		val = b.lookup(addr)
 	}
 	if val == nil {
-		panicf("Address %v is dangling", addr)
+		log.Fatalf("Address %v is dangling", addr)
 	}
 	if monkey {
 		return MaterializeNoun(matter, val)
 	}
+
+	// fill in address and source value and return
 	matter.Address = addr
 	matter.Design = val
+
 	return b.Materialize(matter, val, true)
 }
 
-func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, Value) {
+// expand is false, if and only if it is invoked by MaterialiazeCircuit.
+func (b *renderer) Materialize(matter *Matter, x Value, expand bool) (Reflex, Value) {
+
+	x = b.form(matter.Address, x) // ??
+
 	switch t := x.(type) {
 	// Addresses are materialized recursively
 	case Address:
-		return b.materializeAddress(matter, t)
+		return b.expandAddress(matter, t)
 	// Primitive types are materialized as gates that emit their values once (these gates are called nouns)
 	case int, float64, complex128, string:
 		return MaterializeNoun(matter, t)
 	case Materializer:
 		return t.Materialize(matter)
 	case Circuit:
-		if recurse {
-			return b.MaterializeCircuit(matter, t)
+		if expand {
+			return b.materializeCircuit(matter, t)
 		}
 		return MaterializeNoun(matter, t)
 	default:
@@ -145,18 +115,19 @@ func (b *Renderer) Materialize(matter *Matter, x Value, recurse bool) (Reflex, V
 
 var SpiritAddress = NewAddress("escher", "Spirit")
 
-func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
-	residual := New()
+func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
+	residue := New()
 	gates := make(map[Name]Reflex)
 	spirit := make(map[Name]interface{})
 
-	for g, _ := range u.Gate { // iterate and materialize gates
+	// iterate and materialize gates
+	for g, _ := range u.Gate {
 		if g == Super {
-			log.Fatalf("Circuit design overwrites the %s gate. In:\n%v\n", Super, u)
+			log.Fatalf("Circuit design overwrites the “%s” gate. In:\n%v\n", Super, u)
 		}
 		m := u.At(g)
 		var gv Value
-		if Same(m, SpiritAddress) { // create spirit gates
+		if Same(m, SpiritAddress) { // ?? // create spirit gates
 			gates[g], gv, spirit[g] = MaterializeNativeInstance(
 				&Matter{
 					Idiom: b.idiom,
@@ -182,21 +153,25 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 				false,
 			)
 		}
-		residual.Gate[g] = gv
+		residue.Gate[g] = gv
 	}
-	// 
+
+	// compute the super reflex to be returned by this circuit's materialization
 	var super Reflex
 	super, gates[Super] = make(Reflex), make(Reflex)
 	for v, _ := range u.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
-	// residual.Gate[Genus] = matter.Circuit()
-	for _, g_ := range append(u.Names(), Super) { // link up all gates
+
+	// residue.Gate[Genus] = matter.Circuit()
+
+	// link up all gates
+	for _, g_ := range append(u.Names(), Super) {
 		g := g_
 		for v_, t := range u.Valves(g) {
 			v := v_
 			checkLink(u, gates, g, v, t.Gate, t.Valve)
-			residual.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
+			residue.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
 			go Link(gates[g][v], gates[t.Gate][t.Valve])
 			// go func() {
 			//	log.Printf("%v:%v -> %v:%v | %v %v", g, v, t.Gate, t.Valve, gates[g][v], gates[t.Gate][t.Valve])
@@ -204,12 +179,15 @@ func (b *Renderer) MaterializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			// }()
 		}
 	}
-	res := CleanUp(residual)
+
+	// send residue of this circuit to all escher.Spirit reflexes
+	res := CleanUp(residue)
 	go func() {
 		for _, f := range spirit {
 			f.(*Future).Charge(res)
 		}
 	}()
+
 	return super, res
 }
 

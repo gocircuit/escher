@@ -29,6 +29,19 @@ func NewNoun(v interface{}) Materializer {
 	return NewNativeMaterializer(Noun{}, v)
 }
 
+// Idle
+type Idle struct{}
+
+func (Idle) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+	return nil
+}
+
+func (Idle) OverCognize(*Eye, Name, interface{}) {}
+
+func NewIdleMaterializer() Materializer {
+	return NewNativeMaterializer(Idle{})
+}
+
 // Noun
 type Noun struct{}
 

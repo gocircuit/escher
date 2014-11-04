@@ -16,6 +16,7 @@ import (
 
 func init() {
 	faculty.Register("Ignore", be.Ignore{})
+	faculty.Register("Idle", be.NewIdleMaterializer())
 	faculty.Register("Scanln", Scanln{})
 	//
 	faculty.Register("Grow", be.NewNativeMaterializer(&Grow{}))

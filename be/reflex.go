@@ -85,14 +85,3 @@ func pathCircuit(p []Name) Circuit {
 	}
 	return r
 }
-
-// Transformer
-type Transformer interface {
-	Transform(address Address, source Value) Value
-}
-
-type nilTransformer struct{}
-
-func (nilTransformer) Transform(_ Address, source Value) Value {
-	return source
-}

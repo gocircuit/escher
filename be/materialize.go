@@ -14,15 +14,15 @@ import (
 
 func Materialize(idiom Circuit, design Value) (residue Value) {
 	var reflex Reflex
-	reflex, residue = MaterializeTransform(idiom, design, nil)
+	reflex, residue = MaterializeReflex(idiom, design)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func MaterializeTransform(idiom Circuit, design Value, transformer Transformer) (reflex Reflex, residue Value) {
-	renderer := newRenderer(idiom, transformer)
+func MaterializeReflex(idiom Circuit, design Value) (reflex Reflex, residue Value) {
+	renderer := newRenderer(idiom)
 	matter := &Matter{
 		Idiom: idiom,
 		Design: design,
@@ -35,18 +35,10 @@ func MaterializeTransform(idiom Circuit, design Value, transformer Transformer) 
 
 type renderer struct {
 	idiom Circuit
-	transformer Transformer
 }
 
-func newRenderer(idiom Circuit, transformer Transformer) *renderer {
-	if transformer == nil {
-		transformer = nilTransformer{}
-	}
-	return &renderer{idiom, transformer}
-}
-
-func (b *renderer) form(addr Address, source Value) Value {
-	return b.transformer.Transform(addr, source)
+func newRenderer(idiom Circuit) *renderer {
+	return &renderer{idiom}
 }
 
 func (b *renderer) lookup(addr Address) Value {
@@ -90,8 +82,6 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 
 // expand is false, if and only if it is invoked by MaterialiazeCircuit.
 func (b *renderer) Materialize(matter *Matter, x Value, expand bool) (Reflex, Value) {
-
-	x = b.form(matter.Address, x) // ??
 
 	switch t := x.(type) {
 	// Addresses are materialized recursively

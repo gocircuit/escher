@@ -36,13 +36,13 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 }
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
-	v := value.(Circuit)
-	index := v.At("Index").(be.Index)
-	op := v.At("Value")
-	residual := be.Materialize(index, op)
+	u := value.(Circuit)
+	index := u.At("Index").(be.Index)
+	v := u.At("Value")
+	residual := be.Materialize(index, v)
 	after :=  New().
 		Grow("Index", index).
-		Grow("Value", op).
+		Grow("Value", v).
 		Grow("Residue", residual)
 	// if len(reflex) > 0 {
 	// 	after.Grow("Unconnected", reflex).Grow("u", reflex)

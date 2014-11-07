@@ -4,12 +4,13 @@
 	font-family: times, serif;
 	font-weight: 400;
 	line-height: 1.3em;
+	/*letter-spacing: -0.005em;*/
 }
 
 body, div {
 	padding: 0;
 	margin: 0;
-	font-size: 19px;
+	font-size: 20px;
 }
 
 ul {

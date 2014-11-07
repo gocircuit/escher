@@ -38,14 +38,16 @@ func (h *Help) value(v interface{}) {
 	switch u := v.(type) {
 	case Circuit:
 		h.circuit(u)
+	case be.Index:
+		fmt.Fprintf(os.Stderr, "\nThis is an index constant equal to %v.\n\n", u)
 	case Address:
-		fmt.Fprintf(os.Stderr, "\nThis is  an address constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is an address constant equal to %v.\n\n", u)
 	case int:
-		fmt.Fprintf(os.Stderr, "\nThis is  an integer constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is an integer constant equal to %v.\n\n", u)
 	case float64:
-		fmt.Fprintf(os.Stderr, "\nThis is  a float constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is a float constant equal to %v.\n\n", u)
 	case complex128:
-		fmt.Fprintf(os.Stderr, "\nThis is  a complex constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is a complex constant equal to %v.\n\n", u)
 	case string:
 		fmt.Fprintf(os.Stderr, "\nThis is a string constant equal to %q.\n\n", u)
 	default:

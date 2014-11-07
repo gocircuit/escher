@@ -7,7 +7,7 @@
 package be
 
 import (
-	"log"
+	"fmt"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -67,7 +67,7 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 		val = b.lookup(addr)
 	}
 	if val == nil {
-		log.Fatalf("Address %v is dangling", addr)
+		panicf("Address %v is dangling", addr)
 	}
 	if monkey {
 		return MaterializeNoun(matter, val)
@@ -98,7 +98,7 @@ func (b *renderer) Materialize(matter *Matter, x Value, expand bool) (Reflex, Va
 		}
 		return MaterializeNoun(matter, t)
 	default:
-		log.Fatalf("Source address %v points to unknown type %T", matter.Address, x)
+		panicf("Source address %v points to unknown type %T", matter.Address, x)
 	}
 	panic(0)
 }
@@ -113,7 +113,7 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 	// iterate and materialize gates
 	for g, _ := range u.Gate {
 		if g == Super {
-			log.Fatalf("Circuit design overwrites the “%s” gate. In:\n%v\n", Super, u)
+			panicf("Circuit design overwrites the “%s” gate. In:\n%v\n", Super, u)
 		}
 		m := u.At(g)
 		var gv Value
@@ -184,15 +184,19 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
 	// log.Printf(" %v:%v <=> %v:%v", sg, sv, tg, tv)
 	if _, ok := gates[sg]; !ok {
-		log.Fatalf("In circuit:\n%v\nHas no gate %v\n",u,  sg)
+		panicf("In circuit:\n%v\nHas no gate %v\n",u,  sg)
 	}
 	if _, ok := gates[tg]; !ok {
-		log.Fatalf("In circuit:\n%v\nHas no gate %v\n",u,  tg)
+		panicf("In circuit:\n%v\nHas no gate %v\n",u,  tg)
 	}
 	if _, ok := gates[sg][sv]; !ok {
-		log.Fatalf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  sg, sv)
+		panicf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  sg, sv)
 	}
 	if _, ok := gates[tg][tv]; !ok {
-		log.Fatalf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  tg, tv)
+		panicf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  tg, tv)
 	}
+}
+
+func panicf(f string, a ...interface{}) {
+	panic(fmt.Sprintf(f, a...))
 }

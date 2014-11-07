@@ -100,7 +100,6 @@ func exec(index Index, v Value, showResidue bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("execution glitch (%v)", r)
-			panic(r)
 		}
 	}()
 	residue := Materialize(index, v)

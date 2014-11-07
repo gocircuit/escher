@@ -11,20 +11,20 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Typify struct {}
+type Generalize struct {}
 
-func (Typify) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Generalize) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 	return nil
 }
 
-func (Typify) CognizeIndex(eye *be.Eye, v interface{}) {
-	eye.Show(DefaultValve, TypifyIndex(v.(be.Index)))
+func (Generalize) CognizeIndex(eye *be.Eye, v interface{}) {
+	eye.Show(DefaultValve, GeneralizeIndex(v.(be.Index)))
 }
 
-func (Typify) Cognize(eye *be.Eye, v interface{}) {}
+func (Generalize) Cognize(eye *be.Eye, v interface{}) {}
 
-func TypifyIndex(x be.Index) be.Index {
-	r := typifyIndex(x)
+func GeneralizeIndex(x be.Index) be.Index {
+	r := generalizeIndex(x)
 	r.Memorize("int", "", "int")
 	r.Memorize("float64", "", "float")
 	r.Memorize("complex128", "", "complex")
@@ -34,14 +34,14 @@ func TypifyIndex(x be.Index) be.Index {
 	return r
 }
 
-func typifyIndex(x be.Index) be.Index {
+func generalizeIndex(x be.Index) be.Index {
 	r := be.NewIndex()
 	for n, v := range Circuit(x).Gate {
 		switch t := v.(type) {
 		case be.Index:
-			Circuit(r).Include(n, typifyIndex(t))
+			Circuit(r).Include(n, generalizeIndex(t))
 		case Circuit:
-			Circuit(r).Include(n, TypifyCircuit(t))
+			Circuit(r).Include(n, GeneralizeCircuit(t))
 		default: // retain all other values
 			Circuit(r).Include(n, v)
 		}
@@ -49,7 +49,7 @@ func typifyIndex(x be.Index) be.Index {
 	return r
 }
 
-func TypifyCircuit(u Circuit) Circuit {
+func GeneralizeCircuit(u Circuit) Circuit {
 	r := u.Copy()
 	for n, v := range r.Gate {
 		switch v.(type) {

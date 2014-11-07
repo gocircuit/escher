@@ -231,7 +231,9 @@ func (u Circuit) Merge(v Circuit) {
 			}
 			w.Merge(t)
 		default:
-			u.Include(n, g)
+			if u.Include(n, g) != nil {
+				panic("overwriting circuit value")
+			}
 		}
 	}
 }

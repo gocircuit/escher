@@ -48,14 +48,21 @@ func (idiom Idiom) Memorize(value Value, walk ...Name) {
 	Circuit(idiom).At(walk[0]).(Idiom).Memorize(value, walk[1:]...)
 }
 
-func (idiom Idiom) Merge(v Value) {
-	switch t := v.(type) {
-	case Circuit:
-		Circuit(idiom).Merge(t)
-	case Idiom:
-		Circuit(idiom).Merge(Circuit(t))
-	default:
-		panic("uh")
+func (idiom Idiom) Merge(with Idiom) {
+	u := Circuit(idiom)
+	for n, v := range with.Gate {
+		switch t := v.(type) {
+		case Idiom:
+			if !u.Has(n) {
+				u.Include(n, v)
+				break
+			}
+			u.At(n).(Idiom).Merge(t)
+		default:
+			if u.Include(n, v) != nil {
+				panic("overwriting circuit value")
+			}
+		}
 	}
 }
 

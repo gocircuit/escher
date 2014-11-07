@@ -126,8 +126,7 @@ func (u Circuit) refine(name Name) Circuit {
 	}
 	y, ok := x.(Circuit)
 	if !ok {
-		y = New()
-		u.ReGrow(name, y)
+		panic("overwriting a name")
 	}
 	return y
 }

@@ -9,7 +9,6 @@ package be
 import (
 	. "github.com/gocircuit/escher/circuit"
 	// . "github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/kit/fs"
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
@@ -26,13 +25,15 @@ type Native interface {
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
-	Idiom Circuit // Idiom used to materialize
+	Idiom Idiom // Idiom used to materialize
 	Address Address // Address of the materialized design in memory
 	Design interface{} // Design
 	View Circuit // Valves connected to this design in the enclosing program
 	Path []Name // Path to this reflex within the residual, recursively following gate names
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }
+
+type Source struct{}
 
 // Source returns an object describing the source location of the enclosing circuit, if available.
 func (m *Matter) Source() Value {
@@ -43,7 +44,7 @@ func (m *Matter) Source() Value {
 	if !ok {
 		return nil
 	}
-	s, ok := u.OptionAt(fs.Source{})
+	s, ok := u.OptionAt(Source{})
 	if !ok {
 		return nil
 	}

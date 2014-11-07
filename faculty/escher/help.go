@@ -22,7 +22,7 @@ func init() {
 }
 
 type Help struct {
-	idiom Circuit
+	idiom be.Idiom
 }
 
 func (h *Help) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {

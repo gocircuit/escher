@@ -9,21 +9,21 @@ package faculty
 import (
 	"sync"
 
+	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/see"
-	. "github.com/gocircuit/escher/circuit"
 )
 
 var lk sync.Mutex
-var root = New()
+var root = NewIdiom()
 
-func Root() Circuit {
+func Root() Idiom {
 	lk.Lock()
 	defer lk.Unlock()
-	return root.DeepCopy()
+	return root
 }
 
 func Register(name string, v interface{}) {
 	lk.Lock()
 	defer lk.Unlock()
-	root.Place(ParseAddress(name), v)
+	root.Memorize(v, ParseAddress(name).Path...)
 }

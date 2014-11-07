@@ -6,11 +6,19 @@
 
 package escher
 
-// import (
-// 	// "fmt"
-// 	// "log"
+import (
+	// "fmt"
+	// "log"
 
-// 	. "github.com/gocircuit/escher/circuit"
-// 	"github.com/gocircuit/escher/be"
-// )
+	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/be"
+)
 
+type Flatten struct{}
+
+func (Flatten) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+	return nil
+}
+
+func (Flatten) Cognize(eye *be.Eye, v interface{}) {
+}

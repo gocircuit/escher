@@ -96,7 +96,7 @@ func main() {
 	}
 }
 
-func exec(idiom Circuit, v Value, showResidue bool) {
+func exec(idiom Idiom, v Value, showResidue bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("execution glitch (%v)", r)

@@ -12,7 +12,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func Materialize(idiom Circuit, design Value) (residue Value) {
+func Materialize(idiom Idiom, design Value) (residue Value) {
 	var reflex Reflex
 	reflex, residue = MaterializeReflex(idiom, design)
 	if len(reflex) > 0 {
@@ -21,7 +21,7 @@ func Materialize(idiom Circuit, design Value) (residue Value) {
 	return
 }
 
-func MaterializeReflex(idiom Circuit, design Value) (reflex Reflex, residue Value) {
+func MaterializeReflex(idiom Idiom, design Value) (reflex Reflex, residue Value) {
 	renderer := newRenderer(idiom)
 	matter := &Matter{
 		Idiom: idiom,
@@ -34,15 +34,15 @@ func MaterializeReflex(idiom Circuit, design Value) (reflex Reflex, residue Valu
 }
 
 type renderer struct {
-	idiom Circuit
+	idiom Idiom
 }
 
-func newRenderer(idiom Circuit) *renderer {
+func newRenderer(idiom Idiom) *renderer {
 	return &renderer{idiom}
 }
 
 func (b *renderer) lookup(addr Address) Value {
-	return b.idiom.Lookup(addr)
+	return b.idiom.Recall(addr)
 }
 
 func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {

@@ -15,10 +15,11 @@ import (
 	"path"
 
 	. "github.com/gocircuit/escher/circuit"
+	. "github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/see"
 )
 
-func Load(filedir string) Circuit {
+func Load(filedir string) Idiom {
 	fi, err := os.Stat(filedir)
 	if err != nil {
 		log.Fatalf("cannot read source file %s (%v)", filedir, err)
@@ -30,15 +31,15 @@ func Load(filedir string) Circuit {
 }
 
 // loadDirectory ...
-func loadDirectory(dir string) Circuit {
+func loadDirectory(dir string) Idiom {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
 	//
-	x := New()
-	x.Include(Source{}, New().Grow("Dir", dir))
+	x := NewIdiom()
+	x.Memorize(New().Grow("Dir", dir), Source{})
 	//
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
@@ -47,7 +48,7 @@ func loadDirectory(dir string) Circuit {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
-			x.Include(fileInfo.Name(), loadDirectory(filePath))
+			x.Memorize(loadDirectory(filePath), fileInfo.Name()) // idiom can memorize idioms recursively
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
@@ -59,12 +60,12 @@ func loadDirectory(dir string) Circuit {
 }
 
 // loadFile ...
-func loadFile(dir, file string) Circuit {
+func loadFile(dir, file string) Idiom {
 	text, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", file, err)
 	}
-	x := New()
+	x := NewIdiom()
 	src := see.NewSrcString(string(text))
 	for {
 		n_, u_ := see.SeePeer(src)
@@ -75,14 +76,7 @@ func loadFile(dir, file string) Circuit {
 		if u, ok := u_.(Circuit); ok {
 			u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
 		}
-		x.Include(n, u_)
+		x.Memorize(u_, n)
 	}
 	return x
-}
-
-// Source is a name type for a genus structure.
-type Source struct{}
-
-func (Source) String() string {
-	return "(SourceInfo)"
 }

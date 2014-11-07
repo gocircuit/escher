@@ -23,6 +23,11 @@ func NewAddress(name ...Name) Address {
 	return Address{name}
 }
 
+func (a Address) Chop() ([]Name, Name) {
+	p := a.Path
+	return p[:len(p)-1], p[len(p)-1]
+}
+
 func (a Address) Append(b Address) Address {
 	c := Address{make([]Name, len(a.Path) + len(b.Path))}
 	n := copy(c.Path, a.Path)

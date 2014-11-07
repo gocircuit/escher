@@ -18,13 +18,13 @@ import (
 //
 // On Before, Materialize receives:
 //	{
-//		Idiom Circuit	// namespace of values
+//		Idiom Idiom	// namespace of values
 //		Value Value	// value to materialize
 //	}
 //
 // On After, Materialize sends:
 //	{
-//		Idiom Circuit
+//		Idiom Idiom
 //		Value Value
 //		Residue Value
 //	}
@@ -37,7 +37,7 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	v := value.(Circuit)
-	idiom := v.CircuitAt("Idiom")
+	idiom := v.At("Idiom").(be.Idiom)
 	op := v.At("Value")
 	residual := be.Materialize(idiom, op)
 	after :=  New().

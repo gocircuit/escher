@@ -14,18 +14,18 @@ import (
 )
 
 type Idiom struct {
-	Circuit
+	be.Idiom
 }
 
 func (n Idiom) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	n.Circuit = matter.Idiom.DeepCopy()
+	n.Idiom = matter.Idiom
 	go func() {
 		for vlv, _ := range matter.View.Gate {
-			eye.Show(vlv, n.Circuit)
+			eye.Show(vlv, n.Idiom)
 		}
 	}()
 	if matter.View.Len() == 0 {
-		return n.Circuit
+		return n.Idiom
 	}
 	return nil
 }

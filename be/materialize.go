@@ -12,19 +12,19 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func Materialize(idiom Idiom, design Value) (residue Value) {
+func Materialize(index Index, design Value) (residue Value) {
 	var reflex Reflex
-	reflex, residue = MaterializeReflex(idiom, design)
+	reflex, residue = MaterializeReflex(index, design)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func MaterializeReflex(idiom Idiom, design Value) (reflex Reflex, residue Value) {
-	renderer := newRenderer(idiom)
+func MaterializeReflex(index Index, design Value) (reflex Reflex, residue Value) {
+	renderer := newRenderer(index)
 	matter := &Matter{
-		Idiom: idiom,
+		Index: index,
 		Design: design,
 		View: New(),
 		Path: []Name{},
@@ -34,15 +34,15 @@ func MaterializeReflex(idiom Idiom, design Value) (reflex Reflex, residue Value)
 }
 
 type renderer struct {
-	idiom Idiom
+	index Index
 }
 
-func newRenderer(idiom Idiom) *renderer {
-	return &renderer{idiom}
+func newRenderer(index Index) *renderer {
+	return &renderer{index}
 }
 
 func (b *renderer) lookup(addr Address) Value {
-	return b.idiom.Recall(addr.Path...)
+	return b.index.Recall(addr.Path...)
 }
 
 func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
@@ -120,7 +120,7 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		if Same(m, SpiritAddress) { // ?? // create spirit gates
 			gates[g], gv, spirit[g] = MaterializeNativeInstance(
 				&Matter{
-					Idiom: b.idiom,
+					Index: b.index,
 					Address: Address{},
 					Design: m,
 					View: u.View(g),
@@ -132,7 +132,7 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		} else {
 			gates[g], gv = b.Materialize(
 				&Matter{
-					Idiom: b.idiom,
+					Index: b.index,
 					Address: Address{},
 					Design: m,
 					View: u.View(g),

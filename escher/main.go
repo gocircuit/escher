@@ -66,13 +66,13 @@ func main() {
 	test.Init(*flagSrc)
 	circuit.Init(*flagDiscover)
 	//
-	idiom := Root()
+	index := Root()
 	if *flagSrc != "" {
-		idiom.Merge(Load(*flagSrc))
+		index.Merge(Load(*flagSrc))
 	}
 	// run main
 	if flagMain != "" {
-		exec(idiom, see.ParseAddress(flagMain), false)
+		exec(index, see.ParseAddress(flagMain), false)
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -91,19 +91,19 @@ func main() {
 				break
 			}
 			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n", u)
-			exec(idiom, u, true)
+			exec(index, u, true)
 		}
 	}
 }
 
-func exec(idiom Idiom, v Value, showResidue bool) {
+func exec(index Index, v Value, showResidue bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Printf("execution glitch (%v)", r)
 			panic(r)
 		}
 	}()
-	residue := Materialize(idiom, v)
+	residue := Materialize(index, v)
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)
 	}

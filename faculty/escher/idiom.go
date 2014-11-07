@@ -13,21 +13,21 @@ import (
 	"github.com/gocircuit/escher/be"
 )
 
-type Idiom struct {
-	be.Idiom
+type Index struct {
+	be.Index
 }
 
-func (n Idiom) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	n.Idiom = matter.Idiom
+func (n Index) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+	n.Index = matter.Index
 	go func() {
 		for vlv, _ := range matter.View.Gate {
-			eye.Show(vlv, n.Idiom)
+			eye.Show(vlv, n.Index)
 		}
 	}()
 	if matter.View.Len() == 0 {
-		return n.Idiom
+		return n.Index
 	}
 	return nil
 }
 
-func (n Idiom) OverCognize(*be.Eye, Name, interface{}) {}
+func (n Index) OverCognize(*be.Eye, Name, interface{}) {}

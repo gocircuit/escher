@@ -19,7 +19,7 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
-func Load(filedir string) Idiom {
+func Load(filedir string) Index {
 	fi, err := os.Stat(filedir)
 	if err != nil {
 		log.Fatalf("cannot read source file %s (%v)", filedir, err)
@@ -31,14 +31,14 @@ func Load(filedir string) Idiom {
 }
 
 // loadDirectory ...
-func loadDirectory(dir string) Idiom {
+func loadDirectory(dir string) Index {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
 	//
-	x := NewIdiom()
+	x := NewIndex()
 	x.Memorize(New().Grow("Dir", dir), Source{})
 	//
 	fileInfos, err := d.Readdir(0)
@@ -48,7 +48,7 @@ func loadDirectory(dir string) Idiom {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
-			x.Memorize(loadDirectory(filePath), fileInfo.Name()) // idiom can memorize idioms recursively
+			x.Memorize(loadDirectory(filePath), fileInfo.Name()) // Index can memorize Indexs recursively
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
@@ -60,12 +60,12 @@ func loadDirectory(dir string) Idiom {
 }
 
 // loadFile ...
-func loadFile(dir, file string) Idiom {
+func loadFile(dir, file string) Index {
 	text, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", file, err)
 	}
-	x := NewIdiom()
+	x := NewIndex()
 	src := see.NewSrcString(string(text))
 	for {
 		n_, u_ := see.SeePeer(src)

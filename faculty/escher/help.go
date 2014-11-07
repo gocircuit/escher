@@ -22,11 +22,11 @@ func init() {
 }
 
 type Help struct {
-	idiom be.Idiom
+	index be.Index
 }
 
 func (h *Help) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	h.idiom = matter.Idiom
+	h.index = matter.Index
 	return nil
 }
 

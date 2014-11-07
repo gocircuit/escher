@@ -12,20 +12,20 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// Idiom is a hierarchy of names with associated meanings.
+// Index is a hierarchy of names with associated meanings.
 // Alternatively, it is a key-value store wherein keys are sequences of names.
-type Idiom Circuit
+type Index Circuit
 
-func NewIdiom() Idiom {
-	return Idiom(New())
+func NewIndex() Index {
+	return Index(New())
 }
 
-func (idiom Idiom) Recall(walk ...Name) Value {
+func (x Index) Recall(walk ...Name) Value {
 	if len(walk) == 0 {
-		return idiom
+		return x
 	}
-	switch t := Circuit(idiom).At(walk[0]).(type) {
-	case Idiom:
+	switch t := Circuit(x).At(walk[0]).(type) {
+	case Index:
 		return t.Recall(walk[1:]...)
 	default:
 		if len(walk) == 1 {
@@ -35,29 +35,29 @@ func (idiom Idiom) Recall(walk ...Name) Value {
 	return nil
 }
 
-func (idiom Idiom) Memorize(value Value, walk ...Name) {
+func (x Index) Memorize(value Value, walk ...Name) {
 	if len(walk) == 1 {
-		if Circuit(idiom).Include(walk[0], value) != nil {
+		if Circuit(x).Include(walk[0], value) != nil {
 			panic("overwriting value")
 		}
 		return
 	}
-	if !Circuit(idiom).Has(walk[0]) {
-		Circuit(idiom).Include(walk[0], NewIdiom())
+	if !Circuit(x).Has(walk[0]) {
+		Circuit(x).Include(walk[0], NewIndex())
 	}
-	Circuit(idiom).At(walk[0]).(Idiom).Memorize(value, walk[1:]...)
+	Circuit(x).At(walk[0]).(Index).Memorize(value, walk[1:]...)
 }
 
-func (idiom Idiom) Merge(with Idiom) {
-	u := Circuit(idiom)
+func (x Index) Merge(with Index) {
+	u := Circuit(x)
 	for n, v := range with.Gate {
 		switch t := v.(type) {
-		case Idiom:
+		case Index:
 			if !u.Has(n) {
 				u.Include(n, v)
 				break
 			}
-			u.At(n).(Idiom).Merge(t)
+			u.At(n).(Index).Merge(t)
 		default:
 			if u.Include(n, v) != nil {
 				panic("overwriting circuit value")
@@ -66,10 +66,10 @@ func (idiom Idiom) Merge(with Idiom) {
 	}
 }
 
-func (idiom Idiom) Print(prefix, indent string, recurse int) string {
-	return Circuit(idiom).Print(prefix, indent, recurse)
+func (x Index) Print(prefix, indent string, recurse int) string {
+	return Circuit(x).Print(prefix, indent, recurse)
 }
 
-func (idiom Idiom) String() string {
-	return idiom.Print("", "\t", -1)
+func (x Index) String() string {
+	return x.Print("", "\t", -1)
 }

@@ -14,9 +14,9 @@ import (
 )
 
 var lk sync.Mutex
-var root = NewIdiom()
+var root = NewIndex()
 
-func Root() Idiom {
+func Root() Index {
 	lk.Lock()
 	defer lk.Unlock()
 	return root

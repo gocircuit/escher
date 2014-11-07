@@ -18,13 +18,13 @@ import (
 //
 // On Before, Materialize receives:
 //	{
-//		Idiom Idiom	// namespace of values
+//		Index Index	// namespace of values
 //		Value Value	// value to materialize
 //	}
 //
 // On After, Materialize sends:
 //	{
-//		Idiom Idiom
+//		Index Index
 //		Value Value
 //		Residue Value
 //	}
@@ -37,11 +37,11 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	v := value.(Circuit)
-	idiom := v.At("Idiom").(be.Idiom)
+	index := v.At("Index").(be.Index)
 	op := v.At("Value")
-	residual := be.Materialize(idiom, op)
+	residual := be.Materialize(index, op)
 	after :=  New().
-		Grow("Idiom", idiom).
+		Grow("Index", index).
 		Grow("Value", op).
 		Grow("Residue", residual)
 	// if len(reflex) > 0 {

@@ -1,10 +1,10 @@
-QuickMaterialize { // :Idiom :Value -> :Residue
+QuickMaterialize { // :Index :Value -> :Residue
 	x escher.Materialize
 	x:Before = ybefore:
 	x:After = yafter:
 
 	ybefore Fork
-	ybefore:Idiom = :Idiom
+	ybefore:Index = :Index
 	ybefore:Value = :Value
 
 	yafter Fork

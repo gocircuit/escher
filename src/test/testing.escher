@@ -17,12 +17,12 @@ MatchOneAndExit { // :Expected :Got
 	door:To = os.Exit
 }
 
-// All runs all test circuits within the default idiom (provided by the -src command-line option).
+// All runs all test circuits within the default index (provided by the -src command-line option).
 // Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
 // Each test is run in a dedicated OS process.
 All {
 	depth yield.DepthFirst
-	depth: = escher.Idiom
+	depth: = escher.Index
 	depth:Frame = filter:In
 	depth:Control = os.ExitSuccess 
 

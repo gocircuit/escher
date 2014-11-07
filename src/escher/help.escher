@@ -8,7 +8,7 @@ BuildIndex {
 	__ Show1
 
 	depth yield.DepthFirst
-	depth: = escher.Idiom
+	depth: = escher.Index
 	depth:Frame = flow:
 	depth:Control = Ignore //
 	Ignore = index:Flush //

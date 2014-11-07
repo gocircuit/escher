@@ -73,3 +73,12 @@ func (u Circuit) View(gate Name) Circuit {
 func (u Circuit) Follow(v Vector) Vector {
 	return u.Flow[v.Gate][v.Valve]
 }
+
+func (u Circuit) Flows() (r [][2]Vector) {
+	for xname, xview := range u.Flow {
+		for xvalve, xvec := range xview {
+			r = append(r, [2]Vector{Vector{xname, xvalve}, xvec})
+		}
+	}
+	return
+}

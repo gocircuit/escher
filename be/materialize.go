@@ -42,7 +42,7 @@ func newRenderer(idiom Idiom) *renderer {
 }
 
 func (b *renderer) lookup(addr Address) Value {
-	return b.idiom.Recall(addr)
+	return b.idiom.Recall(addr.Path...)
 }
 
 func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {

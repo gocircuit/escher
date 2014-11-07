@@ -13,4 +13,5 @@ import (
 
 func init() {
 	faculty.Register("reflect.Index", be.NewNativeMaterializer(&Index{}))
+	faculty.Register("reflect.Address", be.NewNativeMaterializer(Addresses{}))
 }

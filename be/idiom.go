@@ -7,6 +7,8 @@
 package be
 
 import (
+	// "log"
+
 	. "github.com/gocircuit/escher/circuit"
 )
 
@@ -34,18 +36,16 @@ func (idiom Idiom) Recall(walk ...Name) Value {
 }
 
 func (idiom Idiom) Memorize(value Value, walk ...Name) {
-	path, name := walk[:len(walk)-1], walk[len(walk)-1]
-	u := idiom
-	for _, step := range path {
-		r := NewIdiom()
-		if Circuit(u).Include(step, r) != nil {
-			panic("overwriting idiom")
+	if len(walk) == 1 {
+		if Circuit(idiom).Include(walk[0], value) != nil {
+			panic("overwriting value")
 		}
-		u = r
+		return
 	}
-	if Circuit(u).Include(name, value) != nil {
-		panic("overwriting value")
+	if !Circuit(idiom).Has(walk[0]) {
+		Circuit(idiom).Include(walk[0], NewIdiom())
 	}
+	Circuit(idiom).At(walk[0]).(Idiom).Memorize(value, walk[1:]...)
 }
 
 func (idiom Idiom) Merge(v Value) {
@@ -57,4 +57,12 @@ func (idiom Idiom) Merge(v Value) {
 	default:
 		panic("uh")
 	}
+}
+
+func (idiom Idiom) Print(prefix, indent string, recurse int) string {
+	return Circuit(idiom).Print(prefix, indent, recurse)
+}
+
+func (idiom Idiom) String() string {
+	return idiom.Print("", "\t", -1)
 }

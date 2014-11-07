@@ -16,7 +16,7 @@ import (
 
 func init() {
 	faculty.Register("escher.Materialize", be.NewNativeMaterializer(Materialize{}))
-	// faculty.Register("escher.Flatten", be.NewNativeMaterializer(Flatten{}))
 	faculty.Register("escher.Index", be.NewNativeMaterializer(Index{}))
 	faculty.Register("escher.Parse", be.NewNativeMaterializer(Parse{}))
+	// faculty.Register("escher.Flatten", be.NewNativeMaterializer(Flatten{}))
 }

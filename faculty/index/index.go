@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package reflect
+package index
 
 import (
 	"github.com/gocircuit/escher/faculty"
@@ -12,6 +12,6 @@ import (
 )
 
 func init() {
-	faculty.Register("reflect.Index", be.NewNativeMaterializer(&Index{}))
-	faculty.Register("reflect.Address", be.NewNativeMaterializer(Addresses{}))
+	faculty.Register("index.Mirror", be.NewNativeMaterializer(Mirror{}))
+	faculty.Register("index.Typify", be.NewNativeMaterializer(Typify{}))
 }

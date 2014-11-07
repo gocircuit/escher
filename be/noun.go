@@ -7,6 +7,8 @@
 package be
 
 import (
+	"fmt"
+
 	. "github.com/gocircuit/escher/circuit"
 )
 
@@ -22,11 +24,11 @@ func (Ignore) Materialize(*Matter) (Reflex, Value) {
 }
 
 func MaterializeNoun(matter *Matter, v interface{}) (Reflex, Value) {
-	return MaterializeNative(matter, Noun{}, v)
+	return MaterializeNative(matter, &Noun{}, v)
 }
 
 func NewNoun(v interface{}) Materializer {
-	return NewNativeMaterializer(Noun{}, v)
+	return NewNativeMaterializer(&Noun{}, v)
 }
 
 // Idle
@@ -43,9 +45,12 @@ func NewIdleMaterializer() Materializer {
 }
 
 // Noun
-type Noun struct{}
+type Noun struct {
+	Value interface{}
+}
 
-func (n Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+func (n *Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+	n.Value = aux[0]
 	go func() {
 		for vlv, _ := range matter.View.Gate {
 			eye.Show(vlv, aux[0])
@@ -57,7 +62,11 @@ func (n Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
 	return nil
 }
 
-func (n Noun) OverCognize(*Eye, Name, interface{}) {}
+func (n *Noun) OverCognize(*Eye, Name, interface{}) {}
+
+func (n *Noun) NativeString(aux ...interface{}) string {
+	return fmt.Sprintf("Noun(%v)", aux[0])
+}
 
 // Future
 type Future struct {

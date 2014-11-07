@@ -34,6 +34,11 @@ func (x *NativeMaterializer) Materialize(matter *Matter) (Reflex, circuit.Value)
 }
 
 func (x *NativeMaterializer) String() string {
+	if ns, ok := x.sample.(interface{
+		NativeString(...interface{}) string
+	}); ok {
+		return ns.NativeString(x.aux...)
+	}
 	return fmt.Sprintf("Native(%T)", x.sample)
 }
 

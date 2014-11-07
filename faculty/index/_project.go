@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package reflect
+package index
 
 import (
 	"fmt"

@@ -14,4 +14,5 @@ import (
 func init() {
 	faculty.Register("index.Mirror", be.NewNativeMaterializer(Mirror{}))
 	faculty.Register("index.Typify", be.NewNativeMaterializer(Typify{}))
+	faculty.Register("index.Yield", be.NewNativeMaterializer(Yield{}))
 }

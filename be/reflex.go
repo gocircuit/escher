@@ -33,8 +33,6 @@ type Matter struct {
 	Super *Matter // Matter of the circuit that recalled this reflex as a peer
 }
 
-type Source struct{}
-
 // Source returns an object describing the source location of the enclosing circuit, if available.
 func (m *Matter) Source() Value {
 	if m.Super == nil {

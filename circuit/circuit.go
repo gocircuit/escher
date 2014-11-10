@@ -17,6 +17,8 @@ type Circuit struct {
 	Flow map[Name]map[Name]Vector // gate -> valve -> opposing gate and valve
 }
 
+const Super = ""
+
 func New() Circuit {
 	return Circuit{
 		Gate: make(map[Name]Value),

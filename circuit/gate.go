@@ -226,13 +226,14 @@ func (u Circuit) Merge(v Circuit) {
 			}
 			w, ok := h.(Circuit)
 			if !ok {
-				u.Include(n, g)
-				break
+				panic("overwriting non-circuit value")
+				// u.Include(n, g)
+				// break
 			}
 			w.Merge(t)
 		default:
 			if u.Include(n, g) != nil {
-				panic("overwriting circuit value")
+				panic("overwriting value")
 			}
 		}
 	}
@@ -264,5 +265,3 @@ func (u Circuit) OptionAt(name Name) (Value, bool) {
 func (u Circuit) At(name Name) Value {
 	return u.Gate[name]
 }
-
-const Super = ""

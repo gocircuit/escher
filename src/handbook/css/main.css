@@ -1,16 +1,24 @@
 *, body, li, ul, table, td, ul, ol, dt, dd {
 	background: rgb(235,255,255);
 	color: rgba(95,95,95, 0.98);
-	font-family: times, serif;
+	font-family: 'luxi serif', georgia, times, serif;
 	font-weight: 400;
-	line-height: 1.3em;
+	line-height: 1.4em;
 	/*letter-spacing: -0.005em;*/
 }
 
 body, div {
 	padding: 0;
 	margin: 0;
-	font-size: 20px;
+	font-size: 18.5px;
+}
+
+code, pre {
+	color: rgba(0, 150, 130, 0.99);
+	font-family: 'luxi mono', 'source code pro', monospace;
+	font-size: 15px;
+	font-weight: 400;
+	letter-spacing: -0.04em;
 }
 
 ul {
@@ -18,7 +26,7 @@ ul {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: lato, sans-serif;
+	font-family: 'luxi serif', lato, sans-serif;
 	color: rgba(0,0, 200, 0.6);
 	font-weight: 400;
 }
@@ -43,14 +51,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-code, pre {
-	color: rgba(0, 150, 130, 0.99);
-	font-family: 'source code pro', monospace;
-	font-size: 15px;
-	font-weight: 400;
-	letter-spacing: -0.04em;
-}
-
 /*pre.go {color: #333333; }
 pre.escher {color: rgb(200,100,120); }
 */
@@ -65,7 +65,7 @@ div.page {
 }
 
 div.header {
-	font-family: lato, sans-serif;
+	font-family: 'luxi serif', lato, sans-serif;
 	padding: 20px;
 	left: 0;
 	right: 0;
@@ -79,7 +79,7 @@ div.header a {
 }
 
 div.footer {
-	font-family: lato, sans-serif;
+	font-family: 'luxi sans', lato, sans-serif;
 	text-align: center;
 	font-size: 13px;
 	padding: 20px;

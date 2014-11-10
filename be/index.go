@@ -17,20 +17,32 @@ import (
 type Index Circuit
 
 func NewIndex() Index {
-	return Index(New())
+	return Index(New().Grow(Super, "Index"))
+}
+
+func IsIndex(v Value) bool {
+	u, ok := v.(Circuit)
+	if !ok {
+		return false
+	}
+	s, ok := u.StringOptionAt(Super)
+	return ok && s == "Index"
+}
+
+func AsIndex(v Value) Index {
+	return Index(v.(Circuit))
 }
 
 func (x Index) Recall(walk ...Name) Value {
 	if len(walk) == 0 {
-		return x
+		return Circuit(x)
 	}
-	switch t := Circuit(x).At(walk[0]).(type) {
-	case Index:
-		return t.Recall(walk[1:]...)
-	default:
-		if len(walk) == 1 {
-			return t
-		}
+	v := Circuit(x).At(walk[0])
+	if u, ok := v.(Circuit); ok && IsIndex(u) {
+		return AsIndex(u).Recall(walk[1:]...)
+	}
+	if len(walk) == 1 {
+		return v
 	}
 	return nil
 }
@@ -45,25 +57,11 @@ func (x Index) Memorize(value Value, walk ...Name) {
 	if !Circuit(x).Has(walk[0]) {
 		Circuit(x).Include(walk[0], NewIndex())
 	}
-	Circuit(x).At(walk[0]).(Index).Memorize(value, walk[1:]...)
+	Index(Circuit(x).CircuitAt(walk[0])).Memorize(value, walk[1:]...)
 }
 
 func (x Index) Merge(with Index) {
-	u := Circuit(x)
-	for n, v := range with.Gate {
-		switch t := v.(type) {
-		case Index:
-			if !u.Has(n) {
-				u.Include(n, v)
-				break
-			}
-			u.At(n).(Index).Merge(t)
-		default:
-			if u.Include(n, v) != nil {
-				panic("overwriting circuit value")
-			}
-		}
-	}
+	Circuit(x).Merge(Circuit(with))
 }
 
 func (x Index) Print(prefix, indent string, recurse int) string {

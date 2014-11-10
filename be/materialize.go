@@ -178,6 +178,9 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		}
 	}()
 
+	if !res.IsEmpty() {
+		res.Grow("?", "Index")
+	}
 	return super, res
 }
 

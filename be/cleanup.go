@@ -12,7 +12,7 @@ import (
 
 // CleanUp removes nil-valued gates and their incident edges.
 // CleanUp never returns nil.
-func CleanUp(u Circuit) Value {
+func CleanUp(u Circuit) Circuit {
 	for n, g := range u.Gate {
 		if g != nil {
 			continue

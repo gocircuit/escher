@@ -7,6 +7,7 @@
 package circuit
 
 import (
+	"fmt"
 	"log"
 )
 
@@ -232,8 +233,8 @@ func (u Circuit) Merge(v Circuit) {
 			}
 			w.Merge(t)
 		default:
-			if u.Include(n, g) != nil {
-				panic("overwriting value")
+			if w := u.Include(n, g); w != nil && !Same(w, g) {
+				panic(fmt.Sprintf("merge overwriting gate (%s->%v) with (%v)", n, w, g))
 			}
 		}
 	}

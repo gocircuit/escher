@@ -117,7 +117,7 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		}
 		m := u.At(g)
 		var gv Value
-		if Same(m, SpiritAddress) { // ?? // create spirit gates
+		if Same(m, SpiritAddress) {
 			gates[g], gv, spirit[g] = MaterializeNativeInstance(
 				&Matter{
 					Index: b.index,

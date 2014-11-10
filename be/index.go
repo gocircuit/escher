@@ -7,6 +7,7 @@
 package be
 
 import (
+	"fmt"
 	// "log"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -17,7 +18,7 @@ import (
 type Index Circuit
 
 func NewIndex() Index {
-	return Index(New().Grow(Super, "Index"))
+	return Index(New().Grow("?", "Index"))
 }
 
 func IsIndex(v Value) bool {
@@ -25,7 +26,7 @@ func IsIndex(v Value) bool {
 	if !ok {
 		return false
 	}
-	s, ok := u.StringOptionAt(Super)
+	s, ok := u.StringOptionAt("?")
 	return ok && s == "Index"
 }
 
@@ -48,16 +49,24 @@ func (x Index) Recall(walk ...Name) Value {
 }
 
 func (x Index) Memorize(value Value, walk ...Name) {
+	cx, step := Circuit(x), walk[0]
+	//
+	y, ok := value.(Index)
+	if ok {
+		value = Circuit(y)
+	}
+	//
 	if len(walk) == 1 {
-		if Circuit(x).Include(walk[0], value) != nil {
-			panic("overwriting value")
+		if w, ok := cx.OptionAt(step); ok {
+			panic(fmt.Sprintf("index memorize overwriting gate (%s->%v) with (%v)", step, w, value))
 		}
+		cx.Include(step, value)
 		return
 	}
-	if !Circuit(x).Has(walk[0]) {
-		Circuit(x).Include(walk[0], NewIndex())
+	if !cx.Has(step) { // next step is an index
+		cx.Include(step, Circuit(NewIndex()))
 	}
-	Index(Circuit(x).CircuitAt(walk[0])).Memorize(value, walk[1:]...)
+	Index(cx.CircuitAt(step)).Memorize(value, walk[1:]...)
 }
 
 func (x Index) Merge(with Index) {

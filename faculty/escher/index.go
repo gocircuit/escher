@@ -21,11 +21,11 @@ func (n Index) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	n.Index = matter.Index
 	go func() {
 		for vlv, _ := range matter.View.Gate {
-			eye.Show(vlv, n.Index)
+			eye.Show(vlv, Circuit(n.Index))
 		}
 	}()
 	if matter.View.Len() == 0 {
-		return n.Index
+		return Circuit(n.Index)
 	}
 	return nil
 }

@@ -28,7 +28,7 @@ func IsIdentifier(r rune) bool {
 		return true
 	case r >= '0' && r <= '9':
 		return true
-	case r == '_', r == '?', r == '@', r == '*':
+	case r == '_', r == '?', r == '@', r == '*', r == '-', r == '+', r == '$':
 		return true
 	}
 	return false

@@ -28,8 +28,8 @@ func (Yield) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 }
 
 func (Yield) CognizeIndex(eye *be.Eye, value interface{}) {
-	yieldIndex(eye, value.(be.Index))
-	eye.Show("Control", "End")
+	yieldIndex(eye, be.AsIndex(value))
+	eye.Show("End", "End")
 }
 
 func yieldIndex(eye *be.Eye, x be.Index) {
@@ -37,8 +37,12 @@ func yieldIndex(eye *be.Eye, x be.Index) {
 		switch n.(type) {
 		case int, string:
 			switch t := Circuit(x).At(n).(type) {
-			case be.Index:
-				yieldIndex(eye, t)
+			case Circuit:
+				if be.IsIndex(t) {
+					yieldIndex(eye, be.AsIndex(t))
+				} else {
+					eye.Show(DefaultValve, t)
+				}
 			default:
 				eye.Show(DefaultValve, t)
 			}
@@ -49,4 +53,4 @@ func yieldIndex(eye *be.Eye, x be.Index) {
 
 func (Yield) Cognize(eye *be.Eye, value interface{}) {}
 
-func (Yield) CognizeControl(eye *be.Eye, value interface{}) {}
+func (Yield) CognizeEnd(eye *be.Eye, value interface{}) {}

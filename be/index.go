@@ -31,6 +31,9 @@ func IsIndex(v Value) bool {
 }
 
 func AsIndex(v Value) Index {
+	if v.(Circuit).StringAt("?") != "Index" {
+		panic("not an index")
+	}
 	return Index(v.(Circuit))
 }
 

@@ -42,8 +42,11 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 
 	// letters
 	for _, n := range u.SortedLetters() {
-		if n == "" {
+		switch n {
+		case "":
 			n = "*"
+		case "*":
+			panic("*")
 		}
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)

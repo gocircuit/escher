@@ -7,6 +7,8 @@
 package index
 
 import (
+	// "fmt"
+
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -18,7 +20,7 @@ func (Mirror) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 }
 
 func (Mirror) CognizeIndex(eye *be.Eye, v interface{}) {
-	eye.Show(DefaultValve, MirrorNative(v.(be.Index), nil))
+	eye.Show(DefaultValve, Circuit(MirrorNative(be.AsIndex(v), nil)))
 }
 
 func (Mirror) Cognize(eye *be.Eye, v interface{}) {}
@@ -26,11 +28,21 @@ func (Mirror) Cognize(eye *be.Eye, v interface{}) {}
 func MirrorNative(u be.Index, path []Name) be.Index {
 	r := be.NewIndex()
 	for n, v := range Circuit(u).Gate {
+		// println(fmt.Sprintf("-> %v:%T", n, v))
+		if n == "?" {
+			continue
+		}
 		switch t := v.(type) {
-		case be.Index:
-			Circuit(r).Include(n, MirrorNative(t, append(path, n)))
 		case Circuit:
-			Circuit(r).Include(n, v)
+			if be.IsIndex(t) {
+				Circuit(r).Include(n, 
+					Circuit(
+						MirrorNative(be.AsIndex(t), append(path, n)),
+					),
+				)
+			} else {
+				Circuit(r).Include(n, v)
+			}
 		default:
 			Circuit(r).Include(n, be.NewNoun(Address{append(path, n)}))
 		}

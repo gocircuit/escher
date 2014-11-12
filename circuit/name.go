@@ -53,3 +53,17 @@ func (s sortNames) Less(i, j int) bool {
 func (s sortNames) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
+
+func IsNumber(n Name) bool {
+	_, ok := n.(int)
+	return ok
+}
+
+func IsLetter(n Name) bool {
+	_, ok := n.(string)
+	return ok
+}
+
+func IsSymbol(n Name) bool {
+	return !IsNumber(n) && !IsLetter(n)
+}

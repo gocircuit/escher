@@ -32,19 +32,23 @@ func MirrorNative(u be.Index, path []Name) be.Index {
 		if n == "?" {
 			continue
 		}
-		switch t := v.(type) {
-		case Circuit:
-			if be.IsIndex(t) {
-				Circuit(r).Include(n, 
-					Circuit(
-						MirrorNative(be.AsIndex(t), append(path, n)),
-					),
-				)
-			} else {
-				Circuit(r).Include(n, v)
+		if IsSymbol(n) {
+			Circuit(r).Include(n, v)
+		} else {
+			switch t := v.(type) {
+			case Circuit:
+				if be.IsIndex(t) {
+					Circuit(r).Include(n, 
+						Circuit(
+							MirrorNative(be.AsIndex(t), append(path, n)),
+						),
+					)
+				} else {
+					Circuit(r).Include(n, v)
+				}
+			default:
+				Circuit(r).Include(n, be.NewNoun(Address{append(path, n)}))
 			}
-		default:
-			Circuit(r).Include(n, be.NewNoun(Address{append(path, n)}))
 		}
 	}
 	return r

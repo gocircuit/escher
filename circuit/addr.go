@@ -75,6 +75,9 @@ func (a Address) Simple() string {
 }
 
 func (a Address) String() string {
+	if len(a.Path) == 0 {
+		return "."
+	}
 	var w bytes.Buffer
 	for i, x := range a.Path {
 		fmt.Fprintf(&w, "%v", x)

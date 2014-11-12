@@ -50,21 +50,23 @@ func (m *Matter) Source() Value {
 }
 
 func (m *Matter) String() string {
-	d := New().Grow("?", "Footprint of panicking reflex")
-	d.Grow("Gate", m.Debug().Grow("?", "Panicking gate"))
-	if m.Super != nil {
-		d.Grow("Enclosing", m.Super.Debug().Grow("?", "Circuit enclosing the panicking gate"))
-	}
-	return d.String()
+	return m.Debug().String()
 }
 
 func (m *Matter) Debug() Circuit {
 	r := New().
-		Grow("ResiduePath", pathCircuit(m.Path)).
-		Grow("Address", m.Address).
+		Grow("?", "Matter").
+		Grow("Residue", NewAddress(m.Path...)).
+		Grow("Index", m.Address).
 		Grow("View", m.View)
+	if m.Design != nil {
+		r.Grow("Design", m.Design)
+	}
 	if src := m.Source(); src != nil {
 		r.Grow("Source", src)
+	}
+	if m.Super != nil {
+		r.Grow("Super", m.Super.Debug())
 	}
 	return r
 }

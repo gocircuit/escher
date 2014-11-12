@@ -62,19 +62,20 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 		}
 	}
 
+	matter.Address = addr
+
 	// if not found locally, find the addr starting from root
 	if val == nil {
 		val = b.lookup(addr)
 	}
 	if val == nil {
-		panicf("Address %v is dangling", addr)
+		panicf("Address %v is dangling in matter:\n%v\n", addr, matter)
 	}
 	if monkey {
 		return MaterializeNoun(matter, val)
 	}
 
 	// fill in address and source value and return
-	matter.Address = addr
 	matter.Design = val
 
 	return b.Materialize(matter, val, true)

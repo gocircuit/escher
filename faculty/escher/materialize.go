@@ -8,7 +8,7 @@ package escher
 
 import (
 	// "fmt"
-	"log"
+	// "log"
 
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
@@ -37,11 +37,11 @@ func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
 
 func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
-	index := u.At("Index").(be.Index)
+	index := be.AsIndex(u.At("Index"))
 	v := u.At("Value")
 	residual := be.Materialize(index, v)
 	after :=  New().
-		Grow("Index", index).
+		Grow("Index", Circuit(index)).
 		Grow("Value", v).
 		Grow("Residue", residual)
 	// if len(reflex) > 0 {
@@ -50,6 +50,4 @@ func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	eye.Show("After", after)
 }
 
-func (Materialize) CognizeAfter(eye *be.Eye, v interface{}) {
-	log.Printf("(glitch) materialize gate received on :After")
-}
+func (Materialize) CognizeAfter(eye *be.Eye, v interface{}) {}

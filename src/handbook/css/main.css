@@ -1,24 +1,24 @@
 *, body, li, ul, table, td, ul, ol, dt, dd {
 	background: rgb(235,255,255);
-	color: rgba(95,95,95, 0.98);
+	color: rgba(95,95,95, 0.9);
 	font-family: 'luxi serif', georgia, times, serif;
-	font-weight: 400;
+	font-weight: 200;
 	line-height: 1.4em;
-	/*letter-spacing: -0.005em;*/
+	/*letter-spacing: -0.05em;*/
 }
 
 body, div {
 	padding: 0;
 	margin: 0;
-	font-size: 18.5px;
+	font-size: 19px;
 }
 
 code, pre {
-	color: rgba(0, 150, 130, 0.99);
-	font-family: 'luxi mono', 'source code pro', monospace;
+	color: rgba(0, 150, 130, 0.9);
+	font-family: 'Input Mono Condensed', 'luxi mono', 'source code pro', monospace;
 	font-size: 15px;
-	font-weight: 400;
-	letter-spacing: -0.04em;
+	font-weight: 100;
+	letter-spacing: -0.05em;
 }
 
 ul {

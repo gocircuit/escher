@@ -50,10 +50,10 @@ func (m *Matter) Source() Value {
 }
 
 func (m *Matter) String() string {
-	d := New()
-	d.Grow("Gate", m.Debug())
+	d := New().Grow("?", "Footprint of panicking reflex")
+	d.Grow("Gate", m.Debug().Grow("?", "Panicking gate"))
 	if m.Super != nil {
-		d.Grow("EnclosingCircuit", m.Super.Debug())
+		d.Grow("Enclosing", m.Super.Debug().Grow("?", "Circuit enclosing the panicking gate"))
 	}
 	return d.String()
 }

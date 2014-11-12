@@ -19,7 +19,7 @@ func (Repeat) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	return nil
 }
 
-func (Repeat) CognizeView(eye *be.Eye, value interface{}) {
+func (Repeat) CognizeValue(eye *be.Eye, value interface{}) {
 	for {
 		eye.Show(DefaultValve, value)
 	}

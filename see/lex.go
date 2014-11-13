@@ -6,6 +6,10 @@
 
 package see
 
+import (
+	. "github.com/gocircuit/escher/circuit"
+)
+
 func isNotVerbatim(r rune) bool {
 	return r != '`'
 }
@@ -23,6 +27,9 @@ func isNotNewline(r rune) bool {
 }
 
 func IsIdentifier(r rune) bool {
+	if r == WalkSymbolRune {
+		return false
+	}
 	switch {
 	case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z':
 		return true
@@ -34,8 +41,8 @@ func IsIdentifier(r rune) bool {
 	return false
 }
 
-func IsIdentifierOrDot(r rune) bool {
-	return r == '.' || IsIdentifier(r)
+func IsIdentifierOrWalkSymbol(r rune) bool {
+	return r == WalkSymbolRune || IsIdentifier(r)
 }
 
 // Identifier + Delimiter + Operator < Literal

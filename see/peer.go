@@ -31,7 +31,7 @@ func seeNameGate(src *Src) (n Name, m Value) {
 	if left == "" {
 		panic("no gate name")
 	}
-	if left == "*" { // single star character signifies the empty-string gate name
+	if left == EmptyNameSymbolString { // single star character signifies the empty-string gate name
 		left = ""
 	}
 	if len(Whitespace(t)) == 0 {

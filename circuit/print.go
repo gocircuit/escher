@@ -12,6 +12,9 @@ import (
 	"io"
 )
 
+const EmptyNameSymbolString = "*"
+const EmptyNameSymbolRune = '*'
+
 type Printer interface {
 	Print(prefix, indent string, recurse int) string
 }
@@ -44,9 +47,9 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 	for _, n := range u.SortedLetters() {
 		switch n {
 		case "":
-			n = "*"
-		case "*":
-			panic("*")
+			n = EmptyNameSymbolString
+		case EmptyNameSymbolString:
+			panic(EmptyNameSymbolString)
 		}
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)

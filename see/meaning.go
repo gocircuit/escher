@@ -72,8 +72,8 @@ func SeeName(src *Src) Name {
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
 	t := src.Copy()
-	delimit := t.Consume(IsIdentifierOrDot)
-	x := strings.Split(delimit, ".")
+	delimit := t.Consume(IsIdentifierOrWalkSymbol)
+	x := strings.Split(delimit, WalkSymbolString)
 	if len(x) == 0 {
 		return nil
 	}

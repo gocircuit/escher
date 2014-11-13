@@ -7,7 +7,7 @@
 package be
 
 import (
-	"fmt"
+	// "fmt"
 	// "log"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -60,9 +60,9 @@ func (x Index) Memorize(value Value, walk ...Name) {
 	}
 	//
 	if len(walk) == 1 {
-		if w, ok := cx.OptionAt(step); ok {
-			panic(fmt.Sprintf("index memorize overwriting gate (%s->%v) with (%v)", step, w, value))
-		}
+		// if w, ok := cx.OptionAt(step); ok {
+		// 	panic(fmt.Sprintf("index memorize overwriting gate (%s->%v) with (%v)", step, w, value))
+		// }
 		cx.Include(step, value)
 		return
 	}

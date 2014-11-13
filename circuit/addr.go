@@ -14,6 +14,9 @@ import (
 // DefaultValve
 const DefaultValve = ""
 
+const WalkSymbolString = "."
+const WalkSymbolRune = '.'
+
 // Address ...
 type Address struct {
 	Path []Name
@@ -76,13 +79,13 @@ func (a Address) Simple() string {
 
 func (a Address) String() string {
 	if len(a.Path) == 0 {
-		return "."
+		return WalkSymbolString
 	}
 	var w bytes.Buffer
 	for i, x := range a.Path {
 		fmt.Fprintf(&w, "%v", x)
 		if i + 1 < len(a.Path) {
-			w.WriteString(".")
+			w.WriteString(WalkSymbolString)
 		}
 	}
 	return w.String()

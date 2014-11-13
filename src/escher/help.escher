@@ -1,8 +1,7 @@
-// Written in 2014 by Petar Maymounkov.
-//
-// It helps future understanding of past knowledge to save
-// this notice, so peers of other times and backgrounds can
-// see history clearly.
+LICENSE `Written in 2014 by Petar Maymounkov.
+It helps future understanding of past knowledge to save
+this notice, so peers of other times and backgrounds can
+see history clearly.`
 
 BuildIndex {
 	__ Show1
@@ -10,8 +9,8 @@ BuildIndex {
 	depth yield.DepthFirst
 	depth: = escher.Index
 	depth:Frame = flow:
-	depth:Control = Ignore //
-	Ignore = index:Flush //
+	depth:Control = Ignore
+	Ignore = index:Flush
 
 	flow yield.Flows
 	flow:Frame = index:FlowFrame

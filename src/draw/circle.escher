@@ -3,10 +3,10 @@ Circle {
 	circle CircleWriteFull
 	circle: = :
 	circle:View = :View
-	circle:WriteTo = use.Output // use.Output should be planted by the materializer
+	circle:WriteTo = use.Output
 }
 
-CircleWriteFull { // : :View :WriteTo
+CircleWriteFull {
 	:WriteTo = form:
 
 	form text.ForkFormWithDone
@@ -17,7 +17,7 @@ CircleWriteFull { // : :View :WriteTo
 	ss:From = repeat:
 	repeat:View = `
 	<circle cx="{{.Gate.X}}" cy="{{.Gate.Y}}" r="{{.Gate.R}}" fill="rgba(0, 0, 0, 0.5)" />`
-	repeat Repeat // ?? causes overwriting in fork
+	repeat Repeat
 	form:Data = data:
 
 	data Fork

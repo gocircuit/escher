@@ -14,8 +14,8 @@ func isNotVerbatim(r rune) bool {
 	return r != '`'
 }
 
-func isCommaOrSemicolon(r rune) bool {
-	return r == '\n' || r == '\r' || r == ';' || r == ','
+func isCommaOrSemicolonOrNewline(r rune) bool {
+	return isNewline(r) || r == ';' || r == ','
 }
 
 func isNewline(r rune) bool {

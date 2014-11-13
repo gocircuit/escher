@@ -1,6 +1,3 @@
-//
-//	Run: escher Shell
-//
 Shell {
 	escher.QuickShell = escher.Faculties
 }

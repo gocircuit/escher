@@ -1,6 +1,3 @@
-//
-//	Run: escher Exec
-//
 Exec {
 	proc os.Process
 	proc:Command = {
@@ -19,7 +16,7 @@ Exec {
 
 	yexit Fork
 	proc:Exit = yexit:
-	exit os.Exit // exit this program
+	exit os.Exit
 
 	yexit:Exit = exit:
 	yexit:When = Ignore

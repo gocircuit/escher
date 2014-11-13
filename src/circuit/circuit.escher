@@ -3,8 +3,9 @@ It helps future understanding of past knowledge to save
 this notice, so peers of other times and backgrounds can
 see history clearly.`
 
-// ProcessIgnoreIO is similar to circuit.Process while ignoring the standard streams of the target OS process.
 ProcessIgnoreIO {
+	Doc = `ProcessIgnoreIO is similar to circuit.Process while ignoring the standard streams of the target OS process.`
+
 	proc circuit.Process
 	:Spawn = proc:Spawn
 	:Exit = proc:Exit

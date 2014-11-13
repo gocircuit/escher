@@ -3,23 +3,25 @@ It helps future understanding of past knowledge to save
 this notice, so peers of other times and backgrounds can
 see history clearly.`
 
-// MatchOneAndExit matches the singular values incoming 
-// on :Expected and :Got and then exits successfully (with exit code 0).
-MatchOneAndExit { // :Expected :Got
+MatchOneAndExit {
+	Doc = `MatchOneAndExit matches the singular values incoming 
+	on :Expected and :Got and then exits successfully (with exit code 0).`
+
 	match test.Match
 	match:Expected = :Expected
 	match:Got = :Got
 	match: = door:Door
 
 	door OneWayDoor
-	door:From = 0 // send 0 to os.Exit on success
+	door:From = 0
 	door:To = os.Exit
 }
 
-// All runs all test circuits within the default index (provided by the -src command-line option).
-// Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
-// Each test is run in a dedicated OS process.
 All {
+	Doc = `All runs all test circuits within the default index (provided by the -src command-line option).
+	Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
+	Each test is run in a dedicated OS process.`
+
 	depth yield.DepthFirst
 	depth: = escher.Index
 	depth:Frame = filter:In

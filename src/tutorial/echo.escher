@@ -1,6 +1,3 @@
-//
-//	Run: escher Echo
-//
 Echo {
 	in  See
 	out Show

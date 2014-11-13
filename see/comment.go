@@ -14,7 +14,7 @@ func SpaceNoNewline(src *Src) {
 }
 
 func Space(src *Src) (newLine bool) {
-	for commentAndEndOfLine(src) {
+	for endOfLine(src) {
 		newLine = true
 	}
 	if src.Len() == 0 || src.RuneAt(0) == '}' {
@@ -23,21 +23,7 @@ func Space(src *Src) (newLine bool) {
 	return
 }
 
-func commentAndEndOfLine(src *Src) bool {
+func endOfLine(src *Src) bool {
 	Whitespace(src)
-	if len(src.Consume(isCommaOrSemicolon)) > 0 {
-		return true
-	}
-	comment(src)
-	return len(src.Consume(isNewline)) > 0
-}
-
-func comment(src *Src) {
-	defer func() {
-		recover()
-	}()
-	t := src.Copy()
-	t.Match("//")
-	t.Consume(isNotNewline) // comment body
-	src.Become(t)
+	return len(src.Consume(isCommaOrSemicolonOrNewline)) > 0
 }

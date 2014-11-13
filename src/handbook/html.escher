@@ -1,4 +1,4 @@
-Html { // : :Title :Body
+Html {
 	t text.QuickForm
 	t:Form = `<!doctype html><html>
 	<head>

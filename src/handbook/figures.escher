@@ -4,15 +4,6 @@ FigureScanPrint {
 	fig1:Width = "400px"
 	fig1:Caption = `*`
 	fig1: = :
-	//fig1:Right = `
-	//<pre class="escher">
-	//main {
-	//	scanln os.Scanln
-	//	println os.Println
-	//	scanln:Read = println:Write
-	//}
-	//</pre>
-	//`
 }
 
 FigureTelescope {

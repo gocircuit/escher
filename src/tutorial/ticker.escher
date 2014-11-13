@@ -1,6 +1,3 @@
-//
-//	Run: escher Ticker
-//
 Ticker {
 	t time.Ticker
 	s Sum

@@ -1,7 +1,4 @@
-//
-//	Run: escher Materialize
-//
-Materialize { // .
+Materialize {
 	m escher.Materialize
 	m:Before = before:
 	m:After = :

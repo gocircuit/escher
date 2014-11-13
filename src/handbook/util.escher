@@ -1,5 +1,5 @@
 
-FigurePngSvgRight { // Caption, Image, Width, Right and default
+FigurePngSvgRight {
 	fig Figure
 	fig:Caption = :Caption
 	fig:Body = lr:
@@ -14,7 +14,7 @@ FigurePngSvgRight { // Caption, Image, Width, Right and default
 	ps:Width = :Width
 }
 
-LeftRight { // Left, Right and default valves
+LeftRight {
 	t text.QuickForm
 	t:Data = f:
 	f Fork
@@ -28,7 +28,7 @@ LeftRight { // Left, Right and default valves
 	t: = :
 }
 
-FigurePngSvg { // Caption, Image, Width and default
+FigurePngSvg {
 	fig Figure
 	fig:Caption = :Caption
 
@@ -40,7 +40,7 @@ FigurePngSvg { // Caption, Image, Width and default
 	fig: = :
 }
 
-Figure { // Body, Caption and default valves
+Figure {
 	t text.QuickForm
 	t:Form = `
 	<p><center>
@@ -65,7 +65,7 @@ _TestFigure {
 	fig: = Show
 }
 
-PngSvg { // Name and default valves
+PngSvg {
 	t text.QuickForm
 	t:Form = `<object data="img/{{.Gate.Name}}.svg" type="image/svg+xml" width="{{.Gate.Width}}">
 		<img src="img/{{.Gate.Name}}.png" alt="" />

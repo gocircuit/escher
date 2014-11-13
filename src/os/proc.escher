@@ -3,8 +3,8 @@ It helps future understanding of past knowledge to save
 this notice, so peers of other times and backgrounds can
 see history clearly.`
 
-// ProcessIgnoreIO starts an OS process and ignores/discards its standard streams.
-ProcessIgnoreIO { // Command, When, Exit
+ProcessIgnoreIO {
+	Doc = `ProcessIgnoreIO starts an OS process and ignores/discards its standard streams.`
 	proc os.Process
 	:When = proc:When
 	:Exit = proc:Exit
@@ -19,8 +19,7 @@ ProcessIgnoreIO { // Command, When, Exit
 	yio:Stderr = io.Clunk
 }
 
-// ProcessRun ...
-ProcessRun { // Command, When, Exit
+ProcessRun {
 	proc os.Process
 	:When = proc:When
 	:Exit = proc:Exit

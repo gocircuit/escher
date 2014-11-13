@@ -1,6 +1,6 @@
 
-// Values yields all gate values of its default valve circuit argument.
-Values { // : :Frame :Control
+Values {
+	`// Values yields all gate values of its default valve circuit argument.`
 	yield Gates
 	yield: = :
 	yield:Control = :Control
@@ -10,8 +10,8 @@ Values { // : :Frame :Control
 	fork:Value = :Frame
 }
 
-// Names yields all gate names of its default valve circuit argument.
-Names { // : :Frame :Control
+Names {
+	`// Names yields all gate names of its default valve circuit argument.`
 	yield Gates
 	yield: = :
 	yield:Control = :Control
@@ -21,7 +21,8 @@ Names { // : :Frame :Control
 	fork:Name = :Frame
 }
 
-TestValues { // TODO: The expected side of the match gate should use a different method to compute the result.
+TestValues {
+	`// TODO: The expected side of the match gate should use a different method to compute the result.`
 	tx testValues
 	tx:Frame = match:Got
 	tx:Control = os.ExitSuccess
@@ -34,7 +35,7 @@ TestValues { // TODO: The expected side of the match gate should use a different
 	ty testValues
 }
 
-testValues { // :Frame :Control
+testValues {
 	t Values
 	t: = { 1, 2, 3 }
 	t:Frame = :Frame

@@ -1,6 +1,3 @@
-//
-//	Run: escher TextMerge
-//
 TextMerge {
 	h tutorial.header
 	h:Title = "Hello, world!"

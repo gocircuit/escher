@@ -1,6 +1,6 @@
 Draw {
-	// Plant use.Output over the default Escher memory.
-	// Drawing circuits (below) use use.Output to write their stream output.
+	`// Plant use.Output over the default Escher memory.
+	// Drawing circuits (below) use use.Output to write their stream output.`
 	shadow escher.MemoryShadow
 	shadow:Shadow = {
 		use {
@@ -9,7 +9,7 @@ Draw {
 	}
 	shadow: = x:Memory
 
-	// Materialize the drawing circuit, using the shadowed memory prepared above
+	`// Materialize the drawing circuit, using the shadowed memory prepared above`
 	x escher.Spark
 	x:Residue = Ignore
 	x:Value = {

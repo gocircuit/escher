@@ -13,14 +13,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-/*
-	:Frame = {
-		Name Name
-		Value Value
-	}
-
-	:Control = "End"
-*/
 type Yield struct{}
 
 func (Yield) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
@@ -28,23 +20,23 @@ func (Yield) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 }
 
 func (Yield) CognizeIndex(eye *be.Eye, value interface{}) {
-	yieldIndex(eye, be.AsIndex(value))
+	yieldIndex(eye, be.AsIndex(value), nil)
 	eye.Show("End", "End")
 }
 
-func yieldIndex(eye *be.Eye, x be.Index) {
+func yieldIndex(eye *be.Eye, x be.Index, path []Name) {
 	for _, n := range Circuit(x).SortedNames() {
 		switch n.(type) {
 		case int, string:
 			switch t := Circuit(x).At(n).(type) {
 			case Circuit:
 				if be.IsIndex(t) {
-					yieldIndex(eye, be.AsIndex(t))
+					yieldIndex(eye, be.AsIndex(t), append(path, n))
 				} else {
-					eye.Show(DefaultValve, t)
+					eye.Show(DefaultValve, New().Grow("Value", t).Grow("Address", NewAddress(path...)))
 				}
 			default:
-				eye.Show(DefaultValve, t)
+				eye.Show(DefaultValve, New().Grow("Value", t).Grow("Address", NewAddress(path...)))
 			}
 		default: // skip non-alphanemric names
 		}

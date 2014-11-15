@@ -26,14 +26,14 @@ type Server struct {
 	eye *be.Eye
 	sync.Mutex
 	server *http.Server
-	reply chan interface{}
 }
 
 func (s *Server) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	s.eye = eye
-	s.reply = make(chan interface{}, 1)
 	return nil
 }
+
+func (s *Server) CognizeHandle(eye *be.Eye, value interface{}) {}
 
 func (s *Server) CognizeStart(eye *be.Eye, value interface{}) {
 	s.Lock()
@@ -48,28 +48,34 @@ func (s *Server) CognizeStart(eye *be.Eye, value interface{}) {
 		Handler: s,
 	}
 	go func() {
-		defer func() {
-			recover()
-		}()
 		s.server.ListenAndServe()
 	}()
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	s.eye.Show("Handle", requestCircuit(req))
-	resp := (<-s.reply).(Circuit)
-	//
-	h := w.Header()
-	g := resp.CircuitAt("Header")
-	for _, k := range g.SortedLetters() {
-		h[k] = circuitSlice(g.CircuitAt(k))
-	}
-	w.WriteHeader(resp.IntAt("Status"))
-	w.Write([]byte(plumb.AsString(resp.At("Body"))))
-}
-
-func (s *Server) CognizeHandle(eye *be.Eye, value interface{}) {
-	s.reply <- value
+	mx, my := be.NewEntanglement()
+	ch := make(chan struct{}, 1)
+	go mx.Synapse().Focus(  // MUST limit number of waiting to connect entanglements.
+		func (v interface{}) {
+			resp := v.(Circuit)
+			h := w.Header()
+			g := resp.CircuitAt("Header")
+			for _, k := range g.SortedLetters() {
+				h[k] = circuitSlice(g.CircuitAt(k))
+			}
+			w.WriteHeader(resp.IntAt("Status"))
+			w.Write([]byte(plumb.AsString(resp.At("Body"))))
+			ch <- struct{}{}
+		},
+	)
+	s.eye.Show(
+		"Handle", 
+		New().
+			Grow("?", "Index").
+			Grow("Request", requestCircuit(req)).
+			Grow("Respond", my),
+	)
+	<-ch
 }
 
 func requestCircuit(req *http.Request) Circuit {

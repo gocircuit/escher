@@ -12,6 +12,7 @@ import (
 )
 
 func filterMonkey(a Address) (addr Address, monkey bool) {
+	a = a.Copy()
 	if len(a.Path) == 0 {
 		return a, false
 	}

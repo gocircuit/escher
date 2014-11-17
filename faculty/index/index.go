@@ -21,7 +21,6 @@ func init() {
 	To create an Index node within Escher, use the pattern:
 
 	f Fork
-	f:? = "Index"
 	f:X = :X
 	f:Y = :Y
 	f: = :Index

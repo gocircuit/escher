@@ -71,7 +71,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	s.eye.Show(
 		"RequestResponse", 
 		New().
-			Grow("?", "Index").
 			Grow("Request", requestCircuit(req)).
 			Grow("Respond", my),
 	)

@@ -18,22 +18,15 @@ import (
 type Index Circuit
 
 func NewIndex() Index {
-	return Index(New().Grow("?", "Index"))
+	return Index(New())
 }
 
 func IsIndex(v Value) bool {
-	u, ok := v.(Circuit)
-	if !ok {
-		return false
-	}
-	s, ok := u.StringOptionAt("?")
-	return ok && s == "Index"
+	_, ok := v.(Circuit)
+	return ok
 }
 
 func AsIndex(v Value) Index {
-	if v.(Circuit).StringAt("?") != "Index" {
-		panic("not an index")
-	}
 	return Index(v.(Circuit))
 }
 

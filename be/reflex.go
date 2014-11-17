@@ -43,11 +43,11 @@ func (m *Matter) Source() Value {
 	if !ok {
 		return nil
 	}
-	s, ok := u.OptionAt(Source{})
+	s, ok := u.CircuitOptionAt(Source{})
 	if !ok {
 		return nil
 	}
-	return s
+	return s.StringAt("File")
 }
 
 func (m *Matter) String() string {

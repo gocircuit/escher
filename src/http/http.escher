@@ -6,9 +6,9 @@ see history clearly.`
 HelloWorld {
 	s http.Server
 	s:Start = { Address ":9090" }
-	s:RequestResponse = x:Http
+	s:RequestResponse = x:RequestResponse
 
-	x prepIndex
+	x responseIndex
 	z:Index = x:
 
 	z escher.QuickMaterialize
@@ -16,8 +16,10 @@ HelloWorld {
 	r Repeat
 	r:Value = {
 		rem "TODO: Request must be materializable into noun"
-		Escher.Show = Http.Request
-		Http.Respond = {
+		`escher.Show = `
+		xx @http
+		`@http.Request`
+		http.Respond = {
 			Header {}
 			Status 200
 			Body "Hello, world!"
@@ -26,14 +28,13 @@ HelloWorld {
 	z:Residue = Ignore
 }
 
-prepIndex {
+responseIndex {
 	x Fork
 	x: = :
 
-	x:? = "Index"
-	x:Http = :Http
-	x:Escher = r:
+	x:http = :RequestResponse
+	x:escher = re:
 
-	r Repeat
-	r:Value = escher.Index
+	re Repeat
+	re:Value = escher.Index
 }

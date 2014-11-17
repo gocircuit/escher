@@ -70,7 +70,7 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 		val = b.lookup(addr)
 	}
 	if val == nil {
-		panicf("Address %v is dangling in this matter:\n%v\n", addr, matter)
+		panicf("Address (%v) is dangling in matter:\n%v\n", addr, matter)
 	}
 	if monkey {
 		return MaterializeNoun(matter, val)
@@ -180,9 +180,6 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		}
 	}()
 
-	if !res.IsEmpty() {
-		res.Grow("?", "Index")
-	}
 	return super, res
 }
 

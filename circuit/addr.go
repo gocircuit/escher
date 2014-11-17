@@ -79,7 +79,7 @@ func (a Address) Simple() string {
 
 func (a Address) String() string {
 	if len(a.Path) == 0 {
-		return WalkSymbolString
+		return "{}"
 	}
 	var w bytes.Buffer
 	for i, x := range a.Path {

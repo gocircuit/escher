@@ -33,7 +33,7 @@ func (s *Server) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value
 	return nil
 }
 
-func (s *Server) CognizeHandle(eye *be.Eye, value interface{}) {}
+func (s *Server) CognizeRequestResponse(eye *be.Eye, value interface{}) {}
 
 func (s *Server) CognizeStart(eye *be.Eye, value interface{}) {
 	s.Lock()
@@ -69,7 +69,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		},
 	)
 	s.eye.Show(
-		"Handle", 
+		"RequestResponse", 
 		New().
 			Grow("?", "Index").
 			Grow("Request", requestCircuit(req)).

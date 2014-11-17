@@ -103,7 +103,7 @@ func exec(index Index, v Value, showResidue bool) {
 			log.Printf("execution glitch (%v)", r)
 		}
 	}()
-	residue := Materialize(index, v)
+	residue := Materialize(index, v, nil)
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)
 	}

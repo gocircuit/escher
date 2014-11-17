@@ -29,25 +29,28 @@ import (
 //		Residue Value
 //	}
 //
-type Materialize struct{}
+type Materialize struct{
+	barrier *be.Matter
+}
 
-func (Materialize) Spark(eye *be.Eye, _ *be.Matter, _ ...interface{}) Value {
+func (m *Materialize) Spark(eye *be.Eye, matter *be.Matter, _ ...interface{}) Value {
+	m.barrier = matter
 	return nil
 }
 
-func (Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
+func (m *Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
 	index := be.AsIndex(u.At("Index"))
 	v := u.At("Value")
-	residual := be.Materialize(index, v)
+	residue := be.Materialize(index, v, m.barrier)
 	after :=  New().
 		Grow("Index", Circuit(index)).
 		Grow("Value", v).
-		Grow("Residue", residual)
+		Grow("Residue", residue)
 	// if len(reflex) > 0 {
 	// 	after.Grow("Unconnected", reflex).Grow("u", reflex)
 	// }
 	eye.Show("After", after)
 }
 
-func (Materialize) CognizeAfter(eye *be.Eye, v interface{}) {}
+func (m *Materialize) CognizeAfter(eye *be.Eye, v interface{}) {}

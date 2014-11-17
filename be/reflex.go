@@ -30,7 +30,8 @@ type Matter struct {
 	Design interface{} // Design
 	View Circuit // Valves connected to this design in the enclosing program
 	Path []Name // Path to this reflex within the residual, recursively following gate names
-	Super *Matter // Matter of the circuit that recalled this reflex as a peer
+	Super *Matter // Matter of the circuit that materialized this reflex from a gate inside it
+	Barrier *Matter // If not nil, matter of an escher.Materialize gate that started this materialization
 }
 
 // Source returns an object describing the source location of the enclosing circuit, if available.
@@ -67,6 +68,9 @@ func (m *Matter) Debug() Circuit {
 	}
 	if m.Super != nil {
 		r.Grow("Super", m.Super.Debug())
+	}
+	if m.Barrier != nil {
+		r.Grow("Barrier", m.Barrier.Debug())
 	}
 	return r
 }

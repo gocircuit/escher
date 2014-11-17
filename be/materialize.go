@@ -12,16 +12,16 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func Materialize(index Index, design Value) (residue Value) {
+func Materialize(index Index, design Value, barrier *Matter) (residue Value) {
 	var reflex Reflex
-	reflex, residue = MaterializeReflex(index, design)
+	reflex, residue = MaterializeReflex(index, design, barrier)
 	if len(reflex) > 0 {
 		panic("circuit not closed")
 	}
 	return
 }
 
-func MaterializeReflex(index Index, design Value) (reflex Reflex, residue Value) {
+func MaterializeReflex(index Index, design Value, barrier *Matter) (reflex Reflex, residue Value) {
 	renderer := newRenderer(index)
 	matter := &Matter{
 		Index: index,
@@ -29,6 +29,7 @@ func MaterializeReflex(index Index, design Value) (reflex Reflex, residue Value)
 		View: New(),
 		Path: []Name{},
 		Super: nil,
+		Barrier: barrier,
 	}
 	return renderer.Materialize(matter, design, true)
 }
@@ -69,7 +70,7 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 		val = b.lookup(addr)
 	}
 	if val == nil {
-		panicf("Address %v is dangling in matter:\n%v\n", addr, matter)
+		panicf("Address %v is dangling in this matter:\n%v\n", addr, matter)
 	}
 	if monkey {
 		return MaterializeNoun(matter, val)

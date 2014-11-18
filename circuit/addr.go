@@ -83,6 +83,9 @@ func (a Address) String() string {
 	}
 	var w bytes.Buffer
 	for i, x := range a.Path {
+		if x == "" {
+			x = "*"
+		}
 		fmt.Fprintf(&w, "%v", x)
 		if i + 1 < len(a.Path) {
 			w.WriteString(WalkSymbolString)

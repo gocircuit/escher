@@ -11,7 +11,14 @@ import (
 	"log"
 )
 
-// Convenience access
+func (u Circuit) OptionAt(name Name) (Value, bool) {
+	v, ok := u.Gate[name]
+	return v, ok
+}
+
+func (u Circuit) At(name Name) Value {
+	return u.Gate[name]
+}
 
 func (u Circuit) IntOrZeroAt(name Name) int {
 	i, ok := u.OptionAt(name)
@@ -51,10 +58,14 @@ func (u Circuit) VectorAt(name Name) Vector {
 
 func (u Circuit) CircuitOptionAt(name Name) (Circuit, bool) {
 	v, ok := u.OptionAt(name)
-	if ok {
-		return v.(Circuit), ok
+	if !ok {
+		return New(), false
 	}
-	return New(), false
+	t, ok := v.(Circuit)
+	if !ok {
+		return New(), false
+	}
+	return t, true
 }
 
 func (u Circuit) IntAt(name Name) int {
@@ -63,10 +74,14 @@ func (u Circuit) IntAt(name Name) int {
 
 func (u Circuit) IntOptionAt(name Name) (int, bool) {
 	v, ok := u.OptionAt(name)
-	if ok {
-		return v.(int), ok
+	if !ok {
+		return 0, false
 	}
-	return 0, false
+	t, ok := v.(int)
+	if !ok {
+		return 0, false
+	}
+	return t, true
 }
 
 func (u Circuit) StringAt(name Name) string {
@@ -75,10 +90,14 @@ func (u Circuit) StringAt(name Name) string {
 
 func (u Circuit) StringOptionAt(name Name) (string, bool) {
 	v, ok := u.OptionAt(name)
-	if ok {
-		return v.(string), ok
+	if !ok {
+		return "", false
 	}
-	return "", false
+	t, ok := v.(string)
+	if !ok {
+		return "", false
+	}
+	return t, true
 }
 
 func (u Circuit) AddressAt(name Name) Address {
@@ -87,18 +106,20 @@ func (u Circuit) AddressAt(name Name) Address {
 
 func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
 	v, ok := u.OptionAt(name)
-	if ok {
-		return v.(Address), ok
+	if !ok {
+		return Address{}, false
 	}
-	return Address{}, false
+	t, ok := v.(Address)
+	if !ok {
+		return Address{}, false
+	}
+	return t, true
 }
 
 func (u Circuit) Has(name Name) bool {
 	_, ok := u.Gate[name]
 	return ok
 }
-
-// Series-application methods
 
 func (u Circuit) ReGrow(name Name, value Value) Circuit {
 	u.Include(name, value)
@@ -265,13 +286,4 @@ func (u Circuit) Vol() (vol int) {
 		}
 	}
 	return
-}
-
-func (u Circuit) OptionAt(name Name) (Value, bool) {
-	v, ok := u.Gate[name]
-	return v, ok
-}
-
-func (u Circuit) At(name Name) Value {
-	return u.Gate[name]
 }

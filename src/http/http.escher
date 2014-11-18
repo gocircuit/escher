@@ -15,7 +15,7 @@ HelloWorld {
 	z:Value = r:
 	r Repeat
 	r:Value = {
-		ylkp Fork
+		ylkp escher.Fork
 		ylkp:Address = @http.Request.Path
 		ylkp:Index = {
 			Header {}
@@ -23,18 +23,26 @@ HelloWorld {
 			Body "Hello, world!"
 		}
 		ylkp: = lkp:View
+		lkp escher.index.Lookup
 
-		lkp index.Lookup
-		lkp: = ??
-		lkp:Error = ??
+		lkp:Found = logf:Found
+		logf: = join:Found
+		logf escher.Show2
 
+		lkp:NotFound = lognf:NotFound
+		lognf: = notFound:Door
+		lognf escher.Show2
 
-		??
-		http.Respond = {
+		notFound escher.OneWayDoor
+		notFound:To = join:NotFound
+		notFound:From = {
 			Header {}
-			Status 200
-			Body "Hello, world!"
+			Status 404
+			Body "Escher web server: Address not found."
 		}
+
+		join escher.Star
+		join: = http.Respond
 	}
 	z:Residue = Ignore
 }

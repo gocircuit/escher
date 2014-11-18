@@ -21,14 +21,16 @@ func (Lookup) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
 
 func (Lookup) CognizeView(eye *be.Eye, v interface{}) {
 	u := v.(Circuit)
-	r := be.AsIndex(u.CircuitAt("Index")).Recall(u.AddressAt("Address").Path...)
+	x := u.CircuitAt("Index")
+	addr := u.AddressAt("Address")
+	r := be.AsIndex(x).Recall(addr.Path...)
 	if r == nil {
-		eye.Show("Error", "NotFound")
+		eye.Show("NotFound", New().Grow("NotFound", addr).Grow("In", x))
 	} else {
-		eye.Show(DefaultValve, r)
+		eye.Show("Found", r)
 	}
 }
 
-func (Lookup) CognizeError(eye *be.Eye, v interface{}) {}
+func (Lookup) CognizeNotFound(eye *be.Eye, v interface{}) {}
 
-func (Lookup) Cognize(eye *be.Eye, v interface{}) {}
+func (Lookup) CognizeFound(eye *be.Eye, v interface{}) {}

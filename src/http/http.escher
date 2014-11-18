@@ -15,10 +15,21 @@ HelloWorld {
 	z:Value = r:
 	r Repeat
 	r:Value = {
-		rem "TODO: Request must be materializable into noun"
-		`escher.Show = `
-		xx @http
-		`@http.Request`
+		ylkp Fork
+		ylkp:Address = @http.Request.Path
+		ylkp:Index = {
+			Header {}
+			Status 200
+			Body "Hello, world!"
+		}
+		ylkp: = lkp:View
+
+		lkp index.Lookup
+		lkp: = ??
+		lkp:Error = ??
+
+
+		??
 		http.Respond = {
 			Header {}
 			Status 200

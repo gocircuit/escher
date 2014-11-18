@@ -26,10 +26,16 @@ type Server struct {
 	eye *be.Eye
 	sync.Mutex
 	server *http.Server
+	throttle chan struct{}
 }
 
 func (s *Server) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
 	s.eye = eye
+	const throttle = 50
+	s.throttle = make(chan struct{}, throttle)
+	for i := 0; i < throttle; i++ {
+		s.throttle <- struct{}{}
+	}
 	return nil
 }
 
@@ -53,9 +59,14 @@ func (s *Server) CognizeStart(eye *be.Eye, value interface{}) {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	<-s.throttle
+	defer func() {
+		s.throttle <- struct{}{}
+	}()
+	//
 	mx, my := be.NewEntanglement()
 	ch := make(chan struct{}, 1)
-	go mx.Synapse().Focus(  // MUST limit number of waiting to connect entanglements.
+	go mx.Synapse().Focus(  // MUST throttle
 		func (v interface{}) {
 			resp := v.(Circuit)
 			h := w.Header()
@@ -85,7 +96,11 @@ func requestCircuit(req *http.Request) Circuit {
 
 	// URL path
 	var nn []Name
-	for _, n := range strings.Split(req.URL.Path, "/") {
+	parts := strings.Split(req.URL.Path, "/")
+	if len(parts) > 0 && parts[0] == "" {
+		parts = parts[1:]
+	}
+	for _, n := range parts {
 		nn = append(nn, n)
 	}
 	x.Gate["Path"] = NewAddress(nn...)

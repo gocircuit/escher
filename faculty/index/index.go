@@ -15,6 +15,7 @@ func init() {
 	faculty.Register("index.Mirror", be.NewNativeMaterializer(Mirror{}))
 	faculty.Register("index.Generalize", be.NewNativeMaterializer(Generalize{}))
 	faculty.Register("index.Yield", be.NewNativeMaterializer(Yield{}))
+	faculty.Register("index.Lookup", be.NewNativeMaterializer(Lookup{}))
 }
 
 /*

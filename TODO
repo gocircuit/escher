@@ -1,0 +1,8 @@
+* name printing when string is not identifier 
+* name parsing when string is not identifier
+
+* convert address to circuit
+
+* download wikipedia dataset
+* file reader materializer
+* convert non-escher files in source directory in materializers of respective file readers

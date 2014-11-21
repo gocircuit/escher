@@ -23,7 +23,7 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 	if u.IsNil() {
 		return "<nil>"
 	}
-	if len(u.Gate) + len(u.Flow) == 0 {
+	if len(u.Gate)+len(u.Flow) == 0 {
 		return "{}"
 	}
 	if recurse == 0 {
@@ -45,15 +45,16 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 
 	// letters
 	for _, n := range u.SortedLetters() {
+		nn := n
 		switch n {
 		case "":
-			n = EmptyNameSymbolString
+			nn = EmptyNameSymbolString
 		case EmptyNameSymbolString:
-			panic(EmptyNameSymbolString)
+			nn = `"*"`
 		}
 		p := u.Gate[n]
 		w.WriteString(prefix + indent)
-		printGate(&w, prefix+indent, indent, n, p, recurse)
+		printGate(&w, prefix+indent, indent, nn, p, recurse)
 	}
 	// numbers
 	for _, n := range u.SortedNumbers() {
@@ -70,8 +71,8 @@ func (u Circuit) Print(prefix, indent string, recurse int) string {
 			}
 			o.Include(sg, sv)
 			//
-			fmt.Fprintf(&w, "%s%s%s = %s\n", 
-				prefix, indent,  
+			fmt.Fprintf(&w, "%s%s%s = %s\n",
+				prefix, indent,
 				u.resugar(sg, sv),
 				u.resugar(t.Gate, t.Valve),
 			)

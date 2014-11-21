@@ -24,11 +24,11 @@ func Materialize(index Index, design Value, barrier *Matter) (residue Value) {
 func MaterializeReflex(index Index, design Value, barrier *Matter) (reflex Reflex, residue Value) {
 	renderer := newRenderer(index)
 	matter := &Matter{
-		Index: index,
-		Design: design,
-		View: New(),
-		Path: []Name{},
-		Super: nil,
+		Index:   index,
+		Design:  design,
+		View:    New(),
+		Path:    []Name{},
+		Super:   nil,
 		Barrier: barrier,
 	}
 	return renderer.Materialize(matter, design, true)
@@ -122,24 +122,24 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 		if Same(m, SpiritAddress) {
 			gates[g], gv, spirit[g] = MaterializeNativeInstance(
 				&Matter{
-					Index: b.index,
+					Index:   b.index,
 					Address: Address{},
-					Design: m,
-					View: u.View(g),
-					Path: append(matter.Path, g),
-					Super: matter,
+					Design:  m,
+					View:    u.View(g),
+					Path:    append(matter.Path, g),
+					Super:   matter,
 				},
 				&Future{},
 			)
 		} else {
 			gates[g], gv = b.Materialize(
 				&Matter{
-					Index: b.index,
+					Index:   b.index,
 					Address: Address{},
-					Design: m,
-					View: u.View(g),
-					Path: append(matter.Path, g),
-					Super: matter,
+					Design:  m,
+					View:    u.View(g),
+					Path:    append(matter.Path, g),
+					Super:   matter,
 				},
 				m,
 				false,
@@ -186,16 +186,16 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
 	// log.Printf(" %v:%v <=> %v:%v", sg, sv, tg, tv)
 	if _, ok := gates[sg]; !ok {
-		panicf("In circuit:\n%v\nHas no gate %v\n",u,  sg)
+		panicf("In circuit:\n%v\nHas no gate %v\n", u, sg)
 	}
 	if _, ok := gates[tg]; !ok {
-		panicf("In circuit:\n%v\nHas no gate %v\n",u,  tg)
+		panicf("In circuit:\n%v\nHas no gate %v\n", u, tg)
 	}
 	if _, ok := gates[sg][sv]; !ok {
-		panicf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  sg, sv)
+		panicf("In circuit:\n%v\nGate %v has no valve :%v\n", u, sg, sv)
 	}
 	if _, ok := gates[tg][tv]; !ok {
-		panicf("In circuit:\n%v\nGate %v has no valve :%v\n",u,  tg, tv)
+		panicf("In circuit:\n%v\nGate %v has no valve :%v\n", u, tg, tv)
 	}
 }
 

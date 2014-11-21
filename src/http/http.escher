@@ -4,36 +4,57 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 HelloWorld {
+	h Harness
+	h:Address = ":9090"
+	h:Index = {
+		petar {
+			Header {}
+			Status 200
+			Body "Hi, this is Petar."
+		}
+		escher {
+			Header {}
+			Status 200
+			Body "Hi, this is Escher."
+		}
+		Header {}
+		Status 200
+		Body "Hello, world!"
+	}
+}
+
+Harness {
+	Ignore = `Harness takes a string :Address and an :Index that routes the URL paths to HTTP response content.`
+
 	s http.Server
-	s:Start = { Address ":9090" }
+	s:Start = ystart:
+	ystart Fork
+	ystart:Address = :Address
 	s:RequestResponse = x:RequestResponse
 
-	x responseIndex
+	x responseLang
+	x:Index = :Index
 	z:Index = x:
 
 	z escher.QuickMaterialize
 	z:Value = r:
 	r Repeat
 	r:Value = {
-		ylkp escher.Fork
+		ylkp _.Fork
 		ylkp:Address = @http.Request.Path
-		ylkp:Index = {
-			Header {}
-			Status 200
-			Body "Hello, world!"
-		}
+		ylkp:Index = @index
 		ylkp: = lkp:View
-		lkp escher.index.Lookup
+		lkp _.index.Lookup
 
 		lkp:Found = logf:Found
 		logf: = join:Found
-		logf escher.Show2
+		logf _.Show2
 
 		lkp:NotFound = lognf:NotFound
 		lognf: = notFound:Door
-		lognf escher.Show2
+		lognf _.Show2
 
-		notFound escher.OneWayDoor
+		notFound _.OneWayDoor
 		notFound:To = join:NotFound
 		notFound:From = {
 			Header {}
@@ -41,19 +62,23 @@ HelloWorld {
 			Body "Escher web server: Address not found."
 		}
 
-		join escher.Star
+		join _.Star
 		join: = http.Respond
 	}
 	z:Residue = Ignore
 }
 
-responseIndex {
+responseLang {
 	x Fork
 	x: = :
 
 	x:http = :RequestResponse
-	x:escher = re:
+	x:_ = re_:
+	x:index = reIndex:
 
-	re Repeat
-	re:Value = escher.Index
+	re_ Repeat
+	re_:Value = escher.Index
+
+	reIndex Repeat
+	reIndex:Value = :Index
 }

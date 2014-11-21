@@ -4,7 +4,7 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 MatchOneAndExit {
-	Doc = `MatchOneAndExit matches the singular values incoming 
+	Ignore = `MatchOneAndExit matches the singular values incoming 
 	on :Expected and :Got and then exits successfully (with exit code 0).`
 
 	match test.Match
@@ -18,7 +18,7 @@ MatchOneAndExit {
 }
 
 All {
-	Doc = `All runs all test circuits within the default index (provided by the -src command-line option).
+	Ignore = `All runs all test circuits within the default index (provided by the -src command-line option).
 	Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
 	Each test is run in a dedicated OS process.`
 

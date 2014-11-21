@@ -96,10 +96,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 // body is either string, reader or a materializer whose default valve returns one of those
 func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, body io.ReadCloser, ok bool) {
+	
 	// Status
 	if status, ok = u.IntOptionAt("Status"); !ok {
 		return
 	}
+
 	// Header
 	var h Circuit
 	if h, ok = u.CircuitOptionAt("Header"); !ok {
@@ -112,6 +114,7 @@ func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, bod
 		}
 		header[k] = circuitSlice(g)
 	}
+
 	// Body
 	var v Value
 	if v, ok = u.OptionAt("Body"); !ok {

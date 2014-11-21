@@ -14,8 +14,9 @@ import (
 	"os"
 	"path"
 
-	. "github.com/gocircuit/escher/circuit"
 	. "github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
+	fio "github.com/gocircuit/escher/faculty/io"
 	"github.com/gocircuit/escher/see"
 )
 
@@ -26,7 +27,7 @@ func Load(filedir string) Index {
 	}
 	if fi.IsDir() {
 		return loadDirectory(filedir)
-	} 
+	}
 	return loadFile("", filedir)
 }
 
@@ -52,9 +53,10 @@ func loadDirectory(dir string) Index {
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
-			continue
+			x.Memorize(fio.NewSourceFileMaterializer(filePath), fileInfo.Name())
+		} else {
+			x.Merge(loadFile(dir, filePath))
 		}
-		x.Merge(loadFile(dir, filePath))
 	}
 	return x
 }

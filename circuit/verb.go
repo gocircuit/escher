@@ -47,6 +47,9 @@ func IsVerb(v Value) bool {
 }
 
 func (a Verb) Address() (addr []Name) {
+	if a == nil {
+		return nil
+	}
 	for _, i := range Circuit(a).SortedNumbers() {
 		addr = append(addr, a.Gate[i])
 	}
@@ -55,15 +58,6 @@ func (a Verb) Address() (addr []Name) {
 
 func (a Verb) Verb() Value {
 	return a.Gate[""]
-}
-
-func (a Verb) Append(b Verb) Verb {
-	c := Verb(Circuit(a).Copy())
-	index := Circuit(b).SortedNumbers()
-	for _, i := range index {
-		c.Gate[len(index)+i] = b.Gate[i]
-	}
-	return c
 }
 
 func (a Verb) compactible() bool {

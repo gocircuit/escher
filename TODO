@@ -2,6 +2,11 @@
 * name parsing when string is not identifier
 
 * convert address to circuit
+* remove name/value distinction
+
+* addresses are sugar for a two-sided reflex:
+syntactic address and index on one side, and ...
+	* generalize
 
 * download wikipedia dataset
 * file reader materializer

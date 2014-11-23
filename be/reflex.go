@@ -25,12 +25,16 @@ type Native interface {
 
 // Matter describes the circuit context that commissioned the present materialization.
 type Matter struct {
-	Index Index // Index used to materialize
-	Address Address // Address of the materialized design in memory
-	Design interface{} // Design
-	View Circuit // Valves connected to this design in the enclosing program
-	Path []Name // Path to this reflex within the residual, recursively following gate names
-	Super *Matter // Matter of the circuit that materialized this reflex from a gate inside it
+	// Materialization context
+	Index   Index       // Index used to materialize
+	Address []Name      // Location in index where the design for this materialization was found
+	Design  interface{} // Design
+	Verb    Verb        // Verb transformation resulting in (immediately preceding) this materialization
+	// 
+	View    Circuit // Valves connected to this design in the enclosing program
+	Path    []Name  // Path to this reflex within the residual, recursively following gate names
+	//
+	Super   *Matter // Matter of the circuit that materialized this reflex from a gate inside it
 	Barrier *Matter // If not nil, matter of an escher.Materialize gate that started this materialization
 }
 
@@ -55,6 +59,7 @@ func (m *Matter) String() string {
 }
 
 func (m *Matter) Debug() Circuit {
+	??
 	r := New().
 		Grow("?", "Matter").
 		Grow("Residue", NewAddress(m.Path...)).

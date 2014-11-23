@@ -42,20 +42,20 @@ func newRenderer(index Index) *renderer {
 	return &renderer{index}
 }
 
-func (b *renderer) lookup(addr Address) Value {
-	return b.index.Recall(addr.Path...)
+func (b *renderer) lookup(addr []Name) Value {
+	return b.index.Recall(addr...)
 }
 
-func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
-	addr, monkey := filterMonkey(addr) // parse @-sign out from front of address
+func (b *renderer) transform(matter *Matter, verb Verb) (Reflex, Value) {
 
-	// first, looking up addr within the circuit that encloses this address reference
+	var addr []Name
+
+	// first, lookup design within the index that encloses the address of this verb
 	var val Value
 	if matter != nil && matter.Super != nil {
-		enclosing := matter.Super.Address
-		if len(enclosing.Path) > 0 {
-			abs := Address{enclosing.Path[:len(enclosing.Path)-1]}
-			abs = abs.Append(addr)
+		enclosing := matter.Super.Verb.Address()
+		if len(enclosing) > 0 {
+			abs := append(enclosing[:len(enclosing)-1], verb.Address()...)
 			val = b.lookup(abs)
 			if val != nil {
 				addr = abs
@@ -63,7 +63,7 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 		}
 	}
 
-	matter.Address = addr
+	matter.Verb = verb ??
 
 	// if not found locally, find the addr starting from root
 	if val == nil {
@@ -86,15 +86,15 @@ func (b *renderer) expandAddress(matter *Matter, addr Address) (Reflex, Value) {
 func (b *renderer) Materialize(matter *Matter, x Value, expand bool) (Reflex, Value) {
 
 	switch t := x.(type) {
-	// Addresses are materialized recursively
-	case Address:
-		return b.expandAddress(matter, t)
 	// Primitive types are materialized as gates that emit their values once (these gates are called nouns)
 	case int, float64, complex128, string:
 		return MaterializeNoun(matter, t)
 	case Materializer:
 		return t.Materialize(matter)
 	case Circuit:
+		if IsVerb(t) {
+			return b.transform(matter, Verb(t))
+		}
 		if expand {
 			return b.materializeCircuit(matter, t)
 		}
@@ -105,7 +105,7 @@ func (b *renderer) Materialize(matter *Matter, x Value, expand bool) (Reflex, Va
 	panic(0)
 }
 
-var SpiritAddress = NewAddress("escher", "Spirit")
+var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
 
 func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value) {
 	residue := New()
@@ -123,7 +123,7 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			gates[g], gv, spirit[g] = MaterializeNativeInstance(
 				&Matter{
 					Index:   b.index,
-					Address: Address{},
+					Verb: nil,
 					Design:  m,
 					View:    u.View(g),
 					Path:    append(matter.Path, g),
@@ -135,7 +135,7 @@ func (b *renderer) materializeCircuit(matter *Matter, u Circuit) (Reflex, Value)
 			gates[g], gv = b.Materialize(
 				&Matter{
 					Index:   b.index,
-					Address: Address{},
+					Verb: nil,
 					Design:  m,
 					View:    u.View(g),
 					Path:    append(matter.Path, g),

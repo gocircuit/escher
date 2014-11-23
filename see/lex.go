@@ -27,7 +27,7 @@ func isNotNewline(r rune) bool {
 }
 
 func IsIdentifier(r rune) bool {
-	if r == WalkSymbolRune {
+	if r == RefineSymbolRune {
 		return false
 	}
 	switch {
@@ -41,8 +41,8 @@ func IsIdentifier(r rune) bool {
 	return false
 }
 
-func IsIdentifierOrWalkSymbol(r rune) bool {
-	return r == WalkSymbolRune || IsIdentifier(r)
+func IsIdentifierOrRefineSymbol(r rune) bool {
+	return r == RefineSymbolRune || IsIdentifier(r)
 }
 
 // Identifier + Delimiter + Operator < Literal

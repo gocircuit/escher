@@ -13,6 +13,25 @@ IndexPage {
         h:Body = `
 <h1>Escher</h1>
 
+<p>Web's pages and links form a graph. Datacenter's computers and cables form a graph.
+Application's processes and connections form a graph. Facebook's users and their
+friendships form a graph. Facebook's groups and their memberships form a graph.
+Brain's neurons and their synapses form a graph. Process' threads and shared
+data structures form a graph.
+
+<p>Not only are the meanings of all these sentences described geometrically by graphs,
+their behavior is nearly identical at a considerable breadth and depth of detail:
+All these situations describe independent processing units pairwise-interlinked
+by sequential communication channels.
+
+<p>Not surprisingly such overwheling degree of co-incidence has already been noticed
+before and, in the abstract, was called <a href="">Communicating Sequential Processes</a>
+by a man named Hoare. I prefer the earlier term: <em>circuits</em>, but drop the “electrical”
+since the phenomenon has grown quite ubiquitous by now.
+
+<p>If it is indeed the case that most things that we program or that we program about
+are circuits, then 
+
 <p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>. 
 Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 

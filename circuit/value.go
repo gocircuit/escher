@@ -7,18 +7,16 @@
 package circuit
 
 import (
-	// "log"
+// "log"
 )
 
-// Value is one of: see.Address, string, int, float64, complex128, Circuit
+// Value is one of: string, int, float64, complex128, Circuit
 type Value interface{}
 
 func DeepCopy(x Value) (y Value) {
 	switch t := x.(type) {
 	case Circuit:
 		return t.DeepCopy()
-	case Address:
-		return t.Copy()
 	}
 	return x
 }
@@ -27,8 +25,6 @@ func Copy(x Value) (y Value) {
 	switch t := x.(type) {
 	case Circuit:
 		return t.Copy()
-	case Address:
-		return t.Copy()
 	}
 	return x
 }
@@ -36,8 +32,6 @@ func Copy(x Value) (y Value) {
 func Same(x, y Value) bool {
 	switch t := x.(type) {
 	case Circuit:
-		return t.Same(y)
-	case Address:
 		return t.Same(y)
 	}
 	return x == y

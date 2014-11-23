@@ -16,16 +16,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func SeeValue(src *Src) (x Value) {
-	if x = SeeCircuit(src); x != nil {
-		return
-	}
-	if x = SeeValueNoCircuit(src); x != nil {
-		return
-	}
-	return nil
-}
-
 func SeeValueOrNil(src *Src) (x Value) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -35,7 +25,10 @@ func SeeValueOrNil(src *Src) (x Value) {
 	return SeeValue(src)
 }
 
-func SeeValueNoCircuit(src *Src) (x Value) {
+func SeeValue(src *Src) (x Value) {
+	if x = SeeCircuit(src); x != nil {
+		return
+	}
 	if x = SeeInt(src); x != nil {
 		return
 	}
@@ -54,26 +47,28 @@ func SeeValueNoCircuit(src *Src) (x Value) {
 	if x = SeeAddress(src); x != nil {
 		return
 	}
-	return nil
+	if x = SeeName(src); x != nil { // must be last since it will consume the empty string
+		return
+	}
+	panic(0)
 }
 
 func SeeName(src *Src) Name {
-	x := src.Consume(IsIdentifier)
-	if x == "" { // empty string is allowed as name
-		return x
-	}
-	i, err := strconv.Atoi(x) // recognize ints and return them as such
-	if err == nil {
-		return i
-	}
-	return x
+	return src.Consume(IsIdentifier)
 }
 
 // SeeAddress ...
 func SeeAddress(src *Src) interface{} {
 	t := src.Copy()
-	delimit := t.Consume(IsIdentifierOrWalkSymbol)
-	x := strings.Split(delimit, WalkSymbolString)
+	switch {
+	case t.TryMatch("*"):
+	case t.TryMatch("@"):
+	default:
+		return nil
+	}
+	?
+	delimit := t.Consume(IsIdentifierOrRefineSymbol)
+	x := strings.Split(delimit, RefineSymbolString)
 	if len(x) == 0 {
 		return nil
 	}

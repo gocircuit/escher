@@ -86,10 +86,6 @@ func (u Circuit) Gates() map[Name]Value {
 	return u.Gate
 }
 
-func (u Circuit) String() string {
-	return u.Print("", "\t", -1)
-}
-
 func (u Circuit) Unify(name string) string {
 	return fmt.Sprintf("%s#%d", name, u.Len())
 }

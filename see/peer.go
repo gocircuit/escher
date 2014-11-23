@@ -26,14 +26,8 @@ func seeNameGate(src *Src) (n Name, m Value) {
 		}
 	}()
 	t := src.Copy()
-	Space(t)
-	left := SeeName(t)
-	if left == "" {
-		panic("no gate name")
-	}
-	if left == EmptyNameSymbolString { // single star character signifies the empty-string gate name
-		left = ""
-	}
+	Whitespace(t)
+	left := SeeValue(t)
 	if len(Whitespace(t)) == 0 {
 		panic("no whitespace after name")
 	}
@@ -41,7 +35,7 @@ func seeNameGate(src *Src) (n Name, m Value) {
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if right == nil {
+	if right == "" {
 		panic("no gate value")
 	}
 	src.Become(t)
@@ -55,16 +49,16 @@ func seeNamelessGate(src *Src) (n Name, m Value) {
 		}
 	}()
 	t := src.Copy()
-	Space(t)
-	right := SeeValue(t)
+	Whitespace(t)
+	value := SeeValue(t)
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if right == nil {
-		panic("no gate value")
+	if value == "" {
+		panic("nameless empty-string value implicit")
 	}
 	src.Become(t)
-	return Nameless{}, right
+	return Nameless{}, value
 }
 
 type Nameless struct{}

@@ -100,20 +100,11 @@ func (u Circuit) StringOptionAt(name Name) (string, bool) {
 	return t, true
 }
 
-func (u Circuit) AddressAt(name Name) Address {
-	return u.At(name).(Address)
-}
-
-func (u Circuit) AddressOptionAt(name Name) (Address, bool) {
-	v, ok := u.OptionAt(name)
-	if !ok {
-		return Address{}, false
+func (u Circuit) VerbAt(name Name) Verb {
+	if !IsVerb(u.At(name)) {
+		panic("expecting verb")
 	}
-	t, ok := v.(Address)
-	if !ok {
-		return Address{}, false
-	}
-	return t, true
+	return Verb(u.CircuitAt(name))
 }
 
 func (u Circuit) Has(name Name) bool {
@@ -153,20 +144,20 @@ func (u Circuit) refine(name Name) Circuit {
 	return y
 }
 
-func (u Circuit) RePlace(addr Address, value Value) Value {
-	if len(addr.Path) == 0 {
+func (u Circuit) RePlace(addr []Name, value Value) Value {
+	if len(addr) == 0 {
 		panic("no path")
 	}
-	for i, g := range addr.Path {
-		if i+1 == len(addr.Path) {
+	for i, g := range addr {
+		if i+1 == len(addr) {
 			break
 		}
 		u = u.Refine(g)
 	}
-	return u.Include(addr.Path[len(addr.Path)-1], DeepCopy(value))
+	return u.Include(addr[len(addr)-1], DeepCopy(value))
 }
 
-func (u Circuit) Place(addr Address, value Value) Value {
+func (u Circuit) Place(addr []Name, value Value) Value {
 	if u.RePlace(addr, value) != nil {
 		panic("place is replacing")
 	}
@@ -178,12 +169,12 @@ func (u Circuit) Abandon(name Name) Circuit {
 	return u
 }
 
-func (u Circuit) Forget(addr Address) Value {
-	if len(addr.Path) == 0 {
+func (u Circuit) Forget(addr []Name) Value {
+	if len(addr) == 0 {
 		panic("no path")
 	}
-	for i, g := range addr.Path {
-		if i+1 == len(addr.Path) {
+	for i, g := range addr {
+		if i+1 == len(addr) {
 			break
 		}
 		x, ok := u.OptionAt(g)
@@ -195,7 +186,7 @@ func (u Circuit) Forget(addr Address) Value {
 			return nil
 		}
 	}
-	return u.Exclude(addr.Path[len(addr.Path)-1])
+	return u.Exclude(addr[len(addr)-1])
 }
 
 func (u Circuit) Rename(x, y Name) Circuit {
@@ -209,14 +200,14 @@ func (u Circuit) Rename(x, y Name) Circuit {
 	return u
 }
 
-func (u Circuit) Lookup(addr Address) (v Value) {
+func (u Circuit) Lookup(addr []Name) (v Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			v = nil
 		}
 	}()
 	v = u
-	for _, name := range addr.Path {
+	for _, name := range addr {
 		v = v.(Circuit).At(name)
 	}
 	return DeepCopy(v)
@@ -231,7 +222,7 @@ func (u Circuit) Goto(gate ...Name) Value {
 		var ok bool
 		x, ok = x.CircuitOptionAt(g)
 		if !ok {
-			log.Fatalf("Address %v points to nothing", Address{gate})
+			log.Fatalf("Address %v points to nothing", NewVerb(gate...))
 		}
 	}
 	return x

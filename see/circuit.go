@@ -8,6 +8,7 @@ package see
 
 import (
 	// "log"
+	"fmt"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -19,14 +20,12 @@ func SeeCircuit(src *Src) (v Value) {
 		}
 	}()
 	t := src.Copy()
-	Space(t)
 	t.Match("{")
 	if v = SeeChamber(t); v == nil {
 		return nil
 	}
 	Space(t)
 	t.Match("}")
-	// Space(t)
 	src.Become(t)
 	return
 }
@@ -42,16 +41,23 @@ func SeeChamber(src *Src) (v Value) {
 	Space(t)
 	var j int
 	for {
+		println("x")
 		q := t.Copy()
 		Space(q)
+		println("x=", q.String())
 		if pn, pm := SeePeer(q); pn != nil { // parse peer
+			println("x1", pn)
 			if _, ok := pn.(Nameless); ok { // if peer is nameless, give it the next numeric index
+				println("x1a")
 				u.Include(j, pm)
 				j++
 			} else {
-				u.Include(pn, pm) // record the order of definition in the same namespace but with number keys
+				fmt.Printf("x1b == %T/%v %T/%v\n", pn, pn, pm, pm) // name parses before address
+				u.Include(pn, pm)                                  // record the order of definition in the same namespace but with number keys
 			}
+			println("x1/")
 		} else if x, carry := SeeLink(q, j); x != nil { // parse matching
+			println("x2")
 			for _, c := range carry { // add carry peers to circuit
 				if c != nil {
 					u.Include(c.Name, c.Value)
@@ -60,6 +66,7 @@ func SeeChamber(src *Src) (v Value) {
 			}
 			u.Link(x[0], x[1])
 		} else {
+			println("w")
 			break
 		}
 		Space(q)

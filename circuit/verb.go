@@ -11,13 +11,12 @@ import (
 	"fmt"
 	"io"
 	"strings"
+
+	. "github.com/gocircuit/escher/a"
 )
 
 // DefaultValve
 const DefaultValve = ""
-
-const RefineSymbolString = "."
-const RefineSymbolRune = '.'
 
 // Verb is an interpretation of a circuit, which also has a shorthand syntax, e.g.
 //	*http.Server

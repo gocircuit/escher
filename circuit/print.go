@@ -10,6 +10,8 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+
+	. "github.com/gocircuit/escher/a"
 )
 
 type Format struct {
@@ -99,7 +101,11 @@ func String(v Value) string {
 	case int, float64, complex128, bool:
 		return fmt.Sprintf("%v", t)
 	case string:
-		return fmt.Sprintf("%q", t)
+		if t != "" && IsName(t) {
+			return fmt.Sprintf("%v", t)
+		} else {
+			return fmt.Sprintf("%q", t)
+		}
 	}
 	return fmt.Sprintf("%T/%v", v, v)
 }
@@ -121,6 +127,7 @@ func printGate(w io.Writer, f Format, n Name, p Value) {
 	Print(w, f, n)
 	io.WriteString(w, " ")
 	Print(w, f, p)
+	io.WriteString(w, "\n")
 }
 
 func Linearize(s string) string {

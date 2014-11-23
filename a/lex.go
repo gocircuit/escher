@@ -4,11 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package see
-
-import (
-	. "github.com/gocircuit/escher/circuit"
-)
+package a
 
 func isNotVerbatim(r rune) bool {
 	return r != '`'
@@ -26,6 +22,9 @@ func isNotNewline(r rune) bool {
 	return !isNewline(r)
 }
 
+const RefineSymbolString = "."
+const RefineSymbolRune = '.'
+
 func IsIdentifier(r rune) bool {
 	if r == RefineSymbolRune {
 		return false
@@ -39,6 +38,10 @@ func IsIdentifier(r rune) bool {
 		return true
 	}
 	return false
+}
+
+func IsName(s string) bool {
+	return NewSrcString(s).Consume(IsIdentifier) == s
 }
 
 func IsIdentifierOrRefineSymbol(r rune) bool {

@@ -6,6 +6,10 @@
 
 package see
 
+import (
+	. "github.com/gocircuit/escher/a"
+)
+
 func SpaceNoNewline(src *Src) {
 	if len(Whitespace(src)) > 0 {
 		return
@@ -25,5 +29,5 @@ func Space(src *Src) (newLine bool) {
 
 func endOfLine(src *Src) bool {
 	Whitespace(src)
-	return len(src.Consume(isCommaOrSemicolonOrNewline)) > 0
+	return len(src.Consume(IsCommaOrSemicolonOrNewline)) > 0
 }

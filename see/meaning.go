@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"strings"
 
+	. "github.com/gocircuit/escher/a"
 	. "github.com/gocircuit/escher/circuit"
 )
 
@@ -44,7 +45,7 @@ func SeeValue(src *Src) (x Value) {
 	if x = SeeDoubleQuoteString(src); x != nil {
 		return
 	}
-	if x = SeeAddress(src); x != nil {
+	if x = SeeVerb(src); x != nil {
 		return
 	}
 	if x = SeeName(src); x != nil { // must be last since it will consume the empty string
@@ -57,30 +58,29 @@ func SeeName(src *Src) Name {
 	return src.Consume(IsIdentifier)
 }
 
-// SeeAddress ...
-func SeeAddress(src *Src) interface{} {
+// SeeVerb ...
+func SeeVerb(src *Src) interface{} {
 	t := src.Copy()
+	verb := ""
 	switch {
 	case t.TryMatch("*"):
+		verb = "*"
 	case t.TryMatch("@"):
+		verb = "@"
 	default:
 		return nil
 	}
-	?
 	delimit := t.Consume(IsIdentifierOrRefineSymbol)
-	x := strings.Split(delimit, RefineSymbolString)
-	if len(x) == 0 {
-		return nil
-	}
-	if len(x) == 1 && x[0] == "" {
-		return nil
-	}
-	var addr Address
-	for _, a := range x {
-		addr.Path = append(addr.Path, ParseName(a))
+	xx := strings.Split(delimit, RefineSymbolString)
+	if len(xx) == 1 && xx[0] == "" {
+		xx = nil
 	}
 	src.Become(t)
-	return addr
+	var nn []Name
+	for _, x := range xx {
+		nn = append(nn, x)
+	}
+	return Circuit(NewVerbAddress(verb, nn...))
 }
 
 // Int …

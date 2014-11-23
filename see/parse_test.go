@@ -9,6 +9,8 @@ package see
 import (
 	"fmt"
 	"testing"
+
+	. "github.com/gocircuit/escher/a"
 )
 
 var testValue = []string{
@@ -54,14 +56,14 @@ func TestReal(t *testing.T) {
 }
 
 var testPeer = []string{
-	// `a b`,
-	// `_ "abc"`,
-	// `a 3.13,`,
-	// `a { },`,
-	// `a;`,
-	// `"abc"`,
-	// `"ha",`,
-	// `a { "cd" }; `,
+	`a b`,
+	`_ "abc"`,
+	`a 3.13,`,
+	`a { },`,
+	`a;`,
+	`"abc"`,
+	`"ha",`,
+	`a { "cd" }; `,
 	`main {
 		s Show
 		s:_ = "¡Hello, world!"
@@ -71,15 +73,14 @@ var testPeer = []string{
 		}
 	}
 	`,
-	// `
-	// header {
-	// 	merge text.Merge
-	// 	merge:First = ""
-	// 	merge:Second = Title:_
-	// 	merge:Third = ""
-	// 	: = merge:
-	// }
-	// `,
+	`header {
+		merge *text.Merge
+		merge:First = ""
+		merge:Second = Title:_
+		merge:Third = ""
+		: = merge:
+	}
+	`,
 }
 
 func TestPeer(t *testing.T) {
@@ -104,7 +105,7 @@ var testCircuit = []string{
 		a:y = b:z
 	}`,
 	`{
-		a b
+		a @b
 		c d
 		e 1.23
 		f "123"
@@ -130,7 +131,7 @@ var testCircuit = []string{
 	}
 	`,
 	`{
-		t time.Ticker
+		t *time.Ticker
 		s sum
 		out show
 		t:Duration = 1e9

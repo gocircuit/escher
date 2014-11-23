@@ -9,6 +9,7 @@ package see
 import (
 	// "log"
 
+	. "github.com/gocircuit/escher/a"
 	. "github.com/gocircuit/escher/circuit"
 )
 

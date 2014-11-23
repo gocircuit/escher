@@ -9,6 +9,7 @@ package see
 import (
 	"log"
 
+	. "github.com/gocircuit/escher/a"
 	. "github.com/gocircuit/escher/circuit"
 )
 
@@ -21,9 +22,9 @@ func ParseName(src string) Name {
 	return n
 }
 
-func ParseAddress(src string) Address {
+func ParseVerb(src string) Verb {
 	t := NewSrcString(src)
-	a := SeeAddress(t).(Address)
+	a := Verb(SeeVerb(t).(Circuit))
 	if t.Len() != 0 {
 		log.Printf("Non-address characters at end of %q", src)
 		panic(1)

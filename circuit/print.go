@@ -74,6 +74,7 @@ func (u Circuit) Print(w io.Writer, f Format) {
 			u.resugar(w, f, sg, sv)
 			io.WriteString(w, " = ")
 			u.resugar(w, f, t.Gate, t.Valve)
+			io.WriteString(w, "\n")
 		}
 	}
 	io.WriteString(w, f.Prefix+"}")
@@ -101,7 +102,7 @@ func String(v Value) string {
 	case int, float64, complex128, bool:
 		return fmt.Sprintf("%v", t)
 	case string:
-		if t != "" && IsName(t) {
+		if IsName(t) {
 			return fmt.Sprintf("%v", t)
 		} else {
 			return fmt.Sprintf("%q", t)

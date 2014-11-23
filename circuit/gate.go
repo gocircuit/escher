@@ -222,7 +222,7 @@ func (u Circuit) Goto(gate ...Name) Value {
 		var ok bool
 		x, ok = x.CircuitOptionAt(g)
 		if !ok {
-			log.Fatalf("Address %v points to nothing", NewVerb(gate...))
+			log.Fatalf("Address %v points to nothing", NewAddress(gate...))
 		}
 	}
 	return x

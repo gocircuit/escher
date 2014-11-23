@@ -9,6 +9,7 @@ package see
 import (
 	// "fmt"
 
+	. "github.com/gocircuit/escher/a"
 	. "github.com/gocircuit/escher/circuit"
 )
 
@@ -56,7 +57,7 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	}
 	//
 	if !Space(t) { // require newline at end
-		return nil,nil
+		return nil, nil
 	}
 	src.Become(t)
 	return

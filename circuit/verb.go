@@ -23,7 +23,7 @@ const DefaultValve = ""
 //	@http.Server
 type Verb Circuit
 
-func NewVerb(addr ...Name) Verb {
+func NewAddress(addr ...Name) Verb {
 	x := New()
 	for i, n := range addr {
 		x.Gate[i] = n
@@ -31,15 +31,9 @@ func NewVerb(addr ...Name) Verb {
 	return Verb(x)
 }
 
-func NewLookupVerb(addr ...Name) Verb {
-	x := NewVerb(addr...)
-	x.Gate[""] = "@"
-	return x
-}
-
-func NewMaterializeVerb(addr ...Name) Verb {
-	x := NewVerb(addr...)
-	x.Gate[""] = "*"
+func NewVerbAddress(verb string, addr ...Name) Verb {
+	x := NewAddress(addr...)
+	x.Gate[""] = verb
 	return x
 }
 

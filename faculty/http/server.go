@@ -7,8 +7,8 @@
 package http
 
 import (
-	"fmt"
 	"bytes"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -16,8 +16,8 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
@@ -25,10 +25,10 @@ func init() {
 }
 
 type Server struct {
-	eye *be.Eye
+	eye    *be.Eye
 	matter *be.Matter
 	sync.Mutex
-	server *http.Server
+	server   *http.Server
 	throttle chan struct{}
 }
 
@@ -53,7 +53,7 @@ func (s *Server) CognizeStart(eye *be.Eye, value interface{}) {
 		panic("server running")
 	}
 	s.server = &http.Server{
-		Addr: u.StringAt("Address"),
+		Addr:    u.StringAt("Address"),
 		Handler: s,
 	}
 	go func() {
@@ -69,8 +69,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	//
 	mx, my := be.NewEntanglement()
 	ch := make(chan struct{}, 1)
-	go mx.Synapse().Focus(
-		func (v interface{}) {
+	go mx.Synapse().Connect(
+		func(v interface{}) {
 			defer func() {
 				ch <- struct{}{}
 			}()
@@ -86,7 +86,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		},
 	)
 	s.eye.Show(
-		"RequestResponse", 
+		"RequestResponse",
 		New().
 			Grow("Request", requestCircuit(req)).
 			Grow("Respond", my),
@@ -96,7 +96,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 // body is either string, reader or a materializer whose default valve returns one of those
 func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, body io.ReadCloser, ok bool) {
-	
+
 	// Status
 	if status, ok = u.IntOptionAt("Status"); !ok {
 		return
@@ -118,7 +118,7 @@ func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, bod
 	// Body
 	var v Value
 	if v, ok = u.OptionAt("Body"); !ok {
-		return 
+		return
 	}
 	var m be.Materializer
 	if m, ok = v.(be.Materializer); ok { // extract body from a noun reflex, if a materializer for one is given
@@ -128,7 +128,7 @@ func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, bod
 			panic("expecting reflex with one default valve")
 		}
 		ch := make(chan interface{}, 1)
-		synapse.Focus(func(w interface{}) { ch <- w })
+		synapse.Connect(func(w interface{}) { ch <- w })
 		v = <-ch
 	}
 	switch t := v.(type) {

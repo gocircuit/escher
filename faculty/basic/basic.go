@@ -9,9 +9,9 @@ package basic
 import (
 	"fmt"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
@@ -38,7 +38,7 @@ type Scanln struct{}
 func (Scanln) Materialize(*be.Matter) (be.Reflex, Value) {
 	s, t := be.NewSynapse()
 	go func() {
-		r := s.Focus(be.DontCognize)
+		r := s.Connect(be.DontCognize)
 		go func() {
 			for {
 				var em string
@@ -56,7 +56,7 @@ type Println struct{}
 func (Println) Materialize(*be.Matter) (be.Reflex, Value) {
 	s, t := be.NewSynapse()
 	go func() {
-		s.Focus(
+		s.Connect(
 			func(v interface{}) {
 				fmt.Printf("%v\n", v)
 			},

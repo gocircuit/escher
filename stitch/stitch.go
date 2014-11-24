@@ -16,9 +16,9 @@ import (
 type Stitcher func(Reflex, Circuit) (Reflex, interface{})
 
 func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
-	noun := memory.At("Noun")
+	noun := memory.At("Design")
 	for _, syn_ := range given {
-		go syn.Focus(DontCognize).ReCognize(noun)
+		go syn.Connect(DontCognize).ReCognize(noun)
 	}
 	if len(given) > 0 {
 		return nil, nil
@@ -27,91 +27,93 @@ func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interfac
 }
 
 func StitchVerb(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
+	// Place backtrace info in memory frame
+	memory = memory.Grow("Stitch", "Verb")
 
-	// I
+	// Read arguments
 	index := Index(memory.CircuitAt("Index"))
-	syntax := memory.CircuitAt("Verb")
+	syntax := memory.CircuitAt("Design")
 	verb, addr := Verb(syntax).Verb(), Verb(syntax).Address()
 
-	// II
 	// XXX: first, lookup design within the index that encloses the address of this verb
 	val := index.Recall(addr...)
 
-	// III
-	memory = memory.Copy().Grow("Stitch", "Verb")
+	// Perform transform
+	tmemory := New().
+		Grow("Index", memory.CircuitAt("Index")).
+		Grow("Super", memory)
+
 	switch verb {
 	case "*":
-		switch t := val.(type) {
-		case int, float64, complex128, string:
-		case Circuit:
-			if IsVerb(t) {
-				return StitchVerb(given, New().Grow("Index", index).Grow("Verb", t).Grow("Super", memory))
-			} else {
-				return StitchCircuit(given, New().Grow("Design", t).Grow("Super", memory))
-			}
-		case Stitcher:
-			return t(given, New().Grow("Super", memory))
-		}
+		return StitchDesign(given, tmemory.Grow("Design", val))
 	case "@":
-		return StitchNoun(given, New().Grow("Noun", val).Grow("Super", memory))
+		return StitchNoun(given, tmemory.Grow("Design", val))
 	}
 	panicf("unknown or missing verb: %v", String(syntax))
+}
+
+func StitchDesign(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
+	memory = memory.Grow("Stitch", "Design")
+	design := memory.CircuitAt("Design")
+
+	tmemory := New().
+		Grow("Index", memory.CircuitAt("Index")).
+		Grow("Super", memory)
+
+	switch t := design.(type) {
+	case int, float64, complex128, string:
+		return StitchNoun(given, tmemory.Grow("Design", design))
+	case Circuit:
+		if IsVerb(t) {
+			return StitchVerb(given, tmemory.Grow("Design", t))
+		} else {
+			return StitchCircuit(given, tmemory.Grow("Design", t))
+		}
+	case Stitcher:
+		return t(given, tmemory)
+	}
+	panicf("unknown design type: %T", design)
 }
 
 var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
 
 func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 
+	memory = memory.Grow("Stitch", "Circuit")
 	design := memory.CircuitAt("Design")
 
 	residue = New()
 	gates := make(map[Name]Reflex)
-	spirit := make(map[Name]interface{})
+	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 
-	// iterate and materialize gates
+	// materialize gates
 	for g, _ := range design.Gate {
 		if g == Super {
 			panicf("Circuit design overwrites the “%s” gate. In design %v\n", Super, design)
 		}
-		m := design.At(g)
-		var gv Value
-		if Same(m, SpiritAddress) {
-			gates[g], gv, spirit[g] = MaterializeNativeInstance(
-				&Matter{
-					Index:  b.index,
-					Verb:   nil,
-					Design: m,
-					View:   design.View(g),
-					Path:   append(matter.Path, g),
-					Super:  matter,
-				},
-				&Future{},
-			)
+		gsyntax := design.At(g)
+		var gresidue interface{}
+
+		gmemory := New().
+			Grow("Index", memory.CircuitAt("Index")).
+			Grow("Super", memory)
+
+		if Same(gsyntax, SpiritAddress) {
+			//??
+			gates[g], gresidue, spirit[g] = MaterializeNativeInstance(__, &Future{})
 		} else {
-			gates[g], gv = b.Materialize(
-				&Matter{
-					Index:  b.index,
-					Verb:   nil,
-					Design: m,
-					View:   design.View(g),
-					Path:   append(matter.Path, g),
-					Super:  matter,
-				},
-				m,
-				false,
-			)
+			gates[g], gresidue = StitchDesign(nil, gmemory.Grow("Design", gsyntax))
 		}
-		residue.Gate[g] = gv
+		residue.Gate[g] = gresidue
 	}
 
-	// compute the super reflex to be returned by this circuit's materialization
+	// compute the outer reflex of this circuit
 	var super Reflex
 	super, gates[Super] = make(Reflex), make(Reflex)
+	?
 	for v, _ := range design.Valves(Super) {
 		super[v], gates[Super][v] = NewSynapse()
 	}
-
-	// residue.Gate[Genus] = matter.Circuit()
 
 	// link up all gates
 	for _, g_ := range append(design.Names(), Super) {

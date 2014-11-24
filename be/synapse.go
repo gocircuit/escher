@@ -48,7 +48,7 @@ func (m *Synapse) String() string {
 	return "Synapse"
 }
 
-func (m *Synapse) Focus(cognize Cognize) *ReCognizer {
+func (m *Synapse) Connect(cognize Cognize) *ReCognizer {
 	m.teach <- cognize
 	close(m.teach)
 	q := <-m.learn

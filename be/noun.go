@@ -18,7 +18,7 @@ type Ignore struct{}
 func (Ignore) Materialize(*Matter) (Reflex, Value) {
 	s, t := NewSynapse()
 	go func() {
-		s.Focus(DontCognize)
+		s.Connect(DontCognize)
 	}()
 	return Reflex{DefaultValve: t}, nil
 }
@@ -70,7 +70,7 @@ func (n *Noun) NativeString(aux ...interface{}) string {
 
 // Future
 type Future struct {
-	eye *Eye
+	eye  *Eye
 	view Circuit
 }
 

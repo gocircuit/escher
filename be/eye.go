@@ -22,7 +22,7 @@ import (
 // higher-level concepts of cause and effect).
 //
 type Eye struct {
-	see chan *change
+	see  chan *change
 	show map[Name]*nerve
 }
 
@@ -40,7 +40,7 @@ type EyeCognizer func(eye *Eye, valve Name, value interface{})
 func NewEyeCognizer(cog EyeCognizer, valve ...Name) (Reflex, *Eye) {
 	r := make(Reflex)
 	eye := &Eye{
-		see: make(chan *change),
+		see:  make(chan *change),
 		show: make(map[Name]*nerve),
 	}
 	for i, v_ := range valve {
@@ -49,14 +49,14 @@ func NewEyeCognizer(cog EyeCognizer, valve ...Name) (Reflex, *Eye) {
 		r[v] = x
 		n := &nerve{
 			index: i,
-			ch: make(chan *ReCognizer),
+			ch:    make(chan *ReCognizer),
 		}
 		eye.show[v] = n
 		if cog == nil {
 			go func() {
 				eye.connect(
 					v,
-					y.Focus(
+					y.Connect(
 						func(w interface{}) {
 							eye.cognize(v, w)
 						},
@@ -67,7 +67,7 @@ func NewEyeCognizer(cog EyeCognizer, valve ...Name) (Reflex, *Eye) {
 			go func() {
 				eye.connect(
 					v,
-					y.Focus(
+					y.Connect(
 						func(w interface{}) {
 							cog(eye, v, w)
 						},
@@ -80,14 +80,14 @@ func NewEyeCognizer(cog EyeCognizer, valve ...Name) (Reflex, *Eye) {
 }
 
 func (eye *Eye) connect(valve Name, r *ReCognizer) {
-	ch := eye.show[valve].ch 
+	ch := eye.show[valve].ch
 	ch <- r
 	close(ch)
 }
 
 type nerve struct {
 	index int
-	ch chan *ReCognizer
+	ch    chan *ReCognizer
 	sync.Mutex
 	*ReCognizer
 }

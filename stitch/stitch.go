@@ -4,7 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
-package stitch
+package be
 
 import (
 	// "log"
@@ -12,8 +12,6 @@ import (
 
 	. "github.com/gocircuit/escher/circuit"
 )
-
-type Stitcher func(Reflex, Circuit) (Reflex, interface{})
 
 func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 	noun := memory.At("Design")
@@ -102,17 +100,17 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 			//??
 			gates[g], gresidue, spirit[g] = MaterializeNativeInstance(__, &Future{})
 		} else {
+			??
 			gates[g], gresidue = StitchDesign(nil, gmemory.Grow("Design", gsyntax))
 		}
 		residue.Gate[g] = gresidue
 	}
 
-	// compute the outer reflex of this circuit
-	var super Reflex
-	super, gates[Super] = make(Reflex), make(Reflex)
-	?
+	// create bridge synapses between outer and inner reflexes
+	var boundary Reflex
+	boundary, gates[Super] = make(Reflex), make(Reflex)
 	for v, _ := range design.Valves(Super) {
-		super[v], gates[Super][v] = NewSynapse()
+		boundary[v], gates[Super][v] = NewSynapse()
 	}
 
 	// link up all gates
@@ -130,6 +128,16 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 		}
 	}
 
+	// connect given valves, and return rest as expected
+	for vlv, syn := range given {
+		antisyn, ok := boundary[vlv]
+		if !ok {
+			panic("given valve not known")
+		}
+		delete(boundary, vlv)
+		go Link(syn, antisyn)
+	}
+
 	// send residue of this circuit to all escher.Spirit reflexes
 	res := CleanUp(residue)
 	go func() {
@@ -138,6 +146,21 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 		}
 	}()
 
-	return super, res
+	return boundary, res
+}
 
+func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
+	// log.Printf(" %v:%v <=> %v:%v", sg, sv, tg, tv)
+	if _, ok := gates[sg]; !ok {
+		panicf("In circuit: %v\nHas no gate %v\n", u, sg)
+	}
+	if _, ok := gates[tg]; !ok {
+		panicf("In circuit: %v\nHas no gate %v\n", u, tg)
+	}
+	if _, ok := gates[sg][sv]; !ok {
+		panicf("In circuit: %v\nGate %v has no valve :%v\n", u, sg, sv)
+	}
+	if _, ok := gates[tg][tv]; !ok {
+		panicf("In circuit: %v\nGate %v has no valve :%v\n", u, tg, tv)
+	}
 }

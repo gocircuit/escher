@@ -20,7 +20,7 @@ type Alternate struct {
 // SX -> TX
 // SY -> TY
 
-func (a *Alternate) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+func (a *Alternate) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
 	a.flow = make([]chan struct{}, 2)
 	a.flow[0] = make(chan struct{}, 1)
 	a.flow[1] = make(chan struct{}, 1)

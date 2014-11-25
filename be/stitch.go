@@ -13,6 +13,7 @@ import (
 )
 
 // TODO: Add view
+// TODO: matter -> history
 
 func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 	noun := memory.At("Design")
@@ -115,7 +116,7 @@ func StitchCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
 			Grow("Super", memory)
 
 		if Same(gsyntax, SpiritAddress) {
-			gates[g], gresidue, spirit[g] = StitchNativeInstance(gates[g], gmemory, &Future{})
+			gates[g], gresidue, spirit[g] = MaterializeInstance(gates[g], gmemory, &Future{})
 		} else {
 			var leftover Reflex
 			leftover, gresidue = StitchDesign(gates[g], gmemory.Grow("Design", gsyntax))

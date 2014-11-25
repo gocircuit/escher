@@ -10,7 +10,7 @@ import (
 	"sync"
 
 	. "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/see"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 var lk sync.Mutex
@@ -22,8 +22,8 @@ func Root() Index {
 	return root
 }
 
-func Register(name string, v interface{}) {
+func Register(v interface{}, addr ...Name) {
 	lk.Lock()
 	defer lk.Unlock()
-	root.Memorize(v, ParseAddress(name).Path...)
+	root.Memorize(v, addr...)
 }

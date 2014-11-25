@@ -19,21 +19,21 @@ import (
 const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
-// NewNativeStitcher returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewNativeStitcher(sample Native, aux ...interface{}) Stitcher {
-	return (&nativeStitcher{sample, aux}).Stitch
+// NewMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
+func NewMaterializer(sample Native, aux ...interface{}) Stitcher {
+	return (&materializer{sample, aux}).Stitch
 }
 
-type nativeStitcher struct {
+type materializer struct {
 	sample Native
 	aux    []interface{}
 }
 
-func (x *nativeStitcher) Stitch(given Reflex, matter circuit.Circuit) (Reflex, interface{}) {
-	return StitchNative(given, matter, x.sample, x.aux...)
+func (x *materializer) Stitch(given Reflex, matter circuit.Circuit) (Reflex, interface{}) {
+	return Materialize(given, matter, x.sample, x.aux...)
 }
 
-func (x *nativeStitcher) String() string {
+func (x *materializer) String() string {
 	if ns, ok := x.sample.(interface {
 		NativeString(...interface{}) string
 	}); ok {
@@ -42,16 +42,16 @@ func (x *nativeStitcher) String() string {
 	return fmt.Sprintf("Native(%T)", x.sample)
 }
 
-// StitchNative materializes the native implementation v.
+// Materialize materializes the native implementation v.
 // It returns the resulting reflex and residue, but not the Go-facing instance.
-func StitchNative(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (reflex Reflex, residue interface{}) {
-	reflex, residue, _ = StitchNativeInstance(given, matter, v, aux...)
+func Materialize(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (reflex Reflex, residue interface{}) {
+	reflex, residue, _ = MaterializeInstance(given, matter, v, aux...)
 	return
 }
 
-// StitchNativeInstance materializes the native implementation v.
+// MaterializeInstance materializes the native implementation v.
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
-func StitchNativeInstance(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (expected Reflex, residue, obj interface{}) {
+func MaterializeInstance(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (expected Reflex, residue, obj interface{}) {
 
 	// Build gate reflex
 	u := makeNative(v)

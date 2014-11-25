@@ -21,18 +21,18 @@ func (Idle) Spark(*Eye, Circuit, ...interface{}) Value {
 
 func (Idle) OverCognize(*Eye, Name, interface{}) {}
 
-func NewIdleMaterializer() Materializer {
-	return NewNativeMaterializer(Idle{})
+func NewIdleStitcher() Stitcher {
+	return NewNativeStitcher(Idle{})
 }
 
 // Noun
 
-func MaterializeNoun(matter Circuit, v interface{}) (Reflex, Value) {
-	return MaterializeNative(matter, &Noun{}, v)
+func MaterializeNoun(given Reflex, matter Circuit, v interface{}) (Reflex, Value) {
+	return StitchNative(given, matter, &Noun{}, v)
 }
 
-func NewNoun(v interface{}) Materializer {
-	return NewNativeMaterializer(&Noun{}, v)
+func NewNoun(v interface{}) Stitcher {
+	return NewNativeStitcher(&Noun{}, v)
 }
 
 type Noun struct {
@@ -46,7 +46,7 @@ func (n *Noun) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 			eye.Show(vlv, aux[0])
 		}
 	}()
-	if matter.View.Len() == 0 {
+	if matter.CircuitAt("View").Len() == 0 {
 		return aux[0]
 	}
 	return nil

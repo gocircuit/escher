@@ -14,84 +14,10 @@ import (
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
 type Reflex map[Name]*Synapse
 
-type Materializer interface {
-	Materialize(*Matter) (Reflex, Value)
-}
+//
+type Stitcher func(Reflex, Circuit) (Reflex, interface{})
 
 // Native represents a materializable object implemented as a Go type.
 type Native interface {
-	Spark(*Eye, *Matter, ...interface{}) Value // Initializer
-}
-
-// Matter describes the circuit context that commissioned the present materialization.
-type Matter struct {
-	// Materialization context
-	Index   Index       // Index used to materialize
-	Address []Name      // Location in index where the design for this materialization was found
-	Design  interface{} // Design
-	Verb    Verb        // Verb transformation resulting in (immediately preceding) this materialization
-	// 
-	View    Circuit // Valves connected to this design in the enclosing program
-	Path    []Name  // Path to this reflex within the residual, recursively following gate names
-	//
-	Super   *Matter // Matter of the circuit that materialized this reflex from a gate inside it
-	Barrier *Matter // If not nil, matter of an escher.Materialize gate that started this materialization
-}
-
-// Source returns an object describing the source location of the enclosing circuit, if available.
-func (m *Matter) Source() Value {
-	if m.Super == nil {
-		return nil
-	}
-	u, ok := m.Super.Design.(Circuit)
-	if !ok {
-		return nil
-	}
-	s, ok := u.CircuitOptionAt(Source{})
-	if !ok {
-		return nil
-	}
-	return s.StringAt("File")
-}
-
-func (m *Matter) String() string {
-	return m.Debug().String()
-}
-
-func (m *Matter) Debug() Circuit {
-	??
-	r := New().
-		Grow("?", "Matter").
-		Grow("Residue", NewAddress(m.Path...)).
-		Grow("Index", m.Address).
-		Grow("View", m.View)
-	if m.Design != nil {
-		r.Grow("Design", m.Design)
-	}
-	if src := m.Source(); src != nil {
-		r.Grow("Source", src)
-	}
-	if m.Super != nil {
-		r.Grow("Super", m.Super.Debug())
-	}
-	if m.Barrier != nil {
-		r.Grow("Barrier", m.Barrier.Debug())
-	}
-	return r
-}
-
-func (m *Matter) Circuit() Circuit {
-	return New().
-		Grow("Address", m.Address).
-		Grow("Design", m.Design).
-		Grow("View", m.View).
-		Grow("Path", pathCircuit(m.Path))
-}
-
-func pathCircuit(p []Name) Circuit {
-	r := New()
-	for i, n := range p {
-		r.Grow(i, n)
-	}
-	return r
+	Spark(eye *Eye, matter Circuit, aux ...interface{}) Value // Initializer
 }

@@ -68,11 +68,3 @@ func (x Index) Memorize(value Value, walk ...Name) {
 func (x Index) Merge(with Index) {
 	Circuit(x).Merge(Circuit(with))
 }
-
-func (x Index) Print(prefix, indent string, recurse int) string {
-	return Circuit(x).Print(prefix, indent, recurse)
-}
-
-func (x Index) String() string {
-	return x.Print("", "\t", -1)
-}

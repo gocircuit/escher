@@ -7,15 +7,17 @@
 package be
 
 import (
-	// "log"
-	"sync"
+	"fmt"
 
 	. "github.com/gocircuit/escher/circuit"
 )
 
+// TODO: Add view
+
 func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 	noun := memory.At("Design")
 	for _, syn_ := range given {
+		syn := syn_
 		go syn.Connect(DontCognize).ReCognize(noun)
 	}
 	if len(given) > 0 {
@@ -47,12 +49,12 @@ func StitchVerb(given Reflex, memory Circuit) (expected Reflex, residue interfac
 	case "@":
 		return StitchNoun(given, tmemory.Grow("Design", val))
 	}
-	panicf("unknown or missing verb: %v", String(syntax))
+	panic(fmt.Sprintf("unknown or missing verb: %v", String(syntax)))
 }
 
 func StitchDesign(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 	memory = memory.Grow("Stitch", "Design")
-	design := memory.CircuitAt("Design")
+	design := memory.At("Design")
 
 	tmemory := New().
 		Grow("Index", memory.CircuitAt("Index")).
@@ -70,36 +72,36 @@ func StitchDesign(given Reflex, memory Circuit) (expected Reflex, residue interf
 	case Stitcher:
 		return t(given, tmemory)
 	}
-	panicf("unknown design type: %T", design)
+	panic(fmt.Sprintf("unknown design type: %T", design))
 }
 
 var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
 
-func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
+func StitchCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
 
 	memory = memory.Grow("Stitch", "Circuit")
 	design := memory.CircuitAt("Design")
 
 	// make links
 	gates := make(map[Name]Reflex)
-	gates[Super] = New(Reflex)
+	gates[Super] = make(Reflex)
 	for name, view := range design.Flow {
 		if gates[name] == nil {
-			gates[name] = New(Reflex)
+			gates[name] = make(Reflex)
 		}
 		for vlv, vec := range view {
 			if gates[name][vlv] != nil {
 				continue
 			}
 			if gates[vec.Gate] == nil {
-				gates[vec.Gate] = New(Reflex)
+				gates[vec.Gate] = make(Reflex)
 			}
 			gates[name][vlv], gates[vec.Gate][vec.Valve] = NewSynapse()
 		}
 	}
 
 	// materialize gates
-	residue = New()
+	residue := New()
 	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 	for g, _ := range design.Gate {
 		if g == Super {
@@ -113,9 +115,9 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 			Grow("Super", memory)
 
 		if Same(gsyntax, SpiritAddress) {
-			//??
-			gates[g], gresidue, spirit[g] = MaterializeNativeInstance(__, &Future{})
+			gates[g], gresidue, spirit[g] = StitchNativeInstance(gates[g], gmemory, &Future{})
 		} else {
+			var leftover Reflex
 			leftover, gresidue = StitchDesign(gates[g], gmemory.Grow("Design", gsyntax))
 			if len(leftover) > 0 {
 				panic(2)

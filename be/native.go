@@ -19,22 +19,22 @@ import (
 const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
-// NewNativeMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewNativeMaterializer(sample Native, aux ...interface{}) Materializer {
-	return &NativeMaterializer{sample, aux}
+// NewNativeStitcher returns a materializer that generates copies of sample and sparks them with the aux data.
+func NewNativeStitcher(sample Native, aux ...interface{}) Stitcher {
+	return (&nativeStitcher{sample, aux}).Stitch
 }
 
-type NativeMaterializer struct {
+type nativeStitcher struct {
 	sample Native
-	aux []interface{}
+	aux    []interface{}
 }
 
-func (x *NativeMaterializer) Materialize(matter *Matter) (Reflex, circuit.Value) {
-	return MaterializeNative(matter, x.sample, x.aux...)
+func (x *nativeStitcher) Stitch(given Reflex, matter circuit.Circuit) (Reflex, interface{}) {
+	return StitchNative(given, matter, x.sample, x.aux...)
 }
 
-func (x *NativeMaterializer) String() string {
-	if ns, ok := x.sample.(interface{
+func (x *nativeStitcher) String() string {
+	if ns, ok := x.sample.(interface {
 		NativeString(...interface{}) string
 	}); ok {
 		return ns.NativeString(x.aux...)
@@ -42,23 +42,23 @@ func (x *NativeMaterializer) String() string {
 	return fmt.Sprintf("Native(%T)", x.sample)
 }
 
-// MaterializeNative materializes the native implementation v.
+// StitchNative materializes the native implementation v.
 // It returns the resulting reflex and residue, but not the Go-facing instance.
-func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (reflex Reflex, residue circuit.Value) {
-	reflex, residue, _ = MaterializeNativeInstance(matter, v, aux...)
+func StitchNative(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (reflex Reflex, residue interface{}) {
+	reflex, residue, _ = StitchNativeInstance(given, matter, v, aux...)
 	return
 }
 
-// MaterializeNativeInstance materializes the native implementation v.
+// StitchNativeInstance materializes the native implementation v.
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
-func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Reflex, circuit.Value, interface{}) {
+func StitchNativeInstance(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (expected Reflex, residue, obj interface{}) {
 
 	// Build gate reflex
 	u := makeNative(v)
 	t := u.Type()
 	r := gate{
-		Matter: matter,
-		Fixed: make(map[circuit.Name]reflect.Value),
+		Matter:   matter,
+		Fixed:    make(map[circuit.Name]reflect.Value),
 		Ellipses: u.MethodByName(cognizeEllipses),
 	}
 
@@ -75,7 +75,7 @@ func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Re
 	// Verify all connected valves have dedicated handlers or there is a generic handler.
 	var connected []circuit.Name
 	ellipses := r.Ellipses.IsValid()
-	for vlv, _ := range matter.View.Gate {
+	for vlv, _ := range given {
 		connected = append(connected, vlv)
 		if ellipses {
 			continue
@@ -87,20 +87,32 @@ func MaterializeNativeInstance(matter *Matter, v Native, aux ...interface{}) (Re
 
 	// Verify all dedicated valves are connected
 	for vlv, _ := range r.Fixed {
-		if _, ok := matter.View.Gate[vlv]; !ok {
+		if _, ok := given[vlv]; !ok {
 			log.Fatalf("gate valve (%v) must be connected:\n%v\n", vlv, matter)
 		}
 	}
 
 	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
-	return reflex, u.Interface().(Native).Spark(eye, matter, aux...), u.Interface()
+	for vlv, x := range reflex {
+		Link(given[vlv], x)
+		delete(reflex, x)
+	}
+	if len(reflex) != 0 {
+		panic(2)
+	}
+
+	expected = nil
+	obj = u.Interface()
+	residue = obj.(Native).Spark(eye, matter, aux...)
+
+	return
 }
 
 // gate is a materialized native reflex.
 type gate struct {
-	*Matter
-	Fixed map[circuit.Name]reflect.Value // valve name -> dedicated handler
-	Ellipses reflect.Value // ellipses handler
+	Matter   circuit.Circuit
+	Fixed    map[circuit.Name]reflect.Value // valve name -> dedicated handler
+	Ellipses reflect.Value                  // ellipses handler
 }
 
 func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
@@ -134,7 +146,7 @@ func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 	} else {
 		handler.Call(
 			[]reflect.Value{
-				reflect.ValueOf(eye), 
+				reflect.ValueOf(eye),
 				reflect.ValueOf(value),
 			},
 		)

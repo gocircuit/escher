@@ -47,7 +47,7 @@ func IsVerb(v Value) bool {
 }
 
 func (a Verb) Address() (addr []Name) {
-	if a == nil {
+	if Circuit(a).IsNil() {
 		return nil
 	}
 	for _, i := range Circuit(a).SortedNumbers() {

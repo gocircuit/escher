@@ -19,21 +19,21 @@ import (
 const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
-// NewNativeMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewNativeMaterializer(sample Native, aux ...interface{}) Materializer {
-	return &NativeMaterializer{sample, aux}
+// NewNativeStitcher returns a materializer that generates copies of sample and sparks them with the aux data.
+func NewNativeStitcher(sample Native, aux ...interface{}) Stitcher {
+	return (&nativeStitcher{sample, aux}).Stitch
 }
 
-type NativeMaterializer struct {
+type nativeStitcher struct {
 	sample Native
 	aux    []interface{}
 }
 
-func (x *NativeMaterializer) Materialize(matter *Matter) (Reflex, circuit.Value) {
-	return MaterializeNative(matter, x.sample, x.aux...)
+func (x *nativeStitcher) Stitch(given Reflex, matter Circuit) (Reflex, interface{}) {
+	return MaterializeStitch(matter, x.sample, x.aux...)
 }
 
-func (x *NativeMaterializer) String() string {
+func (x *nativeStitcher) String() string {
 	if ns, ok := x.sample.(interface {
 		NativeString(...interface{}) string
 	}); ok {
@@ -42,10 +42,10 @@ func (x *NativeMaterializer) String() string {
 	return fmt.Sprintf("Native(%T)", x.sample)
 }
 
-// MaterializeNative materializes the native implementation v.
+// StitchNative materializes the native implementation v.
 // It returns the resulting reflex and residue, but not the Go-facing instance.
-func MaterializeNative(matter *Matter, v Native, aux ...interface{}) (reflex Reflex, residue circuit.Value) {
-	reflex, residue, _ = MaterializeNativeInstance(matter, v, aux...)
+func StitchNative(matter Circuit, v Native, aux ...interface{}) (reflex Reflex, residue interface{}) {
+	reflex, residue, _ = StitchNativeInstance(matter, v, aux...)
 	return
 }
 
@@ -93,7 +93,12 @@ func StitchNativeInstance(given Reflex, matter Circuit, v Native, aux ...interfa
 	}
 
 	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
-	for vlv, antisyn := range given {
+	for vlv, x := range reflex {
+		Link(given[vlv], x)
+		delete(reflex, x)
+	}
+	if len(reflex) != 0 {
+		panic(2)
 	}
 
 	expected = nil

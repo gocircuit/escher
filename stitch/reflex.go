@@ -19,5 +19,5 @@ type Stitcher func(Reflex, Circuit) (Reflex, interface{})
 
 // Native represents a materializable object implemented as a Go type.
 type Native interface {
-	Spark(*Eye, Circuit, ...interface{}) Value // Initializer
+	Spark(eye *Eye, matter Circuit, aux ...interface{}) Value // Initializer
 }

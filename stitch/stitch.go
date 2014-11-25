@@ -80,11 +80,27 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 	memory = memory.Grow("Stitch", "Circuit")
 	design := memory.CircuitAt("Design")
 
-	residue = New()
+	// make links
 	gates := make(map[Name]Reflex)
-	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
+	gates[Super] = New(Reflex)
+	for name, view := range design.Flow {
+		if gates[name] == nil {
+			gates[name] = New(Reflex)
+		}
+		for vlv, vec := range view {
+			if gates[name][vlv] != nil {
+				continue
+			}
+			if gates[vec.Gate] == nil {
+				gates[vec.Gate] = New(Reflex)
+			}
+			gates[name][vlv], gates[vec.Gate][vec.Valve] = NewSynapse()
+		}
+	}
 
 	// materialize gates
+	residue = New()
+	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 	for g, _ := range design.Gate {
 		if g == Super {
 			panicf("Circuit design overwrites the “%s” gate. In design %v\n", Super, design)
@@ -100,42 +116,22 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 			//??
 			gates[g], gresidue, spirit[g] = MaterializeNativeInstance(__, &Future{})
 		} else {
-			??
-			gates[g], gresidue = StitchDesign(nil, gmemory.Grow("Design", gsyntax))
+			leftover, gresidue = StitchDesign(gates[g], gmemory.Grow("Design", gsyntax))
+			if len(leftover) > 0 {
+				panic(2)
+			}
 		}
 		residue.Gate[g] = gresidue
 	}
 
-	// create bridge synapses between outer and inner reflexes
-	var boundary Reflex
-	boundary, gates[Super] = make(Reflex), make(Reflex)
-	for v, _ := range design.Valves(Super) {
-		boundary[v], gates[Super][v] = NewSynapse()
-	}
-
-	// link up all gates
-	for _, g_ := range append(design.Names(), Super) {
-		g := g_
-		for v_, t := range design.Valves(g) {
-			v := v_
-			checkLink(u, gates, g, v, t.Gate, t.Valve)
-			residue.Link(Vector{g, v}, Vector{t.Gate, t.Valve})
-			go Link(gates[g][v], gates[t.Gate][t.Valve])
-			// go func() {
-			//	log.Printf("%v:%v -> %v:%v | %v %v", g, v, t.Gate, t.Valve, gates[g][v], gates[t.Gate][t.Valve])
-			// 	Link(gates[g][v], gates[t.Gate][t.Valve])
-			// }()
-		}
-	}
-
-	// connect given valves, and return rest as expected
-	for vlv, syn := range given {
-		antisyn, ok := boundary[vlv]
+	// connect given synapses
+	for vlv, s := range given {
+		t, ok := gates[Super][vlv]
 		if !ok {
-			panic("given valve not known")
+			continue
 		}
-		delete(boundary, vlv)
-		go Link(syn, antisyn)
+		delete(gates[Super], vlv)
+		go Link(s, t)
 	}
 
 	// send residue of this circuit to all escher.Spirit reflexes
@@ -146,21 +142,9 @@ func StitchCircuit(given Reflex, memory Circuit) (expected Reflex, residue inter
 		}
 	}()
 
-	return boundary, res
-}
+	if len(gates[Super]) > 0 {
+		panic("circuit valves left unconnected")
+	}
 
-func checkLink(u Circuit, gates map[Name]Reflex, sg, sv, tg, tv Name) {
-	// log.Printf(" %v:%v <=> %v:%v", sg, sv, tg, tv)
-	if _, ok := gates[sg]; !ok {
-		panicf("In circuit: %v\nHas no gate %v\n", u, sg)
-	}
-	if _, ok := gates[tg]; !ok {
-		panicf("In circuit: %v\nHas no gate %v\n", u, tg)
-	}
-	if _, ok := gates[sg][sv]; !ok {
-		panicf("In circuit: %v\nGate %v has no valve :%v\n", u, sg, sv)
-	}
-	if _, ok := gates[tg][tv]; !ok {
-		panicf("In circuit: %v\nGate %v has no valve :%v\n", u, tg, tv)
-	}
+	return gates[Super], res
 }

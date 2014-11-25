@@ -12,29 +12,10 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// Ignore gates ignore their empty-string valve
-type Ignore struct{}
-
-func (Ignore) Materialize(*Matter) (Reflex, Value) {
-	s, t := NewSynapse()
-	go func() {
-		s.Connect(DontCognize)
-	}()
-	return Reflex{DefaultValve: t}, nil
-}
-
-func MaterializeNoun(matter *Matter, v interface{}) (Reflex, Value) {
-	return MaterializeNative(matter, &Noun{}, v)
-}
-
-func NewNoun(v interface{}) Materializer {
-	return NewNativeMaterializer(&Noun{}, v)
-}
-
 // Idle
 type Idle struct{}
 
-func (Idle) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+func (Idle) Spark(*Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
@@ -45,14 +26,23 @@ func NewIdleMaterializer() Materializer {
 }
 
 // Noun
+
+func MaterializeNoun(matter Circuit, v interface{}) (Reflex, Value) {
+	return MaterializeNative(matter, &Noun{}, v)
+}
+
+func NewNoun(v interface{}) Materializer {
+	return NewNativeMaterializer(&Noun{}, v)
+}
+
 type Noun struct {
 	Value interface{}
 }
 
-func (n *Noun) Spark(eye *Eye, matter *Matter, aux ...interface{}) Value {
+func (n *Noun) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 	n.Value = aux[0]
 	go func() {
-		for vlv, _ := range matter.View.Gate {
+		for vlv, _ := range matter.CircuitAt("View").Gate {
 			eye.Show(vlv, aux[0])
 		}
 	}()
@@ -74,9 +64,9 @@ type Future struct {
 	view Circuit
 }
 
-func (f *Future) Spark(eye *Eye, matter *Matter, _ ...interface{}) Value {
+func (f *Future) Spark(eye *Eye, matter Circuit, _ ...interface{}) Value {
 	f.eye = eye
-	f.view = matter.View
+	f.view = matter.CircuitAt("View")
 	return nil
 }
 

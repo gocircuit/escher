@@ -12,44 +12,42 @@ import (
 	"sync"
 
 	"github.com/gocircuit/circuit/client"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Process
-type Process struct{}
-
-func (x Process) Materialize(*be.Matter) (be.Reflex, Value) {
-	p := &process{
-		spawn: make(chan interface{}),
-	}
-	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
-	return reflex, Process{}
+type Process struct {
+	sync.Once                  // start backloop once
+	spawn     chan interface{} // notify loop of spawn memes
 }
 
-type process struct{
-	sync.Once // start backloop once
-	spawn chan interface{} // notify loop of spawn memes
+func (p *Process) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	p.spawn = make(chan interface{})
+	return nil
 }
 
-func (p *process) cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
-	switch dvalve.(string) {
-	case "Command":
-		p.Once.Do(
-			func() {
-				back := &processBack{
-					eye: eye, 
-					cmd: cognizeProcessCommand(dvalue), 
-					spawn: p.spawn,
-				}
-				go back.loop()
-			},
-		)
-	case "Spawn":
-		p.spawn <- dvalue
-		log.Printf("circuit process spawning (%v)", Linearize(fmt.Sprintf("%v", dvalue)))
-	}
+func (p *Process) CognizeCommand(eye *be.Eye, dvalue interface{}) {
+	p.Once.Do(
+		func() {
+			back := &processBack{
+				eye:   eye,
+				cmd:   cognizeProcessCommand(dvalue),
+				spawn: p.spawn,
+			}
+			go back.loop()
+		},
+	)
 }
+
+func (p *Process) CognizeSpawn(eye *be.Eye, dvalue interface{}) {
+	p.spawn <- dvalue
+	log.Printf("circuit process spawning (%v)", String(dvalue))
+}
+
+func (p *Process) CognizeExit(eye *be.Eye, dvalue interface{}) {}
+
+func (p *Process) CognizeIO(eye *be.Eye, dvalue interface{}) {}
 
 //	{
 //		Env {
@@ -81,13 +79,13 @@ func cognizeProcessCommand(v interface{}) *client.Cmd {
 			cmd.Args = append(cmd.Args, args.StringAt(key))
 		}
 	}
-	log.Printf("circuit process command (%v)", Linearize(img.Print("", "t", -1)))
+	log.Printf("circuit process command (%v)", QuickPrint("", "t", -1, img))
 	return cmd
 }
 
 type processBack struct {
-	eye *be.Eye
-	cmd *client.Cmd
+	eye   *be.Eye
+	cmd   *client.Cmd
 	spawn <-chan interface{}
 }
 
@@ -112,7 +110,7 @@ func (p *processBack) spawnProcess(spwn interface{}) error {
 	anchor := program.Client.Walk(
 		[]string{
 			s.StringAt("Server"), // server name
-			s.StringAt("Name"), // (dynamic) execution name
+			s.StringAt("Name"),   // (dynamic) execution name
 		})
 	//
 	proc, err := anchor.MakeProc(*p.cmd)
@@ -121,8 +119,8 @@ func (p *processBack) spawnProcess(spwn interface{}) error {
 	}
 	defer anchor.Scrub()
 	g := New().
-		Grow("Spawn",  spwn,).
-		Grow("Stdin",  proc.Stdin()).
+		Grow("Spawn", spwn).
+		Grow("Stdin", proc.Stdin()).
 		Grow("Stdout", proc.Stdout()).
 		Grow("Stderr", proc.Stderr())
 	log.Printf("circuit process io (%v)", Linearize(fmt.Sprintf("%v", spwn)))

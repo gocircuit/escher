@@ -13,46 +13,45 @@ import (
 	"sync"
 
 	dkr "github.com/gocircuit/circuit/client/docker"
-	"github.com/gocircuit/escher/kit/plumb"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Docker
-type Docker struct{}
-
-func (x Docker) Materialize(*be.Matter) (be.Reflex, Value) {
-	p := &docker{
-		spawn: make(chan interface{}),
-	}
-	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "Spawn", "Exit", "IO")
-	return reflex, Docker{}
-}
 
 // docker is the materialized docker reflex
-type docker struct {
-	sync.Once // start backloop once
-	spawn chan interface{} // notify loop of spawn memes
+type Docker struct {
+	sync.Once                  // start backloop once
+	spawn     chan interface{} // notify loop of spawn memes
 }
 
-func (p *docker) cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
-	switch dvalve {
-	case "Command":
-		p.Once.Do(
-			func() {
-				back := &dockerBack{
-					eye: eye, 
-					cmd: cognizeDockerCommand(dvalue), 
-					spawn: p.spawn,
-				}
-				go back.loop()
-			},
-		)
-	case "Spawn":
-		p.spawn <- dvalue
-		log.Printf("circuit container spawning (%v)", Linearize(fmt.Sprintf("%v", dvalue)))
-	}
+func (p *Docker) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	p.spawn = make(chan interface{})
+	return nil
 }
+
+func (p *Docker) CognizeCommand(eye *be.Eye, dvalue interface{}) {
+	p.Once.Do(
+		func() {
+			back := &dockerBack{
+				eye:   eye,
+				cmd:   cognizeDockerCommand(dvalue),
+				spawn: p.spawn,
+			}
+			go back.loop()
+		},
+	)
+}
+
+func (p *Docker) CognizeSpawn(eye *be.Eye, dvalue interface{}) {
+	p.spawn <- dvalue
+	log.Printf("circuit container spawning (%v)", Linearize(fmt.Sprintf("%v", dvalue)))
+}
+
+func (p *Docker) CognizeExit(eye *be.Eye, dvalue interface{}) {}
+
+func (p *Docker) CognizeIO(eye *be.Eye, dvalue interface{}) {}
 
 //	Command example:
 //
@@ -115,13 +114,13 @@ func cognizeDockerCommand(v interface{}) *dkr.Run {
 			cmd.Args = append(cmd.Args, args.StringAt(key))
 		}
 	}
-	log.Printf("circuit docker command (%v)", Linearize(img.Print("", "t", -1)))
+	log.Printf("circuit docker command %v", QuickPrint("", "t", -1, img))
 	return cmd
 }
 
 type dockerBack struct {
-	eye *be.Eye
-	cmd *dkr.Run
+	eye   *be.Eye
+	cmd   *dkr.Run
 	spawn <-chan interface{}
 }
 
@@ -146,7 +145,7 @@ func (p *dockerBack) spawnDocker(spwn interface{}) error {
 	anchor := program.Client.Walk(
 		[]string{
 			s.StringAt("Server"), // server name
-			s.StringAt("Name"), // (dynamic) execution name
+			s.StringAt("Name"),   // (dynamic) execution name
 		})
 	//
 	container, err := anchor.MakeDocker(*p.cmd)
@@ -155,8 +154,8 @@ func (p *dockerBack) spawnDocker(spwn interface{}) error {
 	}
 	defer anchor.Scrub() // Anchor will be scrubbed before the exit meme is sent out
 	g := New().
-		Grow("Spawn",  spwn).
-		Grow("Stdin",  container.Stdin()).
+		Grow("Spawn", spwn).
+		Grow("Stdin", container.Stdin()).
 		Grow("Stdout", container.Stdout()).
 		Grow("Stderr", container.Stderr())
 	log.Printf("circuit docker io (%v)", Linearize(fmt.Sprintf("%v", spwn)))

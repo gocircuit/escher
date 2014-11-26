@@ -7,60 +7,23 @@
 package basic
 
 import (
-	"fmt"
+	// "fmt"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	// . "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register(be.Ignore, "Ignore")
-	faculty.Register(be.NewIdleMaterializer(), "Idle")
-	faculty.Register(Scanln{}, "Scanln")
+	faculty.Register(be.NewSink, "Ignore")
 	//
-	faculty.Register("Grow", be.NewNativeMaterializer(&Grow{}))
-	faculty.Register("Fork", be.NewNativeMaterializer(&be.Union{}))
-	faculty.Register("Lens", be.NewNativeMaterializer(&Lens{}))
+	faculty.Register(be.NewMaterializer(&Grow{}), "Grow")
+	faculty.Register(be.NewMaterializer(&be.Union{}), "Fork")
+	faculty.Register(be.NewMaterializer(&Lens{}), "Lens")
 	//
-	faculty.Register("Alternate", be.NewNativeMaterializer(&Alternate{}))
-	faculty.Register("Alt", be.NewNativeMaterializer(&Alternate{}))
-	faculty.Register("OneWayDoor", be.NewNativeMaterializer(&OneWayDoor{}))
+	faculty.Register(be.NewMaterializer(&Alternate{}), "Alternate")
+	faculty.Register(be.NewMaterializer(&Alternate{}), "Alt")
+	faculty.Register(be.NewMaterializer(&OneWayDoor{}), "OneWayDoor")
 	//
-	faculty.Register("Repeat", be.NewNativeMaterializer(Repeat{}))
-	//
-	faculty.Register("OnEnd", be.NewNativeMaterializer(&OnHash{}, "#End")) // ??
-}
-
-// Scanln
-type Scanln struct{}
-
-func (Scanln) Materialize(*be.Matter) (be.Reflex, Value) {
-	s, t := be.NewSynapse()
-	go func() {
-		r := s.Connect(be.DontCognize)
-		go func() {
-			for {
-				var em string
-				fmt.Scanln(&em)
-				r.ReCognize(em)
-			}
-		}()
-	}()
-	return be.Reflex{DefaultValve: t}, Scanln{}
-}
-
-// Println
-type Println struct{}
-
-func (Println) Materialize(*be.Matter) (be.Reflex, Value) {
-	s, t := be.NewSynapse()
-	go func() {
-		s.Connect(
-			func(v interface{}) {
-				fmt.Printf("%v\n", v)
-			},
-		)
-	}()
-	return be.Reflex{DefaultValve: t}, Println{}
+	faculty.Register(be.NewMaterializer(Repeat{}), "Repeat")
 }

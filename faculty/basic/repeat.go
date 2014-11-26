@@ -15,7 +15,7 @@ import (
 
 type Repeat struct{}
 
-func (Repeat) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+func (Repeat) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

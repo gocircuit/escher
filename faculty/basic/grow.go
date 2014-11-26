@@ -14,12 +14,12 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Grow struct{
+type Grow struct {
 	sync.Mutex
 	u Circuit
 }
 
-func (g *Grow) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (g *Grow) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	g.u = New()
 	return &Grow{}
 }

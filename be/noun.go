@@ -12,34 +12,35 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// Idle
-type Idle struct{}
+// Sink
 
-func (Idle) Spark(*Eye, Circuit, ...interface{}) Value {
+func NewSink() Materializer {
+	return NewMaterializer(sink{})
+}
+
+type sink struct{}
+
+func (sink) Spark(*Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
-func (Idle) OverCognize(*Eye, Name, interface{}) {}
+func (sink) OverCognize(*Eye, Name, interface{}) {}
 
-func NewIdleStitcher() Stitcher {
-	return NewMaterializer(Idle{})
+// Source
+
+func NewSource(v interface{}) Materializer {
+	return NewMaterializer(&source{}, v)
 }
 
-// Noun
-
-func MaterializeNoun(given Reflex, matter Circuit, v interface{}) (Reflex, Value) {
-	return Materialize(given, matter, &Noun{}, v)
+func MaterializeSource(given Reflex, matter Circuit, v interface{}) (Reflex, Value) {
+	return Materialize(given, matter, &source{}, v)
 }
 
-func NewNoun(v interface{}) Stitcher {
-	return NewMaterializer(&Noun{}, v)
-}
-
-type Noun struct {
+type source struct {
 	Value interface{}
 }
 
-func (n *Noun) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
+func (n *source) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 	n.Value = aux[0]
 	go func() {
 		for vlv, _ := range matter.CircuitAt("View").Gate {
@@ -52,10 +53,10 @@ func (n *Noun) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 	return nil
 }
 
-func (n *Noun) OverCognize(*Eye, Name, interface{}) {}
+func (n *source) OverCognize(*Eye, Name, interface{}) {}
 
-func (n *Noun) NativeString(aux ...interface{}) string {
-	return fmt.Sprintf("Noun(%v)", aux[0])
+func (n *source) NativeString(aux ...interface{}) string {
+	return fmt.Sprintf("Source(%v)", aux[0])
 }
 
 // Future

@@ -20,8 +20,8 @@ const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
 // NewMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewMaterializer(sample Native, aux ...interface{}) Stitcher {
-	return (&materializer{sample, aux}).Stitch
+func NewMaterializer(sample Native, aux ...interface{}) Materializer {
+	return (&materializer{sample, aux}).Materialize
 }
 
 type materializer struct {
@@ -29,7 +29,7 @@ type materializer struct {
 	aux    []interface{}
 }
 
-func (x *materializer) Stitch(given Reflex, matter circuit.Circuit) (Reflex, interface{}) {
+func (x *materializer) Materialize(given Reflex, matter circuit.Circuit) (Reflex, interface{}) {
 	return Materialize(given, matter, x.sample, x.aux...)
 }
 

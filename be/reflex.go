@@ -15,7 +15,7 @@ import (
 type Reflex map[Name]*Synapse
 
 //
-type Stitcher func(Reflex, Circuit) (Reflex, interface{})
+type Materializer func(Reflex, Circuit) (Reflex, interface{})
 
 // Native represents a materializable object implemented as a Go type.
 type Native interface {

@@ -9,27 +9,33 @@ package basic
 import (
 	// "fmt"
 
-	"github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("Switch", be.NewNativeMaterializer(&Switch{}))
+	faculty.Register(be.NewMaterializer(&Switch{}), "Switch")
 }
 
 type Switch struct {
 	view Circuit
 }
 
-func (s *Switch) Spark(_ *be.Eye, matter *be.Matter, _ ...interface{}) Value {
-	s.view = matter.View
+func (s *Switch) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
+	s.view = matter.CircuitAt("View")
 	return nil
 }
 
 func (s *Switch) Cognize(eye *be.Eye, value interface{}) {
-	switch value.(type) {
+	switch t := value.(type) {
 	case Circuit:
+		if IsVerb(t) {
+			if s.view.Has("Verb") {
+				eye.Show("Verb", value)
+				return
+			}
+		}
 		if s.view.Has("Circuit") {
 			eye.Show("Circuit", value)
 		}
@@ -48,10 +54,6 @@ func (s *Switch) Cognize(eye *be.Eye, value interface{}) {
 	case string:
 		if s.view.Has("String") {
 			eye.Show("String", value)
-		}
-	case Address:
-		if s.view.Has("Address") {
-			eye.Show("Address", value)
 		}
 	default:
 		if s.view.Has("Other") {

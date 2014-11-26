@@ -124,6 +124,12 @@ func Print(w io.Writer, f Format, v Value) {
 	}
 }
 
+func QuickPrint(prefix, indent string, recurse int, v Value) string {
+	var w bytes.Buffer
+	Print(&w, Format{prefix, indent, recurse}, v)
+	return w.String()
+}
+
 func printGate(w io.Writer, f Format, n Name, p Value) {
 	Print(w, f, n)
 	io.WriteString(w, " ")

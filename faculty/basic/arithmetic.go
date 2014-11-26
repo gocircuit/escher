@@ -9,23 +9,23 @@ package basic
 import (
 	// "fmt"
 	"strconv"
-	"sync"
+	// "sync"
 
-	"github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/plumb"
+	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
+	// "github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
-	faculty.Register("Sum", Sum{})
-	faculty.Register("IntString", be.NewNativeMaterializer(IntString{}))
+	// faculty.Register("Sum", Sum{})
+	faculty.Register(be.NewMaterializer(IntString{}), "IntString")
 }
 
 // IntString
 type IntString struct{}
 
-func (IntString) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (IntString) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return IntString{}
 }
 
@@ -42,82 +42,82 @@ func (IntString) CognizeString(eye *be.Eye, v interface{}) {
 }
 
 // Sum
-type Sum struct{}
+// type Sum struct{}
 
-func (Sum) Materialize(*be.Matter) (be.Reflex, Value) {
-	x := &sum{lit: New()}
-	reflex, _ := be.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
-	return reflex, Sum{}
-}
+// func (Sum) Materialize(*be.Matter) (be.Reflex, Value) {
+// 	x := &sum{lit: New()}
+// 	reflex, _ := be.NewEyeCognizer(x.Cognize, "X", "Y", "Sum")
+// 	return reflex, Sum{}
+// }
 
-type sum struct {
-	sync.Mutex
-	lit Circuit // literals
-}
+// type sum struct {
+// 	sync.Mutex
+// 	lit Circuit // literals
+// }
 
-func (x *sum) save(valve string, value int) {
-	x.Lock()
-	defer x.Unlock()
-	x.lit.Include(valve, value)
-}
+// func (x *sum) save(valve string, value int) {
+// 	x.Lock()
+// 	defer x.Unlock()
+// 	x.lit.Include(valve, value)
+// }
 
-func (x *sum) u(valve string) int {
-	x.Lock()
-	defer x.Unlock()
-	return x.lit.IntOrZeroAt(valve)
-}
+// func (x *sum) u(valve string) int {
+// 	x.Lock()
+// 	defer x.Unlock()
+// 	return x.lit.IntOrZeroAt(valve)
+// }
 
-func (x *sum) Cognize(eye *be.Eye, dv Name, dvalue interface{}) {
-	dvalve := dv.(string)
-	x.save(dvalve, plumb.AsInt(dvalue))
-	var wg sync.WaitGroup
-	defer wg.Wait()
-	wg.Add(2)
-	switch dvalve {
-	case "X":
-		go func() { // Cognize
-			defer func() {
-				recover()
-			}()
-			defer wg.Done()
-			eye.Show("Y", x.u("Sum") - x.u("X"))
-		}()
-		go func() {
-			defer func() {
-				recover()
-			}()
-			defer wg.Done()
-			eye.Show("Sum", x.u("Y") + x.u("X"))
-		}()
-	case "Y":
-		go func() {
-			defer func() {
-				recover()
-			}()
-			defer wg.Done()
-			eye.Show("X", x.u("Sum") - x.u("Y"))
-		}()
-		go func() {
-			defer func() {
-				recover()
-			}()
-			defer wg.Done()
-			eye.Show("Sum", x.u("Y") + x.u("X"))
-		}()
-	case "Sum":
-		go func() {
-			defer func() {
-				recover()
-			}()
-			defer wg.Done()
-			eye.Show("X", x.u("Sum") - x.u("Y"))
-		}()
-		go func() {
-			defer func() {
-				recover()
-			}()
-			defer wg.Done()
-			eye.Show("Y", x.u("Sum") - x.u("X"))
-		}()
-	}
-}
+// func (x *sum) Cognize(eye *be.Eye, dv Name, dvalue interface{}) {
+// 	dvalve := dv.(string)
+// 	x.save(dvalve, plumb.AsInt(dvalue))
+// 	var wg sync.WaitGroup
+// 	defer wg.Wait()
+// 	wg.Add(2)
+// 	switch dvalve {
+// 	case "X":
+// 		go func() { // Cognize
+// 			defer func() {
+// 				recover()
+// 			}()
+// 			defer wg.Done()
+// 			eye.Show("Y", x.u("Sum")-x.u("X"))
+// 		}()
+// 		go func() {
+// 			defer func() {
+// 				recover()
+// 			}()
+// 			defer wg.Done()
+// 			eye.Show("Sum", x.u("Y")+x.u("X"))
+// 		}()
+// 	case "Y":
+// 		go func() {
+// 			defer func() {
+// 				recover()
+// 			}()
+// 			defer wg.Done()
+// 			eye.Show("X", x.u("Sum")-x.u("Y"))
+// 		}()
+// 		go func() {
+// 			defer func() {
+// 				recover()
+// 			}()
+// 			defer wg.Done()
+// 			eye.Show("Sum", x.u("Y")+x.u("X"))
+// 		}()
+// 	case "Sum":
+// 		go func() {
+// 			defer func() {
+// 				recover()
+// 			}()
+// 			defer wg.Done()
+// 			eye.Show("X", x.u("Sum")-x.u("Y"))
+// 		}()
+// 		go func() {
+// 			defer func() {
+// 				recover()
+// 			}()
+// 			defer wg.Done()
+// 			eye.Show("Y", x.u("Sum")-x.u("X"))
+// 		}()
+// 	}
+// }

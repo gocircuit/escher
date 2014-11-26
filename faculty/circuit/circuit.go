@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/gocircuit/circuit/client"
+	"github.com/gocircuit/escher/be"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -26,11 +27,8 @@ func Init(discover string) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	faculty.Register("Process", Process{})
-	faculty.Register("Docker", Docker{})
-	// faculty.Register("Leaving", Leaving{})
-	// faculty.Register("Joining", Joining{})
-	// faculty.Register("Channel", Chan{})
+	faculty.Register(be.NewMaterializer(&Process{}), "Process")
+	faculty.Register(be.NewMaterializer(&Docker{}), "Docker")
 }
 
 // Program…

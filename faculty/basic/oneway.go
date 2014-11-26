@@ -17,7 +17,7 @@ type OneWayDoor struct { // :From :To :Door
 	flow chan struct{}
 }
 
-func (w *OneWayDoor) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+func (w *OneWayDoor) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
 	w.flow = make(chan struct{})
 	return nil
 }

@@ -7,29 +7,30 @@
 package basic
 
 import (
+	"bytes"
 	"fmt"
 
-	"github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("Star", be.NewNativeMaterializer(&Star{}))
-	faculty.Register("Show", be.NewNativeMaterializer(&Star{}, StarFunc(show)))
-	faculty.Register("Show1", be.NewNativeMaterializer(&Star{}, StarFunc(show1)))
-	faculty.Register("Show2", be.NewNativeMaterializer(&Star{}, StarFunc(show2)))
+	faculty.Register(be.NewMaterializer(&Star{}), "Star")
+	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show)), "Show")
+	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show1)), "Show1")
+	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show2)), "Show2")
 }
 
 type StarFunc func(Name, interface{})
 
 type Star struct {
-	f StarFunc
+	f    StarFunc
 	view Circuit
 }
 
-func (s *Star) Spark(_ *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	s.view = matter.View
+func (s *Star) Spark(_ *be.Eye, matter Circuit, aux ...interface{}) Value {
+	s.view = matter.CircuitAt("View")
 	if len(aux) == 1 {
 		s.f = aux[0].(StarFunc)
 	}
@@ -54,19 +55,13 @@ func show(name Name, v interface{}) {
 }
 
 func show1(name Name, v interface{}) {
-	switch t := v.(type) {
-	case Printer:
-		fmt.Printf("Show:%v = %s\n", name, t.Print("", "\t", 1))
-	default:
-		fmt.Printf("Show:%v = %v\n", name, v)
-	}
+	var w bytes.Buffer
+	Print(&w, Format{"", "\t", 1}, v)
+	fmt.Print(w.String())
 }
 
 func show2(name Name, v interface{}) {
-	switch t := v.(type) {
-	case Printer:
-		fmt.Printf("Show:%v = %s\n", name, t.Print("", "\t", 2))
-	default:
-		fmt.Printf("Show:%v = %v\n", name, v)
-	}
+	var w bytes.Buffer
+	Print(&w, Format{"", "\t", 2}, v)
+	fmt.Print(w.String())
 }

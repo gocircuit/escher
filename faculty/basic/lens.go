@@ -14,14 +14,14 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Lens struct{
+type Lens struct {
 	valve []Name
 	sync.Mutex
 	history Circuit // histories from both valves { ValveOne { … }, ValveTwo { … } }
 }
 
-func (g *Lens) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	mvg := matter.View.Gate
+func (g *Lens) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+	mvg := matter.CircuitAt("View").Gate
 	if len(mvg) < 1 || len(mvg) > 2 {
 		panic("lens can have one or two endpoints")
 	}

@@ -12,10 +12,9 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// TODO: Add view
-// TODO: matter -> history
+// TODO: (MaterializeVerb) first, lookup design within the index that encloses the address of this verb
 
-func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
+func MaterializeNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 	noun := memory.At("Design")
 	for _, syn_ := range given {
 		syn := syn_
@@ -27,9 +26,9 @@ func StitchNoun(given Reflex, memory Circuit) (expected Reflex, residue interfac
 	return nil, noun
 }
 
-func StitchVerb(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
+func MaterializeVerb(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
 	// Place backtrace info in memory frame
-	memory = memory.Grow("Stitch", "Verb")
+	memory = memory.Grow("Materialize", "Verb")
 
 	// Read arguments
 	index := Index(memory.CircuitAt("Index"))
@@ -42,35 +41,37 @@ func StitchVerb(given Reflex, memory Circuit) (expected Reflex, residue interfac
 	// Perform transform
 	tmemory := New().
 		Grow("Index", memory.CircuitAt("Index")).
+		Grow("View", memory.CircuitAt("View")).
 		Grow("Super", memory)
 
 	switch verb {
 	case "*":
-		return StitchDesign(given, tmemory.Grow("Design", val))
+		return MaterializeDesign(given, tmemory.Grow("Design", val))
 	case "@":
-		return StitchNoun(given, tmemory.Grow("Design", val))
+		return MaterializeNoun(given, tmemory.Grow("Design", val))
 	}
 	panic(fmt.Sprintf("unknown or missing verb: %v", String(syntax)))
 }
 
-func StitchDesign(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
-	memory = memory.Grow("Stitch", "Design")
+func MaterializeDesign(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
+	memory = memory.Grow("Materialize", "Design")
 	design := memory.At("Design")
 
 	tmemory := New().
 		Grow("Index", memory.CircuitAt("Index")).
+		Grow("View", memory.CircuitAt("View")).
 		Grow("Super", memory)
 
 	switch t := design.(type) {
 	case int, float64, complex128, string:
-		return StitchNoun(given, tmemory.Grow("Design", design))
+		return MaterializeNoun(given, tmemory.Grow("Design", design))
 	case Circuit:
 		if IsVerb(t) {
-			return StitchVerb(given, tmemory.Grow("Design", t))
+			return MaterializeVerb(given, tmemory.Grow("Design", t))
 		} else {
-			return StitchCircuit(given, tmemory.Grow("Design", t))
+			return MaterializeCircuit(given, tmemory.Grow("Design", t))
 		}
-	case Stitcher:
+	case Materializer:
 		return t(given, tmemory)
 	}
 	panic(fmt.Sprintf("unknown design type: %T", design))
@@ -78,9 +79,9 @@ func StitchDesign(given Reflex, memory Circuit) (expected Reflex, residue interf
 
 var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
 
-func StitchCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
+func MaterializeCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
 
-	memory = memory.Grow("Stitch", "Circuit")
+	memory = memory.Grow("Materialize", "Circuit")
 	design := memory.CircuitAt("Design")
 
 	// make links
@@ -111,15 +112,22 @@ func StitchCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
 		gsyntax := design.At(g)
 		var gresidue interface{}
 
+		// Compute view of gate within circuit
+		view := New()
+		for vlv, vec := range design.Flow[g] {
+			view.Grow(vlv, design.Gate[vec.Gate])
+		}
+
 		gmemory := New().
 			Grow("Index", memory.CircuitAt("Index")).
+			Grow("View", view).
 			Grow("Super", memory)
 
 		if Same(gsyntax, SpiritAddress) {
 			gates[g], gresidue, spirit[g] = MaterializeInstance(gates[g], gmemory, &Future{})
 		} else {
 			var leftover Reflex
-			leftover, gresidue = StitchDesign(gates[g], gmemory.Grow("Design", gsyntax))
+			leftover, gresidue = MaterializeDesign(gates[g], gmemory.Grow("Design", gsyntax))
 			if len(leftover) > 0 {
 				panic(2)
 			}

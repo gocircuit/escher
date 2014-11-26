@@ -8,10 +8,10 @@
 package model
 
 import (
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("model.IO", be.NewNativeMaterializer(IO{}))
+	faculty.Register(be.NewMaterializer(IO{}), "model", "IO")
 }

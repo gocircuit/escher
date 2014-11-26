@@ -7,20 +7,20 @@
 package spin
 
 import (
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Move
 type Move struct{}
 
-func (Move) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Move) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
 func (Move) CognizeView(eye *be.Eye, v interface{}) {
 	w := v.(Circuit)
-	w.Include("Position", w.ComplexAt("Position") + w.ComplexAt("Orientation"))
+	w.Include("Position", w.ComplexAt("Position")+w.ComplexAt("Orientation"))
 	eye.Show(DefaultValve, w)
 }
 

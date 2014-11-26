@@ -10,8 +10,8 @@ import (
 	"bytes"
 	"text/template"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Form has two valves In and Out.
@@ -24,7 +24,7 @@ import (
 //
 type Form struct{}
 
-func (Form) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Form) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

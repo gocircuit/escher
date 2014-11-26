@@ -1,7 +1,4 @@
-* name printing when string is not identifier 
-* name parsing when string is not identifier
-
-* convert address to circuit
+* fold clunk into sink
 * remove name/value distinction
 
 * addresses are sugar for a two-sided reflex:

@@ -15,7 +15,7 @@ import (
 
 type Lookup struct{}
 
-func (Lookup) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Lookup) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

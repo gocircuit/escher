@@ -7,15 +7,15 @@
 package view
 
 import (
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	// "github.com/gocircuit/escher/kit/plumb"
 )
 
 // Focus
 type Focus struct{}
 
-func (Focus) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Focus) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

@@ -10,24 +10,24 @@ import (
 	// "fmt"
 
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/faculty"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("model.IgnoreValves", be.NewNativeMaterializer(IgnoreValves{}))
+	faculty.Register(be.NewMaterializer(IgnoreValves{}), "model", "IgnoreValves")
 }
 
 type IgnoreValves struct{}
 
-func (IgnoreValves) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (IgnoreValves) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
 func (IgnoreValves) CognizeCircuit(eye *be.Eye, v interface{}) {
 	u := v.(Circuit).Copy()
 	n := u.Unify("ignoreValves")
-	u.Gate[n] = NewAddress("Ignore")
+	u.Gate[n] = NewVerbAddress("*", "Ignore")
 	u.Reflow(Super, n)
 	eye.Show(DefaultValve, u)
 }

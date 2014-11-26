@@ -7,15 +7,15 @@
 package index
 
 import (
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("index.Mirror", be.NewNativeMaterializer(Mirror{}))
-	faculty.Register("index.Generalize", be.NewNativeMaterializer(Generalize{}))
-	faculty.Register("index.Yield", be.NewNativeMaterializer(Yield{}))
-	faculty.Register("index.Lookup", be.NewNativeMaterializer(Lookup{}))
+	faculty.Register("index.Mirror", be.NewMaterializer(Mirror{}))
+	faculty.Register("index.Generalize", be.NewMaterializer(Generalize{}))
+	faculty.Register("index.Yield", be.NewMaterializer(Yield{}))
+	faculty.Register("index.Lookup", be.NewMaterializer(Lookup{}))
 }
 
 /*

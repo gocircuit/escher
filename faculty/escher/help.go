@@ -11,14 +11,14 @@ import (
 	"fmt"
 	"os"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("help", be.NewNativeMaterializer(&Help{}))
-	faculty.Register("Help", be.NewNativeMaterializer(&Help{}))
+	faculty.Register("help", be.NewMaterializer(&Help{}))
+	faculty.Register("Help", be.NewMaterializer(&Help{}))
 }
 
 type Help struct {

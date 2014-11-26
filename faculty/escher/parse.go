@@ -9,15 +9,15 @@ package escher
 import (
 	// "log"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/see"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/gocircuit/escher/see"
 )
 
 type Parse struct{}
 
-func (Parse) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Parse) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

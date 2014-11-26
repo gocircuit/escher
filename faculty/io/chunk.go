@@ -11,20 +11,20 @@ import (
 	"io"
 	// "log"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 	kio "github.com/gocircuit/escher/kit/io"
 )
 
 func init() {
-	faculty.Register("io.ChunkUp", be.NewNativeMaterializer(Chunk{}))
+	faculty.Register(be.NewMaterializer(Chunk{}), "io", "ChunkUp")
 }
 
 // Chunk…
 type Chunk struct{}
 
-func (Chunk) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Chunk) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
@@ -33,7 +33,7 @@ func (Chunk) CognizeReader(eye *be.Eye, v interface{}) {
 	for {
 		chunk, err := r.Read()
 		if err != nil {
-			return 
+			return
 		}
 		eye.Show("Chunk", chunk)
 	}

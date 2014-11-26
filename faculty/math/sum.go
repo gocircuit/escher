@@ -10,18 +10,18 @@ import (
 	"sync"
 
 	// "github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	// "github.com/gocircuit/escher/kit/plumb"
 )
 
 // IntSum
-type IntSum struct{
+type IntSum struct {
 	sync.Mutex
 	x, y, sum int
 }
 
-func (s *IntSum) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (s *IntSum) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return &IntSum{}
 }
 
@@ -31,13 +31,13 @@ func (s *IntSum) save(valve string, value int) (x, y, sum int) {
 	switch valve {
 	case "X":
 		s.x = value
-		s.y, s.sum = s.sum - s.x, s.x + s.y
+		s.y, s.sum = s.sum-s.x, s.x+s.y
 	case "Y":
 		s.y = value
-		s.x, s.sum = s.sum - s.y, s.x + s.y
+		s.x, s.sum = s.sum-s.y, s.x+s.y
 	case "Sum":
 		s.sum = value
-		s.x, s.y = s.sum - s.y, s.sum - s.x
+		s.x, s.y = s.sum-s.y, s.sum-s.x
 	}
 	return s.x, s.y, s.sum
 }

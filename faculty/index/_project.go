@@ -15,11 +15,11 @@ import (
 
 // TODO: This is a first order graph projection. It can be extended to any order.
 type Index struct {
-	gv Circuit // Gate-Valve dictionary
+	gv     Circuit // Gate-Valve dictionary
 	shadow Circuit
 }
 
-func (x *Index) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (x *Index) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	x.gv, x.shadow = New(), New()
 	return nil
 }

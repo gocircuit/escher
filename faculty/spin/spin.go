@@ -9,9 +9,9 @@ package spin
 import (
 	// "log"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 /*
@@ -23,12 +23,12 @@ import (
 */
 
 func init() {
-	faculty.Register("spin.Age", be.NewNativeMaterializer(Age{}))
-	faculty.Register("spin.Die", be.NewNativeMaterializer(&Die{}))
-	faculty.Register("spin.Split", be.NewNativeMaterializer(&Split{}))
+	faculty.Register("spin.Age", be.NewMaterializer(Age{}))
+	faculty.Register("spin.Die", be.NewMaterializer(&Die{}))
+	faculty.Register("spin.Split", be.NewMaterializer(&Split{}))
 	//
-	faculty.Register("spin.Dilate", be.NewNativeMaterializer(&Dilate{}))
-	faculty.Register("spin.Move", be.NewNativeMaterializer(Move{}))
+	faculty.Register("spin.Dilate", be.NewMaterializer(&Dilate{}))
+	faculty.Register("spin.Move", be.NewMaterializer(Move{}))
 }
 
 // Age…

@@ -15,7 +15,7 @@ import (
 
 type DepthFirst struct{}
 
-func (DepthFirst) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (DepthFirst) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
@@ -44,13 +44,13 @@ func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
 	if len(walk) > 0 {
 		nm = walk[len(walk)-1]
 	}
-	
+
 	frame := New().
 		Grow("Path", (Address{walk}).Circuit()).
 		Grow("Address", Address{walk}).
 		Grow("Name", nm).
 		Grow("View", x)
-	
+
 	eye.Show("Frame", frame)
 	if len(walk) == 0 {
 		eye.Show("Control", "End")

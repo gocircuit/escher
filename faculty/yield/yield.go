@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	faculty.Register("yield.Gates", be.NewNativeMaterializer(Gates{}))
-	faculty.Register("yield.Flows", be.NewNativeMaterializer(Flows{}))
-	faculty.Register("yield.DepthFirst", be.NewNativeMaterializer(DepthFirst{}))
+	faculty.Register("yield.Gates", be.NewMaterializer(Gates{}))
+	faculty.Register("yield.Flows", be.NewMaterializer(Flows{}))
+	faculty.Register("yield.DepthFirst", be.NewMaterializer(DepthFirst{}))
 }

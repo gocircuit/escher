@@ -27,8 +27,8 @@ func Init(discover string) {
 
 	rand.Seed(time.Now().UnixNano())
 
-	faculty.Register(be.NewMaterializer(&Process{}), "Process")
-	faculty.Register(be.NewMaterializer(&Docker{}), "Docker")
+	faculty.Register(be.NewMaterializer(&Process{}), "element", "Process")
+	faculty.Register(be.NewMaterializer(&Docker{}), "element", "Docker")
 }
 
 // Program…

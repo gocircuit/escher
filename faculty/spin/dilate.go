@@ -7,8 +7,8 @@
 package spin
 
 import (
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -17,7 +17,7 @@ type Dilate struct {
 	factor plumb.Given // dilation factor
 }
 
-func (f *Dilate) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (f *Dilate) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	f.factor.Init()
 	return nil
 }
@@ -28,7 +28,7 @@ func (f *Dilate) CognizeFactor(eye *be.Eye, v interface{}) {
 
 func (f *Dilate) CognizeView(eye *be.Eye, v interface{}) {
 	w := v.(Circuit)
-	w.Include("Orientation", w.ComplexAt("Orientation") * f.factor.Use().(complex128))
+	w.Include("Orientation", w.ComplexAt("Orientation")*f.factor.Use().(complex128))
 	eye.Show(DefaultValve, w)
 }
 

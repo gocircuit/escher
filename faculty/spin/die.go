@@ -7,8 +7,8 @@
 package spin
 
 import (
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -17,7 +17,7 @@ type Die struct {
 	at plumb.Given // die at this age only or after
 }
 
-func (d *Die) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (d *Die) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	d.at.Init()
 	return nil
 }

@@ -12,13 +12,13 @@ import (
 	"io/ioutil"
 	// "log"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("io.util.WriteFile", be.NewNativeMaterializer(&WriteFile{}))
+	faculty.Register(be.NewMaterializer(&WriteFile{}), "io", "util", "WriteFile")
 }
 
 type WriteFile struct {
@@ -26,7 +26,7 @@ type WriteFile struct {
 	named chan struct{}
 }
 
-func (h *WriteFile) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (h *WriteFile) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	h.named = make(chan struct{})
 	return &WriteFile{}
 }

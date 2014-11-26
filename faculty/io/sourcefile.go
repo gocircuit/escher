@@ -15,13 +15,13 @@ import (
 	// "github.com/gocircuit/escher/faculty"
 )
 
-func NewSourceFileMaterializer(name string) be.Materializer {
-	return be.NewNativeMaterializer(SourceFile{}, name)
+func NewSourceFile(name string) be.Materializer {
+	return be.NewMaterializer(SourceFile{}, name)
 }
 
 type SourceFile struct{}
 
-func (SourceFile) Spark(eye *be.Eye, _ *be.Matter, aux ...interface{}) Value {
+func (SourceFile) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
 	go func() {
 		name := aux[0].(string)
 		file, err := os.Open(name)

@@ -11,9 +11,9 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Generalize struct {}
+type Generalize struct{}
 
-func (Generalize) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Generalize) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

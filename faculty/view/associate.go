@@ -7,15 +7,15 @@
 package view
 
 import (
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	// "github.com/gocircuit/escher/kit/plumb"
 )
 
 // Associate
 type Associate struct{}
 
-func (Associate) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Associate) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 

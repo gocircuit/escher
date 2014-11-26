@@ -12,21 +12,21 @@ import (
 	"io"
 	// "log"
 
+	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/be"
 )
 
 func init() {
-	faculty.Register("text.Merge", be.NewNativeMaterializer(Merge{}))
-	faculty.Register("text.Form", be.NewNativeMaterializer(Form{}))
+	faculty.Register("text.Merge", be.NewMaterializer(Merge{}))
+	faculty.Register("text.Form", be.NewMaterializer(Form{}))
 }
 
-// Merge concatenates the string values of string-named gates into a single string output, 
+// Merge concatenates the string values of string-named gates into a single string output,
 // where concatenation takes place in the lexicographic order of the gate names.
 type Merge struct{}
 
-func (Merge) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Merge) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
@@ -52,7 +52,7 @@ func flatten(v interface{}) string {
 	case rune:
 		return string(t)
 	case io.Reader:
-		var w bytes.Buffer 
+		var w bytes.Buffer
 		io.Copy(&w, t)
 		return w.String()
 	case nil:

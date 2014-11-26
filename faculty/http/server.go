@@ -21,7 +21,7 @@ import (
 )
 
 func init() {
-	faculty.Register("http.Server", be.NewNativeMaterializer(&Server{}))
+	faculty.Register("http.Server", be.NewMaterializer(&Server{}))
 }
 
 type Server struct {

@@ -15,7 +15,7 @@ import (
 
 type IO struct{}
 
-func (IO) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (IO) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return IO{}
 }
 

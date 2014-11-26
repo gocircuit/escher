@@ -9,14 +9,14 @@ package escher
 import (
 	// "fmt"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
 func init() {
-	faculty.Register("escher.Materialize", be.NewNativeMaterializer(&Materialize{}))
-	faculty.Register("escher.Index", be.NewNativeMaterializer(Index{}))
-	faculty.Register("escher.Parse", be.NewNativeMaterializer(Parse{}))
-	// faculty.Register("escher.Flatten", be.NewNativeMaterializer(Flatten{}))
+	faculty.Register("escher.Materialize", be.NewMaterializer(&Materialize{}))
+	faculty.Register("escher.Index", be.NewMaterializer(Index{}))
+	faculty.Register("escher.Parse", be.NewMaterializer(Parse{}))
+	// faculty.Register("escher.Flatten", be.NewMaterializer(Flatten{}))
 }

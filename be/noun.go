@@ -8,6 +8,8 @@ package be
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -24,7 +26,22 @@ func (sink) Spark(*Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
-func (sink) OverCognize(*Eye, Name, interface{}) {}
+func (sink) OverCognize(_ *Eye, _ Name, v interface{}) {
+	SinkValue(v)
+}
+
+func SinkValue(v interface{}) {
+	switch t := v.(type) {
+	case Circuit:
+		for _, g := range t.Gate {
+			SinkValue(g)
+		}
+	case io.Closer:
+		t.Close()
+	case io.Reader:
+		io.Copy(ioutil.Discard, t)
+	}
+}
 
 // Source
 

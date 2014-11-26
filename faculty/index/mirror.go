@@ -13,9 +13,9 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Mirror struct {}
+type Mirror struct{}
 
-func (Mirror) Spark(*be.Eye, *be.Matter, ...interface{}) Value {
+func (Mirror) Spark(*be.Eye, Circuit, ...interface{}) Value {
 	return nil
 }
 
@@ -38,7 +38,7 @@ func MirrorNative(u be.Index, path []Name) be.Index {
 			switch t := v.(type) {
 			case Circuit:
 				if be.IsIndex(t) {
-					Circuit(r).Include(n, 
+					Circuit(r).Include(n,
 						Circuit(
 							MirrorNative(be.AsIndex(t), append(path, n)),
 						),

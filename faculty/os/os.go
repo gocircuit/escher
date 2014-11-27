@@ -11,22 +11,21 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
 )
 
 func Init(arg []string) {
-	faculty.Register("os.Arg", be.NewNoun(argCircuit(arg)))
-	faculty.Register("os.Env", Env{})
-	faculty.Register("os.Exit", Exit{})
-	faculty.Register("os.Fatal", Fatal{})
-	faculty.Register("os.Stdin", Stdin{})
-	faculty.Register("os.Stdout", Stdout{})
-	faculty.Register("os.Stderr", Stderr{})
-	//
-	faculty.Register("os.LookPath", LookPath{})
-	faculty.Register("os.Process", Process{})
+	faculty.Register(be.NewSource(argCircuit(arg)), "os", "Arg")
+	faculty.Register(be.NewSource(argCircuit(os.Getenv())), "os", "Env")
+	faculty.Register(be.NewMaterializer(Exit{}), "os", "Exit")
+	faculty.Register(be.NewMaterializer(Fatal{}), "os", "Fatal")
+	faculty.Register(be.NewMaterializer(LookPath{}), "os", "LookPath")
+	faculty.Register(Stdin{}, "os", "Stdin")
+	faculty.Register(Stdout{}, "os", "Stdout")
+	faculty.Register(Stderr{}, "os", "Stderr")
+	faculty.Register(Process{}, "os", "Process")
 }
 
 func argCircuit(arg []string) Circuit {
@@ -37,75 +36,46 @@ func argCircuit(arg []string) Circuit {
 	return r
 }
 
-// Env
-type Env struct{}
-
-func (Env) Materialize(*be.Matter) (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve Name, value interface{}) {
-			if valve != "Name" {
-				return
-			}
-			n, ok := value.(string)
-			if !ok {
-				panic("non-string name perceived by os.env")
-			}
-			ev := os.Getenv(n)
-			log.Printf("Environment %s=%s", n, ev)
-			eye.Show("Value", ev)
-		},
-		"Name", "Value",
-	)
-	return reflex, Env{}
-}
-
 // Exit
 type Exit struct{}
 
-func (Exit) Materialize(*be.Matter) (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve Name, value interface{}) {
-			switch t := value.(type) {
-			case int:
-				os.Exit(t)
-			default:
-				os.Exit(0)
-			}
-		}, 
-		DefaultValve,
-	)
-	return reflex, Exit{}
+func (Exit) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	return nil
+}
+
+func (Exit) OverCognize(eye *be.Eye, name Name, value interface{}) {
+	switch t := value.(type) {
+	case int:
+		os.Exit(t)
+	default:
+		os.Exit(0)
+	}
 }
 
 // Fatal
 type Fatal struct{}
 
-func (Fatal) Materialize(*be.Matter) (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve Name, value interface{}) {
-			log.Fatalln(value)
-		}, 
-		DefaultValve,
-	)
-	return reflex, Fatal{}
+func (Fatal) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	return nil
+}
+
+func (Fatal) OverCognize(eye *be.Eye, name Name, value interface{}) {
+	log.Fatalf("%v", value)
 }
 
 // LookPath
 type LookPath struct{}
 
-func (LookPath) Materialize(*be.Matter) (be.Reflex, Value) {
-	reflex, _ := be.NewEyeCognizer(
-		func(eye *be.Eye, valve Name, value interface{}) {
-			if valve != "Name" {
-				return
-			}
-			p, err := exec.LookPath(value.(string))
-			if err != nil {
-				log.Fatalf("no file path to %s", value.(string))
-			}
-			eye.Show(DefaultValve, p)
-		},
-		"Name", DefaultValve,
-	)
-	return reflex, LookPath{}
+func (LookPath) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	return nil
 }
+
+func (LookPath) CognizeName(eye *be.Eye, value interface{}) {
+	p, err := exec.LookPath(value.(string))
+	if err != nil {
+		log.Fatalf("no file path to %s", value.(string))
+	}
+	eye.Show(DefaultValve, p)
+}
+
+func (LookPath) Cognize(eye *be.Eye, value interface{}) {}

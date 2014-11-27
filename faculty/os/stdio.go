@@ -40,13 +40,10 @@ func MaterializeWriteTo(w io.Writer) (be.Reflex, Value) {
 	}
 	reflex, eye := be.NewEyeCognizer(x.cognize, DefaultValve)
 	go eye.Show(DefaultValve, x.WriteCloser)
-	return reflex,
-		func() (be.Reflex, Value) {
-			return MaterializeWriteTo(w)
-		}
+	return reflex, nil
 }
 
-type writerTo struct{
+type writerTo struct {
 	io.WriteCloser // sovereign writer
 }
 
@@ -87,13 +84,10 @@ func MaterializeReadFrom(w io.Reader) (be.Reflex, Value) {
 	}
 	reflex, eye := be.NewEyeCognizer(x.cognize, DefaultValve)
 	go eye.Show(DefaultValve, x.ReadCloser)
-	return reflex,
-		func() (be.Reflex, Value) {
-			return MaterializeReadFrom(w)
-		}
+	return reflex, nil
 }
 
-type readFrom struct{
+type readFrom struct {
 	io.ReadCloser // sovereign writer
 }
 

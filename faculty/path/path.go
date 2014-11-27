@@ -11,8 +11,8 @@ import (
 	"path"
 	"sync"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -21,7 +21,7 @@ func init() {
 }
 
 // Join
-type Join struct{}
+type Join struct{ Sparkless }
 
 func (Join) Materialize(*be.Matter) (be.Reflex, Value) {
 	reflex, _ := be.NewEyeCognizer((&join{}).Cognize, DefaultValve, "Head", "Tail")

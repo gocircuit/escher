@@ -20,12 +20,12 @@ const cognizePrefix = "Cognize"
 const cognizeEllipses = "OverCognize"
 
 // NewMaterializer returns a materializer that generates copies of sample and sparks them with the aux data.
-func NewMaterializer(sample Native, aux ...interface{}) Materializer {
+func NewMaterializer(sample Material, aux ...interface{}) Materializer {
 	return (&materializer{sample, aux}).Materialize
 }
 
 type materializer struct {
-	sample Native
+	sample Material
 	aux    []interface{}
 }
 
@@ -39,19 +39,19 @@ func (x *materializer) String() string {
 	}); ok {
 		return ns.NativeString(x.aux...)
 	}
-	return fmt.Sprintf("Native(%T)", x.sample)
+	return fmt.Sprintf("Material(%T)", x.sample)
 }
 
 // Materialize materializes the native implementation v.
 // It returns the resulting reflex and residue, but not the Go-facing instance.
-func Materialize(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (reflex Reflex, residue interface{}) {
+func Materialize(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (reflex Reflex, residue interface{}) {
 	reflex, residue, _ = MaterializeInstance(given, matter, v, aux...)
 	return
 }
 
 // MaterializeInstance materializes the native implementation v.
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
-func MaterializeInstance(given Reflex, matter circuit.Circuit, v Native, aux ...interface{}) (expected Reflex, residue, obj interface{}) {
+func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (expected Reflex, residue, obj interface{}) {
 
 	// Build gate reflex
 	u := makeNative(v)
@@ -103,7 +103,7 @@ func MaterializeInstance(given Reflex, matter circuit.Circuit, v Native, aux ...
 
 	expected = nil
 	obj = u.Interface()
-	residue = obj.(Native).Spark(eye, matter, aux...)
+	residue = obj.(Material).Spark(eye, matter, aux...)
 
 	return
 }

@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewSink, "Ignore")
+	faculty.Register(be.NewSink(), "Ignore")
 	//
 	faculty.Register(be.NewMaterializer(&Grow{}), "Grow")
 	faculty.Register(be.NewMaterializer(&be.Union{}), "Fork")

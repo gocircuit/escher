@@ -22,7 +22,7 @@ func Root() Index {
 	return root
 }
 
-func Register(v interface{}, addr ...Name) {
+func Register(v Materializer, addr ...Name) {
 	lk.Lock()
 	defer lk.Unlock()
 	root.Memorize(v, addr...)

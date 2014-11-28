@@ -3,7 +3,7 @@ Values {
 	`// Values yields all gate values of its default valve circuit argument.`
 	yield Gates
 	yield: = :
-	yield:Control = :Control
+	yield:End = :End
 	yield:Frame = fork:
 
 	fork Fork
@@ -14,7 +14,7 @@ Names {
 	`// Names yields all gate names of its default valve circuit argument.`
 	yield Gates
 	yield: = :
-	yield:Control = :Control
+	yield:End = :End
 	yield:Frame = fork:
 
 	fork Fork
@@ -25,13 +25,13 @@ TestValues {
 	`// TODO: The expected side of the match gate should use a different method to compute the result.`
 	tx testValues
 	tx:Frame = match:Got
-	tx:Control = os.ExitSuccess
+	tx:End = os.ExitSuccess
 
 	match test.Match
 	match:Expected = ty:Frame
 	match: = Ignore
 
-	ty:Control = Ignore
+	ty:End = Ignore
 	ty testValues
 }
 
@@ -39,7 +39,7 @@ testValues {
 	t Values
 	t: = { 1, 2, 3 }
 	t:Frame = :Frame
-	t:Control = :Control
+	t:End = :End
 }
 
 TestFlows {
@@ -52,6 +52,6 @@ TestFlows {
 		and: = not:A
 		not: = :
 	}
-	y:Control = Ignore
+	y:End = Ignore
 	y:Frame = Ignore
 }

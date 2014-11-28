@@ -19,13 +19,9 @@ import (
 		Value Value
 	}
 
-	:Control = "End"
+	:End = frame
 */
-type Gates struct{}
-
-func (Gates) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	return nil
-}
+type Gates struct{ be.Sparkless }
 
 func (Gates) Cognize(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
@@ -34,9 +30,9 @@ func (Gates) Cognize(eye *be.Eye, value interface{}) {
 		frame.Grow("Name", name).Grow("Value", u.At(name))
 		eye.Show("Frame", frame)
 	}
-	eye.Show("Control", "End")
+	eye.Show("End", value)
 }
 
 func (Gates) CognizeFrame(eye *be.Eye, value interface{}) {}
 
-func (Gates) CognizeControl(eye *be.Eye, value interface{}) {}
+func (Gates) CognizeEnd(eye *be.Eye, value interface{}) {}

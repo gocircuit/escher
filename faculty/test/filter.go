@@ -11,16 +11,12 @@ import (
 	"strings"
 	"unicode"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
-// 
-type FilterAll struct {}
-
-func (FilterAll) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	return nil
-}
+//
+type FilterAll struct{ be.Sparkless }
 
 func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
@@ -38,7 +34,7 @@ func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
 		return
 	}
 	y := New().
-		Grow("Address", x.AddressAt("Address")).
+		Grow("Address", x.CircuitAt("Address")).
 		Grow("Name", name).
 		Grow("View", view)
 	eye.Show("Out", y)

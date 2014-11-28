@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path"
 
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
@@ -18,10 +19,11 @@ import (
 
 func Init(arg []string) {
 	faculty.Register(be.NewSource(argCircuit(arg)), "os", "Arg")
-	faculty.Register(be.NewSource(argCircuit(os.Getenv())), "os", "Env")
+	faculty.Register(be.NewSource(argCircuit(os.Environ())), "os", "Env")
 	faculty.Register(be.NewMaterializer(Exit{}), "os", "Exit")
 	faculty.Register(be.NewMaterializer(Fatal{}), "os", "Fatal")
 	faculty.Register(be.NewMaterializer(LookPath{}), "os", "LookPath")
+	faculty.Register(be.NewMaterializer(Join{}), "os", "Join")
 	faculty.Register(Stdin{}, "os", "Stdin")
 	faculty.Register(Stdout{}, "os", "Stdout")
 	faculty.Register(Stderr{}, "os", "Stderr")
@@ -37,11 +39,7 @@ func argCircuit(arg []string) Circuit {
 }
 
 // Exit
-type Exit struct{}
-
-func (Exit) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+type Exit struct{ be.Sparkless }
 
 func (Exit) OverCognize(eye *be.Eye, name Name, value interface{}) {
 	switch t := value.(type) {
@@ -53,22 +51,14 @@ func (Exit) OverCognize(eye *be.Eye, name Name, value interface{}) {
 }
 
 // Fatal
-type Fatal struct{}
-
-func (Fatal) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+type Fatal struct{ be.Sparkless }
 
 func (Fatal) OverCognize(eye *be.Eye, name Name, value interface{}) {
 	log.Fatalf("%v", value)
 }
 
 // LookPath
-type LookPath struct{}
-
-func (LookPath) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+type LookPath struct{ be.Sparkless }
 
 func (LookPath) CognizeName(eye *be.Eye, value interface{}) {
 	p, err := exec.LookPath(value.(string))
@@ -79,3 +69,15 @@ func (LookPath) CognizeName(eye *be.Eye, value interface{}) {
 }
 
 func (LookPath) Cognize(eye *be.Eye, value interface{}) {}
+
+// Join
+type Join struct{ be.Sparkless }
+
+func (Join) CognizeView(eye *be.Eye, v interface{}) {
+	u := v.(Circuit)
+	var s []string
+	for _, n := range u.SortedNames() {
+		s = append(s, u.Gate[n].(string))
+	}
+	eye.Show(DefaultValve, path.Join(s...))
+}

@@ -18,17 +18,13 @@ import (
 )
 
 func init() {
-	faculty.Register("text.Merge", be.NewMaterializer(Merge{}))
-	faculty.Register("text.Form", be.NewMaterializer(Form{}))
+	faculty.Register(be.NewMaterializer(Merge{}), "text", "Merge")
+	faculty.Register(be.NewMaterializer(Form{}), "text", "Form")
 }
 
 // Merge concatenates the string values of string-named gates into a single string output,
 // where concatenation takes place in the lexicographic order of the gate names.
-type Merge struct{}
-
-func (Merge) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+type Merge struct{ be.Sparkless }
 
 func (Merge) CognizeIn(eye *be.Eye, v interface{}) {
 	var w bytes.Buffer

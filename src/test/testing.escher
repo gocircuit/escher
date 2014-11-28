@@ -25,7 +25,7 @@ All {
 	depth yield.DepthFirst
 	depth: = escher.Index
 	depth:Frame = filter:In
-	depth:Control = os.ExitSuccess 
+	depth:End = os.ExitSuccess 
 
 	filter test.FilterAll
 	filter:Out = exec:In

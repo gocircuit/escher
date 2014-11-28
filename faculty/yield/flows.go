@@ -15,25 +15,21 @@ import (
 
 /*
 	:Frame = {
-		0 { 
+		0 {
 			Name Name
 			Value Value
 			Valve Valve
 		}
-		1 { 
+		1 {
 			Name Name
 			Value Value
 			Valve Valve
 		}
 	}
 
-	:Control = "End"
+	:End = frame
 */
-type Flows struct{}
-
-func (Flows) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	return nil
-}
+type Flows struct{ be.Sparkless }
 
 func sanitizeValue(u Circuit, name Name) Value {
 	value, ok := u.Gate[name]
@@ -61,9 +57,9 @@ func (Flows) Cognize(eye *be.Eye, value interface{}) {
 			eye.Show("Frame", frame)
 		}
 	}
-	eye.Show("Control", "End")
+	eye.Show("End", value)
 }
 
 func (Flows) CognizeFrame(eye *be.Eye, value interface{}) {}
 
-func (Flows) CognizeControl(eye *be.Eye, value interface{}) {}
+func (Flows) CognizeEnd(eye *be.Eye, value interface{}) {}

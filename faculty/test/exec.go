@@ -11,22 +11,19 @@ import (
 	"os"
 	"os/exec"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // Exec receives values from FilterAll and executes the included test circuits
 // in separate OS processes.
-type Exec struct {}
-
-func (Exec) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	return nil
-}
+type Exec struct{ be.Sparkless }
 
 func (Exec) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
 	//
-	addr := x.AddressAt("Address")
+	addr := Verb(x.CircuitAt("Address").Copy())
+	addr.Gate[""] = "*"
 	cmd := exec.Command(os.Args[0], "-src", srcDir, addr.String())
 
 	var success bool
@@ -38,7 +35,7 @@ func (Exec) CognizeIn(eye *be.Eye, v interface{}) {
 		success = true
 	}
 	r := New().
-		Grow("Address", addr).
+		Grow("Verb", addr).
 		Grow("Result", success)
 	eye.Show("Out", r)
 }

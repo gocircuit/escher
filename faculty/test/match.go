@@ -9,21 +9,21 @@ package test
 import (
 	"log"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
 // TODO: Make sure matching works when opposing streams come at different speeds
 // Rename gates to Got and Expected.
 
-// 
+//
 type Match struct {
 	name []Name
 	flow []chan interface{}
 }
 
-func (m *Match) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	for vlv, _ := range matter.View.Gate {
+func (m *Match) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+	for vlv, _ := range matter.CircuitAt("View").Gate {
 		if vlv == DefaultValve {
 			continue
 		}

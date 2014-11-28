@@ -14,19 +14,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// Form has two valves In and Out.
-// The In valve expects circuits of the form:
-//	{
-//		Form string
-//		Data interface{}
-//	}
-// The Out valve emits the rendered string.
-//
-type Form struct{}
-
-func (Form) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+type Form struct{ be.Sparkless }
 
 func (Form) CognizeIn(eye *be.Eye, v interface{}) {
 	td := v.(Circuit)

@@ -13,11 +13,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type DepthFirst struct{}
-
-func (DepthFirst) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+type DepthFirst struct{ be.Sparkless }
 
 func (DepthFirst) Cognize(eye *be.Eye, v interface{}) {
 	depthFirst(eye, nil, v)
@@ -25,7 +21,7 @@ func (DepthFirst) Cognize(eye *be.Eye, v interface{}) {
 
 func (DepthFirst) CognizeFrame(eye *be.Eye, v interface{}) {}
 
-func (DepthFirst) CognizeControl(eye *be.Eye, v interface{}) {}
+func (DepthFirst) CognizeEnd(eye *be.Eye, v interface{}) {}
 
 func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
 	x, ok := v.(Circuit)
@@ -46,13 +42,12 @@ func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
 	}
 
 	frame := New().
-		Grow("Path", (Address{walk}).Circuit()).
-		Grow("Address", Address{walk}).
+		Grow("Address", Circuit(NewAddress(walk...))).
 		Grow("Name", nm).
 		Grow("View", x)
 
 	eye.Show("Frame", frame)
 	if len(walk) == 0 {
-		eye.Show("Control", "End")
+		eye.Show("End", v)
 	}
 }

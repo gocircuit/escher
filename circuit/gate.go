@@ -269,12 +269,3 @@ func (u Circuit) Exclude(name Name) (forgotten Value) {
 func (u Circuit) Len() int {
 	return len(u.Gate)
 }
-
-func (u Circuit) Vol() (vol int) {
-	for _, view := range u.Flow {
-		for _ = range view {
-			vol++
-		}
-	}
-	return
-}

@@ -4,6 +4,7 @@
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
 
+// Package index provides gates for manipulating circuits interpreted as hierarchical indices.
 package index
 
 import (
@@ -12,17 +13,16 @@ import (
 )
 
 func init() {
-	faculty.Register("index.Mirror", be.NewMaterializer(Mirror{}))
-	faculty.Register("index.Generalize", be.NewMaterializer(Generalize{}))
-	faculty.Register("index.Yield", be.NewMaterializer(Yield{}))
-	faculty.Register("index.Lookup", be.NewMaterializer(Lookup{}))
+	faculty.Register(be.NewMaterializer(Lookup{}), "index", "Lookup")
+	faculty.Register(be.NewMaterializer(Mirror{}), "index", "Mirror")
+	faculty.Register(be.NewMaterializer(Yield{}), "index", "Yield")
 }
 
 /*
 	To create an Index node within Escher, use the pattern:
 
 	f Fork
-	f:X = :X
-	f:Y = :Y
-	f: = :Index
+	f:Alice = :X
+	f:Bob = :Y
+	f: = :ResultIndex
 */

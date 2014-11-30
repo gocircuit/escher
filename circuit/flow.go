@@ -20,7 +20,7 @@ func (u Circuit) Link(x, y Vector) {
 		log.Fatalf("%v:%v already connected to %v, not %v", x.Gate, x.Valve, z, y)
 		panic("contra")
 	}
-	if z, ok := ys[y.Valve]; ok && !Same(z, x){
+	if z, ok := ys[y.Valve]; ok && !Same(z, x) {
 		log.Fatalf("%v:%v already connected to %v, not %v", y.Gate, y.Valve, z, x)
 		panic("contra")
 	}
@@ -78,6 +78,15 @@ func (u Circuit) Flows() (r [][2]Vector) {
 	for xname, xview := range u.Flow {
 		for xvalve, xvec := range xview {
 			r = append(r, [2]Vector{Vector{xname, xvalve}, xvec})
+		}
+	}
+	return
+}
+
+func (u Circuit) Vol() (vol int) {
+	for _, view := range u.Flow {
+		for _ = range view {
+			vol++
 		}
 	}
 	return

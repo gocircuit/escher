@@ -18,9 +18,9 @@ import (
 // DefaultValve
 const DefaultValve = ""
 
-// Verb is an interpretation of a circuit, which also has a shorthand syntax, e.g.
-//	*http.Server
-//	@http.Server
+// Verb is an interpretation of a circuit.
+// The values of the sorted, number-named gates are treated as a slice of values representing an ‘address’.
+// The value of the empty-string gate, if present, is expected to be a string and is a ‘verb’ word.
 type Verb Circuit
 
 func NewAddress(addr ...Name) Verb {
@@ -38,12 +38,8 @@ func NewVerbAddress(verb string, addr ...Name) Verb {
 }
 
 func IsVerb(v Value) bool {
-	u, ok := v.(Circuit)
-	if !ok {
-		return false
-	}
-	s, _ := u.StringOptionAt("")
-	return s == "*" || s == "@"
+	_, ok := v.(Circuit)
+	return ok
 }
 
 func (a Verb) Address() (addr []Name) {

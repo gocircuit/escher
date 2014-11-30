@@ -13,36 +13,28 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Yield struct{}
-
-func (Yield) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	return nil
-}
+type Yield struct{ be.Sparkless }
 
 func (Yield) CognizeIndex(eye *be.Eye, value interface{}) {
-	yieldIndex(eye, be.AsIndex(value), nil)
-	eye.Show("End", "End")
+	yieldIndex(eye, value.(Circuit), nil)
+	eye.Show("End", value)
 }
 
-func yieldIndex(eye *be.Eye, x be.Index, path []Name) {
-	for _, n := range Circuit(x).SortedNames() {
-		switch n.(type) {
-		case int, string:
-			switch t := Circuit(x).At(n).(type) {
-			case Circuit:
-				if be.IsIndex(t) {
-					yieldIndex(eye, be.AsIndex(t), append(path, n))
-				} else {
-					eye.Show(DefaultValve, New().Grow("Value", t).Grow("Address", NewAddress(path...)))
-				}
-			default:
+func yieldIndex(eye *be.Eye, x Circuit, path []Name) {
+	for _, n := range x.SortedNames() {
+		switch t := x.At(n).(type) {
+		case Circuit:
+			if t.Vol() == 0 { // circuits without flow are treated as indices and recursed into
+				yieldIndex(eye, t, append(path, n))
+			} else {
 				eye.Show(DefaultValve, New().Grow("Value", t).Grow("Address", NewAddress(path...)))
 			}
-		default: // skip non-alphanemric names
+		default:
+			eye.Show(DefaultValve, New().Grow("Value", t).Grow("Address", NewAddress(path...)))
 		}
 	}
 }
 
-func (Yield) Cognize(eye *be.Eye, value interface{}) {}
+func (Yield) Cognize(*be.Eye, interface{}) {}
 
-func (Yield) CognizeEnd(eye *be.Eye, value interface{}) {}
+func (Yield) CognizeEnd(*be.Eye, interface{}) {}

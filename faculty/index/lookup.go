@@ -22,10 +22,10 @@ func (Lookup) Spark(*be.Eye, Circuit, ...interface{}) Value {
 func (Lookup) CognizeView(eye *be.Eye, v interface{}) {
 	u := v.(Circuit)
 	x := u.CircuitAt("Index")
-	addr := u.AddressAt("Address")
-	r := be.AsIndex(x).Recall(addr.Path...)
+	addr := u.VerbAt("Address")
+	r := be.AsIndex(x).Recall(addr.Address()...)
 	if r == nil {
-		eye.Show("NotFound", New().Grow("NotFound", addr).Grow("In", x))
+		eye.Show("NotFound", New().Grow("NotFound", Circuit(addr)).Grow("In", x))
 	} else {
 		eye.Show("Found", r)
 	}

@@ -7,48 +7,43 @@
 package index
 
 import (
-	// "fmt"
+	"fmt"
 
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 )
 
-type Mirror struct{}
-
-func (Mirror) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
+// The Mirror gate recursively transforms an input circuit into one wherein
+// (a) every terminal gate value (a constant or a verb circuit) is substituted
+// by a noun materializer whose reflex returns the terminal gate value
+// (b) whereas every materializer value is substituted by a noun materializer,
+// which returns its own address within the index.
+type Mirror struct{ be.Sparkless }
 
 func (Mirror) CognizeIndex(eye *be.Eye, v interface{}) {
-	eye.Show(DefaultValve, Circuit(MirrorNative(be.AsIndex(v), nil)))
+	eye.Show(DefaultValve, MirrorIndex(v.(Circuit), nil))
 }
 
 func (Mirror) Cognize(eye *be.Eye, v interface{}) {}
 
-func MirrorNative(u be.Index, path []Name) be.Index {
-	r := be.NewIndex()
+func MirrorIndex(u Circuit, addr []Name) Circuit {
+	r := New()
 	for n, v := range Circuit(u).Gate {
-		// println(fmt.Sprintf("-> %v:%T", n, v))
-		if n == "?" {
-			continue
-		}
-		if IsSymbol(n) {
-			Circuit(r).Include(n, v)
-		} else {
-			switch t := v.(type) {
-			case Circuit:
-				if be.IsIndex(t) {
-					Circuit(r).Include(n,
-						Circuit(
-							MirrorNative(be.AsIndex(t), append(path, n)),
-						),
-					)
-				} else {
-					Circuit(r).Include(n, v)
-				}
-			default:
-				Circuit(r).Include(n, be.NewNoun(Address{append(path, n)}))
-			}
+		switch t := v.(type) {
+		case Circuit:
+			r.Include(n, MirrorIndex(t, append(addr, n)))
+		case be.Materializer:
+			r.Include(n, be.NewSource(NewAddress(append(addr, n)...)))
+		case int:
+			r.Include(n, be.NewSource(NewAddress("int")))
+		case float64:
+			r.Include(n, be.NewSource(NewAddress("float")))
+		case complex128:
+			r.Include(n, be.NewSource(NewAddress("complex")))
+		case string:
+			r.Include(n, be.NewSource(NewAddress("string")))
+		default:
+			r.Include(n, be.NewSource(NewAddress("go", fmt.Sprintf("%T", t))))
 		}
 	}
 	return r

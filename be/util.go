@@ -8,11 +8,8 @@ package be
 
 import (
 	"fmt"
-
-	// . "github.com/gocircuit/escher/circuit"
-	// . "github.com/gocircuit/escher/faculty"
 )
 
-func panicf(f string, a ...interface{}) {
+func Panicf(f string, a ...interface{}) {
 	panic(fmt.Sprintf(f, a...))
 }

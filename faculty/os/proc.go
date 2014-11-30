@@ -13,45 +13,42 @@ import (
 	"os/exec"
 	"sync"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 	kio "github.com/gocircuit/escher/kit/io"
 )
 
 // Process
-type Process struct{}
-
-func (x Process) Materialize(*be.Matter) (be.Reflex, Value) {
-	p := &process{
-		spawn: make(chan interface{}),
-	}
-	reflex, _ := be.NewEyeCognizer(p.cognize, "Command", "When", "Exit", "IO")
-	return reflex, Process{}
-}
-
-type process struct{
-	spawn chan interface{}
+type Process struct {
+	spawn     chan interface{}
 	sync.Once // start backloop once
 }
 
-func (p *process) cognize(eye *be.Eye, dvalve Name, dvalue interface{}) {
-	switch dvalve {
-	case "Command":
-		p.Once.Do(
-			func() {
-				back := &processBack{
-					eye: eye, 
-					cmd: cognizeCommand(dvalue), 
-					spawn: p.spawn,
-				}
-				go back.loop()
-			},
-		)
-	case "When":
-		p.spawn <- dvalue
-		// log.Printf("OS process spawning (%v)", Linearize(fmt.Sprintf("%v", value)))
-	}
+func (p *Process) Spark(eye *be.Eye, _ Circuit, _ ...interface{}) Value {
+	p.spawn = make(chan interface{})
+	return nil
 }
+
+func (p *Process) CognizeCommand(eye *be.Eye, dvalue interface{}) {
+	p.Once.Do(
+		func() {
+			back := &processBack{
+				eye:   eye,
+				cmd:   cognizeCommand(dvalue),
+				spawn: p.spawn,
+			}
+			go back.loop()
+		},
+	)
+}
+
+func (p *Process) CognizeWhen(eye *be.Eye, dvalue interface{}) {
+	p.spawn <- dvalue
+}
+
+func (p *Process) CognizeExit(*be.Eye, interface{}) {}
+
+func (p *Process) CognizeIO(*be.Eye, interface{}) {}
 
 //	{
 //		Env { "PATH=/abc:/bin", "LESS=less" }
@@ -86,8 +83,8 @@ func cognizeCommand(v interface{}) *exec.Cmd {
 }
 
 type processBack struct {
-	eye *be.Eye
-	cmd *exec.Cmd
+	eye   *be.Eye
+	cmd   *exec.Cmd
 	spawn <-chan interface{}
 }
 
@@ -110,7 +107,7 @@ func (p *processBack) spawnProcess(when interface{}) (err error) {
 	var stdin io.WriteCloser
 	var stdout io.ReadCloser
 	var stderr io.ReadCloser
-	stdin, err =  p.cmd.StdinPipe()
+	stdin, err = p.cmd.StdinPipe()
 	if err != nil {
 		panic(err)
 	}

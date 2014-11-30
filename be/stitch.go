@@ -107,7 +107,7 @@ func MaterializeCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
 	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 	for g, _ := range design.Gate {
 		if g == Super {
-			panicf("Circuit design overwrites the “%s” gate. In design %v\n", Super, design)
+			Panicf("Circuit design overwrites the “%s” gate. In design %v\n", Super, design)
 		}
 		gsyntax := design.At(g)
 		var gresidue interface{}

@@ -15,6 +15,7 @@ import (
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
+	fio "github.com/gocircuit/escher/faculty/io"
 )
 
 func Init(arg []string) {
@@ -24,10 +25,10 @@ func Init(arg []string) {
 	faculty.Register(be.NewMaterializer(Fatal{}), "os", "Fatal")
 	faculty.Register(be.NewMaterializer(LookPath{}), "os", "LookPath")
 	faculty.Register(be.NewMaterializer(Join{}), "os", "Join")
-	faculty.Register(Stdin{}, "os", "Stdin")
-	faculty.Register(Stdout{}, "os", "Stdout")
-	faculty.Register(Stderr{}, "os", "Stderr")
-	faculty.Register(Process{}, "os", "Process")
+	faculty.Register(be.NewMaterializer(&Process{}), "os", "Process")
+	faculty.Register(fio.NewReaderMaterializer(os.Stdin), "os", "Stdin")
+	faculty.Register(fio.NewWriterMaterializer(os.Stdout), "os", "Stdout")
+	faculty.Register(fio.NewWriterMaterializer(os.Stderr), "os", "Stderr")
 }
 
 func argCircuit(arg []string) Circuit {
@@ -81,3 +82,5 @@ func (Join) CognizeView(eye *be.Eye, v interface{}) {
 	}
 	eye.Show(DefaultValve, path.Join(s...))
 }
+
+func (Join) Cognize(*be.Eye, interface{}) {}

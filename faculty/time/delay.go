@@ -7,61 +7,46 @@
 package time
 
 import (
+	"sync"
 	"time"
 
-	"github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
-	faculty.Register("time.Ticker", Ticker{})
-	faculty.Register("time.Delay", Delay{})
+	faculty.Register(be.NewMaterializer(&Ticker{}), "time", "Ticker")
+	faculty.Register(be.NewMaterializer(&Delay{}), "time", "Delay")
 }
 
 // Delay…
-type Delay struct{}
+type Delay struct {
+	sync.Mutex
+	dur time.Duration
+}
 
-func (Delay) Materialize(*be.Matter) (be.Reflex, Value) {
-	reflex, eye := be.NewEye("X", "Y", "Duration")
-	go func() {
-		ds := make(chan time.Duration, 2)
-		dur := ds
-		xy, yx := make(chan interface{}, 1), make(chan interface{}, 1)
-		go func() {
-			d := <-dur
-			for {
-				v := <-xy
-				time.Sleep(d)
-				eye.Show("Y", v)
-			}
-		}()
-		go func() {
-			d := <-dur
-			for {
-				v := <-yx
-				time.Sleep(d)
-				eye.Show("X", v)
-			}
-		}()
-		for {
-			valve, value := eye.See()
-			switch valve {
-			case "X":
-				xy <- value
-			case "Y":
-				yx <- value
-			case "Duration":
-				if ds == nil {
-					break
-				}
-				d := time.Duration(value.(int))
-				ds <- d
-				ds <- d
-				close(ds)
-				ds = nil
-			}
-		}
-	}()
-	return reflex, Delay{}
+func (t *Delay) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	return nil
+}
+
+func (t *Delay) delay() time.Duration {
+	t.Lock()
+	defer t.Unlock()
+	return t.dur
+}
+
+func (t *Delay) CognizeDuration(eye *be.Eye, value interface{}) {
+	t.dur = time.Duration(plumb.AsInt(value))
+}
+
+func (t *Delay) CognizeNorth(eye *be.Eye, value interface{}) {
+	time.Sleep(t.delay())
+	eye.Show("South", value)
+}
+
+func (t *Delay) CognizeSouth(eye *be.Eye, value interface{}) {
+	time.Sleep(t.delay())
+	eye.Show("North", value)
 }

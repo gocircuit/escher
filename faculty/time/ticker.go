@@ -9,41 +9,41 @@ package time
 import (
 	"time"
 
-	"github.com/gocircuit/escher/kit/plumb"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/kit/plumb"
 )
 
 // Ticker
-type Ticker struct{}
+type Ticker struct {
+	ctl chan time.Duration
+}
 
-func (Ticker) Materialize(*be.Matter) (be.Reflex, Value) {
-	reflex, eye := be.NewEye("Tick", "Duration")
+func (t *Ticker) Spark(eye *be.Eye, _ Circuit, _ ...interface{}) Value {
+	t.ctl = make(chan time.Duration)
 	go func() {
+		var start time.Time
+		var tkr *time.Ticker
 		for {
-			valve, value := eye.See()
-			switch valve {
-			case "Duration":
-				dur := time.Duration(plumb.AsInt(value))
-				if dur <= 0 {
-					panic(4)
+			select {
+			case dur := <-t.ctl:
+				if tkr != nil {
+					tkr.Stop()
+					tkr = nil
 				}
-				abr := make(chan struct{})
-				go func() {
-					start := time.Now()
-					tkr := time.NewTicker(dur)
-					defer tkr.Stop()
-					for {
-						select {
-						case <-abr:
-							return
-						case t := <-tkr.C:
-							eye.Show("Tick", int(t.Sub(start)))
-						}
-					}
-				}()
+				if dur > 0 {
+					start, tkr = time.Now(), time.NewTicker(dur)
+				}
+			case t := <-tkr.C:
+				eye.Show(DefaultValve, int(t.Sub(start)))
 			}
 		}
 	}()
-	return reflex, Ticker{}
-}	
+	return nil
+}
+
+func (t *Ticker) CognizeDuration(eye *be.Eye, value interface{}) {
+	t.ctl <- time.Duration(plumb.AsInt(value))
+}
+
+func (t *Ticker) Cognize(eye *be.Eye, value interface{}) {}

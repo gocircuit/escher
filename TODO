@@ -1,9 +1,14 @@
 * fold clunk into sink
 * remove name/value distinction
 
+* panic message, spread out safely and virally
+
 * addresses are sugar for a two-sided reflex:
 syntactic address and index on one side, and ...
 	* generalize
+
+* ninjatrd
+* prep nginx http proxy docker image + remote control interface
 
 * download wikipedia dataset
 * file reader materializer

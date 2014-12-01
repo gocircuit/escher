@@ -13,20 +13,14 @@ import (
 
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty"
 )
 
-func init() {
-	faculty.Register("help", be.NewMaterializer(&Help{}))
-	faculty.Register("Help", be.NewMaterializer(&Help{}))
-}
-
 type Help struct {
-	index be.Index
+	index Circuit
 }
 
-func (h *Help) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	h.index = matter.Index
+func (h *Help) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+	h.index = matter.CircuitAt("Index")
 	return nil
 }
 

@@ -14,8 +14,8 @@ import (
 
 // TODO: (MaterializeVerb) first, lookup design within the index that encloses the address of this verb
 
-func MaterializeNoun(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
-	noun := memory.At("Design")
+func MaterializeNoun(given Reflex, matter Circuit) (expected Reflex, residue interface{}) {
+	noun := matter.At("Design")
 	for _, syn_ := range given {
 		syn := syn_
 		go syn.Connect(DontCognize).ReCognize(noun)
@@ -26,63 +26,67 @@ func MaterializeNoun(given Reflex, memory Circuit) (expected Reflex, residue int
 	return nil, noun
 }
 
-func MaterializeVerb(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
-	// Place backtrace info in memory frame
-	memory = memory.Grow("Materialize", "Verb")
+func MaterializeVerb(given Reflex, matter Circuit) (expected Reflex, residue interface{}) {
+	// Place backtrace info in matter frame
+	matter = matter.Grow("Materialize", "Verb")
 
 	// Read arguments
-	index := Index(memory.CircuitAt("Index"))
-	syntax := memory.CircuitAt("Design")
+	index := Index(matter.CircuitAt("Index"))
+	syntax := matter.CircuitAt("Design")
 	verb, addr := Verb(syntax).Verb(), Verb(syntax).Address()
 
 	// XXX: first, lookup design within the index that encloses the address of this verb
 	val := index.Recall(addr...)
 
 	// Perform transform
-	tmemory := New().
-		Grow("Index", memory.CircuitAt("Index")).
-		Grow("View", memory.CircuitAt("View")).
-		Grow("Super", memory)
+	tmatter := New().
+		Grow("Index", matter.CircuitAt("Index")).
+		Grow("View", matter.CircuitAt("View")).
+		Grow("Super", matter)
 
 	switch verb {
 	case "*":
-		return MaterializeDesign(given, tmemory.Grow("Design", val))
+		return MaterializeDesign(given, tmatter.Grow("Design", val))
 	case "@":
-		return MaterializeNoun(given, tmemory.Grow("Design", val))
+		return MaterializeNoun(given, tmatter.Grow("Design", val))
 	}
 	panic(fmt.Sprintf("unknown or missing verb: %v", String(syntax)))
 }
 
-func MaterializeDesign(given Reflex, memory Circuit) (expected Reflex, residue interface{}) {
-	memory = memory.Grow("Materialize", "Design")
-	design := memory.At("Design")
+// func MaterializeSystem(design interface{}, index, barrier Circuit) (residue interface{}) {
+// 	??
+// }
 
-	tmemory := New().
-		Grow("Index", memory.CircuitAt("Index")).
-		Grow("View", memory.CircuitAt("View")).
-		Grow("Super", memory)
+func MaterializeDesign(given Reflex, matter Circuit) (expected Reflex, residue interface{}) {
+	matter = matter.Grow("Materialize", "Design")
+	design := matter.At("Design")
+
+	tmatter := New().
+		Grow("Index", matter.CircuitAt("Index")).
+		Grow("View", matter.CircuitAt("View")).
+		Grow("Super", matter)
 
 	switch t := design.(type) {
 	case int, float64, complex128, string:
-		return MaterializeNoun(given, tmemory.Grow("Design", design))
+		return MaterializeNoun(given, tmatter.Grow("Design", design))
 	case Circuit:
 		if IsVerb(t) {
-			return MaterializeVerb(given, tmemory.Grow("Design", t))
+			return MaterializeVerb(given, tmatter.Grow("Design", t))
 		} else {
-			return MaterializeCircuit(given, tmemory.Grow("Design", t))
+			return MaterializeCircuit(given, tmatter.Grow("Design", t))
 		}
 	case Materializer:
-		return t(given, tmemory)
+		return t(given, tmatter)
 	}
 	panic(fmt.Sprintf("unknown design type: %T", design))
 }
 
 var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
 
-func MaterializeCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
+func MaterializeCircuit(given Reflex, matter Circuit) (Reflex, interface{}) {
 
-	memory = memory.Grow("Materialize", "Circuit")
-	design := memory.CircuitAt("Design")
+	matter = matter.Grow("Materialize", "Circuit")
+	design := matter.CircuitAt("Design")
 
 	// make links
 	gates := make(map[Name]Reflex)
@@ -118,16 +122,16 @@ func MaterializeCircuit(given Reflex, memory Circuit) (Reflex, interface{}) {
 			view.Grow(vlv, design.Gate[vec.Gate])
 		}
 
-		gmemory := New().
-			Grow("Index", memory.CircuitAt("Index")).
+		gmatter := New().
+			Grow("Index", matter.CircuitAt("Index")).
 			Grow("View", view).
-			Grow("Super", memory)
+			Grow("Super", matter)
 
 		if Same(gsyntax, SpiritAddress) {
-			gates[g], gresidue, spirit[g] = MaterializeInstance(gates[g], gmemory, &Future{})
+			gates[g], gresidue, spirit[g] = MaterializeInstance(gates[g], gmatter, &Future{})
 		} else {
 			var leftover Reflex
-			leftover, gresidue = MaterializeDesign(gates[g], gmemory.Grow("Design", gsyntax))
+			leftover, gresidue = MaterializeDesign(gates[g], gmatter.Grow("Design", gsyntax))
 			if len(leftover) > 0 {
 				panic(2)
 			}

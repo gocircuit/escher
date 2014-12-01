@@ -10,40 +10,40 @@ import (
 	// "fmt"
 	// "log"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
-// Materialize
+// System
 //
-// On Before, Materialize receives:
+// On Before, System receives:
 //	{
 //		Index Index	// namespace of values
 //		Value Value	// value to materialize
 //	}
 //
-// On After, Materialize sends:
+// On After, System sends:
 //	{
 //		Index Index
 //		Value Value
 //		Residue Value
 //	}
 //
-type Materialize struct{
-	barrier *be.Matter
+type System struct {
+	barrier Circuit
 }
 
-func (m *Materialize) Spark(eye *be.Eye, matter *be.Matter, _ ...interface{}) Value {
-	m.barrier = matter
+func (s *System) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
+	s.barrier = matter
 	return nil
 }
 
-func (m *Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
+func (s *System) CognizeBefore(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
-	index := be.AsIndex(u.At("Index"))
-	v := u.At("Value")
-	residue := be.Materialize(index, v, m.barrier)
-	after :=  New().
+	index, design := be.AsIndex(u.CircuitAt("Index")), u.At("Design")
+	??
+	residue := be.System(index, v, s.barrier)
+	after := New().
 		Grow("Index", Circuit(index)).
 		Grow("Value", v).
 		Grow("Residue", residue)
@@ -53,4 +53,4 @@ func (m *Materialize) CognizeBefore(eye *be.Eye, value interface{}) {
 	eye.Show("After", after)
 }
 
-func (m *Materialize) CognizeAfter(eye *be.Eye, v interface{}) {}
+func (s *System) CognizeAfter(eye *be.Eye, v interface{}) {}

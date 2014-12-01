@@ -7,12 +7,8 @@
 package http
 
 import (
-	"bytes"
-	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
-	"strings"
 	"sync"
 
 	"github.com/gocircuit/escher/be"
@@ -21,18 +17,18 @@ import (
 )
 
 func init() {
-	faculty.Register("http.Server", be.NewMaterializer(&Server{}))
+	faculty.Register(be.NewMaterializer(&Server{}), "http", "Server")
 }
 
 type Server struct {
 	eye    *be.Eye
-	matter *be.Matter
+	matter Circuit
 	sync.Mutex
 	server   *http.Server
 	throttle chan struct{}
 }
 
-func (s *Server) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
+func (s *Server) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
 	s.eye, s.matter = eye, matter
 	const throttle = 50
 	s.throttle = make(chan struct{}, throttle)
@@ -67,12 +63,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		s.throttle <- struct{}{}
 	}()
 	//
-	mx, my := be.NewEntanglement()
+	xx, yy := be.NewEntanglement()
 	ch := make(chan struct{}, 1)
-	go mx.Synapse().Connect(
+	go xx.Synapse().Connect( // connect to the server-side of the entanglement
 		func(v interface{}) {
 			defer func() {
-				ch <- struct{}{}
+				ch <- struct{}{} // release throttle token when request/response complete
 			}()
 			status, body, ok := s.cognizeResponse(w.Header(), v.(Circuit))
 			if !ok {
@@ -89,106 +85,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		"RequestResponse",
 		New().
 			Grow("Request", requestCircuit(req)).
-			Grow("Respond", my),
+			Grow("Respond", yy),
 	)
 	<-ch
-}
-
-// body is either string, reader or a materializer whose default valve returns one of those
-func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, body io.ReadCloser, ok bool) {
-
-	// Status
-	if status, ok = u.IntOptionAt("Status"); !ok {
-		return
-	}
-
-	// Header
-	var h Circuit
-	if h, ok = u.CircuitOptionAt("Header"); !ok {
-		return
-	}
-	for _, k := range h.SortedLetters() {
-		g, ok := h.CircuitOptionAt(k)
-		if !ok {
-			continue
-		}
-		header[k] = circuitSlice(g)
-	}
-
-	// Body
-	var v Value
-	if v, ok = u.OptionAt("Body"); !ok {
-		return
-	}
-	var m be.Materializer
-	if m, ok = v.(be.Materializer); ok { // extract body from a noun reflex, if a materializer for one is given
-		x, _ := be.MaterializeReflex(be.NewIndex(), m, s.matter)
-		synapse, ok := x[DefaultValve]
-		if !ok {
-			panic("expecting reflex with one default valve")
-		}
-		ch := make(chan interface{}, 1)
-		synapse.Connect(func(w interface{}) { ch <- w })
-		v = <-ch
-	}
-	switch t := v.(type) {
-	case string:
-		body = ioutil.NopCloser(bytes.NewBufferString(t))
-	case []byte:
-		body = ioutil.NopCloser(bytes.NewBuffer(t))
-	case io.Reader:
-		body = ioutil.NopCloser(t)
-	case io.ReadCloser:
-		body = t
-	default:
-		panic("unrecognized http response body type")
-	}
-	ok = true
-	return
-}
-
-func requestCircuit(req *http.Request) Circuit {
-	x := New()
-
-	// HTTP method
-	x.Gate["Method"] = req.Method
-
-	// URL path
-	var nn []Name
-	parts := strings.Split(req.URL.Path, "/")
-	if len(parts) > 0 && parts[0] == "" {
-		parts = parts[1:]
-	}
-	if len(parts) == 1 && parts[0] == "" {
-		parts = []string{}
-	}
-	for _, n := range parts {
-		nn = append(nn, n)
-	}
-	x.Gate["Path"] = NewAddress(nn...)
-
-	// URL query
-	v := New()
-	for k, ss := range req.URL.Query() {
-		v.Gate[k] = sliceCircuit(ss)
-	}
-	x.Gate["Query"] = v
-
-	return x
-}
-
-func sliceCircuit(ss []string) Circuit {
-	x := New()
-	for i, v := range ss {
-		x.Gate[i] = v
-	}
-	return x
-}
-
-func circuitSlice(u Circuit) []string {
-	var ss []string
-	for _, j := range u.SortedNumbers() {
-		ss = append(ss, fmt.Sprintf("%v", u.At(j)))
-	}
-	return ss
 }

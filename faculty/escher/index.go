@@ -9,22 +9,22 @@ package escher
 import (
 	// "log"
 
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/be"
+	. "github.com/gocircuit/escher/circuit"
 )
 
-type Index struct {
-	be.Index
-}
+// The index gate is a design for a source reflex that returns a copy of the
+// index contextual to the materialization of this gate.
+type Index struct{}
 
 func (n Index) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	n.Index = matter.Index
+	index := matter.CircuitAt("Index")
 	go func() {
-		for vlv, _ := range matter.View.Gate {
-			eye.Show(vlv, Circuit(n.Index))
+		for vlv, _ := range matter.CircuitAt("View").Gate {
+			eye.Show(vlv, index)
 		}
 	}()
-	if matter.View.Len() == 0 {
+	if matter.CircuitAt("View").Len() == 0 {
 		return Circuit(n.Index)
 	}
 	return nil

@@ -15,13 +15,9 @@ import (
 	"github.com/gocircuit/escher/see"
 )
 
-type Parse struct{}
+type Parse struct{ be.Sparkless }
 
-func (Parse) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	return nil
-}
-
-func (Parse) CognizeAssembler(eye *be.Eye, v interface{}) {
+func (Parse) CognizeText(eye *be.Eye, v interface{}) {
 	src := see.NewSrcString(plumb.AsString(v))
 	for {
 		v := see.SeeChamber(src)
@@ -32,4 +28,4 @@ func (Parse) CognizeAssembler(eye *be.Eye, v interface{}) {
 	}
 }
 
-func (Parse) CognizeValue(eye *be.Eye, v interface{}) {}
+func (Parse) Cognize(eye *be.Eye, v interface{}) {}

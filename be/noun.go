@@ -49,7 +49,7 @@ func NewSource(v interface{}) Materializer {
 	return NewMaterializer(&source{}, v)
 }
 
-func MaterializeSource(given Reflex, matter Circuit, v interface{}) (Reflex, Value) {
+func MaterializeSource(given Reflex, matter Circuit, v interface{}) Value {
 	return Materialize(given, matter, &source{}, v)
 }
 
@@ -72,7 +72,7 @@ func (n *source) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 
 func (n *source) OverCognize(*Eye, Name, interface{}) {}
 
-func (n *source) NativeString(aux ...interface{}) string {
+func (n *source) MaterialString(aux ...interface{}) string {
 	return fmt.Sprintf("Source(%v)", aux[0])
 }
 

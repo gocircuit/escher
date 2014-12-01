@@ -45,7 +45,7 @@ func (s *System) CognizeBefore(eye *be.Eye, value interface{}) {
 	residue := be.System(index, v, s.barrier)
 	after := New().
 		Grow("Index", Circuit(index)).
-		Grow("Value", v).
+		Grow("View", design).
 		Grow("Residue", residue)
 	// if len(reflex) > 0 {
 	// 	after.Grow("Unconnected", reflex).Grow("u", reflex)

@@ -25,7 +25,7 @@ type Entanglement struct {
 	synapse *Synapse
 }
 
-func (em *Entanglement) Stitch(given Reflex, _ Circuit) (Reflex, Value) {
+func (em *Entanglement) Materialize(given Reflex, _ Circuit) Value {
 	em.Lock()
 	defer em.Unlock()
 	if len(given) != 1 {
@@ -34,7 +34,7 @@ func (em *Entanglement) Stitch(given Reflex, _ Circuit) (Reflex, Value) {
 	y := em.synapse
 	em.synapse = nil
 	go Link(given[DefaultValve], y)
-	return nil, nil
+	return nil
 }
 
 func (em *Entanglement) Synapse() *Synapse {

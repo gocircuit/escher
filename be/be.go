@@ -12,30 +12,29 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// TODO: (MaterializeVerb) first, lookup design within the index that encloses the address of this verb
+// XXX: (materializeVerb) first, lookup design within the index that encloses the address of this verb
 
-func MaterializeNoun(given Reflex, matter Circuit) (expected Reflex, residue interface{}) {
-	noun := matter.At("Design")
+func materializeNoun(given Reflex, matter Circuit) (residue interface{}) {
+	noun := matter.At("Noun")
 	for _, syn_ := range given {
 		syn := syn_
 		go syn.Connect(DontCognize).ReCognize(noun)
 	}
 	if len(given) > 0 {
-		return nil, nil
+		return nil
 	}
-	return nil, noun
+	return noun
 }
 
-func MaterializeVerb(given Reflex, matter Circuit) (expected Reflex, residue interface{}) {
+func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	// Place backtrace info in matter frame
 	matter = matter.Grow("Materialize", "Verb")
 
 	// Read arguments
 	index := Index(matter.CircuitAt("Index"))
-	syntax := matter.CircuitAt("Design")
+	syntax := matter.CircuitAt("Verb")
 	verb, addr := Verb(syntax).Verb(), Verb(syntax).Address()
 
-	// XXX: first, lookup design within the index that encloses the address of this verb
 	val := index.Recall(addr...)
 
 	// Perform transform
@@ -48,32 +47,34 @@ func MaterializeVerb(given Reflex, matter Circuit) (expected Reflex, residue int
 	case "*":
 		return MaterializeDesign(given, tmatter.Grow("Design", val))
 	case "@":
-		return MaterializeNoun(given, tmatter.Grow("Design", val))
+		return materializeNoun(given, tmatter.Grow("Noun", val))
 	}
 	panic(fmt.Sprintf("unknown or missing verb: %v", String(syntax)))
 }
 
-// func MaterializeSystem(design interface{}, index, barrier Circuit) (residue interface{}) {
-// 	??
-// }
-
-func MaterializeDesign(given Reflex, matter Circuit) (expected Reflex, residue interface{}) {
+func MaterializeDesign(given Reflex, matter Circuit) (residue interface{}) {
 	matter = matter.Grow("Materialize", "Design")
 	design := matter.At("Design")
 
+	// MaterializeDesign can be called from Go, and thus there might be no contextual view.
+	// In this case, we create an empty view for the downstream materializer.
+	view, ok := matter.CircuitOptionAt("View")
+	if !ok {
+		view = New()
+	}
 	tmatter := New().
 		Grow("Index", matter.CircuitAt("Index")).
-		Grow("View", matter.CircuitAt("View")).
+		Grow("View", view).
 		Grow("Super", matter)
 
 	switch t := design.(type) {
 	case int, float64, complex128, string:
-		return MaterializeNoun(given, tmatter.Grow("Design", design))
+		return materializeNoun(given, tmatter.Grow("Design", design))
 	case Circuit:
 		if IsVerb(t) {
-			return MaterializeVerb(given, tmatter.Grow("Design", t))
+			return materializeVerb(given, tmatter.Grow("Verb", t))
 		} else {
-			return MaterializeCircuit(given, tmatter.Grow("Design", t))
+			return materializeCircuit(given, tmatter.Grow("Circuit", t))
 		}
 	case Materializer:
 		return t(given, tmatter)
@@ -83,10 +84,10 @@ func MaterializeDesign(given Reflex, matter Circuit) (expected Reflex, residue i
 
 var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
 
-func MaterializeCircuit(given Reflex, matter Circuit) (Reflex, interface{}) {
+func materializeCircuit(given Reflex, matter Circuit) interface{} {
 
 	matter = matter.Grow("Materialize", "Circuit")
-	design := matter.CircuitAt("Design")
+	design := matter.CircuitAt("Circuit")
 
 	// make links
 	gates := make(map[Name]Reflex)
@@ -128,13 +129,9 @@ func MaterializeCircuit(given Reflex, matter Circuit) (Reflex, interface{}) {
 			Grow("Super", matter)
 
 		if Same(gsyntax, SpiritAddress) {
-			gates[g], gresidue, spirit[g] = MaterializeInstance(gates[g], gmatter, &Future{})
+			gresidue, spirit[g] = MaterializeInstance(gates[g], gmatter, &Future{})
 		} else {
-			var leftover Reflex
-			leftover, gresidue = MaterializeDesign(gates[g], gmatter.Grow("Design", gsyntax))
-			if len(leftover) > 0 {
-				panic(2)
-			}
+			gresidue = MaterializeDesign(gates[g], gmatter.Grow("Design", gsyntax))
 		}
 		residue.Gate[g] = gresidue
 	}
@@ -161,5 +158,5 @@ func MaterializeCircuit(given Reflex, matter Circuit) (Reflex, interface{}) {
 		panic("circuit valves left unconnected")
 	}
 
-	return gates[Super], res
+	return res
 }

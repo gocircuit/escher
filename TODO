@@ -1,7 +1,3 @@
-* fold clunk into sink
-* remove name/value distinction
-
-* panic message, spread out safely and virally
 
 * addresses are sugar for a two-sided reflex:
 syntactic address and index on one side, and ...
@@ -13,3 +9,8 @@ syntactic address and index on one side, and ...
 * download wikipedia dataset
 * file reader materializer
 * convert non-escher files in source directory in materializers of respective file readers
+
+THINK
+
+* remove name/value distinction (delayed because go map keys cannot be circuit or other non-primitves at the moment)
+	* possible resolution: make all Go circuit manipulations functional

@@ -80,6 +80,13 @@ func (u Circuit) Print(w io.Writer, f Format) {
 	io.WriteString(w, f.Prefix+"}")
 }
 
+func printGate(w io.Writer, f Format, n Name, p Value) {
+	Print(w, f, n)
+	io.WriteString(w, " ")
+	Print(w, f, p)
+	io.WriteString(w, "\n")
+}
+
 func (u Circuit) resugar(w io.Writer, f Format, gate, valve Name) {
 	g, ok := gate.(string)
 	if !ok || len(g) == 0 || g[0] != '#' {
@@ -128,13 +135,6 @@ func QuickPrint(prefix, indent string, recurse int, v Value) string {
 	var w bytes.Buffer
 	Print(&w, Format{prefix, indent, recurse}, v)
 	return w.String()
-}
-
-func printGate(w io.Writer, f Format, n Name, p Value) {
-	Print(w, f, n)
-	io.WriteString(w, " ")
-	Print(w, f, p)
-	io.WriteString(w, "\n")
 }
 
 func Linearize(s string) string {

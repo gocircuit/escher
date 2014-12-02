@@ -1,4 +1,10 @@
 HelloWorld {
-	s *Show
-	s: = "¡Hello, world!"
+	x *Show
+	x:Alice = "¡Hello, world!"
+
+	*Show = "How do you do?"
+
+	y *Show
+	y:Bob = answer:
+	answer `Tippy toppy, thank you.`
 }

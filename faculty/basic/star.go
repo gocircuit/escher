@@ -51,17 +51,17 @@ func (s *Star) OverCognize(eye *be.Eye, name Name, value interface{}) {
 }
 
 func show(name Name, v interface{}) {
-	fmt.Printf("Show:%v = %v\n", name, v)
+	fmt.Printf("Showing:%v = %v\n", name, String(v))
 }
 
 func show1(name Name, v interface{}) {
 	var w bytes.Buffer
 	Print(&w, Format{"", "\t", 1}, v)
-	fmt.Print(w.String())
+	fmt.Printf("Showing:%v = %v\n", name, w.String())
 }
 
 func show2(name Name, v interface{}) {
 	var w bytes.Buffer
 	Print(&w, Format{"", "\t", 2}, v)
-	fmt.Print(w.String())
+	fmt.Printf("Showing:%v = %v\n", name, w.String())
 }

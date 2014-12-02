@@ -38,8 +38,12 @@ func NewVerbAddress(verb string, addr ...Name) Verb {
 }
 
 func IsVerb(v Value) bool {
-	_, ok := v.(Circuit)
-	return ok
+	u, ok := v.(Circuit)
+	if !ok {
+		return false
+	}
+	s, ok := u.StringOptionAt("")
+	return s == "*" || s == "@"
 }
 
 func (a Verb) Address() (addr []Name) {

@@ -31,10 +31,8 @@ func (s *Switch) Cognize(eye *be.Eye, value interface{}) {
 	switch t := value.(type) {
 	case Circuit:
 		if IsVerb(t) {
-			if s.view.Has("Verb") {
-				eye.Show("Verb", value)
-				return
-			}
+			eye.Show("Verb", value)
+			return
 		}
 		if s.view.Has("Circuit") {
 			eye.Show("Circuit", value)

@@ -1,4 +1,4 @@
 HelloWorld {
-	s Show
+	s *Show
 	s: = "¡Hello, world!"
 }

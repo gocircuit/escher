@@ -1,5 +1,5 @@
 Echo {
-	in  See
-	out Show
+	in  *See
+	out *Show
 	out: = in:
 }

@@ -70,7 +70,12 @@ func main() {
 	}
 	// run main
 	if flagMain != "" {
-		exec(index, see.ParseVerb(flagMain), false)
+		verb := see.ParseVerb(flagMain)
+		if Circuit(verb).IsNil() {
+			fmt.Fprintf(os.Stderr, "verb not recognized\n")
+			os.Exit(1)
+		}
+		exec(index, Circuit(verb), false)
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -89,13 +94,13 @@ func main() {
 				break
 			}
 			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n", u)
-			exec(index, u, true)
+			exec(index, u.(Circuit), true)
 		}
 	}
 }
 
-func exec(index Index, v Value, showResidue bool) {
-	residue := MaterializeSystem(v, Circuit(index), New().Grow("Main", New()))
+func exec(index Index, verb Circuit, showResidue bool) {
+	residue := MaterializeSystem(Circuit(verb), Circuit(index), New().Grow("Main", New()))
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)
 	}

@@ -22,14 +22,19 @@ func ParseName(src string) Name {
 	return n
 }
 
-func ParseVerb(src string) Verb {
+func ParseVerb(src string) (verb Verb) {
+	defer func() {
+		if r := recover(); r != nil {
+			verb = Verb{}
+		}
+	}()
 	t := NewSrcString(src)
-	a := Verb(SeeVerb(t).(Circuit))
+	verb = Verb(SeeVerb(t).(Circuit))
 	if t.Len() != 0 {
 		log.Printf("Non-address characters at end of %q", src)
 		panic(1)
 	}
-	return a
+	return verb
 }
 
 func Parse(src string) (Name, Value) {

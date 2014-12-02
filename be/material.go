@@ -53,6 +53,8 @@ func Materialize(given Reflex, matter circuit.Circuit, v Material, aux ...interf
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (residue, obj interface{}) {
 
+	// fmt.Printf("given=%v\nmatter=%v\nmaterial=%T\naux=%v\n", given, matter, v, aux)
+
 	// Build gate reflex
 	u := makeNative(v)
 	t := u.Type()
@@ -95,7 +97,7 @@ func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux .
 	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
 	for vlv, x := range reflex {
 		Link(given[vlv], x)
-		delete(reflex, x)
+		delete(reflex, vlv)
 	}
 	if len(reflex) != 0 {
 		panic(2)

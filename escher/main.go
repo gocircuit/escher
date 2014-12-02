@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"log"
 	"os"
 
 	. "github.com/gocircuit/escher/a"
@@ -96,11 +95,6 @@ func main() {
 }
 
 func exec(index Index, v Value, showResidue bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Printf("execution glitch (%v)", r)
-		}
-	}()
 	residue := MaterializeSystem(v, Circuit(index), New().Grow("Main", New()))
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)

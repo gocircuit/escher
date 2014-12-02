@@ -58,6 +58,7 @@ type source struct {
 }
 
 func (n *source) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
+	println("spark source")
 	n.Value = aux[0]
 	go func() {
 		for vlv, _ := range matter.CircuitAt("View").Gate {

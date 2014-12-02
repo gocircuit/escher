@@ -108,7 +108,7 @@ func String(v Value) string {
 			return fmt.Sprintf("%q", t)
 		}
 	}
-	return fmt.Sprintf("%T/%v", v, v)
+	return fmt.Sprintf("(%T)", v)
 }
 
 func Print(w io.Writer, f Format, v Value) {

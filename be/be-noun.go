@@ -17,7 +17,9 @@ func materializeNoun(given Reflex, matter Circuit) (residue interface{}) {
 	noun := matter.At("Noun")
 	for _, syn_ := range given {
 		syn := syn_
-		go syn.Connect(DontCognize).ReCognize(noun)
+		go func() {
+			syn.Connect(DontCognize).ReCognize(noun)
+		}()
 	}
 	if len(given) > 0 {
 		return nil

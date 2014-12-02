@@ -14,6 +14,7 @@ import (
 	"os"
 	"path"
 
+	. "github.com/gocircuit/escher/a"
 	. "github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 	fio "github.com/gocircuit/escher/faculty/io"
@@ -53,7 +54,7 @@ func loadDirectory(dir string) Index {
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file
-			x.Memorize(fio.NewSourceFileMaterializer(filePath), fileInfo.Name())
+			x.Memorize(fio.NewSourceFile(filePath), fileInfo.Name())
 		} else {
 			x.Merge(loadFile(dir, filePath))
 		}
@@ -68,7 +69,7 @@ func loadFile(dir, file string) Index {
 		log.Fatalf("Problem reading source file %s (%v)", file, err)
 	}
 	x := NewIndex()
-	src := see.NewSrcString(string(text))
+	src := NewSrcString(string(text))
 	for {
 		n_, u_ := see.SeePeer(src)
 		if n_ == nil {

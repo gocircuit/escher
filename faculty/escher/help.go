@@ -19,7 +19,7 @@ type Help struct {
 	index Circuit
 }
 
-func (h *Help) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (h *Help) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
 	h.index = matter.CircuitAt("Index")
 	return nil
 }
@@ -31,27 +31,27 @@ func (h *Help) Cognize(eye *be.Eye, v interface{}) {
 func (h *Help) value(v interface{}) {
 	switch u := v.(type) {
 	case Circuit:
-		h.circuit(u)
-	case be.Index:
-		fmt.Fprintf(os.Stderr, "\nThis is an index constant equal to %v.\n\n", u)
-	case Address:
-		fmt.Fprintf(os.Stderr, "\nThis is an address constant equal to %v.\n\n", u)
+		if IsVerb(u) {
+			fmt.Fprintf(os.Stderr, "\nThis is a verb constant equal to %v\n\n", Verb(u))
+		} else {
+			h.circuit(u)
+		}
 	case int:
-		fmt.Fprintf(os.Stderr, "\nThis is an integer constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is an integer constant equal to %v\n\n", u)
 	case float64:
-		fmt.Fprintf(os.Stderr, "\nThis is a float constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is a float constant equal to %v\n\n", u)
 	case complex128:
-		fmt.Fprintf(os.Stderr, "\nThis is a complex constant equal to %v.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is a complex constant equal to %v\n\n", u)
 	case string:
-		fmt.Fprintf(os.Stderr, "\nThis is a string constant equal to %q.\n\n", u)
+		fmt.Fprintf(os.Stderr, "\nThis is a string constant equal to %q\n\n", u)
 	default:
-		fmt.Fprintf(os.Stderr, "\nThis is a value of uncommon type %T equal to %v.\n\n", u, u)
+		fmt.Fprintf(os.Stderr, "\nThis is a value of uncommon type %T equal to %v\n\n", u, u)
 	}
 }
 
 func (h *Help) circuit(u Circuit) {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, "\nWe are looking at a circuit design (in desugared syntax):\n%v\n\n", u)
+	fmt.Fprintf(&w, "\nWe are looking at a circuit design \n%v\n\n", u)
 
 	valves := u.ValveNames(Super)
 	if len(valves) == 0 {

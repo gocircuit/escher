@@ -14,21 +14,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// System
-//
-// On Before, System receives:
-//	{
-//		Index Index	// namespace of values
-//		Value Value	// value to materialize
-//	}
-//
-// On After, System sends:
-//	{
-//		Index Index
-//		Value Value
-//		Residue Value
-//	}
-//
 type System struct {
 	barrier Circuit
 }
@@ -38,19 +23,10 @@ func (s *System) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
 	return nil
 }
 
-func (s *System) CognizeBefore(eye *be.Eye, value interface{}) {
+func (s *System) CognizeView(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
-	index, design := be.AsIndex(u.CircuitAt("Index")), u.At("Design")
-	??
-	residue := be.System(index, v, s.barrier)
-	after := New().
-		Grow("Index", Circuit(index)).
-		Grow("View", design).
-		Grow("Residue", residue)
-	// if len(reflex) > 0 {
-	// 	after.Grow("Unconnected", reflex).Grow("u", reflex)
-	// }
-	eye.Show("After", after)
+	residue := be.MaterializeSystem(u.At("System"), u.CircuitAt("Index"), s.barrier)
+	eye.Show(DefaultValve, residue)
 }
 
-func (s *System) CognizeAfter(eye *be.Eye, v interface{}) {}
+func (s *System) Cognize(*be.Eye, interface{}) {}

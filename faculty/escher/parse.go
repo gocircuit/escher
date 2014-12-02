@@ -9,6 +9,7 @@ package escher
 import (
 	// "log"
 
+	"github.com/gocircuit/escher/a"
 	"github.com/gocircuit/escher/be"
 	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
@@ -18,7 +19,7 @@ import (
 type Parse struct{ be.Sparkless }
 
 func (Parse) CognizeText(eye *be.Eye, v interface{}) {
-	src := see.NewSrcString(plumb.AsString(v))
+	src := a.NewSrcString(plumb.AsString(v))
 	for {
 		v := see.SeeChamber(src)
 		if v == nil {

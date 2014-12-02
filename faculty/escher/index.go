@@ -17,17 +17,17 @@ import (
 // index contextual to the materialization of this gate.
 type Index struct{}
 
-func (n Index) Spark(eye *be.Eye, matter *be.Matter, aux ...interface{}) Value {
-	index := matter.CircuitAt("Index")
+func (Index) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+	index, view := matter.CircuitAt("Index"), matter.CircuitAt("View")
 	go func() {
-		for vlv, _ := range matter.CircuitAt("View").Gate {
+		for vlv, _ := range view.Gate {
 			eye.Show(vlv, index)
 		}
 	}()
-	if matter.CircuitAt("View").Len() == 0 {
-		return Circuit(n.Index)
+	if view.Len() == 0 {
+		return index
 	}
 	return nil
 }
 
-func (n Index) OverCognize(*be.Eye, Name, interface{}) {}
+func (Index) OverCognize(*be.Eye, Name, interface{}) {}

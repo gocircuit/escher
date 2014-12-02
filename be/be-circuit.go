@@ -12,7 +12,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-var SpiritAddress = NewVerbAddress("*", "escher", "Spirit")
+var SpiritAddress = NewVerbAddress("*", "Spirit")
 
 // Required matter: Index, View, Circuit
 func materializeCircuit(given Reflex, matter Circuit) interface{} {

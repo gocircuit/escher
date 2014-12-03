@@ -7,19 +7,27 @@
 package be
 
 import (
-	"fmt"
+	// "fmt"
 
 	. "github.com/gocircuit/escher/circuit"
 )
-
-// XXX: (materializeVerb) first, lookup design within the index that encloses the address of this verb
 
 // Required matter: Index, View, Verb
 func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	index, syntax := Index(matter.CircuitAt("Index")), matter.CircuitAt("Verb")
 	verb, addr := Verb(syntax).Verb(), Verb(syntax).Address()
 
-	val := index.Recall(addr...)
+	rel := relativize(matter)
+	var val interface{}
+	if len(rel) > 0 {
+		val = index.Recall(append(rel, addr...)...) // lookup relative to enclosing circuit's parent circuit
+	}
+	if val == nil {
+		val = index.Recall(addr...) // otherwise lookup globally
+	}
+	if val == nil {
+		Panicf("dangling address %v", Verb(syntax))
+	}
 
 	switch verb {
 	case "*":
@@ -27,7 +35,8 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	case "@":
 		return materializeNoun(given, newSubMatter(matter).Grow("Noun", val))
 	}
-	panic(fmt.Sprintf("unknown or missing verb: %v", String(syntax)))
+	Panicf("unknown or missing verb: %v", String(syntax))
+	panic(2)
 }
 
 func newSubMatter(matter Circuit) Circuit {
@@ -37,8 +46,25 @@ func newSubMatter(matter Circuit) Circuit {
 		Grow("Super", matter)
 }
 
-func newSubMatterView(matter Circuit, view Circuit) Circuit {
-	r := newSubMatter(matter)
-	r.Include("View", view)
-	return r
+func relativize(matter Circuit) []Name {
+	sup, ok := matter.CircuitOptionAt("Super")
+	if !ok {
+		return nil
+	}
+	if !sup.Has("Circuit") {
+		return nil
+	}
+	supsup, ok := sup.CircuitOptionAt("Super")
+	if !ok {
+		return nil
+	}
+	supverb, ok := supsup.CircuitOptionAt("Verb")
+	if !ok {
+		return nil
+	}
+	reladdr := Verb(supverb).Address()
+	if len(reladdr) < 2 {
+		return nil
+	}
+	return reladdr[:len(reladdr)-1] // chop off the circuit name at the end
 }

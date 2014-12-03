@@ -85,3 +85,9 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 
 	return res
 }
+
+func newSubMatterView(matter Circuit, view Circuit) Circuit {
+	r := newSubMatter(matter)
+	r.Include("View", view)
+	return r
+}

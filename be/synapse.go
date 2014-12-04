@@ -22,21 +22,21 @@ func DontCognize(interface{}) {}
 // Synapse is the “wire” connecting two reflexes.
 // It remembers the last value transmitted in order to stop propagation of same-value messages.
 type Synapse struct {
-	learn <-chan Cognize
-	teach chan<- Cognize
+	accept <-chan Cognize
+	offer  chan<- Cognize
 	sync.Mutex
-	q *ReCognizer
+	recog *ReCognizer
 }
 
 func NewSynapse() (x, y *Synapse) {
 	xy, yx := make(chan Cognize, 1), make(chan Cognize, 1)
 	x = &Synapse{
-		learn: xy,
-		teach: yx,
+		accept: xy,
+		offer:  yx,
 	}
 	y = &Synapse{
-		learn: yx,
-		teach: xy,
+		accept: yx,
+		offer:  xy,
 	}
 	return
 }
@@ -49,23 +49,23 @@ func (m *Synapse) String() string {
 }
 
 func (m *Synapse) Connect(cognize Cognize) *ReCognizer {
-	m.teach <- cognize
-	close(m.teach)
-	q := <-m.learn
+	m.offer <- cognize
+	close(m.offer)
+	cog := <-m.accept
 	m.Lock()
 	defer m.Unlock()
-	m.q = &ReCognizer{q: q}
-	return m.q
+	m.recog = &ReCognizer{cog: cog}
+	return m.recog
 }
 
-// Link attaches two synapse endpoints together.
-func Link(m1, m2 *Synapse) {
-	m1.teach <- <-m2.learn
+// Link attaches two synapse endpoints together in one direction.
+func Link(x, y *Synapse) {
+	x.offer <- <-y.accept
 }
 
 // The two endpoints of a Synapse are ReCognizer objects.
 type ReCognizer struct {
-	q Cognize
+	cog Cognize
 	// sync.Mutex
 	// memory interface{}
 }
@@ -78,5 +78,5 @@ func (s *ReCognizer) ReCognize(value interface{}) {
 	// 	return
 	// }
 	// s.memory = Copy(value)
-	s.q(value)
+	s.cog(value)
 }

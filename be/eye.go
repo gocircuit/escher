@@ -7,6 +7,7 @@
 package be
 
 import (
+	// "fmt"
 	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -29,10 +30,6 @@ type Eye struct {
 type change struct {
 	Valve Name
 	Value interface{}
-}
-
-func NewEye(valve ...Name) (Reflex, *Eye) {
-	return NewEyeCognizer(nil, valve...)
 }
 
 type EyeCognizer func(eye *Eye, valve Name, value interface{})

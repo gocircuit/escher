@@ -53,12 +53,31 @@ func Materialize(given Reflex, matter circuit.Circuit, v Material, aux ...interf
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (residue, obj interface{}) {
 
-	// fmt.Printf("given=%v\nmatter=%v\nmaterial=%T\naux=%v\n", given, matter, v, aux)
+	r, under := buildReflex(matter, v)
+	connected := verify(r, given, matter)
 
+	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
+	for vlv, x := range reflex {
+		Link(given[vlv], x)
+		Link(x, given[vlv])
+		delete(reflex, vlv)
+		delete(given, vlv)
+	}
+	if len(reflex) != 0 || len(given) != 0 {
+		panic(2)
+	}
+
+	obj = under
+	residue = obj.(Material).Spark(eye, matter, aux...)
+
+	return
+}
+
+func buildReflex(matter circuit.Circuit, v Material) (r gate, under interface{}) {
 	// Build gate reflex
-	u := makeNative(v)
+	u := makeReflex(v)
 	t := u.Type()
-	r := gate{
+	r = gate{
 		Matter:   matter,
 		Fixed:    make(map[circuit.Name]reflect.Value),
 		Ellipses: u.MethodByName(cognizeEllipses),
@@ -71,11 +90,26 @@ func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux .
 			r.Fixed[n[len(cognizePrefix):]] = u.MethodByName(n)
 		}
 	}
+	return r, u.Interface()
+}
 
-	// All dedicated valves need to be connected. All connected valves need to be handled (by dedicated or ellipses).
+// makeReflex creates a copy of like.
+// Pointer types allocate the object pointed to and copy that object as well.
+func makeReflex(like interface{}) reflect.Value {
+	t := reflect.TypeOf(like)
+	switch t.Kind() {
+	case reflect.Ptr: // Pointer types are allocated
+		return reflect.New(t.Elem()).Convert(t)
+	default: // Value-based types are used as is
+		return reflect.ValueOf(like)
+	}
+	panic(0)
+}
+
+// Verify all dedicated valves are connected and all connected valves are handled (by dedicated or ellipses).
+func verify(r gate, given Reflex, matter circuit.Circuit) (connected []circuit.Name) {
 
 	// Verify all connected valves have dedicated handlers or there is a generic handler.
-	var connected []circuit.Name
 	ellipses := r.Ellipses.IsValid()
 	for vlv, _ := range given {
 		connected = append(connected, vlv)
@@ -93,19 +127,6 @@ func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux .
 			log.Fatalf("gate valve (%v) must be connected:\n%v\n", vlv, matter)
 		}
 	}
-
-	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
-	for vlv, x := range reflex {
-		Link(given[vlv], x)
-		delete(reflex, vlv)
-	}
-	if len(reflex) != 0 {
-		panic(2)
-	}
-
-	obj = u.Interface()
-	residue = obj.(Material).Spark(eye, matter, aux...)
-
 	return
 }
 
@@ -152,17 +173,4 @@ func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 			},
 		)
 	}
-}
-
-// makeNative creates a copy of like.
-// Pointer types allocate the object pointed to and copy that object as well.
-func makeNative(like interface{}) reflect.Value {
-	t := reflect.TypeOf(like)
-	switch t.Kind() {
-	case reflect.Ptr: // Pointer types are allocated
-		return reflect.New(t.Elem()).Convert(t)
-	default: // Value-based types are used as is
-		return reflect.ValueOf(like)
-	}
-	panic(0)
 }

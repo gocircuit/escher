@@ -36,7 +36,6 @@ func route(design interface{}, given Reflex, matter Circuit) (residue interface{
 	case int, float64, complex128, string:
 		return materializeNoun(given, matter.Grow("Noun", t))
 	case Circuit:
-		// when is a circuit data?
 		if IsVerb(t) {
 			return materializeVerb(given, matter.Grow("Verb", t))
 		} else {

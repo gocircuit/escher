@@ -12,13 +12,14 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-var SpiritAddress = NewVerbAddress("*", "Spirit")
+// *Spirit gates emit the residue of the enclosing circuit itself
+var SpiritVerb = NewVerbAddress("*", "Spirit")
 
 // Required matter: Index, View, Circuit
 func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	design := matter.CircuitAt("Circuit")
 
-	// make links
+	// create all links before materializing gates
 	gates := make(map[Name]Reflex)
 	gates[Super] = make(Reflex)
 	for name, view := range design.Flow {
@@ -33,6 +34,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 				gates[vec.Gate] = make(Reflex)
 			}
 			gates[name][vlv], gates[vec.Gate][vec.Valve] = NewSynapse()
+			// fmt.Printf("%v:%v <--> %v:%v\n", name, vlv, vec.Gate, vec.Valve)
 		}
 	}
 
@@ -52,7 +54,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 			view.Grow(vlv, design.Gate[vec.Gate])
 		}
 
-		if Same(gsyntax, SpiritAddress) {
+		if Same(gsyntax, SpiritVerb) {
 			gresidue, spirit[g] = MaterializeInstance(gates[g], newSubMatterView(matter, view), &Future{})
 		} else {
 			if gcir, ok := gsyntax.(Circuit); ok && !IsVerb(gcir) {
@@ -64,7 +66,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 		residue.Gate[g] = gresidue
 	}
 
-	// connect given synapses
+	// connect boundary synapses
 	for vlv, s := range given {
 		t, ok := gates[Super][vlv]
 		if !ok {
@@ -72,6 +74,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 		}
 		delete(gates[Super], vlv)
 		go Link(s, t)
+		go Link(t, s)
 	}
 
 	// send residue of this circuit to all escher.Spirit reflexes

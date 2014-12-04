@@ -38,6 +38,7 @@ func (s *Star) Spark(_ *be.Eye, matter Circuit, aux ...interface{}) Value {
 }
 
 func (s *Star) OverCognize(eye *be.Eye, name Name, value interface{}) {
+	println("xxxx")
 	if s.f != nil {
 		s.f(name, value)
 	}

@@ -27,7 +27,6 @@ func init() {
 type Merge struct{ be.Sparkless }
 
 func (Merge) CognizeIn(eye *be.Eye, v interface{}) {
-	println("ee")
 	var w bytes.Buffer
 	x := v.(Circuit)
 	for _, name := range x.SortedLetters() {

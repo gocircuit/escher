@@ -28,3 +28,9 @@ DemoMerge {
 	merge:In = { a "abc", b "efg" }
 	merge:Out = *Show
 }
+
+DemoShow {
+	show *Show
+	"123" = show:In
+	show:Out = *Show
+}

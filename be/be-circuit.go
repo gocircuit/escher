@@ -16,7 +16,6 @@ var SpiritAddress = NewVerbAddress("*", "Spirit")
 
 // Required matter: Index, View, Circuit
 func materializeCircuit(given Reflex, matter Circuit) interface{} {
-
 	design := matter.CircuitAt("Circuit")
 
 	// make links
@@ -56,7 +55,11 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 		if Same(gsyntax, SpiritAddress) {
 			gresidue, spirit[g] = MaterializeInstance(gates[g], newSubMatterView(matter, view), &Future{})
 		} else {
-			gresidue = route(gsyntax, gates[g], newSubMatterView(matter, view))
+			if gcir, ok := gsyntax.(Circuit); ok && !IsVerb(gcir) {
+				gresidue = materializeNoun(gates[g], newSubMatterView(matter, view).Grow("Noun", gcir))
+			} else {
+				gresidue = route(gsyntax, gates[g], newSubMatterView(matter, view))
+			}
 		}
 		residue.Gate[g] = gresidue
 	}

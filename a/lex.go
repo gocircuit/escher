@@ -6,6 +6,8 @@
 
 package a
 
+import "strconv"
+
 func isNotVerbatim(r rune) bool {
 	return r != '`'
 }
@@ -41,6 +43,9 @@ func IsIdentifier(r rune) bool {
 }
 
 func IsName(s string) bool {
+	if _, err := strconv.Atoi(s); err == nil {
+		return false
+	}
 	return NewSrcString(s).Consume(IsIdentifier) == s
 }
 

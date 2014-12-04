@@ -4,21 +4,27 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 QuickForm {
-	form text.Form
+	form *text.Form
 	form:In = x:
 	form:Out = :
 
-	x Fork
+	x *Fork
 	x:Data = :Data
 	x:Form = :Form
 }
 
 TestForm {
-	form QuickForm
-	form:Data = {Who "world"}
+	form *text.QuickForm
+	form:Data = { Who "world" }
 	form:Form = "hello {{.Gate.Who}}"
 	form: = match:Got
 
-	match test.MatchOneAndExit
+	match *test.MatchOneAndExit
 	match:Expected = "hello world"
+}
+
+DemoMerge {
+	merge *text.Merge
+	merge:In = { a "abc", b "efg" }
+	merge:Out = *Show
 }

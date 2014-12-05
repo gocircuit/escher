@@ -34,7 +34,6 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 				gates[vec.Gate] = make(Reflex)
 			}
 			gates[name][vlv], gates[vec.Gate][vec.Valve] = NewSynapse()
-			// fmt.Printf("%v:%v <--> %v:%v\n", name, vlv, vec.Gate, vec.Valve)
 		}
 	}
 
@@ -70,7 +69,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	for vlv, s := range given {
 		t, ok := gates[Super][vlv]
 		if !ok {
-			continue
+			Panicf("connected valve %v is not connected within circuit design %v", vlv, design)
 		}
 		delete(gates[Super], vlv)
 		go Link(s, t)

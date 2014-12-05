@@ -24,7 +24,7 @@ TestForm {
 }
 
 DemoMerge {
-	merge *text.Merge
+	merge *Merge
 	merge:In = { a "abc", b "efg" }
 	merge:Out = *Show
 }

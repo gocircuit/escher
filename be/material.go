@@ -52,32 +52,17 @@ func Materialize(given Reflex, matter circuit.Circuit, v Material, aux ...interf
 // MaterializeInstance materializes the native implementation v.
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (residue, obj interface{}) {
-
-	r, under := buildReflex(matter, v)
-	connected := verify(r, given, matter)
-
-	reflex, eye := NewEyeCognizer(r.Cognize, connected...)
-	for vlv, x := range reflex {
-		Link(given[vlv], x)
-		Link(x, given[vlv])
-		delete(reflex, vlv)
-		delete(given, vlv)
-	}
-	if len(reflex) != 0 || len(given) != 0 {
-		panic(2)
-	}
-
-	obj = under
-	residue = obj.(Material).Spark(eye, matter, aux...)
-
-	return
+	g, r := buildReflex(matter, v)
+	verify(g, given)
+	return r.(Material).Spark(NewEye(given, g.Cognize), matter, aux...), r
 }
 
-func buildReflex(matter circuit.Circuit, v Material) (r gate, under interface{}) {
+func buildReflex(matter circuit.Circuit, v Material) (g gate, receiver interface{}) {
+
 	// Build gate reflex
 	u := makeReflex(v)
 	t := u.Type()
-	r = gate{
+	g = gate{
 		Matter:   matter,
 		Fixed:    make(map[circuit.Name]reflect.Value),
 		Ellipses: u.MethodByName(cognizeEllipses),
@@ -87,10 +72,11 @@ func buildReflex(matter circuit.Circuit, v Material) (r gate, under interface{})
 	for i := 0; i < t.NumMethod(); i++ {
 		n := t.Method(i).Name
 		if len(n) >= len(cognizePrefix) && n[:len(cognizePrefix)] == cognizePrefix {
-			r.Fixed[n[len(cognizePrefix):]] = u.MethodByName(n)
+			g.Fixed[n[len(cognizePrefix):]] = u.MethodByName(n)
 		}
 	}
-	return r, u.Interface()
+
+	return g, u.Interface()
 }
 
 // makeReflex creates a copy of like.
@@ -107,27 +93,25 @@ func makeReflex(like interface{}) reflect.Value {
 }
 
 // Verify all dedicated valves are connected and all connected valves are handled (by dedicated or ellipses).
-func verify(r gate, given Reflex, matter circuit.Circuit) (connected []circuit.Name) {
+func verify(r gate, given Reflex) {
 
 	// Verify all connected valves have dedicated handlers or there is a generic handler.
 	ellipses := r.Ellipses.IsValid()
 	for vlv, _ := range given {
-		connected = append(connected, vlv)
 		if ellipses {
 			continue
 		}
 		if _, ok := r.Fixed[vlv]; !ok {
-			log.Fatalf("%v gate does not handle connected valve (%v):\n%v\n", ellipses, vlv, matter)
+			Panicf("%v gate does not handle connected valve (%v)", ellipses, vlv)
 		}
 	}
 
 	// Verify all dedicated valves are connected
 	for vlv, _ := range r.Fixed {
 		if _, ok := given[vlv]; !ok {
-			log.Fatalf("gate valve (%v) must be connected:\n%v\n", vlv, matter)
+			Panicf("gate valve (%v) must be connected", vlv)
 		}
 	}
-	return
 }
 
 // gate is a materialized native reflex.

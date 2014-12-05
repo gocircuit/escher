@@ -8,7 +8,6 @@ package be
 
 import (
 	// "fmt"
-	"sync"
 
 	. "github.com/gocircuit/escher/circuit"
 )
@@ -23,8 +22,7 @@ import (
 // higher-level concepts of cause and effect).
 //
 type Eye struct {
-	see  chan *change
-	show map[Name]*nerve
+	show map[Name]nerve
 }
 
 type change struct {
@@ -34,88 +32,30 @@ type change struct {
 
 type EyeCognizer func(eye *Eye, valve Name, value interface{})
 
-func NewEyeCognizer(cog EyeCognizer, valve ...Name) (Reflex, *Eye) {
-	r := make(Reflex)
-	eye := &Eye{
-		see:  make(chan *change),
-		show: make(map[Name]*nerve),
+func NewEye(given Reflex, cog EyeCognizer) (eye *Eye) {
+	eye = &Eye{show: make(map[Name]nerve)}
+	for vlv_, syn_ := range given {
+		vlv, syn := vlv_, syn_
+		n := make(nerve, 1)
+		eye.show[vlv] = n
+		go func() {
+			n <- syn.Connect(
+				func(w interface{}) {
+					cog(eye, vlv, w)
+				},
+			)
+		}()
 	}
-	for i, v_ := range valve {
-		v := v_
-		x, y := NewSynapse()
-		r[v] = x
-		n := &nerve{
-			index: i,
-			ch:    make(chan *ReCognizer),
-		}
-		eye.show[v] = n
-		if cog == nil {
-			go func() {
-				eye.connect(
-					v,
-					y.Connect(
-						func(w interface{}) {
-							eye.cognize(v, w)
-						},
-					),
-				)
-			}()
-		} else {
-			go func() {
-				eye.connect(
-					v,
-					y.Connect(
-						func(w interface{}) {
-							cog(eye, v, w)
-						},
-					),
-				)
-			}()
-		}
-	}
-	return r, eye
+	return
 }
 
-func (eye *Eye) connect(valve Name, r *ReCognizer) {
-	ch := eye.show[valve].ch
-	ch <- r
-	close(ch)
-}
-
-type nerve struct {
-	index int
-	ch    chan *ReCognizer
-	sync.Mutex
-	*ReCognizer
-}
+type nerve chan *ReCognizer
 
 func (eye *Eye) Show(valve Name, v interface{}) {
 	n := eye.show[valve]
-	r, ok := <-n.ch
-	n.Lock()
-	if !ok {
-		r = n.ReCognizer
-	} else {
-		n.ReCognizer = r
-	}
-	n.Unlock()
+	r := <-n
+	defer func() {
+		n <- r
+	}()
 	r.ReCognize(v)
-}
-
-func (eye *Eye) cognize(valve Name, v interface{}) {
-	eye.see <- &change{
-		Valve: valve,
-		Value: v,
-	}
-}
-
-func (eye *Eye) See() (valve Name, value interface{}) {
-	chg := <-eye.see
-	return chg.Valve, chg.Value
-}
-
-func (eye *Eye) Drain() {
-	for {
-		eye.See()
-	}
 }

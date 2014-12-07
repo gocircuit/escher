@@ -1,12 +1,12 @@
 TextMerge {
-	h tutorial.header
+	h *tutorial.header
 	h:Title = "Hello, world!"
-	show Show
+	show *Show
 	show: = h:
 }
 
 header {
-	f Fork
+	f *Fork
 	f:X = `
 <html><head><title>
 `
@@ -14,7 +14,7 @@ header {
 	f:Z = `
 </title></head></html>
 `
-	m text.Merge
+	m *text.Merge
 	m:In = f:
 	: = m:Out
 }

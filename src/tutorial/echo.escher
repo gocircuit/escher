@@ -1,5 +1,0 @@
-Echo {
-	in  *See
-	out *Show
-	out: = in:
-}

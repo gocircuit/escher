@@ -16,14 +16,11 @@ import (
 
 func init() {
 	faculty.Register(be.NewSink(), "Ignore")
-	//
 	faculty.Register(be.NewMaterializer(&Grow{}), "Grow")
 	faculty.Register(be.NewMaterializer(&be.Union{}), "Fork")
 	faculty.Register(be.NewMaterializer(&Lens{}), "Lens")
-	//
 	faculty.Register(be.NewMaterializer(&Alternate{}), "Alternate")
 	faculty.Register(be.NewMaterializer(&Alternate{}), "Alt")
 	faculty.Register(be.NewMaterializer(&OneWayDoor{}), "OneWayDoor")
-	//
 	faculty.Register(be.NewMaterializer(Repeat{}), "Repeat")
 }

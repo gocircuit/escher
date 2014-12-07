@@ -24,6 +24,7 @@ func (t *Ticker) Spark(eye *be.Eye, _ Circuit, _ ...interface{}) Value {
 	go func() {
 		var start time.Time
 		var tkr *time.Ticker
+		var ch <-chan time.Time
 		for {
 			select {
 			case dur := <-t.ctl:
@@ -33,8 +34,9 @@ func (t *Ticker) Spark(eye *be.Eye, _ Circuit, _ ...interface{}) Value {
 				}
 				if dur > 0 {
 					start, tkr = time.Now(), time.NewTicker(dur)
+					ch = tkr.C
 				}
-			case t := <-tkr.C:
+			case t := <-ch:
 				eye.Show(DefaultValve, int(t.Sub(start)))
 			}
 		}

@@ -28,6 +28,7 @@ import (
 	_ "github.com/gocircuit/escher/faculty/http"
 	_ "github.com/gocircuit/escher/faculty/index"
 	_ "github.com/gocircuit/escher/faculty/io"
+	_ "github.com/gocircuit/escher/faculty/math"
 	_ "github.com/gocircuit/escher/faculty/model"
 	fos "github.com/gocircuit/escher/faculty/os"
 	"github.com/gocircuit/escher/faculty/test"

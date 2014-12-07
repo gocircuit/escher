@@ -1,9 +1,9 @@
 Ticker {
-	t time.Ticker
-	s Sum
-	out Show
-	t:Duration = 1e9
-	t:Tick = s:Sum
-	s:X = 5e9
-	s:Y = out:
+	tkr *time.Ticker
+	tkr:Duration = 1e9
+	tkr: = sum:Sum
+
+	sum *math.IntSum
+	sum:X = 5e9
+	sum:Y = *Show
 }

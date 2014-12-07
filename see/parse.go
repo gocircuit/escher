@@ -13,15 +13,6 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-func ParseName(src string) Name {
-	t := NewSrcString(src)
-	n := SeeName(t)
-	if t.Len() != 0 {
-		log.Fatalf("Non-name characters at end of %q", src)
-	}
-	return n
-}
-
 func ParseVerb(src string) (verb Verb) {
 	defer func() {
 		if r := recover(); r != nil {

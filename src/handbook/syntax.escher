@@ -1,22 +1,22 @@
 
 BuildSyntaxPage {
-        wf io.util.WriteFile
-        wf:Content = SyntaxPage
+        wf *io.WriteFile
+        wf:Content = *SyntaxPage
         wf:Name = "syntax.html"
         : = wf:Ready
 }
 
 SyntaxPage {
-	h Html
+	h *Html
 	h: = :
 	h:Title = "Escher syntax"
 	h:Body = t:
 
-	f Fork
+	f *Fork
 	f:Backquoted = "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
 	f:ImgNand = fig:
 
-	fig FigurePngSvg
+	fig *FigurePngSvg
 	fig:Image = "NAND"
 	fig:Width = "500px"
 	fig:Caption = `
@@ -24,7 +24,7 @@ SyntaxPage {
 		labeled as “X”, “Y” and “” (the empty string). 
 		The <a href="#links">source for this circuit</a> is given in a later section below.`
 
-	t text.QuickForm
+	t *text.QuickForm
 	t:Data = f:
 	t:Form = `
 <h1>Syntax and meaning</h1>

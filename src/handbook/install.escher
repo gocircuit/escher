@@ -1,18 +1,18 @@
 
 BuildInstallPage {
-        wf io.util.WriteFile
-        wf:Content = InstallPage
+        wf *io.WriteFile
+        wf:Content = *InstallPage
         wf:Name = "install.html"
         : = wf:Ready
 }
 
 InstallPage {
-        h Html
+        h *Html
         h: = :
         h:Title = "Building and installing Escher"
         h:Body = t:
 
-        t text.QuickForm
+        t *text.QuickForm
         t:Data = {}
         t:Form = `
 <h1>Bulding and installing Escher</h1>

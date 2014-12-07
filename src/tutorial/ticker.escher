@@ -4,6 +4,6 @@ Ticker {
 	tkr: = sum:Sum
 
 	sum *math.IntSum
-	sum:X = 5e9
+	sum:X = 1000000000
 	sum:Y = *Show
 }

@@ -1,18 +1,18 @@
 
 BuildCommandPage {
-        file io.util.WriteFile
+        file *io.WriteFile
         file:Content = CommandPage
         file:Name = "cmd.html"
         : = file:Ready
 }
 
 CommandPage {
-        h Html
+        h *Html
         h: = :
         h:Title = "Command-line tool"
         h:Body = t:
 
-        t text.QuickForm
+        t *text.QuickForm
         t:Data = {
 		Backquoted ""
         }

@@ -18,7 +18,7 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewMaterializer(&WriteFile{}), "io", "util", "WriteFile")
+	faculty.Register(be.NewMaterializer(&WriteFile{}), "io", "WriteFile")
 }
 
 type WriteFile struct {

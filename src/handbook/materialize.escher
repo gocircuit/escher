@@ -1,23 +1,23 @@
 BuildMaterializePage {
-        file io.util.WriteFile
-        file:Content = MaterializePage
+        file *io.WriteFile
+        file:Content = *MaterializePage
         file:Name = "m.html"
         : = file:Ready
 }
 
 MaterializePage {
-	h Html
+	h *Html
 	h: = :
 	h:Title = "Materializing circuits into reflexes"
 	h:Body = t:
 
-	f Fork
+	f *Fork
 	f:ImgScanPrint = FigureScanPrint
 	f:ImgTelescope1 = FigureTelescope
 	f:ImgExpanded = FigureExpanded
 	f:ImgFlattened = FigureFlattened
 
-	t text.QuickForm
+	t *text.QuickForm
 	t:Data = f:
 	t:Form = `
 <h1>Materializing</h1>

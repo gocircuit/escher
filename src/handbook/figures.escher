@@ -1,5 +1,5 @@
 FigureScanPrint {
-	fig1 FigurePngSvg
+	fig1 *FigurePngSvg
 	fig1:Image = "scanprint"
 	fig1:Width = "400px"
 	fig1:Caption = `*`
@@ -7,7 +7,7 @@ FigureScanPrint {
 }
 
 FigureTelescope {
-	fig2 FigurePngSvg
+	fig2 *FigurePngSvg
 	fig2:Image = "telescope"
 	fig2:Width = "600px"
 	fig2:Caption = `This is a <a href="syntax.html">symbolic representation</a> 
@@ -17,7 +17,7 @@ FigureTelescope {
 }
 
 FigureExpanded {
-	fig3 FigurePngSvg
+	fig3 *FigurePngSvg
 	fig3:Image = "expanded"
 	fig3:Width = "500px"
 	fig3:Caption = `The inversion of colors—from white-on-black in the enclosing circuit, to
@@ -29,7 +29,7 @@ FigureExpanded {
 }
 
 FigureFlattened {
-	fig4 FigurePngSvg
+	fig4 *FigurePngSvg
 	fig4:Image = "flattened"
 	fig4:Width = "500px"
 	fig4:Caption = `After flattening circuits recursively, all gates end up in the same giant circuit.

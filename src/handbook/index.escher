@@ -1,13 +1,13 @@
 
 BuildIndexPage {
-        wf io.util.WriteFile
-        wf:Content = IndexPage
+        wf *io.WriteFile
+        wf:Content = *IndexPage
         wf:Name = "index.html"
         : = wf:Ready
 }
 
 IndexPage {
-        h Html
+        h *Html
         h: = :
         h:Title = "Escher syntax"
         h:Body = `

@@ -90,9 +90,9 @@ func seeNameEndpoint(src *Src) (gate, valve Name, ok bool) {
 		}
 	}()
 	t := src.Copy()
-	gate = SeeName(t)
+	gate = SeeValue(t)
 	t.Match(string(ValveSelector))
-	valve = SeeName(t)
+	valve = SeeValue(t)
 	src.Become(t)
 	ok = true
 	return

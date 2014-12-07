@@ -35,23 +35,24 @@ func TestValue(t *testing.T) {
 	}
 }
 
-var testReal = []string{
+var testLink = []string{
 	`a:X = b:Y`,
 	` X:a = y:Z `,
 	` X:_ = "hello"`,
 	`123 = "a"`,
 	`X:y = a:_`,
 	`X:y = :_`,
+	`a:1 = b:2`,
 }
 
-func TestReal(t *testing.T) {
-	for _, q := range testReal {
+func TestLink(t *testing.T) {
+	for _, q := range testLink {
 		x, _ := SeeLink(NewSrcString(q), 0)
 		if x == nil {
 			t.Fatalf("problem parsing: %s", q)
 			continue
 		}
-		// fmt.Printf("%v\n", x.Print("", "\t"))
+		fmt.Printf("%#v\n", x)
 	}
 }
 

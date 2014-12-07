@@ -35,17 +35,18 @@ func PrintableMatter(u Circuit) Circuit {
 			}
 			continue
 		}
-		x := v.(Circuit)
-		s := New()
-		for xn, xv := range x.Gate {
-			switch xv.(type) {
-			case Circuit:
-				s.Include(xn, "…")
-			default:
-				s.Include(xn, xv)
-			}
-		}
-		r.Include(n, s)
+		// x := v.(Circuit)
+		// s := New()
+		// for xn, xv := range x.Gate {
+		// 	switch xv.(type) {
+		// 	case Circuit:
+		// 		s.Include(xn, "…")
+		// 	default:
+		// 		s.Include(xn, xv)
+		// 	}
+		// }
+		// r.Include(n, s)
+		r.Include(n, "…")
 	}
 	return r
 }

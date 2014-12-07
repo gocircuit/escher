@@ -20,20 +20,7 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 		}
 	}()
 
-	index, syntax := Index(matter.CircuitAt("Index")), matter.CircuitAt("Verb")
-	verb, addr := Verb(syntax).Verb(), Verb(syntax).Address()
-
-	rel := relativize(matter)
-	var val interface{}
-	if len(rel) > 0 {
-		val = index.Recall(append(rel, addr...)...) // lookup relative to enclosing circuit's parent circuit
-	}
-	if val == nil {
-		val = index.Recall(addr...) // otherwise lookup globally
-	}
-	if val == nil {
-		Panicf("dangling address %v, at %v", Verb(syntax), PrintableMatter(matter))
-	}
+	val, verb := lookup(matter)
 
 	switch verb {
 	case "*":
@@ -41,7 +28,6 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	case "@":
 		return materializeNoun(given, newSubMatter(matter).Grow("Noun", val))
 	}
-	Panicf("unknown or missing verb %v, at %v", String(syntax), PrintableMatter(matter))
 	panic(2)
 }
 
@@ -64,7 +50,7 @@ func relativize(matter Circuit) []Name {
 	if !ok {
 		return nil
 	}
-	supverb, ok := supsup.CircuitOptionAt("Verb")
+	supverb, ok := supsup.CircuitOptionAt("Resolved")
 	if !ok {
 		return nil
 	}
@@ -73,4 +59,26 @@ func relativize(matter Circuit) []Name {
 		return nil
 	}
 	return reladdr[:len(reladdr)-1] // chop off the circuit name at the end
+}
+
+func lookup(matter Circuit) (interface{}, string) {
+	index, syntax := Index(matter.CircuitAt("Index")), matter.CircuitAt("Verb")
+	verb, addr := Verb(syntax).Verb().(string), Verb(syntax).Address()
+
+	rel := relativize(matter)
+	var val interface{}
+	if len(rel) > 0 {
+		abs := append(rel, addr...)
+		val = index.Recall(abs...) // lookup relative to enclosing circuit's parent circuit
+		if val != nil {
+			matter.Grow("Resolved", Circuit(NewVerbAddress(verb, abs...)))
+			return val, verb
+		}
+	}
+	val = index.Recall(addr...) // otherwise lookup globally
+	if val == nil {
+		Panicf("dangling address %v, at %v", Verb(syntax), PrintableMatter(matter))
+	}
+	matter.Grow("Resolved", Circuit(NewVerbAddress(verb, addr...)))
+	return val, verb
 }

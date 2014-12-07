@@ -16,7 +16,7 @@ import (
 func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	defer func() {
 		if r := recover(); r != nil {
-			Panicf("verb materialization glitch (%v), at matter %v", r, matter)
+			Panicf("verb materialization glitch (%v), at matter %v", r, PrintableMatter(matter))
 		}
 	}()
 
@@ -32,7 +32,7 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 		val = index.Recall(addr...) // otherwise lookup globally
 	}
 	if val == nil {
-		Panicf("dangling address %v", Verb(syntax))
+		Panicf("dangling address %v, at %v", Verb(syntax), PrintableMatter(matter))
 	}
 
 	switch verb {
@@ -41,7 +41,7 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	case "@":
 		return materializeNoun(given, newSubMatter(matter).Grow("Noun", val))
 	}
-	Panicf("unknown or missing verb: %v", String(syntax))
+	Panicf("unknown or missing verb %v, at %v", String(syntax), PrintableMatter(matter))
 	panic(2)
 }
 

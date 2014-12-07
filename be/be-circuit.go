@@ -19,7 +19,7 @@ var SpiritVerb = NewVerbAddress("*", "Spirit")
 func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	defer func() {
 		if r := recover(); r != nil {
-			Panicf("circuit materialization glitch (%v), at matter %v", r, matter)
+			Panicf("circuit materialization glitch (%v), at matter %v", r, PrintableMatter(matter))
 		}
 	}()
 

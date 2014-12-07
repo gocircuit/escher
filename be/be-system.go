@@ -15,7 +15,7 @@ import (
 func MaterializeSystem(system interface{}, index, barrier Circuit) (residue interface{}) {
 	defer func() {
 		if r := recover(); r != nil {
-			Panicf("system materialization glitch (%v), at barrier %v", r, barrier)
+			Panicf("system materialization glitch (%v), at barrier %v", r, PrintableMatter(barrier))
 		}
 	}()
 

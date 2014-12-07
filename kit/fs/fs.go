@@ -71,6 +71,7 @@ func loadFile(dir, file string) Index {
 	x := NewIndex()
 	src := NewSrcString(string(text))
 	for {
+		see.Space(src)
 		n_, u_ := see.SeePeer(src)
 		if n_ == nil {
 			break

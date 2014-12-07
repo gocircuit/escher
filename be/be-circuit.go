@@ -17,6 +17,12 @@ var SpiritVerb = NewVerbAddress("*", "Spirit")
 
 // Required matter: Index, View, Circuit
 func materializeCircuit(given Reflex, matter Circuit) interface{} {
+	defer func() {
+		if r := recover(); r != nil {
+			Panicf("circuit materialization glitch (%v), at matter %v", r, matter)
+		}
+	}()
+
 	design := matter.CircuitAt("Circuit")
 
 	// create all links before materializing gates

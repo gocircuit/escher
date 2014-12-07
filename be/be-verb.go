@@ -14,6 +14,12 @@ import (
 
 // Required matter: Index, View, Verb
 func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
+	defer func() {
+		if r := recover(); r != nil {
+			Panicf("verb materialization glitch (%v), at matter %v", r, matter)
+		}
+	}()
+
 	index, syntax := Index(matter.CircuitAt("Index")), matter.CircuitAt("Verb")
 	verb, addr := Verb(syntax).Verb(), Verb(syntax).Address()
 

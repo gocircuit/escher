@@ -1,4 +1,3 @@
-
 BuildIndexPage {
         wf *io.WriteFile
         wf:Content = *IndexPage

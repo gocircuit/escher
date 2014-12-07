@@ -18,6 +18,7 @@ func MaterializeSystem(system interface{}, index, barrier Circuit) (residue inte
 			Panicf("system materialization glitch (%v), at barrier %v", r, barrier)
 		}
 	}()
+
 	if barrier.IsNil() {
 		barrier = New()
 	}

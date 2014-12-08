@@ -43,6 +43,7 @@ func route(design interface{}, given Reflex, matter Circuit) (residue interface{
 			return materializeCircuit(given, matter.Grow("Circuit", t))
 		}
 	case Materializer:
+		matter.Grow("Material", t)
 		return t(given, matter)
 	default:
 		return materializeNoun(given, matter.Grow("Noun", t))

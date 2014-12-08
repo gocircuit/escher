@@ -7,7 +7,9 @@
 package be
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 
 	. "github.com/gocircuit/escher/circuit"
@@ -21,32 +23,63 @@ func Panicf(f string, a ...interface{}) {
 	os.Exit(1)
 }
 
-// Printable matter returns a deep copy of u wherein the values of all gates named Index,
-// which are circuits, are truncated to depth one.
-func PrintableMatter(u Circuit) Circuit {
-	r := New()
-	for n, v := range u.Gate {
-		if n != "Index" {
-			switch t := v.(type) {
-			case Circuit:
-				r.Include(n, PrintableMatter(t))
-			default:
-				r.Include(n, t)
-			}
+func PrintableMatter(u Circuit) string {
+	var w bytes.Buffer
+	PrintMatter(&w, u)
+	return w.String()
+}
+
+func PrintMatter(w io.Writer, matter Circuit) {
+	for {
+		view, _ := matter.CircuitOptionAt("View")
+		switch {
+		case matter.Has("Circuit"):
+			cir := matter.CircuitAt("Circuit")
+			fmt.Fprintf(w, "CIRCUIT (%v) %v\n", PrintView(view), cir)
+
+		case matter.Has("Verb"):
+			verb := Verb(matter.CircuitAt("Verb"))
+			addr := Verb(matter.CircuitAt("Resolved"))
+			fmt.Fprintf(w, "VERB (%v) %v/%v\n", PrintView(view), verb, addr)
+
+		case matter.Has("System"):
+			system := matter.At("System")
+			fmt.Fprintf(w, "SYSTEM (%v) %v\n", PrintView(view), String(system))
+
+		case matter.Has("Noun"):
+			noun := matter.At("Noun")
+			fmt.Fprintf(w, "NOUN (%v) %v\n", PrintView(view), noun)
+
+		case matter.Has("Material"):
+			fmt.Fprintf(w, "MATERIAL (%v)\n", PrintView(view))
+
+		case matter.Has("Main"):
+			fmt.Fprintf(w, "MAIN ()\n")
+
+		default:
+			fmt.Fprintf(w, "UNKNOWN (%v) {%v}\n", PrintView(view), PrintView(matter))
+		}
+		sup, ok := matter.CircuitOptionAt("Super")
+		if ok {
+			matter = sup
 			continue
 		}
-		// x := v.(Circuit)
-		// s := New()
-		// for xn, xv := range x.Gate {
-		// 	switch xv.(type) {
-		// 	case Circuit:
-		// 		s.Include(xn, "…")
-		// 	default:
-		// 		s.Include(xn, xv)
-		// 	}
-		// }
-		// r.Include(n, s)
-		r.Include(n, "…")
+		bar, ok := matter.CircuitOptionAt("Barrier")
+		if ok {
+			matter = bar
+			continue
+		}
+		break
 	}
-	return r
+}
+
+func PrintView(u Circuit) string {
+	var w bytes.Buffer
+	for i, n := range u.SortedNames() {
+		if i > 0 {
+			w.WriteString(" ")
+		}
+		fmt.Fprintf(&w, ":%v", n)
+	}
+	return w.String()
 }

@@ -16,7 +16,7 @@ Html {
 	</html>
 	`
 	t:Data = d:
-	d Fork
+	d *Fork
 	d:Title = :Title
 	d:Body = :Body
 	d:Footer = `

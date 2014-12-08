@@ -114,6 +114,10 @@ func String(v Value) string {
 		} else {
 			return fmt.Sprintf("%q", t)
 		}
+	case interface {
+		String() string
+	}:
+		return fmt.Sprintf("%v", v)
 	}
 	return fmt.Sprintf("(%T)", v)
 }

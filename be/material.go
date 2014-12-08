@@ -8,7 +8,7 @@ package be
 
 import (
 	"fmt"
-	"log"
+	// "log"
 	"os"
 	"reflect"
 
@@ -126,9 +126,9 @@ func (g *gate) Cognize(eye *Eye, valve circuit.Name, value interface{}) {
 	// Catch panics during cognizing and report their context to the user
 	defer func() {
 		if r := recover(); r != nil {
-			log.Printf("Panic: %v\nAt: %v\n\n", r, PrintableMatter(g.Matter))
-			os.Exit(1)
+			fmt.Fprintf(os.Stderr, "%v\n\n%v\n", r, PrintableMatter(g.Matter))
 			runtime.PrintStack()
+			os.Exit(1)
 		}
 	}()
 

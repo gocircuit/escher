@@ -1,23 +1,23 @@
 Exec {
-	proc os.Process
+	proc *os.Process
 	proc:Command = {
 		Path "/bin/ls"
 		Args { "/" }
 	}
 	proc:When = 1
 
-	yio Fork
+	yio *Fork
 	proc:IO = yio:
 
-	yio:Stdin = io.Clunk
-	yio:Stdout = os.Stdout
-	yio:Stderr = os.Stderr
-	yio:When = Ignore
+	yio:Stdin = *Ignore
+	yio:Stdout = *os.Stdout
+	yio:Stderr = *os.Stderr
+	yio:When = *Ignore
 
-	yexit Fork
+	yexit *Fork
 	proc:Exit = yexit:
-	exit os.Exit
+	exit *os.Exit
 
 	yexit:Exit = exit:
-	yexit:When = Ignore
+	yexit:When = *Ignore
 }

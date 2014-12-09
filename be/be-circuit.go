@@ -17,11 +17,6 @@ var SpiritVerb = NewVerbAddress("*", "Spirit")
 
 // Required matter: Index, View, Circuit
 func materializeCircuit(given Reflex, matter Circuit) interface{} {
-	defer func() {
-		if r := recover(); r != nil {
-			Panicf("circuit materialization glitch (%v), at matter %v", r, PrintableMatter(matter))
-		}
-	}()
 
 	design := matter.CircuitAt("Circuit")
 
@@ -48,7 +43,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 	for g, _ := range design.Gate {
 		if g == Super {
-			Panicf("Circuit design overwrites the “%s” gate. In design %v\n", Super, design)
+			panicf(matter, "Circuit design overwrites the empty-string gate, in design %v\n", design)
 		}
 		gsyntax := design.At(g)
 		var gresidue interface{}
@@ -75,7 +70,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	for vlv, s := range given {
 		t, ok := gates[Super][vlv]
 		if !ok {
-			Panicf("connected valve %v is not connected within circuit design %v", vlv, design)
+			panicf(matter, "connected valve %v is not connected within circuit design %v", vlv, design)
 		}
 		delete(gates[Super], vlv)
 		go Link(s, t)
@@ -91,7 +86,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	}()
 
 	if len(gates[Super]) > 0 {
-		panic("circuit valves left unconnected")
+		panicf(matter, "circuit valves left unconnected")
 	}
 
 	return res
@@ -101,4 +96,19 @@ func newSubMatterView(matter Circuit, view Circuit) Circuit {
 	r := newSubMatter(matter)
 	r.Include("View", view)
 	return r
+}
+
+// CleanUp removes nil-valued gates and their incident edges.
+// CleanUp never returns nil.
+func CleanUp(u Circuit) Circuit {
+	for n, g := range u.Gate {
+		if g != nil {
+			continue
+		}
+		delete(u.Gate, n)
+		for vlv, vec := range u.Flow[n] {
+			u.Unlink(Vector{n, vlv}, vec)
+		}
+	}
+	return u
 }

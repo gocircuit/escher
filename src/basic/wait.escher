@@ -1,8 +1,0 @@
-
-
-_TestWait {
-	wait Wait
-	wait:View = 1
-	wait:For = 1
-	wait: = os.Exit
-}

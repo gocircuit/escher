@@ -10,17 +10,28 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"os"
 
 	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/kit/runtime"
+	// "github.com/gocircuit/escher/kit/runtime"
 )
 
+type Panic struct {
+	Matter Circuit
+	Msg    string
+}
+
+func panicf(matter Circuit, f string, a ...interface{}) {
+	var w bytes.Buffer
+	fmt.Fprintf(&w, f, a...)
+	fmt.Fprintf(&w, "\n")
+	panic(Panic{Matter: matter, Msg: w.String()})
+}
+
 func Panicf(f string, a ...interface{}) {
-	fmt.Fprintf(os.Stderr, f, a...)
-	fmt.Fprintf(os.Stderr, "\n")
-	runtime.PrintStack()
-	os.Exit(1)
+	var w bytes.Buffer
+	fmt.Fprintf(&w, f, a...)
+	fmt.Fprintf(&w, "\n")
+	panic(w.String())
 }
 
 func PrintableMatter(u Circuit) string {
@@ -35,26 +46,26 @@ func PrintMatter(w io.Writer, matter Circuit) {
 		switch {
 		case matter.Has("Circuit"):
 			cir := matter.CircuitAt("Circuit")
-			fmt.Fprintf(w, "CIRCUIT (%v) %v\n", PrintView(view), cir)
+			fmt.Fprintf(w, "CIRCUIT(%v) %v\n", PrintView(view), cir)
 
 		case matter.Has("Verb"):
 			verb := Verb(matter.CircuitAt("Verb"))
 			addr := Verb(matter.CircuitAt("Resolved"))
-			fmt.Fprintf(w, "VERB (%v) %v/%v\n", PrintView(view), verb, addr)
+			fmt.Fprintf(w, "VERB(%v) %v/%v\n", PrintView(view), verb, addr)
 
 		case matter.Has("System"):
 			system := matter.At("System")
-			fmt.Fprintf(w, "SYSTEM (%v) %v\n", PrintView(view), String(system))
+			fmt.Fprintf(w, "SYSTEM(%v) %v\n", PrintView(view), String(system))
 
 		case matter.Has("Noun"):
 			noun := matter.At("Noun")
-			fmt.Fprintf(w, "NOUN (%v) %v\n", PrintView(view), noun)
+			fmt.Fprintf(w, "NOUN(%v) %v\n", PrintView(view), noun)
 
 		case matter.Has("Material"):
-			fmt.Fprintf(w, "MATERIAL (%v)\n", PrintView(view))
+			fmt.Fprintf(w, "MATERIAL(%v)\n", PrintView(view))
 
 		case matter.Has("Main"):
-			fmt.Fprintf(w, "MAIN ()\n")
+			fmt.Fprintf(w, "MAIN()\n")
 
 		default:
 			fmt.Fprintf(w, "UNKNOWN (%v) {%v}\n", PrintView(view), PrintView(matter))

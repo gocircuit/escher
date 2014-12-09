@@ -4,7 +4,7 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 TestFork {
-	x Fork
+	x *Fork
 	x:Data = {1, 2, 3}
 	x:Form = "hello"
 	x: = match:Got
@@ -13,5 +13,5 @@ TestFork {
 		Form "hello"
 	}
 
-	match test.MatchOneAndExit
+	match *test.MatchOneAndExit
 }

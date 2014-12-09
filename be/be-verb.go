@@ -14,21 +14,15 @@ import (
 
 // Required matter: Index, View, Verb
 func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
-	defer func() {
-		if r := recover(); r != nil {
-			Panicf("verb materialization glitch (%v), at matter %v", r, PrintableMatter(matter))
-		}
-	}()
-
 	val, verb := lookup(matter)
-
 	switch verb {
 	case "*":
 		return route(val, given, newSubMatter(matter))
 	case "@":
 		return materializeNoun(given, newSubMatter(matter).Grow("Noun", val))
 	}
-	panic(2)
+	panicf(matter, "unknown verb (%v)", verb)
+	return
 }
 
 func newSubMatter(matter Circuit) Circuit {
@@ -76,9 +70,10 @@ func lookup(matter Circuit) (interface{}, string) {
 		}
 	}
 	val = index.Recall(addr...) // otherwise lookup globally
+	matter.Include("Resolved", New().Grow(0, "???"))
 	if val == nil {
-		Panicf("dangling address %v, at %v", Verb(syntax), PrintableMatter(matter))
+		panicf(matter, "dangling address %v", Verb(syntax))
 	}
-	matter.Grow("Resolved", Circuit(NewVerbAddress(verb, addr...)))
+	matter.Include("Resolved", Circuit(NewVerbAddress(verb, addr...)))
 	return val, verb
 }

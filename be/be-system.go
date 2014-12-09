@@ -8,17 +8,26 @@ package be
 
 import (
 	"fmt"
+	"os"
 
 	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/kit/runtime"
 )
 
 func MaterializeSystem(system interface{}, index, barrier Circuit) (residue interface{}) {
 	defer func() {
 		if r := recover(); r != nil {
-			Panicf("system materialization glitch (%v), at barrier %v", r, PrintableMatter(barrier))
+			switch t := r.(type) {
+			case Panic:
+				fmt.Fprintf(os.Stderr, t.Msg)
+				fmt.Fprintf(os.Stderr, PrintableMatter(t.Matter))
+				runtime.PrintStack()
+				os.Exit(1)
+			default:
+				panic(r)
+			}
 		}
 	}()
-
 	if barrier.IsNil() {
 		barrier = New()
 	}
@@ -43,10 +52,16 @@ func route(design interface{}, given Reflex, matter Circuit) (residue interface{
 			return materializeCircuit(given, matter.Grow("Circuit", t))
 		}
 	case Materializer:
+		defer func() {
+			if r := recover(); r != nil {
+				panicf(matter, "materialization glitch (%v)", r)
+			}
+		}()
 		matter.Grow("Material", t)
 		return t(given, matter)
 	default:
 		return materializeNoun(given, matter.Grow("Noun", t))
 	}
-	panic(fmt.Sprintf("unknown design type: %T", design))
+	panicf(matter, "unknown design type: %T", design)
+	return
 }

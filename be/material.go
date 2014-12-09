@@ -53,7 +53,7 @@ func Materialize(given Reflex, matter circuit.Circuit, v Material, aux ...interf
 // It returns the resulting reflex and residue, as well as the Go-facing instance.
 func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (residue, obj interface{}) {
 	g, r := buildReflex(matter, v)
-	verify(g, given)
+	verify(matter, g, given)
 	return r.(Material).Spark(NewEye(given, g.Cognize), matter, aux...), r
 }
 
@@ -93,7 +93,7 @@ func makeReflex(like interface{}) reflect.Value {
 }
 
 // Verify all dedicated valves are connected and all connected valves are handled (by dedicated or ellipses).
-func verify(r gate, given Reflex) {
+func verify(matter circuit.Circuit, r gate, given Reflex) {
 
 	// Verify all connected valves have dedicated handlers or there is a generic handler.
 	ellipses := r.Ellipses.IsValid()
@@ -102,14 +102,14 @@ func verify(r gate, given Reflex) {
 			continue
 		}
 		if _, ok := r.Fixed[vlv]; !ok {
-			Panicf("%v gate does not handle connected valve (%v)", ellipses, vlv)
+			panicf(matter, "%v gate does not handle connected valve (%v)", ellipses, vlv)
 		}
 	}
 
 	// Verify all dedicated valves are connected
 	for vlv, _ := range r.Fixed {
 		if _, ok := given[vlv]; !ok {
-			Panicf("gate valve (%v) must be connected", vlv)
+			panicf(matter, "gate valve (%v) must be connected", vlv)
 		}
 	}
 }

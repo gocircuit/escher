@@ -10,7 +10,7 @@ IndexPage {
         h: = :
         h:Title = "Escher syntax"
         h:Body = `
-<h1>Escher: A language for Hoare's world</h1>
+<h1>Escher overview</h1>
 
 <p>Web pages and links form a graph. Datacenter computers and cables form a graph.
 Application processes and connections form a graph. Facebook users and
@@ -19,20 +19,22 @@ Neurons and synapses form a graph. Threads and shared data structures form a gra
 Processes and sockets form a graph.
 
 <p>Not only are all of the above situations visually described by graphs, but also
-their essential behavior is the same in all cases: Independent processing units,
-pairwise-interlinked by sequential channels, communicate asynchronously.
+their essential behavior (as best as we understand it) is the same in all cases:
+Independent processing units, pairwise-interlinked by sequential channels—both channels
+and processors emerging and disappearing asynchronously.
 
 <p>Three decades ago, before the above examples were within practical reach,
 a British gentleman—named <a href="http://en.wikipedia.org/wiki/Tony_Hoare">Tony
 Hoare</a>—had noticed that this essential behavior was exhibited by virtually
 all identifiable interacting physical (as well as man-made abstract) entities: People interacting with people,
-people interacting with vending machines, internal components of vending
-machines interacting with each other, animals interacting with other animals, and so on.
+people interacting with vending machines, components of vending
+machines interacting with each other, animals interacting with animals, 
+cells interacting with cells, proteins interacting with proteins, and so on.
 
-<p>He called this high-level behavioral model of the world 
+<p>He called this high-level behavioral model of the world (or discernable subsystems thereof)
 <a href="http://en.wikipedia.org/wiki/Communicating_sequential_processes">Communicating Sequential Processes</a>.
 Hoare's model is nothing more and nothing less than a minimal abstraction of how
-we see and understand (and subsequently wish to control) the world from an 
+we see and understand (and subsequently will to control) the world from an 
 observer—i.e. third person—point of view.
 
 <p>I prefer to call such systems <em>circuits</em> both for brevity and for the fact that
@@ -43,10 +45,9 @@ processes that was rich, flexible and not present in untouched nature.
 a circuit: They are independent processing units communicating via sequential streams of
 data, as opposed to sequential streams of changes in electrical voltage. The difference
 between circuits analog and digital is entirely linguistic: It is the difference between a 
-floating-point number and a data structure.
+floating-point number (the voltage) and a data structure (a digital message).
 
-<p>
-If it is indeed the case that most things that we program or that we program about
+<p>If it is indeed the case that most things that we program or that we program about
 are circuits at the end of the day, then it is only appropriate to complement Hoare's
 model of everything with an appropriate programming language. This is the goal of Escher.
 
@@ -57,15 +58,15 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
 <h2>Language and runtime</h2>
 
-<ul>
+<ol>
 <li><a href="install.html">Build and install</a></li>
-<li><a href="syntax.html">Circuit syntax</a></li>
+<li><a href="syntax.html">Syntax</a></li>
 <li><a href="syntax.html">Interpretations</a></li>
-<li><a href="m.html">Materializing reflexes</a></li>
-<li><a href="cmd.html">Command-line tool</a></li>
-</ul>
+<!--li><a href="m.html">Materializing reflexes</a></li>
+<li><a href="cmd.html">Command-line tool</a></li-->
+</ol>
 
-<h2>Faculties</h2>
+<!--h2>Faculties</h2>
 
 <ul>
 <li>Modelling</li>
@@ -78,7 +79,7 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <li>Embedding Escher in applications</li>
 <li>Orchestrating circuits of Docker containers</li>
 <li>Auto-evolving bug tracking</li>
-</ul>
+</ul-->
 
 <p>
 

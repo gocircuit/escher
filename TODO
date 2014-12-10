@@ -1,5 +1,8 @@
 * printing  abbreviated index in matter panics
 * remove root-level gates
+* tool to discover blockages
+
+* bug in material/eye whereby 
 
 * addresses are sugar for a two-sided reflex:
 syntactic address and index on one side, and ...

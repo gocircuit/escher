@@ -25,6 +25,8 @@ type Eye struct {
 	show map[Name]nerve
 }
 
+type nerve chan *ReCognizer
+
 type change struct {
 	Valve Name
 	Value interface{}
@@ -32,24 +34,28 @@ type change struct {
 
 type EyeCognizer func(eye *Eye, valve Name, value interface{})
 
-func NewEye(given Reflex, cog EyeCognizer) (eye *Eye) {
-	eye = &Eye{show: make(map[Name]nerve)}
+func NewEye(given Reflex) (eye *Eye) {
+	eye = &Eye{
+		show: make(map[Name]nerve),
+	}
+	for vlv, _ := range given {
+		eye.show[vlv] = make(nerve, 1)
+	}
+	return
+}
+
+func (eye *Eye) Connect(given Reflex, cog EyeCognizer) {
 	for vlv_, syn_ := range given {
 		vlv, syn := vlv_, syn_
-		n := make(nerve, 1)
-		eye.show[vlv] = n
 		go func() {
-			n <- syn.Connect(
+			eye.show[vlv] <- syn.Connect(
 				func(w interface{}) {
 					cog(eye, vlv, w)
 				},
 			)
 		}()
 	}
-	return
 }
-
-type nerve chan *ReCognizer
 
 func (eye *Eye) Show(valve Name, v interface{}) {
 	n := eye.show[valve]

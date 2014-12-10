@@ -54,7 +54,11 @@ func Materialize(given Reflex, matter circuit.Circuit, v Material, aux ...interf
 func MaterializeInstance(given Reflex, matter circuit.Circuit, v Material, aux ...interface{}) (residue, obj interface{}) {
 	g, r := buildReflex(matter, v)
 	verify(matter, g, given)
-	return r.(Material).Spark(NewEye(given, g.Cognize), matter, aux...), r
+
+	eye := NewEye(given)
+	residue = r.(Material).Spark(eye, matter, aux...)
+	eye.Connect(given, g.Cognize) // live connection must happen after Spark completes
+	return residue, r
 }
 
 func buildReflex(matter circuit.Circuit, v Material) (g gate, receiver interface{}) {

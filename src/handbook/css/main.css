@@ -1,8 +1,8 @@
 *, body, li, ul, table, td, ul, ol, dt, dd {
-	background: rgb(235,255,255);
-	color: rgba(95,95,95, 0.9);
-	font-family: 'luxi serif', georgia, times, serif;
-	font-weight: 200;
+	background: rgb(240,255,255);
+	color: rgba(95,95,95, 0.8);
+	font-family: helvetica, sans-serif;
+	font-weight: 400;
 	line-height: 1.4em;
 	/*letter-spacing: -0.05em;*/
 }
@@ -10,15 +10,15 @@
 body, div {
 	padding: 0;
 	margin: 0;
-	font-size: 19px;
+	font-size: 17px;
 }
 
 code, pre {
-	color: rgba(0, 150, 130, 0.9);
-	font-family: 'Input Mono Condensed', 'luxi mono', 'source code pro', monospace;
+	color: rgba(150, 0, 40, 0.7);
+	font-family: menlo, monospace;
 	font-size: 15px;
 	font-weight: 100;
-	letter-spacing: -0.05em;
+	letter-spacing: -0.04em;
 }
 
 ul {
@@ -26,15 +26,15 @@ ul {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'luxi serif', lato, sans-serif;
-	color: rgba(0,0, 200, 0.6);
+	font-family: helvetica, sans-serif;
+	color: rgba(95,95,95, 0.8);
 	font-weight: 400;
 }
 
-h1 { font-size: 34px; }
-h2 { font-size: 28px; }
-h3 { font-size: 26px; }
-h4 { font-size: 24px; }
+h1 { font-size: 32px; }
+h2 { font-size: 26px; }
+h3 { font-size: 24px; }
+h4 { font-size: 22px; }
 
 a {
 	font-family: inherit;
@@ -65,11 +65,11 @@ div.page {
 }
 
 div.header {
-	font-family: 'luxi serif', lato, sans-serif;
+	font-family: helvetica, sans-serif;
 	padding: 20px;
 	left: 0;
 	right: 0;
-	background: rgb(220,240,240);
+	background: rgba(220,240,240,0.9);
 	/*color: white;*/
 }
 
@@ -79,7 +79,7 @@ div.header a {
 }
 
 div.footer {
-	font-family: 'luxi sans', lato, sans-serif;
+	font-family: helvetica, sans-serif;
 	text-align: center;
 	font-size: 13px;
 	padding: 20px;

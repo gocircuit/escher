@@ -10,39 +10,57 @@ IndexPage {
         h: = :
         h:Title = "Escher syntax"
         h:Body = `
-<h1>Escher</h1>
+<h1>Escher: A language for Hoare's world</h1>
 
-<p>Web's pages and links form a graph. Datacenter's computers and cables form a graph.
-Application's processes and connections form a graph. Facebook's users and their
-friendships form a graph. Facebook's groups and their memberships form a graph.
-Brain's neurons and their synapses form a graph. Process' threads and shared
-data structures form a graph.
+<p>Web pages and links form a graph. Datacenter computers and cables form a graph.
+Application processes and connections form a graph. Facebook users and
+friendships form a graph. Facebook groups and memberships form a graph.
+Neurons and synapses form a graph. Threads and shared data structures form a graph.
+Processes and sockets form a graph.
 
-<p>Not only are the meanings of all these sentences described geometrically by graphs,
-their behavior is nearly identical at a considerable breadth and depth of detail:
-All these situations describe independent processing units pairwise-interlinked
-by sequential communication channels.
+<p>Not only are all of the above situations visually described by graphs, but also
+their essential behavior is the same in all cases: Independent processing units,
+pairwise-interlinked by sequential channels, communicate asynchronously.
 
-<p>Not surprisingly such overwheling degree of co-incidence has already been noticed
-before and, in the abstract, was called <a href="">Communicating Sequential Processes</a>
-by a man named Hoare. I prefer the earlier term: <em>circuits</em>, but drop the “electrical”
-since the phenomenon has grown quite ubiquitous by now.
+<p>Three decades ago, before the above examples were within practical reach,
+a British gentleman—named <a href="http://en.wikipedia.org/wiki/Tony_Hoare">Tony
+Hoare</a>—had noticed that this essential behavior was exhibited by virtually
+all identifiable interacting physical (as well as man-made abstract) entities: People interacting with people,
+people interacting with vending machines, internal components of vending
+machines interacting with each other, animals interacting with other animals, and so on.
 
-<p>If it is indeed the case that most things that we program or that we program about
-are circuits, then 
+<p>He called this high-level behavioral model of the world 
+<a href="http://en.wikipedia.org/wiki/Communicating_sequential_processes">Communicating Sequential Processes</a>.
+Hoare's model is nothing more and nothing less than a minimal abstraction of how
+we see and understand (and subsequently wish to control) the world from an 
+observer—i.e. third person—point of view.
+
+<p>I prefer to call such systems <em>circuits</em> both for brevity and for the fact that
+electrical circuits were probably the first man-made manifestation of communicating sequential
+processes that was rich, flexible and not present in untouched nature.
+
+<p>Today's connected Internet services and devices are no different than electrical components on
+a circuit: They are independent processing units communicating via sequential streams of
+data, as opposed to sequential streams of changes in electrical voltage. The difference
+between circuits analog and digital is entirely linguistic: It is the difference between a 
+floating-point number and a data structure.
+
+<p>
+If it is indeed the case that most things that we program or that we program about
+are circuits at the end of the day, then it is only appropriate to complement Hoare's
+model of everything with an appropriate programming language. This is the goal of Escher.
+
+<h2>Sources</h2>
 
 <p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>. 
 Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
-
-<ul>
-<li>Introduction</li>
-</ul>
 
 <h2>Language and runtime</h2>
 
 <ul>
 <li><a href="install.html">Build and install</a></li>
 <li><a href="syntax.html">Circuit syntax</a></li>
+<li><a href="syntax.html">Interpretations</a></li>
 <li><a href="m.html">Materializing reflexes</a></li>
 <li><a href="cmd.html">Command-line tool</a></li>
 </ul>

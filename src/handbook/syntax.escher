@@ -29,30 +29,7 @@ SyntaxPage {
 	t:Form = `
 <h1>Syntax and meaning</h1>
 
-<ul>
-<li><a href="#circuits">Circuits</a></li>
-<li><a href="#symbolism">Symbolism</a></li>
-<li><a href="#runtime">Go interface</a></li>
-<li><a href="#grammar">Grammar</a>
-	<ul>
-	<li><a href="#comments">Comments</a></li>
-	<li><a href="#gates">Gates</a>
-		<ul>
-		<li><a href="#series">Series</a></li>
-		</ul>
-	</li>
-	<li><a href="#links">Links</a>
-		<ul>
-		<li><a href="#sugar">Sugar</a></li>
-		</ul>
-	</li>
-	</ul>
-</li>
-</ul>
-
-<p><br>
-
-<p>At its heart Escher is a Go package that parses a simple written syntax
+<p>At heart Escher is a Go package that parses a simple written syntax
 into a labeled graph data structure, called a <em>circuit</em>. If you view
 XML as a syntax that represents labeled trees, then Escher would be a 
 syntax that represents labeled graphs.

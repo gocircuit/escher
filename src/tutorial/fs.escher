@@ -1,0 +1,8 @@
+File {
+	`Print on standard output the source file located at the given index address.`
+	*os.Stdout = {
+		"" "*"
+		"tutorial"
+		"data.txt"
+	}
+}

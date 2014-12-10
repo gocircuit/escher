@@ -1,4 +1,5 @@
-* printing  matter without the long index?
+* printing  abbreviated index in matter panics
+* remove root-level gates
 
 * addresses are sugar for a two-sided reflex:
 syntactic address and index on one side, and ...

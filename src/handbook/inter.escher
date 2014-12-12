@@ -1,0 +1,115 @@
+
+BuildInterPage {
+        wf *io.WriteFile
+        wf:Content = *InterPage
+        wf:Name = "inter.html"
+        : = wf:Ready
+}
+
+InterPage {
+	h *Html
+	h: = :
+	h:Title = "Circuit interpretations"
+	h:Body = t:
+
+	t *text.QuickForm
+	t:Data = {}
+	t:Form = `
+
+<h1>Interpretations of circuits</h1>
+
+<p>A circuit in Escher is a generic data abstraction much like a structure is in JavaScript or Go.
+When thinking and programming in Escher, circuits will have a meaning
+dependent on context and/or content. A circuit interpretation will usually utilize a subset of
+the representational freedoms of a circuit, and will have an intuitive graphical representation.
+
+<p>Here we introduce four basic circuit interpretations—or specializations, if you will—that
+will also serve us as a vocabulary when discussing Escher in following chapters.
+
+<h2 id="series">Series</h2>
+
+<p>Circuit gate names, recall, can be integers or strings. If a circuit has no links and the gate
+names are the integers 0, 1, …, K (for some integer K), we call the circuit a <em>series</em>.
+Series are equivalent to arrays and/or slices in other programming languages, like C and Go.
+Gate names are slice indices; gate values are slice element values.
+
+<p>For instance, the circuit
+<pre>
+Singer {
+	0 "Dolly"
+	1 "Rebecca"
+	2 "Parton"
+}
+</pre>
+is analogous (in meaning) to the Go slice:
+<pre>
+var Singer = []interface{}{
+	"Dolly",
+	"Rebecca",
+	"Parton",
+}
+</pre>
+
+<p>Since series will be frequently input by the programmer, as explained in
+the <a href="syntax.html#series">syntax section</a>, we have dedicated a shorthand
+syntax for series circuits that omits the gate names:
+
+<pre>
+Singer {
+	"Dolly"
+	"Rebecca"
+	"Parton"
+}
+</pre>
+
+<h2 id="indices">Indices</h2>
+
+<p>More generally than series, when a circuit has no links we call it an <em>index</em> and
+we view it as a map from integers and/or strings to anything else. In this respect an index
+is akin in purpose to structures, dictionaries, hash tables and maps in other languages.
+
+<p>The gate values of index circuits are analogously called <em>children</em> and they can
+be of primitive types (integers, floats, etc.) as well as recursively they can be other circuits
+or indices.
+
+<pre>
+Tree {
+	Trunk {
+		Branches {
+			"Johnny"
+			"Katie"
+		}
+	}
+	Root {
+		Tentacles {
+			"Grandpa"
+			"Grandma"
+		}
+	}
+}
+</pre>
+
+<p>Such recursive structures of indices, or just indices for short, serve the same purpose as
+file-systems, namespaces, trees and others: To organize their internal and leaf values in a
+hierarchical manner, so that each node (internal or leaf) is identifiable by a unique
+path which we shall call <em>address</em> of a value relative to a given index.
+
+<p>For instance, the address of <code>"Grandma"</code> relative to the index
+<code>Tree</code> would be 
+
+<pre>
+{
+	Root
+	Tentacles
+	1
+}</pre>
+
+(Note that addresses are represented by series circuits.)
+
+<h2 id="sentences">Sentences</h2>
+
+<h2 id="programs">Programs</h2>
+
+
+`
+}

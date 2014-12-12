@@ -2,13 +2,13 @@
 * remove root-level gates
 * tool to discover blockages
 
-* bug in material/eye whereby 
+* escher.Replace gate to substitute the residual of containing circuit with…
 
 * addresses are sugar for a two-sided reflex:
 syntactic address and index on one side, and ...
 	* generalize
 
-* ninjatrd
+* nnjatrd
 * prep nginx http proxy docker image + remote control interface
 
 * download wikipedia dataset

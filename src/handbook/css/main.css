@@ -19,7 +19,8 @@ code, pre {
 	font-family: menlo, monospace;
 	font-size: 14px;
 	font-weight: 100;
-	letter-spacing: -0.03em;
+	/*letter-spacing: -0.03em;*/
+	tab-size: 4;
 }
 
 ul {

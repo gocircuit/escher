@@ -10,7 +10,7 @@ IndexPage {
         h: = :
         h:Title = "Escher syntax"
         h:Body = `
-<h1>Escher overview</h1>
+<h1>Escher language</h1>
 
 <p>Web pages and links form a graph. Datacenter computers and cables form a graph.
 Application processes and connections form a graph. Facebook users and
@@ -56,13 +56,13 @@ model of everything with an appropriate programming language. This is the goal o
 <p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>. 
 Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
-<h2>Language and runtime</h2>
+<h2>Documentation</h2>
 
 <ol>
-<li><a href="install.html">Build and install</a></li>
-<li><a href="syntax.html">Syntax</a></li>
-<li><a href="syntax.html">Interpretations</a></li>
-<!--li><a href="m.html">Materializing reflexes</a></li>
+<li><a href="install.html">Building and installing</a></li>
+<li><a href="syntax.html">Circuit syntax</a></li>
+<li><a href="inter.html">Interpretations of circuits</a></li>
+<li><a href="m.html">Materializing circuit programs</a></li>
 <li><a href="cmd.html">Command-line tool</a></li-->
 </ol>
 

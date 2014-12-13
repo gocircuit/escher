@@ -2,6 +2,7 @@
 * remove root-level gates
 * tool to discover blockages
 
+* rename verb to sentence
 * escher.Replace gate to substitute the residual of containing circuit with…
 
 * addresses are sugar for a two-sided reflex:

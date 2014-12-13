@@ -108,8 +108,56 @@ path which we shall call <em>address</em> of a value relative to a given index.
 
 <h2 id="sentences">Sentences</h2>
 
+<p><em>Sentences</em> are a key building block of circuit programs (described next and in following sections).
+A sentence is a pair of a string-valued <em>verb</em> and a target address.
+Sentences are represented as a single circuit, wherein the empty-string gate holds the verb,
+while the number gates hold the components of the address. For instance,
+
+<pre>
+{
+	"" "*"
+	0 Root
+	1 Tentacles
+	2 1
+}
+</pre>
+
+<p>This circuit holds the verb value <code>"*"</code> and the address whose components
+are <code>"Root"</code>, <code>"Tentacles"</code> and <code>1</code>, in that order.
+There are only two types of verbs, signified by the verb values <code>"*"</code>
+and <code>"@"</code>, whose meaning is explained in later sections. 
+We call these verbs <em>materialize</em> and <em>recall</em>, while their 
+single-characters values, <code>"*"</code> and <code>"@"</code>, are a design
+choice of expediency.
+
+<p>Due to the ubiquitous use of sentences in circuit programs, sentences can be written
+using the <a href="syntax.html">dedicated syntactic sugar</a>:
+
+<pre>
+*Root.Tentacles.1
+</pre>
+
 <h2 id="programs">Programs</h2>
 
+<p><em>Programs</em> are circuits that describe executable systems. Their
+meaning and use is described in greater detail in the next section. Here we describe
+their circuit structure.
+
+<p>
+
+<pre>
+{
+	tkr *time.Ticker
+	sum *math.Sum
+	interval 1e9
+
+	tkr:Duration = interval:
+	tkr: = sum:Sum
+
+	sum:X = :Phase
+	sum:Y = *Show
+}
+</pre>
 
 `
 }

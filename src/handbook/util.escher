@@ -28,6 +28,16 @@ LeftRight {
 	t: = :
 }
 
+FigureJpg {
+	fig *Figure
+	fig:Caption = :Caption
+	jpg *Jpg
+	jpg:Name = :Image
+	jpg:Width = :Width
+	fig:Body = jpg:
+	fig: = :
+}
+
 FigurePngSvg {
 	fig *Figure
 	fig:Caption = :Caption
@@ -63,6 +73,18 @@ PngSvg {
 	t:Form = `<object data="img/{{.Gate.Name}}.svg" type="image/svg+xml" width="{{.Gate.Width}}">
 		<img src="img/{{.Gate.Name}}.png" alt="" />
 	</object>`
+	t:Data = f:
+
+	f *Fork
+	f:Name = :Name
+	f:Width = :Width
+
+	t: = :
+}
+
+Jpg {
+	t *text.QuickForm
+	t:Form = `<img src="img/{{.Gate.Name}}.jpg" width="{{.Gate.Width}}" alt="" />`
 	t:Data = f:
 
 	f *Fork

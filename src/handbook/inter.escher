@@ -12,8 +12,16 @@ InterPage {
 	h:Title = "Circuit interpretations"
 	h:Body = t:
 
+	f *Fork
+	f:Ticker = tkr:
+
+	tkr *FigureJpg
+	tkr:Image = "tkr"
+	tkr:Width = "500px"
+	tkr:Caption = ``
+
 	t *text.QuickForm
-	t:Data = {}
+	t:Data = f:
 	t:Form = `
 
 <h1>Interpretations of circuits</h1>
@@ -123,10 +131,10 @@ while the number gates hold the components of the address. For instance,
 </pre>
 
 <p>This circuit holds the verb value <code>"*"</code> and the address whose components
-are <code>"Root"</code>, <code>"Tentacles"</code> and <code>1</code>, in that order.
+are <code>Root</code>, <code>Tentacles</code> and <code>1</code>, in that order.
 There are only two types of verbs, signified by the verb values <code>"*"</code>
 and <code>"@"</code>, whose meaning is explained in later sections. 
-We call these verbs <em>materialize</em> and <em>recall</em>, while their 
+We call these verbs <em>materialize</em> and <em>recall</em>, respectively, while their 
 single-characters values, <code>"*"</code> and <code>"@"</code>, are a design
 choice of expediency.
 
@@ -139,11 +147,33 @@ using the <a href="syntax.html">dedicated syntactic sugar</a>:
 
 <h2 id="programs">Programs</h2>
 
-<p><em>Programs</em> are circuits that describe executable systems. Their
-meaning and use is described in greater detail in the next section. Here we describe
-their circuit structure.
+<p>Programs are circuits that describe executable systems. Their
+meaning and use is explained in a <a href="programs.html">dedicated section</a>.
+Here we describe their circuit structure.
 
-<p>
+<p>The gates of program circuits ultimately represent independently executing services,
+which are interconnected according to the link pattern of the circuit.
+
+<p>Gate values designate the processing logic—i.e. they codify the service type—while
+gate names are used solely as identifiers, needed in the description of the circuit links.
+
+<p>Gate values can be of any kind: integer, float, complex, string
+or circuit. Often gate values will be sentence circuits, in which case they can be
+written using the abbreviated syntax described earlier.
+
+<p>Circuit links are allowed only between gate names,
+defined within the circuit or the empty-string gate name.
+
+<p>The empty-string gate name represents an implicit 
+“enclosing” or “parent” circuit. In particular, program 
+circuits are not allowed to define a gate with the empty-string
+name.
+
+<p>Links whose endpoints are connected to the same 
+gate name are allowed, as long as they connect into different
+valve names.
+
+<p>Here is an example of a valid program circuit:
 
 <pre>
 {
@@ -158,6 +188,10 @@ their circuit structure.
 	sum:Y = *Show
 }
 </pre>
+
+<p>And the corresponding symbolism:
+
+{{.Gate.Ticker}}
 
 `
 }

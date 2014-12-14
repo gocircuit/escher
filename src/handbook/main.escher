@@ -7,5 +7,6 @@ main {
 	x:3 = *BuildSyntaxPage
 	x:4 = *BuildMaterializePage
 	x:5 = *BuildCommandPage
-	x:6 = *BuildInterPage
+	x:6 = *BuildMeaningPage
+	x:7 = *BuildReflexPage
 }

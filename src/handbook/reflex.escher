@@ -1,0 +1,127 @@
+
+BuildReflexPage {
+        wf *io.WriteFile
+        wf:Content = *ReflexPage
+        wf:Name = "reflex.html"
+        : = wf:Ready
+}
+
+ReflexPage {
+	h *Html
+	h: = :
+	h:Title = "Implementing reflexes"
+	h:Body = t:
+
+	t *text.QuickForm
+	t:Data = {}
+	t:Form = `
+
+<h1>Implementing reflexes</h1>
+
+<p>A key motivation for the design of Escher is the idea that 
+software programs should be assembled as the interconnection of
+independently-executing computational devices of special-purpose logic.
+In other words, computer programs—small or large—should be
+no different in their essential structure than cloud applications, 
+which are no more and no less than an interconnection of independently
+running special-purpose services.
+
+<p>We call these “computational devices” <em>reflexes</em>.
+Reflexes can be implemented in the language underlying Escher 
+(the Go language) or they can be composed out of other reflexes,
+using <a href="programs.html">circuit programs</a> from within Escher.
+Here we describe how to implement relfexes in Go.
+
+<p>A separate section explains how to link your reflex implementations
+with the Escher runtime environment, so that they are accessible for
+programming from within Escher circuit programs.
+
+<h2>Semantics</h2>
+
+<p>
+
+<p>A reflex is a Go type with a set of public methods, which inform the
+Escher runtime how to instantiate it into a running code and how to 
+connect it to other reflexes.
+
+
+
+
+
+
+<h2>Receiver type</h2>
+
+<p>Every reflex is embodied by a user-defined Go receiver type.
+
+<pre>
+type Receiver struct {
+	…
+}
+</pre>
+
+<p>When a reflex is materialized, the Escher runtime creates a new instance of the underlying 
+Go receiver type and invokes a designated initialization method, called <code>Spark</code>.
+All receivers must implement that method.
+
+<h2>The spark</h2>
+
+<p>
+
+<pre>
+func (r *Receiver) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
+	…
+}
+</pre>
+
+<h2>Receiver methods</h2>
+
+<p>There are two kinds of public receiver methods that the runtime
+considers when materializing a reflex implementation.
+
+<h3>Fixed valve names</h3>
+
+<p>The first kind are receiver methods named 
+<code>CognizeVALVE</code>, where <code>VALVE</code>
+can be any string (including the empty string), that have the following
+signature:
+
+<pre>
+func (r *Receiver) CognizeVALVE(eye *be.Eye, value interface{}) {
+	…
+}
+</pre>
+
+<p>If such a method is present in <code>Receiver</code>, it informs the
+runtime that this reflex type requires the valve named <code>VALVE</code>
+to be connected (when the reflex is materialized as part of a circuit of reflexes).
+
+<p>Furthermore, every event sent to this valve (of this reflex instance) 
+will result in an invokation of the method <code>CognizeVALVE</code>, wherein the event value
+is held by the argument <code>value</code>. The <code>eye</code> object, supplied 
+for convenience, can be used to send out events to any of the reflex's connected 
+valves.
+
+<p>We say that that the method <code>CognizeVALVE</code> captures the event.
+
+<h3>Varying valve names</h3>
+
+<p>The second kind are receiver methods with this exact signature:
+
+<pre>
+func (r *Receiver) OverCognize(eye *be.Eye, valve Name, value interface{}) {
+	…
+}
+</pre>
+
+<p>If such a method is present, the runtime is informed that the reflex
+accepts any number and naming of connected valves. The method 
+<code>OverCognize</code> will be invoked whenever an event is
+received that is not captured by a fixed-name valve method.
+
+<p>The name of the valve that the event is received on will be held
+by the argument <code>name</code> in this case.
+
+<h2>Linking user reflexes into the runtime</h2>
+
+`
+}

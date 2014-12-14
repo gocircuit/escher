@@ -1,12 +1,12 @@
 
-BuildInterPage {
+BuildMeaningPage {
         wf *io.WriteFile
-        wf:Content = *InterPage
-        wf:Name = "inter.html"
+        wf:Content = *MeaningPage
+        wf:Name = "meaning.html"
         : = wf:Ready
 }
 
-InterPage {
+MeaningPage {
 	h *Html
 	h: = :
 	h:Title = "Circuit interpretations"

@@ -61,10 +61,10 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <ol>
 <li><a href="install.html">Building and installing</a></li>
 <li><a href="syntax.html">Circuit syntax</a></li>
-<li><a href="inter.html">Interpretations of circuits</a></li>
-<li>Implementing reflexes</li>
-<li><a href="m.html">Programs and materialization</a></li>
-<li><a href="cmd.html">Command-line tool</a></li-->
+<li><a href="meaning.html">Interpretations of circuits</a></li>
+<li><a href="reflex.html">Implementing reflexes</a></li>
+<li><a href="program.html">Programs and materialization</a></li>
+<li>Command-line tool</li>
 </ol>
 
 <!--h2>Faculties</h2>

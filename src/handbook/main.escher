@@ -9,4 +9,5 @@ main {
 	x:5 = *BuildCommandPage
 	x:6 = *BuildMeaningPage
 	x:7 = *BuildReflexPage
+	x:8 = *BuildProgramPage
 }

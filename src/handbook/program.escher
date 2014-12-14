@@ -1,0 +1,26 @@
+
+BuildProgramPage {
+        wf *io.WriteFile
+        wf:Content = *ProgramPage
+        wf:Name = "program.html"
+        : = wf:Ready
+}
+
+ProgramPage {
+	h *Html
+	h: = :
+	h:Title = "Programs and materialization"
+	h:Body = t:
+
+	t *text.QuickForm
+	t:Data = {}
+	t:Form = `
+
+<h1>Programs and materialization</h1>
+
+<p>
+Materialization is the process of creating and executing a system of
+interconnected reflexes, wherein the system is specified by a circuit
+called a program.
+`
+}

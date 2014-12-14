@@ -30,11 +30,8 @@ running special-purpose services.
 Reflexes can be implemented in the language underlying Escher 
 (the Go language) or they can be composed out of other reflexes,
 using <a href="programs.html">circuit programs</a> from within Escher.
-Here we describe how to implement relfexes in Go.
-
-<p>A separate section explains how to link your reflex implementations
-with the Escher runtime environment, so that they are accessible for
-programming from within Escher circuit programs.
+Here we describe how to implement relfexes in Go and link them
+into the Escher runtime.
 
 <h2>Semantics</h2>
 
@@ -59,19 +56,66 @@ type Receiver struct {
 }
 </pre>
 
-<p>When a reflex is materialized, the Escher runtime creates a new instance of the underlying 
-Go receiver type and invokes a designated initialization method, called <code>Spark</code>.
-All receivers must implement that method.
+<p>The receiver type must be a Go <code>struct</code> or pointer to <code>struct</code>.
 
 <h2>The spark</h2>
 
-<p>
+<p>When a reflex is materialized, the Escher runtime creates a new instance of the underlying 
+Go receiver type and invokes a designated initialization method, called <code>Spark</code>.
+All receivers must implement that method.
 
 <pre>
 func (r *Receiver) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 	…
 }
 </pre>
+
+<h3>Eye to the outside</h3>
+
+<p>The first argument <code>eye</code> is an object with a singleton public method:
+
+<pre>
+func (eye *Eye) Show(valve Name, value interface{})
+</pre>
+
+<p>You can use this method to send values to any valve connected to this reflex,
+spcified by its name. The method <code>eye.Show</code> should not be called
+from the body of <code>Spark</code> directly, but it can be invoked from
+a goroutine spawned from the body of <code>Spark</code>.
+
+<p>It is usually not necessary to save the <code>eye</code> in the receiver's fields,
+because it is passed to all public methods of the receiver (described below) that
+the runtime calls.
+
+<h3>Materialization matter</h3>
+
+<p>The argument <code>matter</code> holds the entire runtime “language stack” that lead
+to the materialization of this reflex. This object holds the same debugging information that
+is printed out by the Escher tool when an Escher program panics.
+
+<p>From a programmatic standpoint, only one of the gates of circuit <code>matter</code>
+is of interest to reflex programmers. The gate called <code>View</code> lists
+the names of all valves connected to this reflex by the parent system which is 
+materializing this reflex. The <code>View</code> gate has
+a circuit value, whose gate names correspond to the names of the
+valves connected to the reflex being materialized.
+
+<p>For instance, the names of the connected valves can be printed with this code:
+
+<pre>
+	view := matter.CircuitAt("View")
+	for _, valve := range view.SortedNames() {
+		fmt.Printf("valve name = %v\n", vavle)
+	}
+</pre>
+
+<h3>Auxiliary input</h3>
+
+<p>The last argument <code>aux</code> contains user-supplied auxiliary 
+information that can inform the <code>Spark</code> method to specialize
+this reflex one way or another. The auxiliary information is specified 
+by the user when linking the reflex to the runtime, which is explained 
+furhter below.
 
 <h2>Receiver methods</h2>
 
@@ -122,6 +166,57 @@ received that is not captured by a fixed-name valve method.
 by the argument <code>name</code> in this case.
 
 <h2>Linking user reflexes into the runtime</h2>
+
+…
+
+<h2>A one-way door example</h2>
+
+<p>The following code demonstrates implementing and linking a new
+reflex. The purpose of this reflex is to act as a “one way door”.
+It expects exactly three connected valves <code>From</code>, <code>To</code>
+and <code>Door</code>.
+
+<p>Values received on valve <code>To</code> are ignored. When a value is received
+on valve <code>From</code>, it is not passed on to valve <code>To</code> until
+an arbitrary value is first sent to valve <code>Door</code>.
+
+<p>In other words, the reflex passes values from <code>From</code> to <code>To</code>,
+wherein each passing value is blocked until its transmission is allowed by a “strobe”
+value sent to <code>Door</code>.
+
+<pre>
+package example
+
+import (
+	"github.com/gocircuit/escher/be"
+	"github.com/gocircuit/escher/faculty"
+	. "github.com/gocircuit/escher/circuit"
+)
+
+func init() {
+	faculty.Register(be.NewMaterializer(&Door{}), "example", "OneWayDoor")
+}
+
+type Door struct {
+	flow chan struct{}
+}
+
+func (r *Door) Spark(*be.Eye, Circuit, ...interface{}) Value {
+	r.flow = make(chan struct{})
+	return nil
+}
+
+func (r *Door) CognizeFrom(eye *be.Eye, value interface{}) {
+	<-r.flow
+	eye.Show("To", value)
+}
+
+func (r *Door) CognizeTo(eye *be.Eye, value interface{}) {}
+
+func (r *Door) CognizeDoor(eye *be.Eye, value interface{}) {
+	r.flow <- struct{}{}
+}
+</pre>
 
 `
 }

@@ -158,7 +158,43 @@ in the residue circuit.
 
 <h2>Example with an illustration</h2>
 
-<p>…
+<p>Consider, for instance, the following index:
+
+<pre>
+{
+	Database {
+		cache Cache
+		left Shard
+		right Shard
+		link Link
+		cache:Web = :Web
+		left:Cache = cache:Left
+		right:Cache = cache:Right
+		left:Backup = link:Left
+		right:Backup = link:Right
+		link: = :Backup
+	}
+	App {
+		web Web
+		left Database
+		right Database
+		backup Backup
+		left:Web = web:Left
+		right:Web = web:Right
+		left:Backup = backup:Left
+		right:Backup = backup:Right
+	}
+	Web …
+	Cache …
+	Shard …
+	Link …
+}
+</pre>
+
+<p>Here <code>App</code> and <code>Database</code> are program circuits and their symbolic
+representation is shown below.
+Whereas assume that <code>Web</code>, <code>Cache</code>, <code>Shard</code> and <code>Link</code>
+(whose definition is not given in this listing) are reflex materializers.
 
 {{.Gate.Telescope}}
 

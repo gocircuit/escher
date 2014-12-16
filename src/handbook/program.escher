@@ -22,5 +22,101 @@ ProgramPage {
 Materialization is the process of creating and executing a system of
 interconnected reflexes, wherein the system is specified by a circuit
 called a program.
+
+<p>Materialization takes as input an index (of circuit programs and
+other reflex materializers) and a circuit program to materialize.
+The result of materialization is the creation and execution of the
+system of reflexes described by the circuit program, as well as a
+residual value.
+
+<h2>Circuit programming</h2>
+
+<p>A program circuit describes a system of interconnected reflexes.
+
+<p>Each circuit gate corresponds to a reflex. The gate value 
+describes the type of reflex that is to be materialized. While the
+gate name is merely an identifier, unique to the program circuit,
+used mainly to enable the specification of the reflex-to-reflex links.
+The relation between gate values and materialized reflexes is explained later.
+
+<p>In a valid program circuit, a gate whose name is the empty
+string must not be defined. The empty-string gate is reserved for
+the <em>super gate</em>, which (detailed later) designates an “enclosing” circuit.
+
+<p>The circuit program's links connect pairs of reflex-valve endpoints.
+Links are allowed either between two gates defined within the circuit,
+or between a defined gate and the super gate.
+
+<p>Links connected to the super gate are endpoints whose eventual connection
+to a reflex is defered to the enclosing circuit.
+
+<p>Circuit programs that have no links to the super gate are called <em>closed</em>
+circuits, as they describe complete materializable systems on their own.
+
+<p>On the other hand, circuit programs that have links to the super gate
+can only be materialized as reflexes within higher-level enclosing circuits.
+
+<h3>Gate value interpretation</h3>
+
+<p>Circuit programs recognize the following types of gate values:
+<ul>
+<li>Integer, float, complex, string, or a non-directive circuit, or</li>
+<li><a href="meaning.html#directives">Directive circuit</a>
+</ul>
+
+<h4>Noun reflexes</h4>
+
+<p>Gate values in the first group (integer, float, complex, string or a non-directive circuit) 
+will result in the materialization of a “noun” reflex, whose noun value is the
+gate value.
+
+<p>A noun reflex is a generic built-in reflex type which, after materialization,
+emits its corresponding gate value to each one of its connected valves.
+If no valves are connected, the noun reflex leaves the gate value as its 
+residue. Otherwise, it leaves no residue.
+
+<h4>Expanding directives</h4>
+
+<p>When the gate value is a <a href="meaning.html#directives">directive</a>,
+materialization proceeds as follows:
+
+<ul>
+<li>First, the runtime looks up the “target” value, which resides in the index
+at the address specified in the directive.</li>
+<li>Second,
+<ul>
+<li>If the directive verb is <code>@</code>, the gate is materialized as a noun gate
+emitting the target value.</li>
+<li>If the directive verb is <code>*</code>, the target value is substituted as the gate value,
+and the materialization process described in this section is repeated now with the target
+value as the gate value.
+</ul>
+</li>
+</ul>
+
+<h3>Circuit residue</h4>
+
+<p>As pointed out in the <a href="reflex.html">section on reflexes</a>, every reflex
+can leave a residue value as a result of being materialized, or the Go value <code>nil</code>
+which indicates leaving no residue.
+
+<p>Circuit programs are no different than reflexes (in fact they describe higher-order reflexes themselves)
+in that they leave a residue value as well.
+
+<p>The residue of materializing a circuit program is the same circuit,
+wherein each gate value is replaced by the residue of materializing that gate.
+Gate corresponding to reflexes that leave no residue are not present
+in the residue circuit.
+
+<p>If no gates leave any residue, the circuit program itself leaves no residue.
+
+<h2>Example with an illustration</h2>
+
+<p>…
+
+<h2>Three ways to invoke materialization</h2>
+
+<p>…
+
 `
 }

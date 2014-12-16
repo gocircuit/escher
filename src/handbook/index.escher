@@ -64,9 +64,21 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <li><a href="meaning.html">Interpretations of circuits</a></li>
 <li><a href="reflex.html">Implementing reflexes</a></li>
 <li><a href="program.html">Programs and materialization</a></li>
-<li>Reflex basis and faculties</li>
+<li>Reflex basis and faculties
+<ul>
+<li>Basic information flow faculty</li>
+<li>Materialization faculty</li>
+<li>OS faculty for access to POSIX</li>
+</ul>
+</li>
 <li>Command-line tool and runtime</li>
 </ol>
+
+<h2>Case studies</h2>
+
+<ul>
+<li>Materializing cloud service topologies using Circuit and Escher</li>
+</ul>
 
 <!--h2>Faculties</h2>
 

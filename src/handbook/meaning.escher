@@ -114,11 +114,11 @@ path which we shall call <em>address</em> of a value relative to a given index.
 
 (Note that addresses are represented by series circuits.)
 
-<h2 id="sentences">Sentences</h2>
+<h2 id="directives">Directives</h2>
 
-<p><em>Sentences</em> are a key building block of circuit programs (described next and in following sections).
-A sentence is a pair of a string-valued <em>verb</em> and a target address.
-Sentences are represented as a single circuit, wherein the empty-string gate holds the verb,
+<p><em>Directives</em> are a key building block of circuit programs (described next and in following sections).
+A directive is a pair of a string-valued <em>verb</em> and a target address.
+Directives are represented as a single circuit, wherein the empty-string gate holds the verb,
 while the number gates hold the components of the address. For instance,
 
 <pre>
@@ -138,7 +138,7 @@ We call these verbs <em>materialize</em> and <em>recall</em>, respectively, whil
 single-characters values, <code>"*"</code> and <code>"@"</code>, are a design
 choice of expediency.
 
-<p>Due to the ubiquitous use of sentences in circuit programs, sentences can be written
+<p>Due to the ubiquitous use of directives in circuit programs, directives can be written
 using the <a href="syntax.html">dedicated syntactic sugar</a>:
 
 <pre>
@@ -158,7 +158,7 @@ which are interconnected according to the link pattern of the circuit.
 gate names are used solely as identifiers, needed in the description of the circuit links.
 
 <p>Gate values can be of any kind: integer, float, complex, string
-or circuit. Often gate values will be sentence circuits, in which case they can be
+or circuit. Often gate values will be directive circuits, in which case they can be
 written using the abbreviated syntax described earlier.
 
 <p>Circuit links are allowed only between gate names,

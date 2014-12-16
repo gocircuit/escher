@@ -12,8 +12,16 @@ ReflexPage {
 	h:Title = "Implementing reflexes"
 	h:Body = t:
 
+	f *Fork
+	f:Reflex = rfx:
+
+	rfx *FigureJpg
+	rfx:Image = "reflex"
+	rfx:Width = "300px"
+	rfx:Caption = ``
+
 	t *text.QuickForm
-	t:Data = {}
+	t:Data = f:
 	t:Form = `
 
 <h1>Implementing reflexes</h1>
@@ -33,18 +41,18 @@ using <a href="programs.html">circuit programs</a> from within Escher.
 Here we describe how to implement relfexes in Go and link them
 into the Escher runtime.
 
-<h2>Semantics</h2>
+<h2>Reflexes and the runtime</h2>
 
-<p>
+<p>A reflex is an independent computing device which can communicate
+with other reflexes through a set of named valves.
 
-<p>A reflex is a Go type with a set of public methods, which inform the
-Escher runtime how to instantiate it into a running code and how to 
-connect it to other reflexes.
+{{.Gate.Reflex}}
 
-
-
-
-
+<p>The creation and execution of a reflex is called <em>materialization</em>.
+The Escher runtime materializes reflexes as parts of larger circuits of
+interconnected reflexes. When a reflex is materialized, its set of connected
+valves is already determined by the higher-level runtime logic, which in turn
+is guided by <a href="program.html">circuit programs</a>, described in the next section.
 
 <h2>Receiver type</h2>
 
@@ -79,9 +87,9 @@ func (eye *Eye) Show(valve Name, value interface{})
 </pre>
 
 <p>You can use this method to send values to any valve connected to this reflex,
-spcified by its name. The method <code>eye.Show</code> should not be called
+specified by its name. The method <code>eye.Show</code> should not be called
 from the body of <code>Spark</code> directly, but it can be invoked from
-a goroutine spawned from the body of <code>Spark</code>.
+a go-routine spawned from the body of <code>Spark</code>.
 
 <p>It is usually not necessary to save the <code>eye</code> in the receiver's fields,
 because it is passed to all public methods of the receiver (described below) that
@@ -117,10 +125,24 @@ this reflex one way or another. The auxiliary information is specified
 by the user when linking the reflex to the runtime, which is explained 
 furhter below.
 
+<h3>Return residue</h3>
+
+<p>The <code>Spark</code> method can return a value called the 
+<em>residue</em> (of materializing this reflex). The residue value
+can be <code>int</code>, <code>float64</code>, <code>complex128</code>,
+<code>string</code>, <code>Circuit</code> or <code>Materializer</code>.
+The latter is a Go type that can materialize reflexes (it is essentially a factory
+object for reflexes), described in the linking section below.
+
+<p>The residue will be made available through the Escher 
+<a href="program.html">programming environment</a> for further
+manipulations.
+
 <h2>Receiver methods</h2>
 
 <p>There are two kinds of public receiver methods that the runtime
-considers when materializing a reflex implementation.
+considers (by reflecting on the receiver's Go type) when materializing
+a reflex implementation.
 
 <h3>Fixed valve names</h3>
 
@@ -167,7 +189,40 @@ by the argument <code>name</code> in this case.
 
 <h2>Linking user reflexes into the runtime</h2>
 
-…
+<p>Before a new reflex receiver type can be used by the runtime for materialization,
+one must create a <code>Materializer</code> object, which acts as a factory
+for reflexes of a given type.
+
+<p>Creating the <code>Materializer</code> is accomplished using the function
+<code>NewMaterializer</code> in package <code>be</code>:
+
+<pre>
+func NewMaterializer(receiver Material, aux ...interface{}) Materializer
+</pre>
+
+<p>When the Escher runtime (implemented in <code>escher/main.go</code>) starts,
+it creates a global index circuit (i.e. a namespace) of all reflex materializers that
+will be available from the Escher circuit programming environment.
+
+<p>To add a materializer for a new reflex type to the Escher index, one uses
+the method <code>Register</code> in package <code>faculty</code>:
+
+<pre>
+func Register(v Materializer, addr ...Name)
+</pre>
+
+<p>The first argument is the materializer for the reflex, obtained from <code>NewMaterializer</code>,
+and the second argument is the address within the index where the materializer will be placed.
+
+<p>Typically the user will implement a package with multiple topically-related reflex receivers,
+and will register their respective materializers with the runtime as a side-effect of importing the
+package, using an <code>init</code> function:
+
+<pre>
+func init() {
+	faculty.Register(be.NewMaterializer(&Receiver{}), "example", "ReflexName")
+}
+</pre>
 
 <h2>A one-way door example</h2>
 

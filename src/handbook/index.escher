@@ -72,6 +72,7 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 </ul>
 </li>
 <li>Command-line tool and runtime</li>
+<li>Debugging panics</li>
 </ol>
 
 <h2>Case studies</h2>

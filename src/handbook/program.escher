@@ -31,25 +31,17 @@ ProgramFigures {
 	fig2 *FigurePngSvg
 	fig2:Image = "telescope"
 	fig2:Width = "600px"
-	fig2:Caption = `This is a <a href="syntax.html">symbolic representation</a> 
-	of two circuit designs, named <code>App</code> and <code>Database</code>.
-	The illustration omits valve names.`
+	fig2:Caption = ``
 
 	fig3 *FigurePngSvg
 	fig3:Image = "expanded"
 	fig3:Width = "500px"
-	fig3:Caption = `The inversion of colors—from white-on-black in the enclosing circuit, to
-	black-on-white in the substituted circuits—is a visual symbolism indicating that 
-	the substitutions are separate data-structures from the enclosing one. Specifically,
-	the visual links that cross circuits are not explicitly represented in the data structure.
-	This can be accomplished by flattening (see below).`
+	fig3:Caption = ``
 
 	fig4 *FigurePngSvg
 	fig4:Image = "flattened"
 	fig4:Width = "500px"
-	fig4:Caption = `After flattening circuits recursively, all gates end up in the same giant circuit.
-	In order to preserve the circuit invariant that no two gates have the same name,
-	gates are automatically renamed to reflect the root-to-leaf path to them in the unflattened circuit.`
+	fig4:Caption = ``
 }
 
 ProgramPage {
@@ -167,6 +159,7 @@ in the residue circuit.
 		left Shard
 		right Shard
 		link Link
+
 		cache:Web = :Web
 		left:Cache = cache:Left
 		right:Cache = cache:Right
@@ -179,6 +172,7 @@ in the residue circuit.
 		left Database
 		right Database
 		backup Backup
+
 		left:Web = web:Left
 		right:Web = web:Right
 		left:Backup = backup:Left
@@ -198,10 +192,60 @@ Whereas assume that <code>Web</code>, <code>Cache</code>, <code>Shard</code> and
 
 {{.Gate.Telescope}}
 
+If we materialize the program circuit <code>App</code> with respect to the index given above
+(i.e. directive addresses will resolve with respect to that index), 
+we are going to get the following residue:
+
+<pre>
+{
+	web WebResidue
+	bkp BackupResidue
+	db1 {
+		shard1 Shard1Residue
+		shard2 Shard2Residue
+		cache CacheResidue
+		link LinkResidue
+
+		cache:Web = :Web
+		left:Cache = cache:Left
+		right:Cache = cache:Right
+		left:Backup = link:Left
+		right:Backup = link:Right
+		link: = :Backup
+	}
+	db2 {
+		shard1 Shard1Residue
+		shard2 Shard2Residue
+		cache CacheResidue
+		link LinkResidue
+
+		cache:Web = :Web
+		left:Cache = cache:Left
+		right:Cache = cache:Right
+		left:Backup = link:Left
+		right:Backup = link:Right
+		link: = :Backup
+	}
+	left:Web = web:Left
+	right:Web = web:Right
+	left:Backup = backup:Left
+	right:Backup = backup:Right
+}
+</pre>
+
+<p>Where <code>WebResidue</code>, <code>BackupResidue</code>, <code>Shard1Residue</code>, etc. are
+merely placeholders here for whatever the actual residue values of the respetive reflexes are.
+Visually the program residue could be represented as:
+
 {{.Gate.Expanded}}
+
+<p>The actual executed system of interconnected reflexes which results from the materialization
+can be visualized like so:
 
 {{.Gate.Flattened}}
 
+<p>This illustration does not correspond to a circuit data structure anywhere in the runtime.
+It is merely an illustration of the executed reflexes and their runtime connections.
 
 <h2>Three ways to invoke materialization</h2>
 

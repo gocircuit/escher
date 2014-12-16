@@ -224,6 +224,9 @@ func init() {
 }
 </pre>
 
+<p>To include user-defined reflexes in the Escher executable, edit <code>escher/main.go</code>
+to import the newly created package.
+
 <h2>A one-way door example</h2>
 
 <p>The following code demonstrates implementing and linking a new

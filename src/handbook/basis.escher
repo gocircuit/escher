@@ -1,0 +1,33 @@
+
+BuildBasisPage {
+        wf *io.WriteFile
+        wf:Content = *BasisPage
+        wf:Name = "basis.html"
+        : = wf:Ready
+}
+
+BasisPage {
+	h *Html
+	h: = :
+	h:Title = "Reflex basis and faculties"
+	h:Body = t:
+
+	f *Fork
+	f:Reflex = rfx:
+
+	rfx *FigureJpg
+	rfx:Image = "reflex"
+	rfx:Width = "300px"
+	rfx:Caption = ``
+
+	t *text.QuickForm
+	t:Data = f:
+	t:Form = `
+
+<h1>Reflex basis and faculties</h1>
+
+<p>
+
+
+`
+}

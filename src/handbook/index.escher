@@ -64,7 +64,7 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <li><a href="meaning.html">Interpretations of circuits</a></li>
 <li><a href="reflex.html">Implementing reflexes</a></li>
 <li><a href="program.html">Programs and materialization</a></li>
-<li>Reflex basis and faculties
+<li><a href="basis.html">Reflex basis and faculties</a>
 <ul>
 <li>Basic information flow faculty</li>
 <li>Materialization faculty</li>
@@ -80,12 +80,6 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <ul>
 <li>This handbook is written by an Escher program</li>
 <li>Materializing cloud service topologies using Circuit and Escher</li>
-</ul>
-
-<h2>Prior work on “connecting everything”</h2>
-
-<ul>
-<li>XX...
 </ul>
 
 <!--h2>Faculties</h2>

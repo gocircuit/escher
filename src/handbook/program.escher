@@ -249,7 +249,43 @@ It is merely an illustration of the executed reflexes and their runtime connecti
 
 <h2>Three ways to invoke materialization</h2>
 
-<p>…
+<p>One can materialize (i.e. execute) a program circuit given an index from three different places:
+from Go, from another program circuit (i.e. from Escher) and from the POSIX shell.
+
+<h3>Materializing from Go</h3>
+
+<p>Package <code>be</code> provides the materialization method:
+
+<pre>
+func MaterializeSystem(program interface{}, index, barrier Circuit) (residue interface{})
+</pre>
+
+<p>Argument <code>program</code> contains the program circuit, of Go type <code>Circuit</code>,
+that is to be materialized. Incidentally, the value of <code>program</code> can be any value
+recognized as a gate value in a circuit program as described earlier. Often one will pass a directive 
+circuit as program.
+
+<p>Argument <code>index</code> holds the materialization index, relative to which
+directive addresses are interpreted.
+
+<p>The last argument, <code>barrier</code>, is to be set to <code>nil</code>.
+
+<p>The function returns the residue of the materialization process. 
+
+<h3>Materializing from Escher</h3>
+
+<p>One can recursively materialize circuits programs from within other 
+circuit programs. This is accomplished using the built-in reflex <code>escher.Materialize</code>
+which is described in the <a href="mfac.html">materialization faculty section</a>.
+
+<h3>Materializing from POSIX</h3>
+
+<p>The Escher executable, which is explained in detail in the <a href="runtime.html">runtime section</a>,
+will materialize a directive from the command-line:
+
+<pre>
+% escher -src /src/app *app.Main
+</pre>
 
 `
 }

@@ -8,7 +8,7 @@ BuildIndexPage {
 IndexPage {
         h *Html
         h: = :
-        h:Title = "Escher syntax"
+        h:Title = "The Escher language"
         h:Body = `
 <h1>Escher language</h1>
 
@@ -78,7 +78,14 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <h2>Case studies</h2>
 
 <ul>
+<li>This handbook is written by an Escher program</li>
 <li>Materializing cloud service topologies using Circuit and Escher</li>
+</ul>
+
+<h2>Prior work on “connecting everything”</h2>
+
+<ul>
+<li>XX...
 </ul>
 
 <!--h2>Faculties</h2>

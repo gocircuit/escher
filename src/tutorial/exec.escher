@@ -4,7 +4,6 @@ Exec {
 		Path "/bin/ls"
 		Args { "/" }
 	}
-	proc:When = 1
 
 	yio *Fork
 	proc:IO = yio:
@@ -12,12 +11,10 @@ Exec {
 	yio:Stdin = *Ignore
 	yio:Stdout = *os.Stdout
 	yio:Stderr = *os.Stderr
-	yio:When = *Ignore
 
 	yexit *Fork
 	proc:Exit = yexit:
+	
 	exit *os.Exit
-
 	yexit:Exit = exit:
-	yexit:When = *Ignore
 }

@@ -25,7 +25,7 @@ func Init(arg []string) {
 	faculty.Register(be.NewMaterializer(Fatal{}), "os", "Fatal")
 	faculty.Register(be.NewMaterializer(LookPath{}), "os", "LookPath")
 	faculty.Register(be.NewMaterializer(Join{}), "os", "Join")
-	faculty.Register(be.NewMaterializer(&Process{}), "os", "Process")
+	faculty.Register(be.NewMaterializer(Process{}), "os", "Process")
 	faculty.Register(fio.NewReaderMaterializer(os.Stdin), "os", "Stdin")
 	faculty.Register(fio.NewWriterMaterializer(os.Stdout), "os", "Stdout")
 	faculty.Register(fio.NewWriterMaterializer(os.Stderr), "os", "Stderr")

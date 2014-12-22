@@ -1,12 +1,12 @@
 
-BuildBasisPage {
+BuildBasisOSPage {
         wf *io.WriteFile
-        wf:Content = *BasisPage
-        wf:Name = "basis.html"
+        wf:Content = *BasisOSPage
+        wf:Name = "basis-os.html"
         : = wf:Ready
 }
 
-BasisPage {
+BasisOSPage {
 	h *Html
 	h: = :
 	h:Title = "Reflex basis and faculties"

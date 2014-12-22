@@ -1,12 +1,12 @@
 
-BuildBasisPage {
+BuildBasisEscherPage {
         wf *io.WriteFile
-        wf:Content = *BasisPage
-        wf:Name = "basis.html"
+        wf:Content = *BasisEscherPage
+        wf:Name = "basis-escher.html"
         : = wf:Ready
 }
 
-BasisPage {
+BasisEscherPage {
 	h *Html
 	h: = :
 	h:Title = "Reflex basis and faculties"

@@ -1,0 +1,73 @@
+
+BuildBasisFlowPage {
+        wf *io.WriteFile
+        wf:Content = *BasisFlowPage
+        wf:Name = "basis-flow.html"
+        : = wf:Ready
+}
+
+BasisFlowPage {
+	h *Html
+	h: = :
+	h:Title = "Information flow reflexes"
+	h:Body = t:
+
+	f *Fork
+	f:Reflex = rfx:
+
+	rfx *FigureJpg
+	rfx:Image = "reflex"
+	rfx:Width = "300px"
+	rfx:Caption = ``
+
+	t *text.QuickForm
+	t:Data = f:
+	t:Form = `
+
+<h1>Information flow reflexes</h1>
+
+<p>Basis reflexes determine the basic arithmetic and data manipulation 
+operations that Escher programs can ultimately perform, as well as
+external technologies that Escher programs might have access to.
+
+<h3>Star reflex</h3>
+
+<p>The star is the simplest flow reflex. It accepts any number of 
+connected valves and ignores their specific names.
+
+<p>When a value is received on any one of its connected valves,
+the star reflex forwards that value to all other connected valves.
+
+<p>Every forwarded value is emitted (i.e. sent) to its respective 
+valve on a dedicated goroutine. Therefore the star reflex never
+blocks. 
+
+<p>An example usage:
+
+<pre>
+{
+	star *Star
+	one 1
+
+	star:X = one:
+	star:Y = *Show
+	star:Z = *Show
+	star:W = *Show
+}
+</pre>
+
+<p>When this circuit is materialized, the constant <code>1</code> will be emitted from gate <code>one</code>
+to valve <code>X</code> of gate <code>star</code>. The <code>star</code> gate will then forward the value
+to each of the valves <code>Y</code>, <code>Z</code> and <code>W</code> in parallel. Consequently
+it will be printed on the standard output three times by the receiving <code>*Show</code> reflexes.
+
+<h3>Fork reflex</h3>
+
+<p>
+
+<h4>Merge direction</h4>
+
+<h4>Split direction</h4>
+
+`
+}

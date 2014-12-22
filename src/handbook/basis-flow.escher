@@ -26,9 +26,11 @@ BasisFlowPage {
 
 <h1>Information flow reflexes</h1>
 
-<p>Basis reflexes determine the basic arithmetic and data manipulation 
-operations that Escher programs can ultimately perform, as well as
-external technologies that Escher programs might have access to.
+<p>We describe here two of the most commonly utilized information flow reflexes,
+<code>Fork</code> and <code>Star</code>. They are by no means the only
+such, however they demonstrate the spirit of designing information flow
+control primitives. We encourage the reader to eventually review their short
+implementations to realize the huge variety of other possible designs.
 
 <h3>Star reflex</h3>
 
@@ -63,11 +65,72 @@ it will be printed on the standard output three times by the receiving <code>*Sh
 
 <h3>Fork reflex</h3>
 
-<p>
+<p>In our experience, the fork is the most commonly used synchronization primitive in Escher.
+It requires that the distinguished empty-string valve be connected, as well as one or more 
+freely-named (string or integer) other valves.
+
+<p>Fork can be described as two entirely independent reflexes, let us call 
+them <em>merge</em> and <em>split</em>, embodied in one.
+
+<h4>Split direction</h4>
+
+<p>Whenever a value W is received on the empty string valve of a fork,
+the reflex will process it using the split logic. The received value must be of type
+circuit. For every valve whose name N is not the empty string, fork will
+send the value of the gate named N from circuit W to that valve.
+
+<p>Take for instance this program:
+
+<pre>
+{
+	f *Fork
+	f: = {
+		x "Hello"
+		y "World"
+		z "Foo"
+	}
+	f:x = *Show
+	f:y = *Show
+}
+</pre>
+
+<p>The values <code>"Hello"</code> and <code>"World"</code> will be sent 
+to and printed by the connected <code>*Show</code> reflexes. Whereas the value <code>"Foo"</code>
+will be ignored.
 
 <h4>Merge direction</h4>
 
-<h4>Split direction</h4>
+<p>Fork will wait until one value is received on each of its non-empty-string valves. When
+this condition is met, it will merge all such values as the gates of a single circuit, wherein
+gate names follow respective valve names, and will send this circuit out to its empty string valve.
+
+<p>Note that in the merge direction fork reflexes act as powerful synchronization primitives.
+They effectively wait, blocking any other receptions on the non-empty-string valves, until 
+one value is available on each such valve. Subsequently these values are packed into a 
+single circuit and sent out.
+
+<p>Consider the following program, for instance:
+
+<pre>
+{
+	f *Fork
+	f: = *Show
+	f:x = "New"
+	f:y = "York"
+}
+</pre>
+
+<p>Fork will wait until <code>"New"</code> and <code>"York"</code> are received
+on valves <code>x</code> and <code>y</code>, respectively. Then the value
+
+<pre>
+{
+	x "New"
+	y "York"
+}
+</pre>
+
+<p>will be sent to and printed by the <code>*Show</code> reflex.
 
 `
 }

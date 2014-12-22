@@ -26,39 +26,7 @@ BasisEscherPage {
 
 <h1>Reflex basis and faculties</h1>
 
-<p>There are two kinds of reflexes in Escher: 
-<ul>
-<li>Those that are implemented in the underlying technology, the Go language, and linked into the runtime, which we call
-<em>basis</em> reflexes.
-<li>And those that are compositions of other reflexes, described by program circuits, which we call 
-<em>derivative reflexes</em>.
-</ul>
-
-<p>Basis reflexes determine the basic arithmetic and data manipulation 
-operations that Escher programs can ultimately perform, as well as
-external technologies that Escher programs might have access to.
-
-<h3>Arithmetic</h3>
-
-<p>There are various ways to design and implement small sets of
-arithmetic basis reflexes that would render circuit programs Turing-complete.
-We leave the design of such bases to the users of Escher, whose imagination
-and use cases might inform choices that we cannot predict from scratch.
-
-<h3>Information flow</h3>
-
-<p>We find that most Escher programs benefit from
-a few basic reflexes that control information flow. 
-We have included a few in the default runtime and they are described in the following
-sections. These gates can be viewed as Escher's “synchronization” facilities.
-
-<h3>External technologies</h3>
-
-<p>
-
-<h3>Recursive materialization</h3>
-
-<p>
+<p>??
 
 `
 }

@@ -9,16 +9,75 @@ BuildBasisEscherPage {
 BasisEscherPage {
 	h *Html
 	h: = :
-	h:Title = "Reflex basis and faculties"
+	h:Title = "Escher faculty"
 	h:Body = t:
 
 	t *text.QuickForm
 	t:Data = {}
 	t:Form = `
 
-<h1>Reflex basis and faculties</h1>
+<h1>Escher faculty</h1>
 
-<p>??
+<p>The Escher faculty provides access to linguistic primitives from within program circuits.
+
+<h2>Index reflex</h2>
+
+<p>Every running Escher circuit program has been <a href="program.html">materialized relative to an index</a>.
+The index reflex, <code>escher.Index</code>, is a noun reflex that emits the index relative to which
+the current circuit has been materialized.
+
+<p>The following program, for instance, will print out the index used to materialize the invoking circuit program:
+
+<pre>
+{
+	*Show = *escher.Index
+}
+</pre>
+
+<h2>Materialize reflex</h2>
+
+<p>The materialize reflex, named <code>escher.Materialize</code>,
+materializes a program circuit relative to an index of faculties.
+
+<p>The reflex requires that two valves, <code>:View</code> and <code>:Residue</code>, be connected.
+Values sent to <code>:View</code> must be circuits containing gates named <code>Index</code> and <code>Program</code>.
+The value of the <code>Program</code> gate must be a circuit program (or any 
+<a href="program.html">gate value allowed within a circuit program</a>). Whereas the value of the
+<code>Index</code> gate should hold the index, relative to which the program will be materialized.
+
+<p>When a value is received at <code>:View</code>, the materialize reflex will materialize the 
+program relative to the given index and will return the residue to the valve <code>:Residue</code>.
+
+<p>Consider the following example program:
+
+<pre>
+{
+	m *escher.Materialize
+	f *Fork
+
+	m:View = f:
+	f:Program = {
+		*Show = "Hello from the child circuit program."
+	}
+	f:Index = *escher.Index
+	m:Residue = *Show
+}
+</pre>
+
+<p>This program will materialize the child program
+
+<pre>
+{
+	*Show = "Hello from the child circuit program."
+}
+</pre>
+
+<p>using the same index that was used to materialize the parent program, as acquired from
+the <code>*escher.Index</code> reflex in the parent program.
+
+<h2>Remarks</h2>
+
+<p>
 
 `
 }

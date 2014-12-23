@@ -3,12 +3,12 @@ It helps future understanding of past knowledge to save
 this notice, so peers of other times and backgrounds can
 see history clearly.`
 
-QuickSystem {
-	x *escher.System
+QuickMaterialize {
+	x *escher.Materialize
 	x:View = y:
 	x: = :Residue
 
 	y *Fork
 	y:Index = :Index
-	y:Design = :Design
+	y:Program = :Program
 }

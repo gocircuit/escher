@@ -25,8 +25,8 @@ func (s *System) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
 
 func (s *System) CognizeView(eye *be.Eye, value interface{}) {
 	u := value.(Circuit)
-	residue := be.MaterializeSystem(u.At("Design"), u.CircuitAt("Index"), s.barrier)
-	eye.Show(DefaultValve, residue)
+	residue := be.MaterializeSystem(u.At("Program"), u.CircuitAt("Index"), s.barrier)
+	eye.Show("Residue", residue)
 }
 
-func (s *System) Cognize(*be.Eye, interface{}) {}
+func (s *System) CognizeResidue(*be.Eye, interface{}) {}

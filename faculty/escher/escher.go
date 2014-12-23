@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewMaterializer(&System{}), "escher", "System")
+	faculty.Register(be.NewMaterializer(&System{}), "escher", "Materialize")
 	faculty.Register(be.NewMaterializer(Index{}), "escher", "Index")
 	faculty.Register(be.NewMaterializer(Parse{}), "escher", "Parse")
 	faculty.Register(be.NewMaterializer(&Help{}), "help")

@@ -9,24 +9,100 @@ BuildBasisOSPage {
 BasisOSPage {
 	h *Html
 	h: = :
-	h:Title = "Reflexes for POSIX"
+	h:Title = "POSIX faculty"
 	h:Body = t:
 
-	f *Fork
-	f:Reflex = rfx:
-
-	rfx *FigureJpg
-	rfx:Image = "reflex"
-	rfx:Width = "300px"
-	rfx:Caption = ``
-
 	t *text.QuickForm
-	t:Data = f:
+	t:Data = {}
 	t:Form = `
 
-<h1>Reflexes for POSIX</h1>
+<h1>POSIX faculty</h1>
 
-<p>There are two kinds of reflexes in Escher: 
+<p>The <code>os</code> faculty contains various reflexes for interacting with the POSIX
+environment within which an Escher program executes. It contains a few simple reflexes
+for accessing things like command-line arguments, environment variables, standard file
+descriptors, process execution and the like. 
+
+<p>Most reflexes in <code>os</code> are implemented in less than 10 lines of code
+and in that sense their implementation is their best documentation. Here we detail
+only the process execution reflex <code>os.Process</code>.
+
+<h2>Process execution reflex</h2>
+
+<p>The process reflex requires that three valves, named <code>:Command</code>,
+<code>:IO</code> and <code>:Exit</code>, be connected. When a command description
+is sent to the <code>:Command</code> valve, the reflex spawns an OS process, described
+by the command value. Subsequent commands will block until the spawned process exits.
+As soon as the process is executed, a circuit value is sent out to the valve <code>:IO</code>,
+containing the standard file descriptors of the executing process. When the process exits,
+a circuit value, containing the exit code of the process, is sent out to the <code>:Exit</code> valve.
+
+<p>An example of the command circuit value is as follows:
+
+<pre>
+{
+	Env {
+		"PATH=/abc:/bin"
+		"LESS=less"
+	}
+	Dir "/home/petar"
+	Path "/bin/ls"
+	Args { "-l", "/" }
+}
+</pre>
+
+<p>The returned IO circuit value is of the following form:
+
+<pre>
+{
+	Stdin (io.WriteCloser)
+	Stdout (io.ReadCloser)
+	Stderr (io.ReadCloser)
+}
+</pre>
+
+<p>Where the gate values' types, in brackets, are the Go types <code>io.WriteCloser</code>,
+<code>io.ReadCloser</code> and <code>io.ReadCloser</code>, respectively.
+
+<p>The exit circuit is of the form
+
+<pre>
+{
+	Exit (int)
+}
+</pre>
+
+<p>The following example demonstrates invoking the <code>/bin/ls</code> command
+and forwarding its standard output and error to those of the Escher program itself.
+
+<pre>
+{
+	proc *os.Process
+	proc:Command = {
+		Path "/bin/ls"
+		Args { "/" }
+	}
+
+	yio *Fork
+	proc:IO = yio:
+
+	yio:Stdin = *Ignore
+	yio:Stdout = *os.Stdout
+	yio:Stderr = *os.Stderr
+
+	yexit *Fork
+	proc:Exit = yexit:
+	
+	exit *os.Exit
+	yexit:Exit = exit:
+}
+</pre>
+
+<p>The standard file descriptors of the child process must always be handled.
+In this example, standard output and error are forwarded while standard input is
+“ignored”. The reflex <code>*Ignore</code> is a “smart” reflex which
+ignores primitive values (integers, floats, etc.), whereas it closes <code>io.Closer</code>
+objects and it drains <code>io.Reader</code> objects.
 
 `
 }

@@ -12,16 +12,8 @@ BasisEscherPage {
 	h:Title = "Reflex basis and faculties"
 	h:Body = t:
 
-	f *Fork
-	f:Reflex = rfx:
-
-	rfx *FigureJpg
-	rfx:Image = "reflex"
-	rfx:Width = "300px"
-	rfx:Caption = ``
-
 	t *text.QuickForm
-	t:Data = f:
+	t:Data = {}
 	t:Form = `
 
 <h1>Reflex basis and faculties</h1>

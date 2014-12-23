@@ -54,9 +54,12 @@ sections. These gates can be viewed as Escher's “synchronization” facilities
 
 <h3>External technologies</h3>
 
-<p>
+<p>Basis reflexes are also Escher's way of interacting with external technologies,
+such as input/output devices. The POSIX systems is a canonical example of an
+external technology and Escher has a dedicated faculty for it, described in a following
+section.
 
-<h3>Recursive materialization</h3>
+<h3>Escher within Escher</h3>
 
 <p>
 

@@ -66,9 +66,9 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 <li><a href="program.html">Programs and materialization</a></li>
 <li><a href="basis.html">Reflex basis and faculties</a>
 <ul>
-<li><a href="basis-flow.html">Basic information flow faculty</a></li>
-<li><a href="basis-escher.html">Materialization faculty</a></li>
-<li><a href="basis-os.html">OS faculty for access to POSIX</a></li>
+<li><a href="basis-flow.html">Information flow faculty</a></li>
+<li><a href="basis-escher.html">Linguistic faculty</a></li>
+<li><a href="basis-os.html">POSIX faculty</a></li>
 </ul>
 </li>
 <li>Command-line tool and runtime</li>

@@ -75,9 +75,5 @@ program relative to the given index and will return the residue to the valve <co
 <p>using the same index that was used to materialize the parent program, as acquired from
 the <code>*escher.Index</code> reflex in the parent program.
 
-<h2>Remarks</h2>
-
-<p>
-
 `
 }

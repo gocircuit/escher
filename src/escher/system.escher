@@ -6,7 +6,7 @@ see history clearly.`
 QuickMaterialize {
 	x *escher.Materialize
 	x:View = y:
-	x: = :Residue
+	x:Residue = :Residue
 
 	y *Fork
 	y:Index = :Index

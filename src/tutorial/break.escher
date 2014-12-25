@@ -1,0 +1,10 @@
+Debug {
+	*Show = "Parent circuit"
+
+	m *escher.QuickMaterialize
+	m:Residue = *Ignore
+	m:Index = *escher.Index
+	m:Program = {
+		*escher.Breakpoint = 1
+	}
+}

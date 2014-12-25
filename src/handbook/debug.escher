@@ -1,0 +1,98 @@
+
+BuildDebugPage {
+        wf *io.WriteFile
+        wf:Content = *DebugPage
+        wf:Name = "debug.html"
+        : = wf:Ready
+}
+
+DebugPage {
+	h *Html
+	h: = :
+	h:Title = "Debugging and panics"
+	h:Body = t:
+
+	t *text.QuickForm
+	t:Data = {}
+	t:Form = `
+
+<h1>Debugging and panics</h1>
+
+<p>??
+
+<h2>Panic traces</h2>
+
+<p>There are two ways in which a running Escher program can panic:
+
+<ul>
+<li>While a reflex is processing an incoming event in a <code>Cognize</code> method, or</li>
+<li>During materialization of a program circuit which is invalid.</li>
+</ul>
+
+<p>In both cases, two types of “traces” will be printed out automatically before the process exits.
+
+<pre>
+{
+	*Show = "Parent circuit"
+
+	m *escher.QuickMaterialize
+	m:Residue = *Ignore
+	m:Index = *escher.Index
+	m:Program = {
+		*escher.Breakpoint = 1
+	}
+}
+</pre>
+
+<p>This program will first materializes the inner program, which in turn will sent the constant <code>1</code>
+to the breakpoint reflex, causing it to panic. The following Escher trace will be printed:
+
+<pre>
+MATERIAL(:)
+DIRECTIVE(:) *escher.Breakpoint/*escher.Breakpoint
+CIRCUIT() {
+        0 *escher.Breakpoint
+        1 1
+        0: = 1:
+}
+SYSTEM() {
+        0 *escher.Breakpoint
+        1 1
+        0: = 1:
+}
+MATERIAL(:Residue :View)
+DIRECTIVE(:Residue :View) *escher.Materialize/*escher.Materialize
+CIRCUIT(:Index :Program :Residue) {
+        x *escher.Materialize
+        y *Fork
+        :Residue = x:Residue
+        :Index = y:Index
+        :Program = y:Program
+        x:View = y:
+}
+DIRECTIVE(:Index :Program :Residue) *escher.QuickMaterialize/*escher.QuickMaterialize
+CIRCUIT() {
+        m *escher.QuickMaterialize
+        0 *Show
+        1 "Parent circuit"
+        2 *Ignore
+        3 *escher.Index
+        4 {
+                0 *escher.Breakpoint
+                1 1
+                0: = 1:
+        }
+        0: = 1:
+        m:Program = 4:
+        m:Residue = 2:
+        m:Index = 3:
+}
+DIRECTIVE() *tutorial.Debug/*tutorial.Debug
+SYSTEM() *tutorial.Debug
+MAIN()
+</pre>
+
+<h2>Debugging reflexes</h2>
+
+`
+}

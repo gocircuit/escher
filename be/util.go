@@ -51,7 +51,7 @@ func PrintMatter(w io.Writer, matter Circuit) {
 		case matter.Has("Verb"):
 			verb := Verb(matter.CircuitAt("Verb"))
 			addr := Verb(matter.CircuitAt("Resolved"))
-			fmt.Fprintf(w, "VERB(%v) %v/%v\n", PrintView(view), verb, addr)
+			fmt.Fprintf(w, "DIRECTIVE(%v) %v/%v\n", PrintView(view), verb, addr)
 
 		case matter.Has("System"):
 			system := matter.At("System")

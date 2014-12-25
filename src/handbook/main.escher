@@ -15,4 +15,6 @@ main {
 	x:10 = *BuildBasisFlowPage
 	x:11 = *BuildBasisEscherPage
 	x:12 = *BuildBasisOSPage
+
+	x:13 = *BuildDebugPage
 }

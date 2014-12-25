@@ -18,6 +18,7 @@ func init() {
 	faculty.Register(be.NewMaterializer(&System{}), "escher", "Materialize")
 	faculty.Register(be.NewMaterializer(Index{}), "escher", "Index")
 	faculty.Register(be.NewMaterializer(Parse{}), "escher", "Parse")
+	faculty.Register(be.NewMaterializer(Breakpoint{}), "escher", "Breakpoint")
 	faculty.Register(be.NewMaterializer(&Help{}), "help")
 	faculty.Register(be.NewMaterializer(&Help{}), "Help")
 }

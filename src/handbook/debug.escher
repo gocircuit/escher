@@ -30,6 +30,13 @@ DebugPage {
 </ul>
 
 <p>In both cases, two types of “traces” will be printed out automatically before the process exits.
+One of these traces is the standard Go stack trace. This is useful to pin-point the location in the 
+Go implementation of a reflex where the panic occurs, in the event of panics occuring in <code>Cognize</code>
+methods. The Go stack trace, however, will not reflect the materialization path that lead to the
+creation of the problematic reflex. This is reflected by the second type of trace, which we demonstrate
+by example.
+
+<p>Consider the following toy Escher program:
 
 <pre>
 {
@@ -44,23 +51,25 @@ DebugPage {
 }
 </pre>
 
-<p>This program will first materializes the inner program, which in turn will sent the constant <code>1</code>
-to the breakpoint reflex, causing it to panic. The following Escher trace will be printed:
+<p>This program will first materialize the inner program, which in turn will send the constant <code>1</code>
+to the breakpoint reflex, causing it to panic. In other words, an outer circuit materializes an inner circuit
+and subsequnetly a panic occurs in the inner circuit. The goal of the Escher trace is to reflect that.
+The following Escher trace will be printed:
 
 <pre>
-MATERIAL(:)
+BASIS(:)
 DIRECTIVE(:) *escher.Breakpoint/*escher.Breakpoint
 CIRCUIT() {
         0 *escher.Breakpoint
         1 1
         0: = 1:
 }
-SYSTEM() {
+MATERIALIZE() {
         0 *escher.Breakpoint
         1 1
         0: = 1:
 }
-MATERIAL(:Residue :View)
+BASIS(:Residue :View)
 DIRECTIVE(:Residue :View) *escher.Materialize/*escher.Materialize
 CIRCUIT(:Index :Program :Residue) {
         x *escher.Materialize
@@ -88,9 +97,31 @@ CIRCUIT() {
         m:Index = 3:
 }
 DIRECTIVE() *tutorial.Debug/*tutorial.Debug
-SYSTEM() *tutorial.Debug
+MATERIALIZE() *tutorial.Debug
 MAIN()
 </pre>
+
+<p>Escher traces consist of frames, indicated by capital letters. Frames correspond to 
+reflexes (basis or derivative) or directives. They are listed in most-specific to least-specific
+order: The first frame corresponds to the problematic reflex, whereas the last one corresponds
+to the main circuit being materialized.
+
+<p>Since every frame corresponds to a reflex that is materialized, a list of valves connected
+to this reflex is given in brackets next to the frame name. Following the brackets is a frame
+argument whose meaning depends on the type of frame:
+
+<ul>
+<li><code>MAIN</code> marks the start of the Escher runtime.
+<li><code>MATERIALIZE</code> frames mark the beginning of materialization. The argument of such frames
+describe the program that is being materialized.
+<li><code>DIRECTIVE</code> frames indicate that a directive gate value is being resolved.
+The argument equals the source of the directive, followed by the computed fully-qualified 
+source of directive (in case the directive uses local addressing).
+<li><code>CIRCUIT</code> frames indicate that a program circuit is being materialized. Their 
+argument equals the circuit source.
+<li><code>BASIS</code> frames indicate that a basis reflex is being materialized.
+<li><code>NOUN</code> frames indicate that a noun reflex is being materialized.
+</ul>
 
 <h2>Debugging reflexes</h2>
 

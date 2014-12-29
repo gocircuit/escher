@@ -55,14 +55,14 @@ func PrintMatter(w io.Writer, matter Circuit) {
 
 		case matter.Has("System"):
 			system := matter.At("System")
-			fmt.Fprintf(w, "SYSTEM(%v) %v\n", PrintView(view), String(system))
+			fmt.Fprintf(w, "MATERIALIZE(%v) %v\n", PrintView(view), String(system))
 
 		case matter.Has("Noun"):
 			noun := matter.At("Noun")
 			fmt.Fprintf(w, "NOUN(%v) %v\n", PrintView(view), noun)
 
 		case matter.Has("Material"):
-			fmt.Fprintf(w, "MATERIAL(%v)\n", PrintView(view))
+			fmt.Fprintf(w, "BASIS(%v)\n", PrintView(view))
 
 		case matter.Has("Main"):
 			fmt.Fprintf(w, "MAIN()\n")

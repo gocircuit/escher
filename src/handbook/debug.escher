@@ -18,7 +18,8 @@ DebugPage {
 
 <h1>Debugging and panics</h1>
 
-<p>??
+<p>Similarly to other languages like Go, Escher has two mechanisms for
+debugging programs: panic traces and user-controlled code instrumentation.
 
 <h2>Panic traces</h2>
 
@@ -123,7 +124,38 @@ argument equals the circuit source.
 <li><code>NOUN</code> frames indicate that a noun reflex is being materialized.
 </ul>
 
-<h2>Debugging reflexes</h2>
+<h2>Instrumentation reflexes</h2>
+
+<p>In many lanuages the simplest instrumentation technique is the insertion of “<code>printf</code>”
+statements. Escher has its own analog. Given a link in a circuit program, the idea is to print out
+the values that flow through that link without otherwise affecting the execution of the program.
+
+<p>This is accomplished with the use of a <code>*Show</code> reflex, which simply lets values
+pass through it while printing them on standard error together with the name of the valve they 
+were received on.
+
+<p>Suppose the following program is to be debugged:
+
+<pre>
+{
+	source *Source
+	sink *Sink
+	source: = sink:
+}
+</pre>
+
+<p>We could then add a debug <code>*Show</code> reflex to “eavesdrop” on the link
+from <code>source</code> to <code>sink</code>, like so:
+
+<pre>
+{
+	source *Source
+	sink *Sink
+	eve *Show
+	source: = eve:Source
+	eve:Sink = sink:
+}
+</pre>
 
 `
 }

@@ -1,0 +1,169 @@
+<!doctype html><html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link href="css/main.css" rel="stylesheet" type="text/css" />
+		<title>Debugging and panics</title>
+	</head>
+	<body>
+	
+	<div class="header">
+	<a href="http://escher.io">Escher</a> A language for connecting technologies using pure metaphors
+	</div>
+	
+	<div class="page">
+	
+
+<h1>Debugging and panics</h1>
+
+<p>Similarly to other languages like Go, Escher has two mechanisms for
+debugging programs: panic traces and user-controlled code instrumentation.
+
+<h2>Panic traces</h2>
+
+<p>There are two ways in which a running Escher program can panic:
+
+<ul>
+<li>While a reflex is processing an incoming event in a <code>Cognize</code> method, or</li>
+<li>During materialization of a program circuit which is invalid.</li>
+</ul>
+
+<p>In both cases, two types of “traces” will be printed out automatically before the process exits.
+One of these traces is the standard Go stack trace. This is useful to pin-point the location in the 
+Go implementation of a reflex where the panic occurs, in the event of panics occuring in <code>Cognize</code>
+methods. The Go stack trace, however, will not reflect the materialization path that lead to the
+creation of the problematic reflex. This is reflected by the second type of trace, which we demonstrate
+by example.
+
+<p>Consider the following toy Escher program:
+
+<pre>
+{
+	*Show = "Parent circuit"
+
+	m *escher.QuickMaterialize
+	m:Residue = *Ignore
+	m:Index = *escher.Index
+	m:Program = {
+		*escher.Breakpoint = 1
+	}
+}
+</pre>
+
+<p>This program will first materialize the inner program, which in turn will send the constant <code>1</code>
+to the breakpoint reflex, causing it to panic. In other words, an outer circuit materializes an inner circuit
+and subsequnetly a panic occurs in the inner circuit. The goal of the Escher trace is to reflect that.
+The following Escher trace will be printed:
+
+<pre>
+BASIS(:)
+DIRECTIVE(:) *escher.Breakpoint/*escher.Breakpoint
+CIRCUIT() {
+        0 *escher.Breakpoint
+        1 1
+        0: = 1:
+}
+MATERIALIZE() {
+        0 *escher.Breakpoint
+        1 1
+        0: = 1:
+}
+BASIS(:Residue :View)
+DIRECTIVE(:Residue :View) *escher.Materialize/*escher.Materialize
+CIRCUIT(:Index :Program :Residue) {
+        x *escher.Materialize
+        y *Fork
+        :Residue = x:Residue
+        :Index = y:Index
+        :Program = y:Program
+        x:View = y:
+}
+DIRECTIVE(:Index :Program :Residue) *escher.QuickMaterialize/*escher.QuickMaterialize
+CIRCUIT() {
+        m *escher.QuickMaterialize
+        0 *Show
+        1 "Parent circuit"
+        2 *Ignore
+        3 *escher.Index
+        4 {
+                0 *escher.Breakpoint
+                1 1
+                0: = 1:
+        }
+        0: = 1:
+        m:Program = 4:
+        m:Residue = 2:
+        m:Index = 3:
+}
+DIRECTIVE() *tutorial.Debug/*tutorial.Debug
+MATERIALIZE() *tutorial.Debug
+MAIN()
+</pre>
+
+<p>Escher traces consist of frames, indicated by capital letters. Frames correspond to 
+reflexes (basis or derivative) or directives. They are listed in most-specific to least-specific
+order: The first frame corresponds to the problematic reflex, whereas the last one corresponds
+to the main circuit being materialized.
+
+<p>Since every frame corresponds to a reflex that is materialized, a list of valves connected
+to this reflex is given in brackets next to the frame name. Following the brackets is a frame
+argument whose meaning depends on the type of frame:
+
+<ul>
+<li><code>MAIN</code> marks the start of the Escher runtime.
+<li><code>MATERIALIZE</code> frames mark the beginning of materialization. The argument of such frames
+describe the program that is being materialized.
+<li><code>DIRECTIVE</code> frames indicate that a directive gate value is being resolved.
+The argument equals the source of the directive, followed by the computed fully-qualified 
+source of directive (in case the directive uses local addressing).
+<li><code>CIRCUIT</code> frames indicate that a program circuit is being materialized. Their 
+argument equals the circuit source.
+<li><code>BASIS</code> frames indicate that a basis reflex is being materialized.
+<li><code>NOUN</code> frames indicate that a noun reflex is being materialized.
+</ul>
+
+<h2>Instrumentation reflexes</h2>
+
+<p>In many lanuages the simplest instrumentation technique is the insertion of “<code>printf</code>”
+statements. Escher has its own analog. Given a link in a circuit program, the idea is to print out
+the values that flow through that link without otherwise affecting the execution of the program.
+
+<p>This is accomplished with the use of a <code>*Show</code> reflex, which simply lets values
+pass through it while printing them on standard error together with the name of the valve they 
+were received on.
+
+<p>Suppose the following program is to be debugged:
+
+<pre>
+{
+	source *Source
+	sink *Sink
+	source: = sink:
+}
+</pre>
+
+<p>We could then add a debug <code>*Show</code> reflex to “eavesdrop” on the link
+from <code>source</code> to <code>sink</code>, like so:
+
+<pre>
+{
+	source *Source
+	sink *Sink
+	eve *Show
+	source: = eve:Source
+	eve:Sink = sink:
+}
+</pre>
+
+
+	</div>
+	
+	<div class="footer">
+	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
+	partially supported by the 
+	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
+	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
+	</div>
+	
+	</body>
+	</html>
+	

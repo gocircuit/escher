@@ -22,7 +22,7 @@ SyntaxPage {
 	fig:Caption = `
 		In this illustration, the depicted circuit has three valves at the super gate,
 		labeled as “X”, “Y” and “” (the empty string). 
-		The <a href="#links">source for this circuit</a> is given in a later section below.`
+		The <a href="#links">source for this circuit</a> is given later below.`
 
 	t *text.QuickForm
 	t:Data = f:
@@ -65,7 +65,7 @@ respective visual connection point. Connection points where valve names
 are visually missing correspond to empty-string valves.
 
 <p>The visual space inside the white gate ovals is reserved for the visual symbolic representation
-of that value, whatever it might be. If that value is primitive (integer, float, complex, string, address),
+of that value, whatever it might be. If that value is primitive (integer, float, complex, string, directive),
 we just write it out in black text in the center of the oval. If that value is a circuit, we draw
 the symbolism for that circuit within the white oval recursively, but this time we switch
 white and black colors everywhere.
@@ -165,7 +165,7 @@ There are six value types that can be expressed:
 <li>Floating-point numbers
 <li>Complex numbers
 <li>Strings
-<li>Addresses
+<li>Directives
 <li>Circuits
 </ul>
 
@@ -179,7 +179,8 @@ can be values of gates as well.
 
 <pre class="escher">
 alpha {
-	address    fully.qualified.Name
+	directive1 *fully.qualified.Name
+	directive2 @fully.qualified.Name
 	integral   123
 	floating   3.14
 	complex    (1-3i)
@@ -207,7 +208,8 @@ circuits <em>series</em>.
 
 <pre class="escher">
 alpha {
-	fully.qualified.Name
+	*fully.qualified.Name
+	@fully.qualified.Name
 	123
 	3.14
 	(1-3i)
@@ -241,7 +243,7 @@ the second vector. For instance,
 While one cannot assign a value to it through syntax, it is possible to connect links to it.
 
 <p>The super gate has a distinguished role in some contexts. 
-For instance, when <a href="m.html">materializing circuits</a>, 
+For instance, when <a href="program.html">materializing circuits</a>, 
 the links connected to the super gate are exposed to the higher-level “super” circuit.</li>
 <li>Valve names can be the empty string. We call such valves <em>default</em>, as
 they are commonly refered to hereinafter in various idioms.
@@ -255,8 +257,8 @@ on the other hand, is a way of taking advantage of Escher's <a href="#sugar">syn
 
 <pre class="escher">
 Nand {
-	and binary.And
-	not binary.Not
+	and *binary.And
+	not *binary.Not
 
 	and:X = :X
 	and:Y = :Y
@@ -265,11 +267,11 @@ Nand {
 }
 </pre>
 
-<h4 id="sugar">Sugar</h4>
+<h4 id="sugar">Syntactic sugar</h4>
 
-<p>When circuits are used to represent <a href="m.html">materializable reflexes</a>—in other words, 
+<p>When circuits are used to represent <a href="program.html">programs</a>—in other words, 
 executable code—it is common to include a gate and then link to its default valve.
-To reduce verbosity in this case, link definitions support one piece of syntactic sugar.
+To reduce verbosity in this case, link definitions support a piece of syntactic sugar.
 
 <p>Either (or both) vectors in a link definition can be substituted for a gate value.
 This will be expanded into a gate definition with an automatically-generated name
@@ -289,14 +291,14 @@ Will be expanded into
 <p>In another example both sides of the equation are sugared:
 
 <pre class="escher">
-	os.Scanln = os.Println
+	*os.Scanln = *os.Println
 </pre>
 
 This will expand to:
 
 <pre class="escher">
-	0 os.Scanln
-	1 os.Println
+	0 *os.Scanln
+	1 *os.Println
 	0: = 1:
 </pre>
 

@@ -276,7 +276,7 @@ directive addresses are interpreted.
 
 <p>One can recursively materialize circuits programs from within other 
 circuit programs. This is accomplished using the built-in reflex <code>escher.Materialize</code>
-which is described in the <a href="mfac.html">materialization faculty section</a>.
+which is described in the <a href="basis-escher.html">materialization faculty section</a>.
 
 <h3>Materializing from POSIX</h3>
 

@@ -9,7 +9,7 @@ BuildCloudPage {
 CloudPage {
 	h *Html
 	h: = :
-	h:Title = "Materializing cloud service topologies using Circuit and Escher"
+	h:Title = "Paradigm for building clouds with Circuit and Escher"
 	h:Body = t:
 
 	f *Fork
@@ -24,13 +24,68 @@ CloudPage {
 	t:Data = f:
 	t:Form = `
 
-<h1>Materializing cloud service topologies using Circuit and Escher</h1>
+<h1>Paradigm for building clouds with Circuit and Escher</h1>
 
-<p>??
+<p>In this article our goal is to describe a framework for building, controlling and maintaining
+cloud applications comprised of large numbers of interconnected services.
 
 <h2>Framework</h3>
 
+<p>Every well-defined system requires a clear specification of the objects
+at play, their possible interrelations in any moment in time, as well as the allowable operations
+that can be performed to its components.
+
+<p>The systems of interest here, which model cloud applications in the datacenter, have
+three types of components: hosts, services and links. We will treat these objects cleanly in
+a formal manner, but it should be clear that they will end up corresponding to well-known
+real technologies utilized in specific manners.
+
+<p>Our hosts will correspond to physical machines (or virtual machines, as the case might be).
+Our services will correspond to <a href="http://docker.com">Docker</a> containers, whose images
+are configured in a standard manner to expect a number of named incoming or outgoing TCP connections.
+And each of our links will correspond to a pair of lightweiht DNS servers, one at each endpoint host, 
+configured to point the respective Docker TCP connections at each other.
+
+<p>The exact details of the correspondence between hosts, services and links, and machines, Docker
+containers and DNS servers, respectively, will be fleshed out in a later section. For now, suffice it to say
+that this correspondence will be made simple and natural through the use of the <a href="http://gocircuit.org">gocircuit.org</a>
+tool for dynamic cloud orchestration.
+
+<p>Getting back to the abstract system framework, the allowed relationships between hosts, services and links
+are described in a few simple postulates:
+
+<ul>
+<li>Every host in the system is identified by a unique string identifier
+<li>Every service “resides” on one host and every such service has a string identifier, unique only across the services residing 
+on the same host.
+<li>Every service has a “type” denoted by a string (which will correspond to the Docker image name of its container).
+<li>Every service can have zero or more named “valves” (where a valve will correspond to a TCP connection, client or server)
+under the requirement that valve names are unique within one service.
+<li>Every link “connects” one service-valve pair to another, so that no such pair is connected more than once.
+</ul>
+
+<p>Relationships between the components of a system can be represented visually using the same 
+<a href="syntax.html">symbolism employed by Escher for representing nested circuits</a>:
+
 {{.Gate.Diagram}}
+
+<p>In the illustration above there are two hosts named <code>host1</code> and <code>host2</code>.
+Two services, named <code>cache</code> and <code>server</code>, reside on <code>host1</code>.
+One service, named <code>database</code>, resides on <code>host2</code>. Service <code>cache</code>
+is of type <code>MemCache</code>, service <code>server</code> is of type <code>Http</code> and
+service <code>database</code> is of type <code>Redis</code>. There are two links in the system:
+one connecting the service-valve pair <code>(server, x)</code> to <code>(cache, y)</code>, and
+one connecting <code>(cache, z)</code> to <code>(database, w)</code>. (Disregard the labels
+<code>p</code> and <code>q</code> for now.)
+
+<p>Thus far we have addressed the properties describing the state of a system in a singular moment in time.
+System state can change over time, or “dynamically”, according to the following additional postulates:
+
+<ul>
+<li>Hosts, services and links can “emerge” and “disappear” asynchronously from the system.
+<li>When a host disappears, all services residing on it disappear as well.
+<li>When a service disappears, all links incident to it disappear as well.
+</ul>
 
 <h2>Representation</h3>
 
@@ -49,6 +104,8 @@ CloudPage {
 	host1:p = host2:q
 }
 </pre>
+
+<h2>Control loop</h2>
 
 `
 }

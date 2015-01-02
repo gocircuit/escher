@@ -17,4 +17,5 @@ main {
 	x:12 = *BuildBasisOSPage
 
 	x:13 = *BuildDebugPage
+	x:14 = *BuildCloudPage
 }

@@ -1,0 +1,54 @@
+
+BuildCloudPage {
+        wf *io.WriteFile
+        wf:Content = *CloudPage
+        wf:Name = "cloud.html"
+        : = wf:Ready
+}
+
+CloudPage {
+	h *Html
+	h: = :
+	h:Title = "Materializing cloud service topologies using Circuit and Escher"
+	h:Body = t:
+
+	f *Fork
+	f:Diagram = dia:
+
+	dia *FigurePngSvg
+	dia:Image = "cloud"
+	dia:Width = "600px"
+	dia:Caption = ``
+
+	t *text.QuickForm
+	t:Data = f:
+	t:Form = `
+
+<h1>Materializing cloud service topologies using Circuit and Escher</h1>
+
+<p>??
+
+<h2>Framework</h3>
+
+{{.Gate.Diagram}}
+
+<h2>Representation</h3>
+
+<pre>
+{
+	host1 {
+		cache MemCache
+		server Http
+		server:x = cache:y
+		cache:z = :p
+	}
+	host2 {
+		database Redis
+		database:w = :q
+	}
+	host1:p = host2:q
+}
+</pre>
+
+`
+}

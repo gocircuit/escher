@@ -196,9 +196,88 @@ In our example, that list would be:
 (host1.cache:z, host2.database:w)
 </pre>
 
-<p>It is not hard to see how the primal can be dervied from the dual by reversing this process.
+<p>It is not hard to see how the primal can be derived from the dual by reversing this process.
+
+<p>Furthermore, it is self-evident that one can compute the “difference” between two systems, when
+this makes sense, by simply computing the difference of their corresponding dual representations elementwise.
+
+<h2>Sensing and materializing</h2>
+
+<p>Sensing and materializing are the two operations that convert between the abstract circuit 
+representation of a cloud topology and the actual physical topology that executes on the cloud.
+
+<p>Sensing is the operation of “reading” the current state of the cloud and representing it in the
+primal form for the engineer to work with.
+
+<p>Materializing is the operation of “writing” (or “executing”) a cloud topology in primal form
+into an actual physical network of services running in the cloud.
+
+<p>In the following sections we describe how sensing and materializing to and from dual form
+work. The subsequent conversions from dual to primal, a mere data structure transformation,
+was explained in the previous section.
+
+<p>The specific API for manipulating the cloud can be any: 
+Google Compute Engine, Amazon EC2, <a href="http://gocircuit.org">Circuit</a>, and 
+so forth.  Our following explanations will be based on the Circuit as its simple API provides
+exactly the minimum necessary for such manipulations.
+
+<h3>Preparing Docker services with valves</h3>
+
+<p>…
+
+<h3>Materializing a dual to the cloud</h3>
+
+<p>Let us consider the task of materializing the system from our running example which,
+as we showed above, has the following dual form. The list of services is:
+
+<pre>
+(host1.cache, MemCache)
+(host1.server, Http)
+(host2.database, Redis)
+</pre>
+
+And the list of links is:
+
+<pre>
+(host1.server:x, host1.cache:y)
+(host1.cache:z, host2.database:w)
+</pre>
+
+<p>Materialization proceeds like so:
+
+<ol>
+<li>Obtain a list of available and unused hosts in the cloud.
+<p>The <a href="http://gocircuit.org">Circuit API</a> 
+presents all of its resources uniformly as a file system, where root level directories correspond to available hosts.
+Unused hosts are precisely those root level directories that have no children (i.e. no services or other Circuit elements
+are running on them). Such a list can be obtained through the API or through the command line using
+<code>circuit ls /...</code>. Let us assume, for instance, that the list of available and unused hosts is
+<pre>
+/X65cc3c8e31817756
+/Xe4abe0c286b0e0bc
+/X9738a5e29e51338e
+</pre>
+
+<li>Group the elements of the list of services (from the dual) by host and assign a unique (available and unused)
+Circuit host to each of the hosts from dual. For instance:
+<pre>
+(/X65cc3c8e31817756, host1)
+(/Xe4abe0c286b0e0bc, host2)
+</pre>
+
+</ol>
+
+<h3>Sensing the cloud state into dual form</h3>
+
+<p>…
 
 <h2>Control loop</h2>
+
+<p>…
+
+<h2>The resulting UI to the engineer</h2>
+
+<p>…
 
 `
 }

@@ -221,11 +221,40 @@ Google Compute Engine, Amazon EC2, <a href="http://gocircuit.org">Circuit</a>, a
 so forth.  Our following explanations will be based on the Circuit as its simple API provides
 exactly the minimum necessary for such manipulations.
 
-<h3>Preparing Docker services with valves</h3>
+<h3>Preparing Docker service containers</h3>
 
-<p>…
+<p>We have chosen to use executable Docker containers as embodiment for services.
 
-<h3>Materializing a dual to the cloud</h3>
+<p>Each service communicates with the outside—with other services—through a set
+of zero or more named valves. A valve corresponds to a TCP client connection, a TCP server
+connection or both.
+
+<p>Service container images must be prepared in a standardized manner so that after the
+execution of a container, our framework can (i) obtain the TCP server address corresponding
+to each valve (if there is one), as well as (ii) supply the remote TCP server address if the
+valve also corresponds to a TCP client connection.
+
+<p>There are various ways to prepare Docker containers to accomplish this and we do not
+mandate a specific one. Here, we merely suggest one way of doing it without going into
+unnecessary technical detail.
+
+<p>To accomplish (i), one can utilize the <a href="https://docs.docker.com/userguide/dockerlinks/">Docker 
+port mapping</a> mechanism. In particular, the software inside the container can be hardwired to
+listen to specific port numbers which, in lexicographic order, correspond to the valve names
+of the service. Once the container is executed, the effective TCP server addresses—those visible to
+other containers in the cloud network—can be automatically obtained using the <code>docker port</code>
+command. They will be utilized by our system to “link” containers (i.e. service valves) in a manner described later.
+
+<p>To accomplish (ii), we propose configuring each Docker service container to use a DNS
+server whose address is passed on it upon execution, using any one of the various mechanisms
+available for passing arguments to containers upon execution, provided by Docker itself.
+Subsequently, the software executing inside the Docker container should simply be hardwired
+to obtain the IP address for any given valve name by simply looking up that valve name (perhaps
+prefixed by a standard domain name) through the DNS system. Our framework, described later,
+which executes the Docker containers will arrange for a light-weight dedicated DNS server
+for each container, whose sole job would be to resolve these queries appropriately.
+
+<h3>Materializing a dual form to the cloud</h3>
 
 <p>Let us consider the task of materializing the system from our running example which,
 as we showed above, has the following dual form. The list of services is:
@@ -265,9 +294,41 @@ Circuit host to each of the hosts from dual. For instance:
 (/Xe4abe0c286b0e0bc, host2)
 </pre>
 
+<li>Execute every service in the dual, as follows. Take, for instance, the service
+<pre>
+(host1.cache, MemCache)
+</pre>
+
+<ul>
+<li>Create a dedicated light-weight DNS server for this service, on the Circuit host assigned to this service in the previous step.
+Using the Circuit, we spawn a DNS element and choose its name to follow this convention:
+<pre>
+/X65cc3c8e31817756/host1/cache/dns
+</pre>
+<p>This is accomplished using the Circuit <code>circuit mkdns</code> command. The details of this are omitted for brevity.
+Initially the DNS server will have no resource records, i.e. it will not resolve any lookups. Appropriate records will be added
+to it later, when we materialize the list of links from the dual form.
+<li>Execute the service's Docker container on that same host using a similar naming convention:
+<pre>
+/X65cc3c8e31817756/host1/cache/service
+</pre>
+<p>This is accomplished using the Circuit's <code>circuit mkdkr</code> command, and recall that the service type,
+<code>MemCache</code> in this case, is used as the name of the Docker image to be used. Furthermore, the IP address of the DNS server created in the previous step is passed to the Docker container on execution.
+</ul>
+
+<li>For each link in the list of links, add DNS resource records to the appropriate DNS servers. 
+Take for instance the link:
+<pre>
+(host1.cache:z, host2.database:w)
+</pre>
+
+<ul>
+<li>??
+</ul>
+
 </ol>
 
-<h3>Sensing the cloud state into dual form</h3>
+<h3>Sensing the cloud state into a dual form</h3>
 
 <p>…
 

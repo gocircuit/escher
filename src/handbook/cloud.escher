@@ -26,8 +26,23 @@ CloudPage {
 
 <h1>Paradigm for building clouds with Circuit and Escher</h1>
 
-<p>In this article our goal is to describe a framework for building, controlling and maintaining
-cloud applications comprised of large numbers of interconnected services.
+<p>In this article our goal is to describe a framework for building and maintaining
+cloud applications comprised of large numbers of interconnected services in a manner that is most simple
+and understandable to the user.
+
+<p>The resulting system provides a simple 4-step workflow to its user (the operations engineer),
+which is captured by the following command-line operations:
+<pre>
+cloud sense > current_state.circuit
+cloud diff desired_state.circuit current_state.circuit -out-remove remove.circuit -out-add add.circuit
+cloud kill remove.circuit
+cloud materialize add.circuit
+</pre>
+
+<p>All <code>.circuit</code> files involved in the control of the cloud are simple text files
+(that use <a href="syntax.html">Escher syntax</a>) and as such all changes to the cloud
+integrate cleanly with versioning systems like <a href="http://git-scm.com/">Git</a>,
+resulting in full hitorical accountability.
 
 <h2>Framework</h3>
 
@@ -96,6 +111,10 @@ factors (for instance a host might die due to bad hardware) and others will be c
 that we perform with the system (for instance, we might start a service). No matter what the cause
 for an event is, the important thing is that these are the only changes of state that can happen to
 the system.
+
+<h2>The resulting UI to the engineer</h2>
+
+<p>…
 
 <h2>Representation</h3>
 
@@ -329,14 +348,6 @@ Take for instance the link:
 </ol>
 
 <h3>Sensing the cloud state into a dual form</h3>
-
-<p>…
-
-<h2>Control loop</h2>
-
-<p>…
-
-<h2>The resulting UI to the engineer</h2>
 
 <p>…
 

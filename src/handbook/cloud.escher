@@ -240,7 +240,7 @@ Google Compute Engine, Amazon EC2, <a href="http://gocircuit.org">Circuit</a>, a
 so forth.  Our following explanations will be based on the Circuit as its simple API provides
 exactly the minimum necessary for such manipulations.
 
-<h3>Preparing Docker service containers</h3>
+<h3 id="prepare">Preparing Docker service containers</h3>
 
 <p>We have chosen to use executable Docker containers as embodiment for services.
 
@@ -342,7 +342,26 @@ Take for instance the link:
 </pre>
 
 <ul>
-<li>??
+<li>First, we inquire into the TCP server address for <code>host1.cache:z</code>, if one is available.
+To do so, we access the Docker container
+<pre>
+/X65cc3c8e31817756/host1/cache/service
+</pre>
+and we query the TCP server address for valve named <code>z</code>, using the Docker port exporting
+provisions set in place as <a href="#prepare">described earlier</a>.
+
+<li>Next, we access the Circuit DNS element
+<pre>
+/Xe4abe0c286b0e0bc/host2/database/dns
+</pre>
+and set the resource record for the domain name <code>w</code> to that TCP server address obtained in the previous step.
+In addition to setting a DNS A record for the name <code>w</code>, we also set a 
+DNS TXT record for the same record with the value of <code>host1.cache:z</code>.
+This TXT record will later facilitate recovering the dual form for this link directly from the DNS server itself.
+
+<li>Finally, we repeat the same process with the roles of <code>host1.cache:z</code>
+and <code>host2.database:w</code> reversed.
+
 </ul>
 
 </ol>

@@ -368,7 +368,52 @@ and <code>host2.database:w</code> reversed.
 
 <h3>Sensing the cloud state into a dual form</h3>
 
-<p>…
+<p>Reading the current state of the cloud is fairly straightforward. 
+After listing the contents of the Circuit, using <code>circuit ls /...</code>,
+there will only be paths ending in <code>/service</code> and paths
+ending in <code>/dns</code>. We are going to read the list of services
+from the former ones, and then the list of links from the latter one.
+
+<p>To read the list of services, we consider each path ending in <code>/service</code>
+and query the configuration of the underlying Docker container, using the
+<code>circuit peek</code> command. This gives us the Docker image name of the
+container—which is the service type—and thus the service entry has been recovered.
+
+<p>To read the list of links, we consider in turn each path ending in <code>/dns</code>
+unless it has already been considered. For instance—
+
+<pre>
+/X65cc3c8e31817756/host1/cache/dns
+</pre>
+
+<p>This path will be a link endpoint with a prefix <code>host1.cache:</code>, as follows
+from the manner in which we materialized links in the previous section.
+
+<p>We then list the DNS resource records at this path, using <code>circuit peek</code>,
+and in the case of this example we will see resource records for the domain names 
+<code>y</code> and <code>z</code>. In other words, the names correspond to valve
+names of the service. And so each name gives us one endpoint in a link. In this case—
+
+<pre>
+(host1.cache:y, …)
+(host1.cache:z, …)
+</pre>
+
+<p>To recover the other endpoint in each of the links, it suffices to look at the DNS TXT
+record accompanying each of the names, <code>y</code> and <code>z</code>.
+These TXT records will contain, as per the materialization process, the other endpoint
+of the respective link, thus allowing is to recover the whole links—
+
+<pre>
+(host1.cache:y, host1.server:x)
+(host1.cache:z, host2.database:w)
+</pre>
+
+<p>Before we add these links to the list of links, we also verify that the opposing service
+is still alive. Otherwise by convention we treat the link as not present. 
+For instance, if we want to verify that the endpoint <code>host2.database</code> is alive,
+we simply consider the Circuit path list, obtained with <code>circuit ls /...</code>, and
+look for the glob pattern <code>/*/host2/database/service</code>.
 
 `
 }

@@ -374,8 +374,14 @@ there will only be paths ending in <code>/service</code> and paths
 ending in <code>/dns</code>. We are going to read the list of services
 from the former ones, and then the list of links from the latter one.
 
-<p>To read the list of services, we consider each path ending in <code>/service</code>
-and query the configuration of the underlying Docker container, using the
+<p>To read the list of services, we consider each path ending in <code>/service</code>.
+For instance, the path
+<pre>
+/X65cc3c8e31817756/host1/cache/service
+</pre>
+will correspond to a service named <code>host1.cache</code> (simply drop the first and last path elements
+and replace slashes with dots).
+Then we query the configuration of the underlying Docker container, using the
 <code>circuit peek</code> command. This gives us the Docker image name of the
 container—which is the service type—and thus the service entry has been recovered.
 

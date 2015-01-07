@@ -144,6 +144,10 @@ retrieved “current” state.
 <li><code>cloud materialize diff.circuit</code>
 </ol>
 
+<p>The descriptions below assume the <a href="http://gocircuit.org">Circuit</a> as
+the underlying cloud management backend. It is however entirely possible that
+other backends, such as Amazon EC2 or Google Compute Engine, be used.
+
 <h2>Representation</h3>
 
 <p>The symbolic visual representation of system state, exemplified above, can very well be used

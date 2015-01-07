@@ -26,23 +26,27 @@ CloudPage {
 
 <h1>Paradigm for building clouds with Circuit and Escher</h1>
 
-<p>In this article our goal is to describe a framework for building and maintaining
-cloud applications comprised of large numbers of interconnected services in a manner that is most simple
-and understandable to the user.
+<p>This article is a design document that describes a framework for building and maintaining
+cloud applications comprised of large numbers of interconnected services in a manner that is intuitive
+and understandable to users.
 
-<p>The resulting system provides a simple 4-step workflow to its user (the operations engineer),
-which is captured by the following command-line operations:
+<p>We propose a syntactic abstraction, called Escher circuits, for representing the state of the cloud.
+The abstraction enables modular compositing of large circuits from smaller components, facilitating
+manual descriptions of cloud topologies. Further, it supports a circuit “difference” calculation 
+to facilitate the representation of incremental system changes.
+
+<p>The result is a system that provides a 3-step workflow for the Operations Engineer,
+which is captured in the following command-line operations:
 <pre>
 cloud sense > current_state.circuit
-cloud diff desired_state.circuit current_state.circuit -out-remove remove.circuit -out-add add.circuit
-cloud kill remove.circuit
-cloud materialize add.circuit
+cloud diff desired_state.circuit current_state.circuit > diff.circuit
+cloud materialize diff.circuit
 </pre>
 
 <p>All <code>.circuit</code> files involved in the control of the cloud are simple text files
 (that use <a href="syntax.html">Escher syntax</a>) and as such all changes to the cloud
 integrate cleanly with versioning systems like <a href="http://git-scm.com/">Git</a>,
-resulting in full hitorical accountability.
+resulting in full hitorical accountability of cloud state changes.
 
 <h2>Framework</h3>
 
@@ -114,7 +118,31 @@ the system.
 
 <h2>The resulting UI to the engineer</h2>
 
-<p>…
+<p>We view the cloud itself as an independent device, which computes and changes over time.
+Some of the changes to the cloud will be caused by external factors, for instance physical
+failures in the hosting hardware. Other changes will be caused by commands initiated by the
+user.
+
+<p>Since user-initiated changes and external changes are mutually asynchronous, we 
+propose the following simple workflow for the user's point-of-view or point-of-control,
+as the case might be:
+
+<ol>
+<li>Connect to the “cloud” and retrieve a consistent representation of the “current” cloud state.
+<li>Compute the difference between a representation of the “desired” state of the cloud and the
+retrieved “current” state.
+<li>Send a minimal stream of “commands” to the cloud, aimed at modifying its state from
+“current” to “desired”.
+</ol>
+
+<p>In the remainder of this document, we describe the design of a command-line tool
+<code>cloud</code> which embodies the above three operations as—
+
+<ol>
+<li><code>cloud sense > current.circuit</code>
+<li><code>cloud diff desired.circuit current.circuit > diff.circuit</code>
+<li><code>cloud materialize diff.circuit</code>
+</ol>
 
 <h2>Representation</h3>
 

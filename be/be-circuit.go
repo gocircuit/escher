@@ -43,7 +43,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 	for g, _ := range design.Gate {
 		if g == Super {
-			panicf(matter, "Circuit design overwrites the empty-string gate, in design %v\n", design)
+			panicWithMatter(matter, "Circuit design overwrites the empty-string gate, in design %v\n", design)
 		}
 		gsyntax := design.At(g)
 		var gresidue interface{}
@@ -70,7 +70,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	for vlv, s := range given {
 		t, ok := gates[Super][vlv]
 		if !ok {
-			panicf(matter, "connected valve %v is not connected within circuit design %v", vlv, design)
+			panicWithMatter(matter, "connected valve %v is not connected within circuit design %v", vlv, design)
 		}
 		delete(gates[Super], vlv)
 		go Link(s, t)
@@ -86,7 +86,7 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	}()
 
 	if len(gates[Super]) > 0 {
-		panicf(matter, "circuit valves left unconnected")
+		panicWithMatter(matter, "circuit valves left unconnected")
 	}
 
 	return res

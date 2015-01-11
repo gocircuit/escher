@@ -1,3 +1,7 @@
+Break {
+	*escher.Breakpoint = 1
+}
+
 Debug {
 	*Show = "Parent circuit"
 

@@ -20,9 +20,9 @@ type Panic struct {
 	Msg    string
 }
 
-func panicf(matter Circuit, f string, a ...interface{}) {
+func panicWithMatter(matter Circuit, format string, arg ...interface{}) {
 	var w bytes.Buffer
-	fmt.Fprintf(&w, f, a...)
+	fmt.Fprintf(&w, format, arg...)
 	fmt.Fprintf(&w, "\n")
 	panic(Panic{Matter: matter, Msg: w.String()})
 }

@@ -54,7 +54,7 @@ func route(design interface{}, given Reflex, matter Circuit) (residue interface{
 	case Materializer:
 		defer func() {
 			if r := recover(); r != nil {
-				panicf(matter, "materialization glitch (%v)", r)
+				panicWithMatter(matter, "materialization glitch (%v)", r)
 			}
 		}()
 		matter.Grow("Material", t)
@@ -62,6 +62,6 @@ func route(design interface{}, given Reflex, matter Circuit) (residue interface{
 	default:
 		return materializeNoun(given, matter.Grow("Noun", t))
 	}
-	panicf(matter, "unknown design type: %T", design)
+	panicWithMatter(matter, "unknown design type: %T", design)
 	return
 }

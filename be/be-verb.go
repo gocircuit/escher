@@ -21,7 +21,7 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	case "@":
 		return materializeNoun(given, newSubMatter(matter).Grow("Noun", val))
 	}
-	panicf(matter, "unknown verb (%v)", verb)
+	panicWithMatter(matter, "unknown verb (%v)", verb)
 	return
 }
 
@@ -72,7 +72,7 @@ func lookup(matter Circuit) (interface{}, string) {
 	val = index.Recall(addr...) // otherwise lookup globally
 	matter.Include("Resolved", New().Grow(0, "???"))
 	if val == nil {
-		panicf(matter, "dangling address %v", Verb(syntax))
+		panicWithMatter(matter, "dangling address %v", Verb(syntax))
 	}
 	matter.Include("Resolved", Circuit(NewVerbAddress(verb, addr...)))
 	return val, verb

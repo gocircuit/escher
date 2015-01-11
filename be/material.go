@@ -106,14 +106,14 @@ func verify(matter circuit.Circuit, r gate, given Reflex) {
 			continue
 		}
 		if _, ok := r.Fixed[vlv]; !ok {
-			panicf(matter, "%v gate does not handle connected valve (%v)", ellipses, vlv)
+			Panicf("gate does not handle connected valve (%v)", vlv)
 		}
 	}
 
 	// Verify all dedicated valves are connected
 	for vlv, _ := range r.Fixed {
 		if _, ok := given[vlv]; !ok {
-			panicf(matter, "gate valve (%v) must be connected", vlv)
+			Panicf("gate valve (%v) must be connected", vlv)
 		}
 	}
 }

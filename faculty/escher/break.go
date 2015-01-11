@@ -16,6 +16,6 @@ import (
 
 type Breakpoint struct{ be.Sparkless }
 
-func (Breakpoint) OverCognizeView(eye *be.Eye, valve Name, value interface{}) {
+func (Breakpoint) OverCognize(eye *be.Eye, valve Name, value interface{}) {
 	panic("Escher breakpoint")
 }

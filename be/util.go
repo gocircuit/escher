@@ -46,29 +46,29 @@ func PrintMatter(w io.Writer, matter Circuit) {
 		switch {
 		case matter.Has("Circuit"):
 			cir := matter.CircuitAt("Circuit")
-			fmt.Fprintf(w, "CIRCUIT(%v) %v\n", PrintView(view), cir)
+			fmt.Fprintf(w, "CIRCUIT(%v)%v %v\n", PrintView(view), SummarizeIndex(matter), cir)
 
 		case matter.Has("Verb"):
 			verb := Verb(matter.CircuitAt("Verb"))
 			addr := Verb(matter.CircuitAt("Resolved"))
-			fmt.Fprintf(w, "DIRECTIVE(%v) %v/%v\n", PrintView(view), verb, addr)
+			fmt.Fprintf(w, "DIRECTIVE(%v)%v %v/%v\n", PrintView(view), SummarizeIndex(matter), verb, addr)
 
 		case matter.Has("System"):
 			system := matter.At("System")
-			fmt.Fprintf(w, "MATERIALIZE(%v) %v\n", PrintView(view), String(system))
+			fmt.Fprintf(w, "MATERIALIZE(%v)%v %v\n", PrintView(view), SummarizeIndex(matter), String(system))
 
 		case matter.Has("Noun"):
 			noun := matter.At("Noun")
-			fmt.Fprintf(w, "NOUN(%v) %v\n", PrintView(view), noun)
+			fmt.Fprintf(w, "NOUN(%v)%v %v\n", PrintView(view), SummarizeIndex(matter), noun)
 
 		case matter.Has("Material"):
-			fmt.Fprintf(w, "BASIS(%v)\n", PrintView(view))
+			fmt.Fprintf(w, "BASIS(%v)%v\n", PrintView(view), SummarizeIndex(matter))
 
 		case matter.Has("Main"):
 			fmt.Fprintf(w, "MAIN()\n")
 
 		default:
-			fmt.Fprintf(w, "UNKNOWN (%v) {%v}\n", PrintView(view), PrintView(matter))
+			fmt.Fprintf(w, "UNKNOWN(%v)%v\n", PrintView(view), SummarizeIndex(matter))
 		}
 		sup, ok := matter.CircuitOptionAt("Super")
 		if ok {
@@ -92,5 +92,20 @@ func PrintView(u Circuit) string {
 		}
 		fmt.Fprintf(&w, ":%v", n)
 	}
+	return w.String()
+}
+
+func SummarizeIndex(matter Circuit) string {
+	x := matter.CircuitAt("Index")
+	var w bytes.Buffer
+	w.WriteString(" Index{ ")
+	for i, n := range x.SortedNames() {
+		if i > 2 {
+			break
+		}
+		w.WriteString(fmt.Sprintf("%v", n))
+		w.WriteString("… ")
+	}
+	w.WriteString("}")
 	return w.String()
 }

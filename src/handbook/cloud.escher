@@ -26,6 +26,8 @@ CloudPage {
 
 <h1>Paradigm for building clouds with Circuit and Escher</h1>
 
+<p><em>View a <a href="pdf/cloud.pdf">short slide deck</a> with the key points in this article.</em>
+
 <p>This article is a design document that describes a framework for building and maintaining
 cloud applications comprised of large numbers of interconnected services in a manner that is intuitive
 and understandable to users.

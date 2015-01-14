@@ -23,11 +23,11 @@ All {
 	Each test is run in a dedicated OS process.`
 
 	depth *yield.DepthFirst
-	depth: = *escher.Index
+	depth:Root = *escher.Index
 	depth:Frame = filter:In
-	depth:End = *os.ExitSuccess 
+	depth:End = *os.ExitSuccess
 
-	filter *test.FilterAll
+	filter *test.Filter
 	filter:Out = exec:In
 
 	exec *test.Exec

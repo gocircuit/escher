@@ -16,9 +16,9 @@ import (
 )
 
 //
-type FilterAll struct{ be.Sparkless }
+type Filter struct{ be.Sparkless }
 
-func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
+func (Filter) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(Circuit)
 	//
 	name_, view := x.NameAt("Name"), x.CircuitAt("View")
@@ -40,4 +40,4 @@ func (FilterAll) CognizeIn(eye *be.Eye, v interface{}) {
 	eye.Show("Out", y)
 }
 
-func (FilterAll) CognizeOut(eye *be.Eye, v interface{}) {}
+func (Filter) CognizeOut(eye *be.Eye, v interface{}) {}

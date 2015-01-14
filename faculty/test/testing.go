@@ -15,7 +15,7 @@ import (
 func Init(srcdir string) {
 	srcDir = srcdir
 	faculty.Register(be.NewMaterializer(&Match{}), "test", "Match")
-	faculty.Register(be.NewMaterializer(FilterAll{}), "test", "FilterAll")
+	faculty.Register(be.NewMaterializer(Filter{}), "test", "Filter")
 	faculty.Register(be.NewMaterializer(Exec{}), "test", "Exec")
 }
 

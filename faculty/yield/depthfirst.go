@@ -15,7 +15,7 @@ import (
 
 type DepthFirst struct{ be.Sparkless }
 
-func (DepthFirst) Cognize(eye *be.Eye, v interface{}) {
+func (DepthFirst) CognizeRoot(eye *be.Eye, v interface{}) {
 	depthFirst(eye, nil, v)
 }
 

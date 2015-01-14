@@ -35,7 +35,7 @@ func (Exec) CognizeIn(eye *be.Eye, v interface{}) {
 		success = true
 	}
 	r := New().
-		Grow("Verb", addr).
+		Grow("Verb", Circuit(addr)).
 		Grow("Result", success)
 	eye.Show("Out", r)
 }

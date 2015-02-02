@@ -1,5 +1,5 @@
 main {
-	x *Fork
+	x *e.Fork
 	x: = *os.Exit
 
 	x:1 = *BuildIndexPage

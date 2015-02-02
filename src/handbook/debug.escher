@@ -74,7 +74,7 @@ BASIS(:Residue :View)
 DIRECTIVE(:Residue :View) *escher.Materialize/*escher.Materialize
 CIRCUIT(:Index :Program :Residue) {
         x *escher.Materialize
-        y *Fork
+        y *e.Fork
         :Residue = x:Residue
         :Index = y:Index
         :Program = y:Program

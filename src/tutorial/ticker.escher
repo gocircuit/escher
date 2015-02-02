@@ -5,5 +5,5 @@ Ticker {
 
 	sum *math.IntSum
 	sum:X = 1000000000
-	sum:Y = *Show
+	sum:Y = *e.Show
 }

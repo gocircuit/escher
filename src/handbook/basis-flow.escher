@@ -75,7 +75,7 @@ send the value of the gate named N from circuit W to that valve.
 
 <pre>
 {
-	f *Fork
+	f *e.Fork
 	f: = {
 		x "Hello"
 		y "World"
@@ -105,7 +105,7 @@ single circuit and sent out.
 
 <pre>
 {
-	f *Fork
+	f *e.Fork
 	f: = *Show
 	f:x = "New"
 	f:y = "York"

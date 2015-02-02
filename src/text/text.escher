@@ -8,7 +8,7 @@ QuickForm {
 	form:In = x:
 	form:Out = :
 
-	x *Fork
+	x *e.Fork
 	x:Data = :Data
 	x:Form = :Form
 }
@@ -26,5 +26,5 @@ TestForm {
 DemoMerge {
 	merge *Merge
 	merge:In = { a "abc", b "efg" }
-	merge:Out = *Show
+	merge:Out = *e.Show
 }

@@ -17,7 +17,7 @@ FigurePngSvgRight {
 LeftRight {
 	t *text.QuickForm
 	t:Data = f:
-	f *Fork
+	f *e.Fork
 	f:Left = :Left
 	f:Right = :Right
 	t:Form = `
@@ -60,7 +60,7 @@ Figure {
 	</figure>
 	</center></p>
 	`
-	fork *Fork
+	fork *e.Fork
 	fork:Body = :Body
 	fork:Caption = :Caption
 	t:Data = fork:
@@ -75,7 +75,7 @@ PngSvg {
 	</object>`
 	t:Data = f:
 
-	f *Fork
+	f *e.Fork
 	f:Name = :Name
 	f:Width = :Width
 
@@ -87,7 +87,7 @@ Jpg {
 	t:Form = `<img src="img/{{.Gate.Name}}.jpg" width="{{.Gate.Width}}" alt="" />`
 	t:Data = f:
 
-	f *Fork
+	f *e.Fork
 	f:Name = :Name
 	f:Width = :Width
 

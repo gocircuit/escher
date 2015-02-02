@@ -15,12 +15,12 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewSink(), "Ignore")
-	faculty.Register(be.NewMaterializer(&Grow{}), "Grow")
-	faculty.Register(be.NewMaterializer(&be.Union{}), "Fork")
-	faculty.Register(be.NewMaterializer(&Lens{}), "Lens")
-	faculty.Register(be.NewMaterializer(&Alternate{}), "Alternate")
-	faculty.Register(be.NewMaterializer(&Alternate{}), "Alt")
-	faculty.Register(be.NewMaterializer(&OneWayDoor{}), "OneWayDoor")
-	faculty.Register(be.NewMaterializer(Repeat{}), "Repeat")
+	faculty.Register(be.NewSink(), "e", "Ignore")
+	faculty.Register(be.NewMaterializer(&Grow{}), "e", "Grow")
+	faculty.Register(be.NewMaterializer(&be.Union{}), "e", "Fork")
+	faculty.Register(be.NewMaterializer(&Lens{}), "e", "Lens")
+	faculty.Register(be.NewMaterializer(&Alternate{}), "e", "Alternate")
+	faculty.Register(be.NewMaterializer(&Alternate{}), "e", "Alt")
+	faculty.Register(be.NewMaterializer(&OneWayDoor{}), "e", "OneWayDoor")
+	faculty.Register(be.NewMaterializer(Repeat{}), "e", "Repeat")
 }

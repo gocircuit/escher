@@ -12,7 +12,7 @@ MeaningPage {
 	h:Title = "Circuit interpretations"
 	h:Body = t:
 
-	f *Fork
+	f *e.Fork
 	f:Ticker = tkr:
 
 	tkr *FigureJpg

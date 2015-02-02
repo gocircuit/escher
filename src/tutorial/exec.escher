@@ -5,14 +5,14 @@ Exec {
 		Args { "/" }
 	}
 
-	yio *Fork
+	yio *e.Fork
 	proc:IO = yio:
 
-	yio:Stdin = *Ignore
+	yio:Stdin = *e.Ignore
 	yio:Stdout = *os.Stdout
 	yio:Stderr = *os.Stderr
 
-	yexit *Fork
+	yexit *e.Fork
 	proc:Exit = yexit:
 	
 	exit *os.Exit

@@ -16,10 +16,10 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewMaterializer(&Star{}), "Star")
-	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show)), "Show")
-	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show1)), "Show1")
-	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show2)), "Show2")
+	faculty.Register(be.NewMaterializer(&Star{}), "e", "Star")
+	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show)), "e", "Show")
+	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show1)), "e", "Show1")
+	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show2)), "e", "Show2")
 }
 
 type StarFunc func(Name, interface{})

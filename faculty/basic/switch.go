@@ -15,7 +15,7 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewMaterializer(&Switch{}), "Switch")
+	faculty.Register(be.NewMaterializer(&Switch{}), "e", "Switch")
 }
 
 type Switch struct {

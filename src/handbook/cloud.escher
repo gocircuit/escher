@@ -12,7 +12,7 @@ CloudPage {
 	h:Title = "Paradigm for building clouds with Circuit and Escher"
 	h:Body = t:
 
-	f *Fork
+	f *e.Fork
 	f:Diagram = dia:
 
 	dia *FigurePngSvg

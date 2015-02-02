@@ -11,7 +11,7 @@ MaterializePage {
 	h:Title = "Materializing circuits into reflexes"
 	h:Body = t:
 
-	f *Fork
+	f *e.Fork
 	f:ImgScanPrint = FigureScanPrint
 	f:ImgTelescope1 = FigureTelescope
 	f:ImgExpanded = FigureExpanded

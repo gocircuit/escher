@@ -4,11 +4,11 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 QuickMaterialize {
-	x *escher.Materialize
+	x *e.Materialize
 	x:View = y:
 	x:Residue = :Residue
 
-	y *Fork
+	y *e.Fork
 	y:Index = :Index
 	y:Program = :Program
 }

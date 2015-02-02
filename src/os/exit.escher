@@ -4,8 +4,8 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 ExitSuccess {
-	*Ignore = `ExitSuccess exits the process with exit code 0 as soon as it receives any value on the default valve.`
-	door *OneWayDoor
+	*e.Ignore = `ExitSuccess exits the process with exit code 0 as soon as it receives any value on the default valve.`
+	door *e.OneWayDoor
 	door:From = 0
 	door:To = *os.Exit
 	door:Door = :

@@ -4,19 +4,19 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 ProcessIgnoreIO {
-	Doc = `ProcessIgnoreIO is similar to circuit.Process while ignoring the standard streams of the target OS process.`
+	*e.Ignore = `ProcessIgnoreIO is similar to circuit.Process while ignoring the standard streams of the target OS process.`
 
-	proc circuit.Process
+	proc *circuit.Process
 	:Spawn = proc:Spawn
 	:Exit = proc:Exit
 	:Server = proc:Server
 	:Command = proc:Command
 
-	yio circuit.ForkIO
+	yio *circuit.ForkIO
 	yio:_ = proc:IO
 
-	yio:Spawn = Ignore
-	yio:Stdin = io.Clunk
-	yio:Stdout = io.Clunk
-	yio:Stderr = io.Clunk
+	yio:Spawn = *e.Ignore
+	yio:Stdin = *io.Clunk
+	yio:Stdout = *io.Clunk
+	yio:Stderr = *io.Clunk
 }

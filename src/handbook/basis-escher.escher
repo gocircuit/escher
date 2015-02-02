@@ -53,7 +53,7 @@ program relative to the given index and will return the residue to the valve <co
 <pre>
 {
 	m *escher.Materialize
-	f *Fork
+	f *e.Fork
 
 	m:View = f:
 	f:Program = {

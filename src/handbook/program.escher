@@ -7,7 +7,7 @@ BuildProgramPage {
 }
 
 ProgramFigures {
-	f *Fork
+	f *e.Fork
 	f:ScanPrint = fig1:
 	f:Telescope = fig2:
 	f:Expanded = fig3:

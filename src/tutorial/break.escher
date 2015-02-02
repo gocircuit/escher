@@ -1,14 +1,14 @@
 Break {
-	*escher.Breakpoint = 1
+	*e.Breakpoint = 1
 }
 
 Debug {
-	*Show = "Parent circuit"
+	*e.Show = "Parent circuit"
 
-	m *escher.QuickMaterialize
-	m:Residue = *Ignore
-	m:Index = *escher.Index
+	m *e.QuickMaterialize
+	m:Residue = *e.Ignore
+	m:Index = *e.Index
 	m:Program = {
-		*escher.Breakpoint = 1
+		*e.Breakpoint = 1
 	}
 }

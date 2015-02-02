@@ -1,10 +1,10 @@
 HelloWorld {
-	x *Show
+	x *e.Show
 	x:Alice = "¡Hello, world!"
 
-	*Show = "How do you do?"
+	*e.Show = "How do you do?"
 
-	y *Show
+	y *e.Show
 	y:Bob = answer:
 	answer `Tippy toppy, thank you.`
 }

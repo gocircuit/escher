@@ -4,9 +4,9 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 Func {
-	in *Alternate
-	out *Alternate
-	star *Star
+	in *e.Alternate
+	out *e.Alternate
+	star *e.Star
 
 	in:SX = :In
 	in:TX = :Begin
@@ -22,7 +22,7 @@ Func {
 }
 
 TestFunc {
-	Ignore = `Test over multiple values, each with simulated processing delay`
+	*e.Ignore = `Test over multiple values, each with simulated processing delay`
 	func *Func
 	func:In = 1
 	func:Begin = func:End

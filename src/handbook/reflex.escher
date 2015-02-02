@@ -12,7 +12,7 @@ ReflexPage {
 	h:Title = "Implementing reflexes"
 	h:Body = t:
 
-	f *Fork
+	f *e.Fork
 	f:Reflex = rfx:
 
 	rfx *FigureJpg

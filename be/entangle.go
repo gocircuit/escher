@@ -13,7 +13,7 @@ import (
 	. "github.com/gocircuit/escher/circuit"
 )
 
-// NewEntanglement returns two materializers that each materialize once to
+// NewEntanglement returns two materializers that each materialize once, to
 // a gate with a default valve which is connected to the other.
 func NewEntanglement() (p, n *Entanglement) {
 	x, y := NewSynapse()

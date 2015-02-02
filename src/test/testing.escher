@@ -4,7 +4,7 @@ this notice, so peers of other times and backgrounds can
 see history clearly.`
 
 MatchOneAndExit {
-	*Ignore = `MatchOneAndExit matches the singular values incoming 
+	*e.Ignore = `MatchOneAndExit matches the singular values incoming 
 	on :Expected and :Got and then exits successfully (with exit code 0).`
 
 	match *test.Match
@@ -12,18 +12,18 @@ MatchOneAndExit {
 	match:Got = :Got
 	match: = door:Door
 
-	door *OneWayDoor
+	door *e.OneWayDoor
 	door:From = 0
 	door:To = *os.Exit
 }
 
 All {
-	*Ignore = `All runs all test circuits within the default index (provided by the -src command-line option).
+	*e.Ignore = `All runs all test circuits within the default index (provided by the -src command-line option).
 	Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
 	Each test is run in a dedicated OS process.`
 
 	depth *yield.DepthFirst
-	depth:Root = *escher.Index
+	depth:Root = *e.Index
 	depth:Frame = filter:In
 	depth:End = *os.ExitSuccess
 

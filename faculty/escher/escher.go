@@ -15,10 +15,10 @@ import (
 )
 
 func init() {
-	faculty.Register(be.NewMaterializer(&System{}), "escher", "Materialize")
-	faculty.Register(be.NewMaterializer(Index{}), "escher", "Index")
-	faculty.Register(be.NewMaterializer(Parse{}), "escher", "Parse")
-	faculty.Register(be.NewMaterializer(Breakpoint{}), "escher", "Breakpoint")
-	faculty.Register(be.NewMaterializer(&Help{}), "help")
-	faculty.Register(be.NewMaterializer(&Help{}), "Help")
+	faculty.Register(be.NewMaterializer(&System{}), "e", "Materialize")
+	faculty.Register(be.NewMaterializer(Index{}), "e", "Index")
+	faculty.Register(be.NewMaterializer(Parse{}), "e", "Parse")
+	faculty.Register(be.NewMaterializer(Breakpoint{}), "e", "Breakpoint")
+	faculty.Register(be.NewMaterializer(&Help{}), "e", "help")
+	faculty.Register(be.NewMaterializer(&Help{}), "e", "Help")
 }

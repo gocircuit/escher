@@ -1,9 +1,5 @@
 package weaver
 
-import (
-	"reflect"
-)
-
 // type UserReflex struct {
 //	*Reflex
 // 	Q    struct {
@@ -19,31 +15,39 @@ import (
 // 	// …
 // }
 
-// Rule
-type Rule struct {
-	receiver reflect.Value
+type Rule interface {
+	Sources() []Name
+	Sinks() []Name
+	Write(Name, Value)
+	Spark()
+	Read(Name) Value
 }
 
-func NewRule(rule interface{}) Rule {
-	//??
-}
+// // Rule
+// type rule struct {
+// 	receiver reflect.Value
+// }
 
-func (r *Rule) Sources() []Name {
-	//xx
-}
+// func NewRule(rule interface{}) Rule {
+// 	//??
+// }
 
-func (r *Rule) Sinks() []Name {
-	//xx
-}
+// func (r *rule) Sources() []Name {
+// 	//xx
+// }
 
-func (r *Rule) Write(Name, Value) {
-	//xx
-}
+// func (r *rule) Sinks() []Name {
+// 	//xx
+// }
 
-func (r *Rule) Spark() {
-	//xx
-}
+// func (r *rule) Write(Name, Value) {
+// 	//xx
+// }
 
-func (r *Rule) Read(Name) Value {
-	//xx
-}
+// func (r *rule) Spark() {
+// 	//xx
+// }
+
+// func (r *rule) Read(Name) Value {
+// 	//xx
+// }

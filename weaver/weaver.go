@@ -27,7 +27,7 @@ func NewWeaver() *Weaver {
 func (w *Weaver) Reflex() Reflex {
 	w.Lock()
 	defer w.Unlock()
-	return val.(Reflex)
+	return w.val.(Reflex)
 }
 
 func (w *Weaver) Fix(val Value) bool {

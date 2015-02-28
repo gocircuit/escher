@@ -1,5 +1,9 @@
 package weaver
 
+import (
+	"sync"
+)
+
 type Reflex interface {
 	Fix(Name, Value)
 	Link(Name, Reflex, Name)
@@ -10,10 +14,10 @@ type reflex struct {
 	sink map[Name]*Synapse
 	sync.Mutex
 	expecting map[Name]struct{} // set of valves, whose values are still not received
-	rule      *Rule
+	rule      Rule
 }
 
-func NewReflex(rule *Rule) Reflex {
+func NewReflex(rule Rule) Reflex {
 	x := &reflex{
 		sink:      make(map[Name]*Synapse),
 		expecting: make(map[Name]struct{}),
@@ -32,13 +36,13 @@ func (x *reflex) Link(sink Name, reflex Reflex, valve Name) {
 	x.sink[sink].Link(reflex, valve)
 }
 
-func (x *reflex) Fix(valve Name, value Value) bool {
-	ok, expecting := x.fix(valve, value)
-	if !ok {
-		return false
+func (x *reflex) Fix(valve Name, value Value) {
+	effect, remain := x.fix(valve, value)
+	if !effect {
+		return
 	}
-	if expecting > 0 {
-		return true
+	if remain > 0 {
+		return
 	}
 	// This code will execute only once
 	x.rule.Spark() // Rule executes in the goroutine invoking Reflex.Fix()
@@ -47,7 +51,7 @@ func (x *reflex) Fix(valve Name, value Value) bool {
 	}
 }
 
-func (x *reflex) fix(valve Name, value Value) (ok bool, expecting int) {
+func (x *reflex) fix(valve Name, value Value) (effect bool, remain int) {
 	x.Lock()
 	defer x.Unlock()
 	if _, ok := x.expecting[valve]; !ok {

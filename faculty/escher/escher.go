@@ -10,7 +10,6 @@ import (
 	// "fmt"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 

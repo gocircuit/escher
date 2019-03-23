@@ -2,6 +2,9 @@ language: go
 
 go_import_path: github.com/gocircuit/escher
 
+before_install:
+- go get -v github.com/gocircuit/circuit/client github.com/gocircuit/circuit/client/docker
+
 go: 
 - tip
 

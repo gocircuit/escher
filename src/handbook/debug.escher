@@ -43,11 +43,11 @@ by example.
 {
 	*Show = "Parent circuit"
 
-	m *escher.QuickMaterialize
+	m *e.QuickMaterialize
 	m:Residue = *Ignore
-	m:Index = *escher.Index
+	m:Index = *e.Index
 	m:Program = {
-		*escher.Breakpoint = 1
+		*e.Breakpoint = 1
 	}
 }
 </pre>
@@ -59,36 +59,36 @@ The following Escher trace will be printed:
 
 <pre>
 BASIS(:)
-DIRECTIVE(:) *escher.Breakpoint/*escher.Breakpoint
+DIRECTIVE(:) *e.Breakpoint/*e.Breakpoint
 CIRCUIT() {
-        0 *escher.Breakpoint
+        0 *e.Breakpoint
         1 1
         0: = 1:
 }
 MATERIALIZE() {
-        0 *escher.Breakpoint
+        0 *e.Breakpoint
         1 1
         0: = 1:
 }
 BASIS(:Residue :View)
-DIRECTIVE(:Residue :View) *escher.Materialize/*escher.Materialize
+DIRECTIVE(:Residue :View) *e.Materialize/*e.Materialize
 CIRCUIT(:Index :Program :Residue) {
-        x *escher.Materialize
+        x *e.Materialize
         y *e.Fork
         :Residue = x:Residue
         :Index = y:Index
         :Program = y:Program
         x:View = y:
 }
-DIRECTIVE(:Index :Program :Residue) *escher.QuickMaterialize/*escher.QuickMaterialize
+DIRECTIVE(:Index :Program :Residue) *e.QuickMaterialize/*e.QuickMaterialize
 CIRCUIT() {
-        m *escher.QuickMaterialize
+        m *e.QuickMaterialize
         0 *Show
         1 "Parent circuit"
         2 *Ignore
-        3 *escher.Index
+        3 *e.Index
         4 {
-                0 *escher.Breakpoint
+                0 *e.Breakpoint
                 1 1
                 0: = 1:
         }

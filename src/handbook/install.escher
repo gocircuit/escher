@@ -27,7 +27,7 @@ Fetching, building and installing Escher can then be accomplished with one comma
 <p>To check that installation succeeded, run
 
 <pre>
-	% ESCHER=github.com/gocircuit/escher/src escher test.All
+	% ESCHER=github.com/gocircuit/escher/src escher *test.All
 	+ Test basic.TestFork (ok)
 	+ Test basic.TestFunc (ok)
 	+ Test text.TestForm (ok)

@@ -99,26 +99,27 @@ Type <code>Value</code> designates any Go value.
 <p>Using the Escher parser is very simple, in three steps:
 
 <ul>
-<li>Import the parsing package <code>"github.com/gocircuit/escher/see"</code></li>
+<li>Import the parsing packages <code>"github.com/gocircuit/escher/a"</code> and <code>"github.com/gocircuit/escher/see"</code></li>
 <li>Create a parsing object for your source string</li>
 <li>Repeatedly parse one circuit definition at a time</li>
 </ul>
 
-<p>The following example illustrates this:
+<p>The following Go example illustrates this:
 
 <pre class="go">
 package main
 
 import (
 	"fmt"
+	"github.com/gocircuit/escher/a"
 	"github.com/gocircuit/escher/see"
 )
 
 func main() {
-	src = "alpha { a 123; b 3.14; a: = b:}\n beta { 1, 2, 3, \"abc\" }"
-	p := see.NewSrcString(src) // create a parsing object
+	src := "alpha { a 123; b 3.14; a: = b:}\n beta { 1, 2, 3, \"abc\" }"
+	p := a.NewSrcString(src) // create a parsing object
 	for {
-		n, v := see.See(p) // parse one circuit at a time
+		n, v := see.SeePeer(p) // parse one circuit at a time
 		if v == nil {
 			break
 		}

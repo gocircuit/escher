@@ -39,7 +39,7 @@ The following steps are performed upon invocation:
 	<pre>
 		CircuitName { … }
 	</pre>
-	Will be registered under the index address <code>a.b.c.CircuitName</code>.
+	Will be registered under the index directive <code>a.b.c.CircuitName</code>.
 	</li>
 	<li>Files with other extensions will be converted into <code>SourceFile</code> reflex materializers,
 	located in the index at the path of their source file relative to the source directory. <code>SourceFile</code>

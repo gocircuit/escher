@@ -53,12 +53,12 @@ same gate name have unique valve names.
 the <em>internal</em> structure of the circuit, which consists of the
 gate names and links and excludes the gate values—the <em>external</em> structure.
 
-<p>To draw a circuit we start with a solid black oval, denoting the circuit's internal name space.
-White ovals—contained inside the black one and mutually non-overlapping—denote gates.
+<p>To draw a circuit, we start with a solid black oval, denoting the circuit's internal name space.
+White ovals — contained inside the black one and mutually non-overlapping — denote gates.
 
 <p>Links are depicted as white lines that connect the outlines of gate ovals.
 Link endpoints connecting to the <a href="#links">super gate</a> are attached to 
-the outline of the surrounding black oval. 
+the outline of the surrounding black oval.
 
 <p>Valve names are written in white within the black oval, next to their 
 respective visual connection point. Connection points where valve names

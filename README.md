@@ -14,39 +14,45 @@ while being simpler than a calculator grammar.
 Escher is a language for building intelligent real-time translations between the semantics of
 different physical devices accessible through chains or networks of digital or electrical technologies.
 
-In Escher, you can program from first- and third-person point-of-view at the same time.
-(Just like Physics is particles and waves at the same time.)
-
-Some of the application domains of Escher are:
-
-* Definition and generation of synthetic worlds governed by Physical laws,
-  as in Augmented Reality and the Gaming Industry
-* General purpose concurrent and distributed programming, such as Internet services and cloud applications
-* Relational data representation, as in databases and CAD file formats
-* Real-time control loops, as in Robotics
-* Numerical and scientific computation pipelines
-* ...
-* Anything that filters information from some input sources, in real-time,
-  and sends a transformed form to output devices!
+In Escher, you can program from first- and third-person point-of-view at the same time;
+just like Physics is particles and waves at the same time.
 
 An early "proposal" for the design of Escher,
 [Escher: A black-and-white language for data and process representation](http://www.maymounkov.org/memex/abstract),
 might be an informative (but not necessary) read for the theoretically inclined.
 
-## Attention: Non-Turing Mathematics ahead
+## Application domains
+
+Anything that filters information from some input sources, in real-time,
+and sends a transformed form to output devices.
+
+* Definition and generation of _synthetic worlds_ governed by Physical laws,
+  as in Augmented Reality and the Gaming Industry
+* _General purpose concurrent and distributed programming_,
+  such as Internet services and cloud applications
+* _Relational data representation_, as in databases and CAD file formats
+* _Real-time control loops_, as in Robotics
+* Numerical and scientific computation pipelines
+* ...
+
+## Computational Model
+
+___Attention:___ _Non-Turing Mathematics ahead_
 
 The Escher abstraction of the world is NOT Turing-compatible:
 From the point-of-view of an Escher program,
 there is no input and output:
 There are only emergences and disappearances of events.
 
-Escher presents the world in a model called [Choiceless Computation](http://arxiv.org/pdf/math/9705225.pdf),
-introduced by the legendary Mathematicians
+Escher presents the world in a model called [Choiceless Computation](http://arxiv.org/pdf/math/9705225.pdf).
+<!--
+It was introduced by the legendary Mathematicians
 [Andreas Blass](http://www.math.lsa.umich.edu/~ablass/),
 [Yuri Gurevich](http://research.microsoft.com/en-us/um/people/gurevich/) and
 [Saharon Shelah](http://shelah.logic.at/),
 and introduced to the original Escher author by the dare-to-be-great, soon-to-be-legendary,
 although-already-should-be [Benjamin Rossman](http://research.nii.ac.jp/~rossman/).
+-->
 
 Understanding the difference between Turing Machines and Choiceless Computation,
 while not entirely necessary, sheds much light on the profound difference between
@@ -77,23 +83,31 @@ Can you devise a sequence that ensures they all face up? Down?
 
 ---
 
-This is a great introduced to the notion of choiceless programming.
+This is a great introduction to the notion of choiceless programming.
 
 ## Quick start
 
-Escher is an interpreter, comprising a singular executable binary.
-It can be built for Linux, Darwin and Windows.
+Escher is an interpreter comprising a singular executable binary.
+It is written in [Go](http://golang.org),
+and can be built for Linux, OSX and Windows.
 
-Given that the [Go Language](http://golang.org) compiler is [installed](http://golang.org/doc/install),
+Given that the [Go Language compiler is installed](http://golang.org/doc/install),
 you can build and install the circuit binary with one line:
 
-	go get github.com/gocircuit/escher/escher
+```bash
+go get github.com/gocircuit/escher/escher
+```
 
 Go to the Escher base directory and run one of the tutorials
 
-	escher -src tutorial/helloworld
+```bash
+cd $GOPATH/src/github.com/gocircuit/escher
+escher -src src/tutorial "*helloworld.escher"
+```
 
-## Meaning
+## Structure
+
+### Reflexes
 
 An Escher program is a collection of interconnected _reflexes_.
 A reflex, the only abstraction in Escher, represents an independent computing entity
@@ -104,42 +118,54 @@ which has three valves named `X`, `Y` and `XandY`, respectively.
 
 ![An Escher reflex](misc/img/design.png)
 
-A reflex can be implemented in another technology (currently only the
-[Go Programming Language](http://golang.org) is supported
-as an external technology) or it can be composed of pre-existing reflexes.
-The former is called a _gate_, while the latter is called a _circuit_.
+Internally, a reflex can be one of two things (explained later):
+* a [_gate_](#gates)
+* a [_circuit_](#circuits)
 
-## Gates
+#### Gates
 
-Gates are reflexes whose behvaior is implemented in a the underlying technology,
-which is the [Go language](http://golang.org/doc/effective_go.html), at the moment.
-From Escher's point-of-view (POV), gates are simply reflexes that broker values.
-But from the user's POV, gates can have "side-effects"
-in the "outside world" and, vice-versa, the outside world can prompt reflexive action,
+Gates are reflexes whose behavior is implemented
+in an other technology.
+
+Currently, the only supported such technology is the [Go language](http://golang.org/doc/effective_go.html).
+
+From Escher's point-of-view (POV),
+gates are simply reflexes that broker values.
+But from the user's POV,
+gates can have "side-effects" in the "outside world" and,
+vice-versa, the outside world can prompt reflexive action,
 such as sending out a message over a valve asynchronously.
 
-To implement your own gates, take example from the [implementation of the "reasoning" gate
+To implement your own gates,
+take example from the [implementation of the "reasoning" gate
 ](https://github.com/gocircuit/escher/blob/master/faculty/basic/reason.go)
 (discussed later).
 
-## Circuits
+#### Circuits
 
-Circuits are a composition of a few reflexes.
+Circuits are reflexes whose behavior is implemented
+by a composition of reflexes.
 
 ![Boolean "not and"](misc/img/circuit.png)
 
 Programmatically, this circuit is defined by the code:
 
-	nand {
-		// reflex recollections
-		and and
-		not not
-		// connections
-		not.X = and.XandY
-		XnandY = not.notX
-		and.X = X
-		and.Y = Y
-	}
+```escher
+nand {
+	// reflex recollections
+	and and
+	not not
+	// connections
+	not.X = and.XandY
+	XnandY = not.notX
+	and.X = X
+	and.Y = Y
+}
+```
+
+#### Valves
+
+TODO
 
 ## Syntax (files) and faculties (directories) structure
 

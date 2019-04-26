@@ -1,9 +1,12 @@
-# Escher - A language for programming in pure metaphors
+# [Escher - A language for programming in pure metaphors](http://escher.io)
 
 [![Build Status](https://travis-ci.org/gocircuit/escher.svg?branch=master)](https://travis-ci.org/gocircuit/escher)
 [![GoDoc](https://godoc.org/github.com/gocircuit/escher?status.png)](https://godoc.org/github.com/gocircuit/escher)
 
 ___NOTE___ _Escher (in this repository) is stagnant since 2015_
+
+See [the projects website](http://escher.io)
+for more info about the language.
 
 ![Escher in language](misc/img/main.png)
 
@@ -44,15 +47,8 @@ From the point-of-view of an Escher program,
 there is no input and output:
 There are only emergences and disappearances of events.
 
-Escher presents the world in a model called [Choiceless Computation](http://arxiv.org/pdf/math/9705225.pdf).
-<!--
-It was introduced by the legendary Mathematicians
-[Andreas Blass](http://www.math.lsa.umich.edu/~ablass/),
-[Yuri Gurevich](http://research.microsoft.com/en-us/um/people/gurevich/) and
-[Saharon Shelah](http://shelah.logic.at/),
-and introduced to the original Escher author by the dare-to-be-great, soon-to-be-legendary,
-although-already-should-be [Benjamin Rossman](http://research.nii.ac.jp/~rossman/).
--->
+Escher presents the world in a model called
+[Choiceless Computation](http://arxiv.org/pdf/math/9705225.pdf).
 
 Understanding the difference between Turing Machines and Choiceless Computation,
 while not entirely necessary, sheds much light on the profound difference between
@@ -107,65 +103,7 @@ escher -src src/tutorial "*helloworld.escher"
 
 ## Structure
 
-### Reflexes
-
-An Escher program is a collection of interconnected _reflexes_.
-A reflex, the only abstraction in Escher, represents an independent computing entity
-that can interact with the "outside world" through a collection of named _valves_.
-
-The illustration below shows a reflex named `AND`,
-which has three valves named `X`, `Y` and `XandY`, respectively.
-
-![An Escher reflex](misc/img/design.png)
-
-Internally, a reflex can be one of two things (explained later):
-* a [_gate_](#gates)
-* a [_circuit_](#circuits)
-
-#### Gates
-
-Gates are reflexes whose behavior is implemented
-in an other technology.
-
-Currently, the only supported such technology is the [Go language](http://golang.org/doc/effective_go.html).
-
-From Escher's point-of-view (POV),
-gates are simply reflexes that broker values.
-But from the user's POV,
-gates can have "side-effects" in the "outside world" and,
-vice-versa, the outside world can prompt reflexive action,
-such as sending out a message over a valve asynchronously.
-
-To implement your own gates,
-take example from the [implementation of the "reasoning" gate
-](https://github.com/gocircuit/escher/blob/master/faculty/basic/reason.go)
-(discussed later).
-
-#### Circuits
-
-Circuits are reflexes whose behavior is implemented
-by a composition of reflexes.
-
-![Boolean "not and"](misc/img/circuit.png)
-
-Programmatically, this circuit is defined by the code:
-
-```escher
-nand {
-	// reflex recollections
-	and and
-	not not
-	// connections
-	not.X = and.XandY
-	XnandY = not.notX
-	and.X = X
-	and.Y = Y
-}
-```
-
-#### Valves
-
-TODO
+Please reffer to [the projects website](http://escher.io).
 
 ## Syntax (files) and faculties (directories) structure
 

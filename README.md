@@ -117,15 +117,19 @@ to the namespaces corresponding to their directory parents.
 To materialize (i.e. run) an Escher program, use the mandatory `-x` flag
 to specify the path to the local source directory.
 
-	escher -x tutorial/helloworld
+```bash
+escher -x tutorial/helloworld
+```
 
 Escher materializes the circuit design named `main` in the root source directory, e.g.
 
-	// The main circuit is always the one materialized (executed).
-	main {
-		s @show
-		s.Action = "¡Hello, world!"
-	}
+```escher
+// The main circuit is always the one materialized (executed).
+main {
+	s @show
+	s.Action = "¡Hello, world!"
+}
+```
 
 ### Recombining programs
 
@@ -138,12 +142,14 @@ while the hierarchy `tutorial/circuit/autorespawn` contains a root `main` circui
 To execute the latter, using the former as a "library" available in the visisble namespace,
 run for instance
 
-	escher \
-		-x tutorial/circuit/autorespawn \
-		-y acid/karajan \
-		-n ExecutionName \
-		-s Server=Xa3242440007ad57b \
-		-d 228.8.8.8:22
+```bash
+escher \
+	-x tutorial/circuit/autorespawn \
+	-y acid/karajan \
+	-n ExecutionName \
+	-s Server=Xa3242440007ad57b \
+	-d 228.8.8.8:22
+```
 
 ![Auto-respawn tutorial](misc/img/proc1.png)
 
@@ -243,16 +249,18 @@ which is controlled by a defered logic:
 
 And the respective source code:
 
-	io_device {
-		// recalls
-		in see
-		out show
-		swtch switch
-		// matchings
-		Logic = swtch.Socialize
-		in.Sensation = swtch.Hear
-		out.Action = swtch.Speak
-	}
+```escher
+io_device {
+	// recalls
+	in see
+	out show
+	swtch switch
+	// matchings
+	Logic = swtch.Socialize
+	in.Sensation = swtch.Hear
+	out.Action = swtch.Speak
+}
+```
 
 ## Introspective and extrospective gates
 

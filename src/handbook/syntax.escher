@@ -161,20 +161,36 @@ alpha {            // circuit definition
 
 <p>Gate statements begin on a new line with a gate name identifier, space, and a gate value expression.
 There are six value types that can be expressed:
-<ul>
-<li>Integers
-<li>Floating-point numbers
-<li>Complex numbers
-<li>Strings
-<li>Directives
-<li>Circuits
-</ul>
-
-<p>The first four correspond to the Go types <code>int</code>, <code>float64</code>, <code>complex128</code>
-and <code>string</code> and are expressed using the same syntax. 
-Addresses have a dedicated Go type <code>Address</code>. They represent a sequence of names and are
-written as dot-separated fully-qualified names. Finally, circuits—whose dedicated Go type is <code>Circuit</code>—
-can be values of gates as well.
+<table class='paddingBetweenRows'>
+<tr>
+	<th>Type</th>
+	<th>Represents</th>
+</tr>
+<tr>
+	<td>Integers</td>
+	<td>native Go type <code>int</code></td>
+</tr>
+<tr>
+	<td>Floating-point numbers</td>
+	<td>native Go type <code>float64</code></td>
+</tr>
+<tr>
+	<td>Complex numbers</td>
+	<td>native Go type <code>complex128</code></td>
+</tr>
+<tr>
+	<td>Strings</td>
+	<td>native Go type <code>string</code></td>
+</tr>
+<tr>
+	<td>Directives</td>
+	<td>Escher internal Go type <code>Address</code>, representing a sequence of names, written as dot-separated, fully-qualified names</td>
+</tr>
+<tr>
+	<td>Circuits</td>
+	<td>Escher internal Go type <code>Circuit</code></td>
+</tr>
+</table>
 
 <p>For instance,
 

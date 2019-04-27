@@ -248,10 +248,13 @@ vectors, and a vector consists of a gate name and a valve name.
 <p>Vectors are written as the gate name, followed by <code>:</code> (the colon sign),
 followed by the valve name. Links are written as a vector, followed by optional whitespace,
 followed by <code>=</code> (the equals sign), followed by another optional whitespace and
-the second vector. For instance,
+the second vector. Valid examples:
 
 <pre class="escher">
 	and:XAndY = not:X
+	and:XAndY= not:X
+	and:XAndY =not:X
+	and:XAndY=not:X
 </pre>
 
 <p>A few idioms are commonly useful:

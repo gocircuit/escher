@@ -159,27 +159,27 @@ in the residue circuit.
 {
 	Database {
 		cache Cache
-		left Shard
-		right Shard
+		shard1 Shard
+		shard2 Shard
 		link Link
 
 		cache:Web = :Web
-		left:Cache = cache:Left
-		right:Cache = cache:Right
-		left:Backup = link:Left
-		right:Backup = link:Right
+		shard1:Cache = cache:Left
+		shard2:Cache = cache:Right
+		shard1:Backup = link:Left
+		shard2:Backup = link:Right
 		link: = :Backup
 	}
 	App {
 		web Web
-		left Database
-		right Database
-		backup Backup
+		db1 Database
+		db2 Database
+		bkp Backup
 
-		left:Web = web:Left
-		right:Web = web:Right
-		left:Backup = backup:Left
-		right:Backup = backup:Right
+		db1:Web = web:Left
+		db2:Web = web:Right
+		db1:Backup = bkp:Left
+		db2:Backup = bkp:Right
 	}
 	Web …
 	Cache …
@@ -223,16 +223,16 @@ we are going to get the following residue:
 		link LinkResidue
 
 		cache:Web = :Web
-		left:Cache = cache:Left
-		right:Cache = cache:Right
-		left:Backup = link:Left
-		right:Backup = link:Right
+		shard1:Cache = cache:Left
+		shard2:Cache = cache:Right
+		shard1:Backup = link:Left
+		shard2:Backup = link:Right
 		link: = :Backup
 	}
-	left:Web = web:Left
-	right:Web = web:Right
-	left:Backup = backup:Left
-	right:Backup = backup:Right
+	db1:Web = web:Left
+	db2:Web = web:Right
+	db1:Backup = bkp:Left
+	db2:Backup = bkp:Right
 }
 </pre>
 

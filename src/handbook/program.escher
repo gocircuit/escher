@@ -30,17 +30,17 @@ ProgramFigures {
 
 	fig2 *FigurePngSvg
 	fig2:Image = "telescope"
-	fig2:Width = "600px"
+	fig2:Width = "800px"
 	fig2:Caption = ``
 
 	fig3 *FigurePngSvg
 	fig3:Image = "expanded"
-	fig3:Width = "500px"
+	fig3:Width = "1000px"
 	fig3:Caption = ``
 
 	fig4 *FigurePngSvg
 	fig4:Image = "flattened"
-	fig4:Width = "500px"
+	fig4:Width = "1000px"
 	fig4:Caption = ``
 }
 

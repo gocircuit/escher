@@ -9,6 +9,10 @@
 	/*letter-spacing: -0.05em;*/
 }
 
+.paddingBetweenRows td {
+    padding: 0 15px 0 15px;
+}
+
 body, div {
 	padding: 0;
 	margin: 0;

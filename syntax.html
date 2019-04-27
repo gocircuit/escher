@@ -38,12 +38,12 @@ same gate name have unique valve names.
 the <em>internal</em> structure of the circuit, which consists of the
 gate names and links and excludes the gate values—the <em>external</em> structure.
 
-<p>To draw a circuit we start with a solid black oval, denoting the circuit's internal name space.
-White ovals—contained inside the black one and mutually non-overlapping—denote gates.
+<p>To draw a circuit, we start with a solid black oval, denoting the circuit's internal name space.
+White ovals — contained inside the black one and mutually non-overlapping — denote gates.
 
 <p>Links are depicted as white lines that connect the outlines of gate ovals.
 Link endpoints connecting to the <a href="#links">super gate</a> are attached to 
-the outline of the surrounding black oval. 
+the outline of the surrounding black oval.
 
 <p>Valve names are written in white within the black oval, next to their 
 respective visual connection point. Connection points where valve names
@@ -145,12 +145,20 @@ or semi-colons.
 
 <h3 id="comments">Comments</h3>
 
-<p>Go-style end-of-line comments are allowed everywhere.
+<p>We use a trick:
+We use syntactic sugared (empty string named), string valued gates,
+and — purely to visually indicate a comment —
+we use "//" in the beginning, or "/*" plus "*/" at the end.
 
 <pre class="escher">
-alpha {            // circuit definition
-	float 1.23 // gate named float with a floating-point value
-	beta {}    // gate named beta with an empty circuit value
+alpha {          `// circuit definition`
+	float 1.23 ; `// gate named float with a floating-point value`
+	beta {}    ; `// gate named beta with an empty circuit value`
+	`/*
+	  * We can also do this:
+	  * A multi-line comment within a circuit definition.
+	  * Outside the circuit though, no comments are possible.
+	  */`
 }
 </pre>
 
@@ -158,20 +166,36 @@ alpha {            // circuit definition
 
 <p>Gate statements begin on a new line with a gate name identifier, space, and a gate value expression.
 There are six value types that can be expressed:
-<ul>
-<li>Integers
-<li>Floating-point numbers
-<li>Complex numbers
-<li>Strings
-<li>Directives
-<li>Circuits
-</ul>
-
-<p>The first four correspond to the Go types <code>int</code>, <code>float64</code>, <code>complex128</code>
-and <code>string</code> and are expressed using the same syntax. 
-Addresses have a dedicated Go type <code>Address</code>. They represent a sequence of names and are
-written as dot-separated fully-qualified names. Finally, circuits—whose dedicated Go type is <code>Circuit</code>—
-can be values of gates as well.
+<table class='paddingBetweenRows'>
+<tr>
+	<th>Type</th>
+	<th>Represents</th>
+</tr>
+<tr>
+	<td>Integer</td>
+	<td>native Go type <code>int</code></td>
+</tr>
+<tr>
+	<td>Floating-point number</td>
+	<td>native Go type <code>float64</code></td>
+</tr>
+<tr>
+	<td>Complex number</td>
+	<td>native Go type <code>complex128</code></td>
+</tr>
+<tr>
+	<td>String</td>
+	<td>native Go type <code>string</code></td>
+</tr>
+<tr>
+	<td>Directive</td>
+	<td>Escher internal Go type <code>Address</code>, representing a sequence of names, written as dot-separated, fully-qualified names</td>
+</tr>
+<tr>
+	<td>Circuit</td>
+	<td>Escher internal Go type <code>Circuit</code></td>
+</tr>
+</table>
 
 <p>For instance,
 
@@ -205,8 +229,8 @@ alpha {
 <h4 id="series">Series</h4>
 
 <p>Gate names can be omitted in circuit definitions, in which case gates are
-assigned consequtive integral names, starting from zero. We call the resulting 
-circuits <em>series</em>.
+assigned consecutive integral names, starting from zero. We call the resulting
+circuits <a href="meaning.html#series">series</a>.
 
 <pre class="escher">
 alpha {
@@ -228,6 +252,28 @@ alpha {
 }
 </pre>
 
+which is equivalent to:
+
+<pre class="escher">
+alpha {
+	0 *fully.qualified.Name
+	1 @fully.qualified.Name
+	2 123
+	3 3.14
+	4 (1-3i)
+	5 "abcd\n\tefgh"
+	6 `
+		&lt;html&gt;
+			&lt;div&gt;abc&lt;/div&gt;
+		&lt;/html&gt;
+	`
+	7 {
+		A 1
+		B "C"
+	}
+}
+</pre>
+
 <h3 id="links">Links</h3>
 
 <p>Circuit links are semantically symmetric. A link is a pair of two
@@ -236,10 +282,13 @@ vectors, and a vector consists of a gate name and a valve name.
 <p>Vectors are written as the gate name, followed by <code>:</code> (the colon sign),
 followed by the valve name. Links are written as a vector, followed by optional whitespace,
 followed by <code>=</code> (the equals sign), followed by another optional whitespace and
-the second vector. For instance,
+the second vector. Valid examples:
 
 <pre class="escher">
 	and:XAndY = not:X
+	and:XAndY= not:X
+	and:XAndY =not:X
+	and:XAndY=not:X
 </pre>
 
 <p>A few idioms are commonly useful:
@@ -252,7 +301,7 @@ While one cannot assign a value to it through syntax, it is possible to connect 
 For instance, when <a href="program.html">materializing circuits</a>, 
 the links connected to the super gate are exposed to the higher-level “super” circuit.</li>
 <li>Valve names can be the empty string. We call such valves <em>default</em>, as
-they are commonly refered to hereinafter in various idioms.
+they are commonly referred to hereinafter in various idioms.
 
 <p>For instance, it is a common pattern to name the output valve of 
 materializable circuits after the empty string. The default valve of the super gate,
@@ -275,8 +324,8 @@ Nand {
 
 <h4 id="sugar">Syntactic sugar</h4>
 
-<p>When circuits are used to represent <a href="program.html">programs</a>—in other words, 
-executable code—it is common to include a gate and then link to its default valve.
+<p>When circuits are used to represent <a href="program.html">programs</a> — in other words,
+executable code — it is common to include a gate and then link to its default valve.
 To reduce verbosity in this case, link definitions support a piece of syntactic sugar.
 
 <p>Either (or both) vectors in a link definition can be substituted for a gate value.
@@ -294,7 +343,7 @@ Will be expanded into
 	sum:Summand = 0:
 </pre>
 
-<p>In another example both sides of the equation are sugared:
+<p>In this example, both sides of the equation are sugared:
 
 <pre class="escher">
 	*os.Scanln = *os.Println

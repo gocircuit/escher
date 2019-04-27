@@ -18,7 +18,7 @@
 <p>A key motivation for the design of Escher is the idea that 
 software programs should be assembled as the interconnection of
 independently-executing computational devices of special-purpose logic.
-In other words, computer programs—small or large—should be
+In other words, computer programs — small or large — should be
 no different in their essential structure than cloud applications, 
 which are no more and no less than an interconnection of independently
 running special-purpose services.
@@ -27,7 +27,7 @@ running special-purpose services.
 Reflexes can be implemented in the language underlying Escher 
 (the Go language) or they can be composed out of other reflexes,
 using <a href="programs.html">circuit programs</a> from within Escher.
-Here we describe how to implement relfexes in Go and link them
+Here we describe how to implement reflexes in Go and link them
 into the Escher runtime.
 
 <h2>Reflexes and the runtime</h2>
@@ -54,7 +54,7 @@ is guided by <a href="program.html">circuit programs</a>, described in the next 
 
 <p>Every reflex is embodied by a user-defined Go receiver type.
 
-<pre>
+<pre class="go">
 type Receiver struct {
 	…
 }
@@ -68,7 +68,7 @@ type Receiver struct {
 Go receiver type and invokes a designated initialization method, called <code>Spark</code>.
 All receivers must implement that method.
 
-<pre>
+<pre class="go">
 func (r *Receiver) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 	…
 }
@@ -78,7 +78,7 @@ func (r *Receiver) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
 
 <p>The first argument <code>eye</code> is an object with a singleton public method:
 
-<pre>
+<pre class="go">
 func (eye *Eye) Show(valve Name, value interface{})
 </pre>
 
@@ -106,10 +106,10 @@ valves connected to the reflex being materialized.
 
 <p>For instance, the names of the connected valves can be printed with this code:
 
-<pre>
+<pre class="go">
 	view := matter.CircuitAt("View")
 	for _, valve := range view.SortedNames() {
-		fmt.Printf("valve name = %v\n", vavle)
+		fmt.Printf("valve name = %v\n", valve)
 	}
 </pre>
 
@@ -119,7 +119,7 @@ valves connected to the reflex being materialized.
 information that can inform the <code>Spark</code> method to specialize
 this reflex one way or another. The auxiliary information is specified 
 by the user when linking the reflex to the runtime, which is explained 
-furhter below.
+further below.
 
 <h3>Return residue</h3>
 
@@ -147,7 +147,7 @@ a reflex implementation.
 can be any string (including the empty string), that have the following
 signature:
 
-<pre>
+<pre class="go">
 func (r *Receiver) CognizeVALVE(eye *be.Eye, value interface{}) {
 	…
 }
@@ -158,18 +158,18 @@ runtime that this reflex type requires the valve named <code>VALVE</code>
 to be connected (when the reflex is materialized as part of a circuit of reflexes).
 
 <p>Furthermore, every event sent to this valve (of this reflex instance) 
-will result in an invokation of the method <code>CognizeVALVE</code>, wherein the event value
+will result in an invocation of the method <code>CognizeVALVE</code>, wherein the event value
 is held by the argument <code>value</code>. The <code>eye</code> object, supplied 
 for convenience, can be used to send out events to any of the reflex's connected 
 valves.
 
-<p>We say that that the method <code>CognizeVALVE</code> captures the event.
+<p>We say that the method <code>CognizeVALVE</code> captures the event.
 
 <h3>Varying valve names</h3>
 
 <p>The second kind are receiver methods with this exact signature:
 
-<pre>
+<pre class="go">
 func (r *Receiver) OverCognize(eye *be.Eye, valve Name, value interface{}) {
 	…
 }
@@ -192,7 +192,7 @@ for reflexes of a given type.
 <p>Creating the <code>Materializer</code> is accomplished using the function
 <code>NewMaterializer</code> in package <code>be</code>:
 
-<pre>
+<pre class="go">
 func NewMaterializer(receiver Material, aux ...interface{}) Materializer
 </pre>
 
@@ -203,18 +203,18 @@ will be available from the Escher circuit programming environment.
 <p>To add a materializer for a new reflex type to the Escher index, one uses
 the method <code>Register</code> in package <code>faculty</code>:
 
-<pre>
+<pre class="go">
 func Register(v Materializer, addr ...Name)
 </pre>
 
 <p>The first argument is the materializer for the reflex, obtained from <code>NewMaterializer</code>,
 and the second argument is the address within the index where the materializer will be placed.
 
-<p>Typically the user will implement a package with multiple topically-related reflex receivers,
+<p>Typically, the user will implement a package with multiple topically-related reflex receivers,
 and will register their respective materializers with the runtime as a side-effect of importing the
 package, using an <code>init</code> function:
 
-<pre>
+<pre class="go">
 func init() {
 	faculty.Register(be.NewMaterializer(&Receiver{}), "example", "ReflexName")
 }
@@ -238,7 +238,7 @@ an arbitrary value is first sent to valve <code>Door</code>.
 wherein each passing value is blocked until its transmission is allowed by a “strobe”
 value sent to <code>Door</code>.
 
-<pre>
+<pre class="go">
 package example
 
 import (

@@ -18,13 +18,20 @@ BasisPage {
 
 <h1>Reflex basis and faculties</h1>
 
+<p>A faculty is a set of reflexes, similar to a package in Java, or a namespace in C++.
+
 <p>There are two kinds of reflexes in Escher: 
 <ul>
-<li>Those that are implemented in the underlying technology, the Go language, and linked into the runtime, which we call
-<em>basis</em> reflexes.
-<li>And those that are compositions of other reflexes, described by program circuits, which we call 
-<em>derivative reflexes</em>.
+<li><em>Basis reflexes</em>
+    are implemented in the underlying technology —
+    the Go language — and linked into the runtime
+<li><em>Derivative reflexes</em>
+    are compositions of other reflexes,
+    described by program circuits
 </ul>
+
+<p>We will now have a look at the equivalent of <code>std</code> in C++,
+the Escher basis faculty.
 
 <p>Basis reflexes determine the basic arithmetic and data manipulation 
 operations that Escher programs can ultimately perform, as well as
@@ -42,7 +49,7 @@ and use cases might inform choices that we cannot predict from scratch.
 <p>We find that most Escher programs benefit from
 a few basic reflexes that control information flow. 
 We have included a few in the default runtime,
-and they are described in the following sections.
+and they are described in <a href="basis-flow.html">a separate page</a>.
 These gates can be viewed as Escher's “synchronization” facilities.
 
 <h3>External technologies</h3>

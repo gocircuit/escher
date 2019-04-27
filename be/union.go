@@ -3,6 +3,8 @@
 // It helps future understanding of past knowledge to save
 // this notice, so peers of other times and backgrounds can
 // see history clearly.
+//
+// NOTE This reflex named Union (in Go) is called Fork in Escher.
 
 package be
 

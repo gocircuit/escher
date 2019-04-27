@@ -283,7 +283,10 @@ which is described in the <a href="basis-escher.html">materialization faculty se
 <h3 id="materialize-from-command-line">Materializing from the command-line</h3>
 
 <p>The Escher executable, which is explained in detail in the <a href="runtime.html">runtime section</a>,
-will materialize a directive from the command-line:
+will materialize a directive from the command-line.
+Given our index (project source root) is "/src/app/",
+and in one of the "*.escher" files in that directory we have a gate named "Main",
+we can materialize it from the command-line like this:
 
 <pre class="bash">
 escher -src /src/ "*app.Main"

@@ -1,0 +1,10 @@
+ShowIndex {
+	`// Prints the whole index for debugging`
+	z *e.Show  ; `// exemplary EOL doc comment`
+	z:Index = *e.Index
+
+	`/* ... and here:
+	  * a multi-line one.
+	  */`
+}
+

@@ -41,19 +41,20 @@ and use cases might inform choices that we cannot predict from scratch.
 
 <p>We find that most Escher programs benefit from
 a few basic reflexes that control information flow. 
-We have included a few in the default runtime and they are described in the following
-sections. These gates can be viewed as Escher's “synchronization” facilities.
+We have included a few in the default runtime,
+and they are described in the following sections.
+These gates can be viewed as Escher's “synchronization” facilities.
 
 <h3>External technologies</h3>
 
-<p>Basis reflexes are also Escher's way of interacting with external technologies,
+<p>Basis reflexes are also Escher's way of interacting with external technologies
 such as input/output devices. The POSIX systems is a canonical example of an
 external technology and Escher has a dedicated <code>os</code> faculty for it.
 
 <h3>Escher within Escher</h3>
 
-<p>The most powerful feature of Escher is its recursive nature: Circuit programs
-can create program circuits and materialize them into other circuit programs.
+<p>The most powerful feature of Escher is its recursive nature:
+Circuit programs can create program circuits and materialize them into other circuit programs.
 This programming pattern is enabled by the <code>escher</code> faculty,
 which among other things offers reflexes that materialize program circuits.
 

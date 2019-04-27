@@ -108,7 +108,7 @@ can only be materialized as reflexes within higher-level enclosing circuits.
 will result in the materialization of a “noun” reflex, whose noun value is the
 gate value.
 
-<p>A noun reflex is a generic built-in reflex type which, after materialization,
+<p>A noun reflex is a generic, built-in reflex type, which — after materialization —
 emits its corresponding gate value to each one of its connected valves.
 If no valves are connected, the noun reflex leaves the gate value as its 
 residue. Otherwise, it leaves no residue.
@@ -135,7 +135,7 @@ value as the gate value.
 <h3>Circuit residue</h4>
 
 <p>As pointed out in the <a href="reflex.html">section on reflexes</a>, every reflex
-can leave a residue value as a result of being materialized, or the Go value <code>nil</code>
+can leave a residue value as a result of being materialized, or the Go value <code>nil</code>,
 which indicates leaving no residue.
 
 <p>Circuit programs are no different than reflexes (in fact they describe higher-order reflexes themselves)
@@ -260,9 +260,9 @@ from Go, from another program circuit (i.e. from Escher) and from the POSIX shel
 func MaterializeSystem(program interface{}, index, barrier Circuit) (residue interface{})
 </pre>
 
-<p>Argument <code>program</code> contains the program circuit, of Go type <code>Circuit</code>,
+<p>Argument <code>program</code> contains the program circuit — of Go type <code>Circuit</code> —
 that is to be materialized. Incidentally, the value of <code>program</code> can be any value
-recognized as a gate value in a circuit program as described earlier. Often one will pass a directive 
+recognized as a gate value in a circuit program as described earlier. Often, one will pass a directive
 circuit as program.
 
 <p>Argument <code>index</code> holds the materialization index, relative to which

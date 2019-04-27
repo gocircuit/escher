@@ -286,8 +286,8 @@ Nand {
 
 <h4 id="sugar">Syntactic sugar</h4>
 
-<p>When circuits are used to represent <a href="program.html">programs</a>—in other words, 
-executable code—it is common to include a gate and then link to its default valve.
+<p>When circuits are used to represent <a href="program.html">programs</a> — in other words,
+executable code — it is common to include a gate and then link to its default valve.
 To reduce verbosity in this case, link definitions support a piece of syntactic sugar.
 
 <p>Either (or both) vectors in a link definition can be substituted for a gate value.

@@ -61,8 +61,8 @@ it will be printed on the standard output three times by the receiving <code>*Sh
 It requires that the distinguished empty-string valve be connected, as well as one or more 
 freely-named (string or integer) other valves.
 
-<p>Fork can be described as two entirely independent reflexes, let us call 
-them <em>merge</em> and <em>split</em>, embodied in one.
+<p>Fork can be described as two entirely independent reflexes.
+Let us call them <em>merge</em> and <em>split</em>, embodied in one.
 
 <h4>Split direction</h4>
 
@@ -87,8 +87,8 @@ send the value of the gate named N from circuit W to that valve.
 </pre>
 
 <p>The values <code>"Hello"</code> and <code>"World"</code> will be sent 
-to and printed by the connected <code>*Show</code> reflexes. Whereas the value <code>"Foo"</code>
-will be ignored.
+to and printed by the connected <code>*Show</code> reflexes.
+Whereas the value <code>"Foo"</code> will be ignored.
 
 <h4>Merge direction</h4>
 
@@ -98,8 +98,8 @@ gate names follow respective valve names, and will send this circuit out to its 
 
 <p>Note that in the merge direction fork reflexes act as powerful synchronization primitives.
 They effectively wait, blocking any other receptions on the non-empty-string valves, until 
-one value is available on each such valve. Subsequently these values are packed into a 
-single circuit and sent out.
+one value is available on each such valve.
+Subsequently, these values are packed into a single circuit and sent out.
 
 <p>Consider the following program, for instance:
 

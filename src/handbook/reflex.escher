@@ -29,7 +29,7 @@ ReflexPage {
 <p>A key motivation for the design of Escher is the idea that 
 software programs should be assembled as the interconnection of
 independently-executing computational devices of special-purpose logic.
-In other words, computer programs—small or large—should be
+In other words, computer programs — small or large — should be
 no different in their essential structure than cloud applications, 
 which are no more and no less than an interconnection of independently
 running special-purpose services.
@@ -214,7 +214,7 @@ func Register(v Materializer, addr ...Name)
 <p>The first argument is the materializer for the reflex, obtained from <code>NewMaterializer</code>,
 and the second argument is the address within the index where the materializer will be placed.
 
-<p>Typically the user will implement a package with multiple topically-related reflex receivers,
+<p>Typically, the user will implement a package with multiple topically-related reflex receivers,
 and will register their respective materializers with the runtime as a side-effect of importing the
 package, using an <code>init</code> function:
 

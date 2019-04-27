@@ -97,16 +97,19 @@ can only be materialized as reflexes within higher-level enclosing circuits.
 <h3>Gate value interpretation</h3>
 
 <p>Circuit programs recognize the following types of gate values:
-<ul>
-<li>Integer, float, complex, string, or a non-directive circuit, or</li>
+<ol>
+<li>Integer</li>
+<li>Float</li>
+<li>Complex</li>
+<li>String</li>
+<li>Circuit (non-directive)</li>
 <li><a href="meaning.html#directives">Directive circuit</a>
-</ul>
+</ol>
 
 <h4>Noun reflexes</h4>
 
-<p>Gate values in the first group (integer, float, complex, string or a non-directive circuit) 
-will result in the materialization of a “noun” reflex, whose noun value is the
-gate value.
+<p>Gate value types 1 to 5 will result in the materialization of a “noun” reflex,
+whose noun value is the gate value.
 
 <p>A noun reflex is a generic, built-in reflex type, which — after materialization —
 emits its corresponding gate value to each one of its connected valves.

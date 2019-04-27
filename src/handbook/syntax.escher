@@ -220,7 +220,7 @@ alpha {
 <h4 id="series">Series</h4>
 
 <p>Gate names can be omitted in circuit definitions, in which case gates are
-assigned consequtive integral names, starting from zero. We call the resulting 
+assigned consecutive integral names, starting from zero. We call the resulting
 circuits <em>series</em>.
 
 <pre class="escher">
@@ -263,7 +263,7 @@ While one cannot assign a value to it through syntax, it is possible to connect 
 For instance, when <a href="program.html">materializing circuits</a>, 
 the links connected to the super gate are exposed to the higher-level “super” circuit.</li>
 <li>Valve names can be the empty string. We call such valves <em>default</em>, as
-they are commonly refered to hereinafter in various idioms.
+they are commonly referred to hereinafter in various idioms.
 
 <p>For instance, it is a common pattern to name the output valve of 
 materializable circuits after the empty string. The default valve of the super gate,

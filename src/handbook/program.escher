@@ -86,7 +86,7 @@ Links are allowed either between two gates defined within the circuit,
 or between a defined gate and the super gate.
 
 <p>Links connected to the super gate are endpoints whose eventual connection
-to a reflex is defered to the enclosing circuit.
+to a reflex is deferred to the enclosing circuit.
 
 <p>Circuit programs that have no links to the super gate are called <em>closed</em>
 circuits, as they describe complete materializable systems on their own.
@@ -143,7 +143,7 @@ in that they leave a residue value as well.
 
 <p>The residue of materializing a circuit program is the same circuit,
 wherein each gate value is replaced by the residue of materializing that gate.
-Gate corresponding to reflexes that leave no residue are not present
+Gates corresponding to reflexes that leave no residue are not present
 in the residue circuit.
 
 <p>If no gates leave any residue, the circuit program itself leaves no residue.
@@ -234,7 +234,7 @@ we are going to get the following residue:
 </pre>
 
 <p>Where <code>WebResidue</code>, <code>BackupResidue</code>, <code>Shard1Residue</code>, etc. are
-merely placeholders here for whatever the actual residue values of the respetive reflexes are.
+merely placeholders here for whatever the actual residue values of the respective reflexes are.
 Visually the program residue could be represented as:
 
 {{.Gate.Expanded}}

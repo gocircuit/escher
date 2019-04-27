@@ -33,7 +33,7 @@ connected valves and ignores their specific names.
 the star reflex forwards that value to all other connected valves.
 
 <p>Every forwarded value is emitted (i.e. sent) to its respective 
-valve on a dedicated goroutine. Therefore the star reflex never
+valve on a dedicated Go routine. Therefore, the star reflex never
 blocks. 
 
 <p>An example usage:

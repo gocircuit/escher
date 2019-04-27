@@ -121,19 +121,19 @@ residue. Otherwise, it leaves no residue.
 <p>When the gate value is a <a href="meaning.html#directives">directive</a>,
 materialization proceeds as follows:
 
-<ul>
-<li>First, the runtime looks up the “target” value, which resides in the index
-at the address specified in the directive.</li>
-<li>Second,
-<ul>
-<li>If the directive verb is <code>@</code>, the gate is materialized as a noun gate
-emitting the target value.</li>
-<li>If the directive verb is <code>*</code>, the target value is substituted as the gate value,
-and the materialization process described in this section is repeated now with the target
-value as the gate value.
-</ul>
+<ol>
+<li>The runtime looks up the “target” value, which resides in the index
+    at the address specified in the directive.</li>
+<li>
+    <ul>
+    <li>If the directive verb is <code>@</code>, the gate is materialized as a noun gate
+        emitting the target value.</li>
+    <li>If the directive verb is <code>*</code>, the target value is substituted as the gate value,
+        and the materialization process described in this section is repeated now with the target
+        value as the gate value.
+    </ul>
 </li>
-</ul>
+</ol>
 
 <h3>Circuit residue</h4>
 

@@ -167,27 +167,27 @@ There are six value types that can be expressed:
 	<th>Represents</th>
 </tr>
 <tr>
-	<td>Integers</td>
+	<td>Integer</td>
 	<td>native Go type <code>int</code></td>
 </tr>
 <tr>
-	<td>Floating-point numbers</td>
+	<td>Floating-point number</td>
 	<td>native Go type <code>float64</code></td>
 </tr>
 <tr>
-	<td>Complex numbers</td>
+	<td>Complex number</td>
 	<td>native Go type <code>complex128</code></td>
 </tr>
 <tr>
-	<td>Strings</td>
+	<td>String</td>
 	<td>native Go type <code>string</code></td>
 </tr>
 <tr>
-	<td>Directives</td>
+	<td>Directive</td>
 	<td>Escher internal Go type <code>Address</code>, representing a sequence of names, written as dot-separated, fully-qualified names</td>
 </tr>
 <tr>
-	<td>Circuits</td>
+	<td>Circuit</td>
 	<td>Escher internal Go type <code>Circuit</code></td>
 </tr>
 </table>

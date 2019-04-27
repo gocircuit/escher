@@ -252,10 +252,9 @@ It is merely an illustration of the executed reflexes and their runtime connecti
 
 <h2>Three ways to invoke materialization</h2>
 
-<p>One can materialize (i.e. execute) a program circuit given an index from three different places:
-from Go, from another program circuit (i.e. from Escher) and from the POSIX shell.
+<p>One can materialize (i.e. execute) a program circuit given an index from three different places.
 
-<h3>Materializing from Go</h3>
+<h3 id="materialize-from-go">Materializing from Go</h3>
 
 <p>Package <code>be</code> provides the materialization method:
 
@@ -275,13 +274,13 @@ directive addresses are interpreted.
 
 <p>The function returns the residue of the materialization process. 
 
-<h3>Materializing from Escher</h3>
+<h3 id="materialize-from-escher">Materializing from within Escher</h3>
 
 <p>One can recursively materialize circuits programs from within other 
 circuit programs. This is accomplished using the built-in reflex <code>e.Materialize</code>
 which is described in the <a href="basis-escher.html">materialization faculty section</a>.
 
-<h3>Materializing from POSIX</h3>
+<h3 id="materialize-from-command-line">Materializing from the command-line</h3>
 
 <p>The Escher executable, which is explained in detail in the <a href="runtime.html">runtime section</a>,
 will materialize a directive from the command-line:

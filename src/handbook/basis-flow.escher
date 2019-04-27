@@ -26,7 +26,8 @@ implementations to realize the huge variety of other possible designs.
 
 <h3>Star reflex</h3>
 
-<p>Implemented in <a href="https://github.com/gocircuit/escher/blob/master/faculty/basic/star.go">faculty/basic/star.go</a>
+<p>(The implementation can be found in
+<a href="https://github.com/gocircuit/escher/blob/master/faculty/basic/star.go">faculty/basic/star.go</a>.)
 
 <p>The star is the simplest flow reflex. It accepts any number of 
 connected valves and ignores their specific names.
@@ -59,7 +60,8 @@ it will be printed on the standard output three times by the receiving <code>*Sh
 
 <h3>Fork reflex</h3>
 
-<p>Implemented in <a href="https://github.com/gocircuit/escher/blob/master/be/union.go">be/union.go</a>
+<p>(The implementation can be found in
+<a href="https://github.com/gocircuit/escher/blob/master/be/union.go">be/union.go</a>.)
 
 <p>In our experience, the fork is the most commonly used synchronization primitive in Escher.
 It requires that the distinguished empty-string valve be connected, as well as one or more 
@@ -70,10 +72,11 @@ Let us call them <em>merge</em> and <em>split</em>, embodied in one.
 
 <h4>Split direction</h4>
 
-<p>Whenever a value W is received on the empty string valve of a fork,
-the reflex will process it using the split logic. The received value must be of type
-circuit. For every valve whose name N is not the empty string, fork will
-send the value of the gate named N from circuit W to that valve.
+<p>Whenever a value <em>W</em> (must be of type <code>Circuit</code>)
+is received on the empty string valve of a fork,
+the reflex will process it using the split logic.
+For every valve whose name <em>N</em> is not the empty string,
+fork will send the value of the gate named <em>N</em> from circuit <em>W</em> to that valve.
 
 <p>Take for instance this program:
 

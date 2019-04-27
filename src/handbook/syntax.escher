@@ -240,6 +240,24 @@ alpha {
 }
 </pre>
 
+which is equivalent to:
+
+<pre class="escher">
+alpha {
+	0 *fully.qualified.Name
+	1 @fully.qualified.Name
+	2 123
+	3 3.14
+	4 (1-3i)
+	5 "abcd\n\tefgh"
+	6 {{ .Gate.BackQuoted }}
+	7 {
+		A 1
+		B "C"
+	}
+}
+</pre>
+
 <h3 id="links">Links</h3>
 
 <p>Circuit links are semantically symmetric. A link is a pair of two

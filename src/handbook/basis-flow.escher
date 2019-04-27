@@ -38,7 +38,7 @@ blocks.
 
 <p>An example usage:
 
-<pre>
+<pre class="escher">
 {
 	star *Star
 	one 1
@@ -73,7 +73,7 @@ send the value of the gate named N from circuit W to that valve.
 
 <p>Take for instance this program:
 
-<pre>
+<pre class="escher">
 {
 	f *e.Fork
 	f: = {
@@ -103,7 +103,7 @@ single circuit and sent out.
 
 <p>Consider the following program, for instance:
 
-<pre>
+<pre class="escher">
 {
 	f *e.Fork
 	f: = *Show
@@ -115,7 +115,7 @@ single circuit and sent out.
 <p>Fork will wait until <code>"New"</code> and <code>"York"</code> are received
 on valves <code>x</code> and <code>y</code>, respectively. Then the value
 
-<pre>
+<pre class="escher">
 {
 	x "New"
 	y "York"

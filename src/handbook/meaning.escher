@@ -42,7 +42,7 @@ Series are equivalent to arrays and/or slices in other programming languages, li
 Gate names are slice indices; gate values are slice element values.
 
 <p>For instance, the circuit
-<pre>
+<pre class="escher">
 Singer {
 	0 "Dolly"
 	1 "Rebecca"
@@ -50,7 +50,7 @@ Singer {
 }
 </pre>
 is analogous (in meaning) to the Go slice:
-<pre>
+<pre class="escher">
 var Singer = []interface{}{
 	"Dolly",
 	"Rebecca",
@@ -62,7 +62,7 @@ var Singer = []interface{}{
 the <a href="syntax.html#series">syntax section</a>, we have dedicated a shorthand
 syntax for series circuits that omits the gate names:
 
-<pre>
+<pre class="escher">
 Singer {
 	"Dolly"
 	"Rebecca"
@@ -80,7 +80,7 @@ is akin in purpose to structures, dictionaries, hash tables and maps in other la
 be of primitive types (integers, floats, etc.) as well as recursively they can be other circuits
 or indices.
 
-<pre>
+<pre class="escher">
 Tree {
 	Trunk {
 		Branches {
@@ -105,7 +105,7 @@ path which we shall call <em>address</em> of a value relative to a given index.
 <p>For instance, the address of <code>"Grandma"</code> relative to the index
 <code>Tree</code> would be 
 
-<pre>
+<pre class="escher">
 {
 	Root
 	Tentacles
@@ -121,7 +121,7 @@ A directive is a pair of a string-valued <em>verb</em> and a target address.
 Directives are represented as a single circuit, wherein the empty-string gate holds the verb,
 while the number gates hold the components of the address. For instance,
 
-<pre>
+<pre class="escher">
 {
 	"" "*"
 	0 Root
@@ -141,7 +141,7 @@ choice of expediency.
 <p>Due to the ubiquitous use of directives in circuit programs, directives can be written
 using the <a href="syntax.html">dedicated syntactic sugar</a>:
 
-<pre>
+<pre class="escher">
 *Root.Tentacles.1
 </pre>
 
@@ -175,7 +175,7 @@ valve names.
 
 <p>Here is an example of a valid program circuit:
 
-<pre>
+<pre class="escher">
 {
 	tkr *time.Ticker
 	sum *math.Sum

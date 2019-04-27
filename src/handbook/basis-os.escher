@@ -39,7 +39,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 
 <p>An example of the command circuit value is as follows:
 
-<pre>
+<pre class="escher">
 {
 	Env {
 		"PATH=/abc:/bin"
@@ -53,7 +53,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 
 <p>The returned IO circuit value is of the following form:
 
-<pre>
+<pre class="escher">
 {
 	Stdin (io.WriteCloser)
 	Stdout (io.ReadCloser)
@@ -66,7 +66,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 
 <p>The exit circuit is of the form
 
-<pre>
+<pre class="escher">
 {
 	Exit (int)
 }
@@ -75,7 +75,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 <p>The following example demonstrates invoking the <code>/bin/ls</code> command
 and forwarding its standard output and error to those of the Escher program itself.
 
-<pre>
+<pre class="escher">
 {
 	proc *os.Process
 	proc:Command = {

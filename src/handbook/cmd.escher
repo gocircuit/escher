@@ -21,7 +21,7 @@ CommandPage {
 <p>The Escher binary is intended to be a general-purpose execution environment for
 Escher programs. It is invoked with two parameters:
 
-<pre>
+<pre class="bash">
 escher -src SourceDirectory MainDirective
 </pre>
 
@@ -36,7 +36,7 @@ The following steps are performed upon invocation:
 	Circuits found therein are placed in the startup index, such that their location in the index
 	is the same as the path of their source file relative to the source directory, followed by their circuit names.
 	For instance, the source file <code>a/b/c.escher</code>, containing:
-	<pre>
+	<pre class="escher">
 		CircuitName { … }
 	</pre>
 	Will be registered under the index directive <code>a.b.c.CircuitName</code>.
@@ -50,7 +50,7 @@ The following steps are performed upon invocation:
 </ol>
 <p>The following command, for instance, will generate the contents of this handbook and place it in the
 current working directory where it is invoked:
-<pre>
+<pre class="bash">
 escher -src "$GOPATH/src/github.com/gocircuit/escher/src/" "*handbook.main"
 </pre>
 <p>The <code>-src</code> can be omitted in favor of setting the <code>ESCHER</code> environment variable.

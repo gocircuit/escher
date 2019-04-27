@@ -152,7 +152,7 @@ in the residue circuit.
 
 <p>Consider, for instance, the following index:
 
-<pre>
+<pre class="escher">
 {
 	Database {
 		cache Cache
@@ -196,7 +196,7 @@ If we materialize the program circuit <code>App</code> with respect to the index
 (i.e. directive addresses will resolve with respect to that index), 
 we are going to get the following residue:
 
-<pre>
+<pre class="escher">
 {
 	web WebResidue
 	bkp BackupResidue
@@ -256,7 +256,7 @@ from Go, from another program circuit (i.e. from Escher) and from the POSIX shel
 
 <p>Package <code>be</code> provides the materialization method:
 
-<pre>
+<pre class="go">
 func MaterializeSystem(program interface{}, index, barrier Circuit) (residue interface{})
 </pre>
 
@@ -283,7 +283,7 @@ which is described in the <a href="basis-escher.html">materialization faculty se
 <p>The Escher executable, which is explained in detail in the <a href="runtime.html">runtime section</a>,
 will materialize a directive from the command-line:
 
-<pre>
+<pre class="bash">
 % escher -src /src/app *app.Main
 </pre>
 

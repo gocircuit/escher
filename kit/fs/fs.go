@@ -50,7 +50,7 @@ func loadDirectory(dir string) Index {
 	for _, fileInfo := range fileInfos {
 		filePath := path.Join(dir, fileInfo.Name())
 		if fileInfo.IsDir() { // directory
-			x.Memorize(loadDirectory(filePath), fileInfo.Name()) // Index can memorize Indexs recursively
+			x.Memorize(loadDirectory(filePath), fileInfo.Name()) // Index can memorize Indices recursively
 			continue
 		}
 		if path.Ext(fileInfo.Name()) != ".escher" { // file

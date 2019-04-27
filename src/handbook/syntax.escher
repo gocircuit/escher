@@ -13,7 +13,8 @@ SyntaxPage {
 	h:Body = t:
 
 	f *e.Fork
-	f:Backquoted = "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
+	f:BackQuoted = "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
+	f:CommentsSample = "alpha {          `// circuit definition`\n\tfloat 1.23 ; `// gate named float with a floating-point value`\n\tbeta {}    ; `// gate named beta with an empty circuit value`\n\t`/*\n\t  * We can also do this:\n\t  * A multi-line comment within a circuit definition.\n\t  * Outside the circuit though, no comments are possible.\n\t  */`\n}"
 	f:ImgNand = fig:
 
 	fig *FigurePngSvg
@@ -148,13 +149,13 @@ or semi-colons.
 
 <h3 id="comments">Comments</h3>
 
-<p>Go-style end-of-line comments are allowed everywhere.
+<p>We use a trick:
+We use syntactic sugared (empty string named), string valued gates,
+and — purely to visually indicate a comment —
+we use "//" in the beginning, or "/*" plus "*/" at the end.
 
 <pre class="escher">
-alpha {            // circuit definition
-	float 1.23 // gate named float with a floating-point value
-	beta {}    // gate named beta with an empty circuit value
-}
+{{ .Gate.CommentsSample }}
 </pre>
 
 <h3 id="gates">Gates</h3>

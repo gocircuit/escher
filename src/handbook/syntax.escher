@@ -222,7 +222,7 @@ alpha {
 
 <p>Gate names can be omitted in circuit definitions, in which case gates are
 assigned consecutive integral names, starting from zero. We call the resulting
-circuits <em>series</em>.
+circuits <a href="meaning.html#series">series</a>.
 
 <pre class="escher">
 alpha {
@@ -327,7 +327,7 @@ Will be expanded into
 	sum:Summand = 0:
 </pre>
 
-<p>In another example both sides of the equation are sugared:
+<p>In this example, both sides of the equation are sugared:
 
 <pre class="escher">
 	*os.Scanln = *os.Println

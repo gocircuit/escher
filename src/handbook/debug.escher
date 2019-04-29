@@ -41,10 +41,10 @@ by example.
 
 <pre>
 {
-	*Show = "Parent circuit"
+	*e.Show = "Parent circuit"
 
 	m *e.QuickMaterialize
-	m:Residue = *Ignore
+	m:Residue = *e.Ignore
 	m:Index = *e.Index
 	m:Program = {
 		*e.Breakpoint = 1
@@ -83,9 +83,9 @@ CIRCUIT(:Index :Program :Residue) {
 DIRECTIVE(:Index :Program :Residue) *e.QuickMaterialize/*e.QuickMaterialize
 CIRCUIT() {
         m *e.QuickMaterialize
-        0 *Show
+        0 *e.Show
         1 "Parent circuit"
-        2 *Ignore
+        2 *e.Ignore
         3 *e.Index
         4 {
                 0 *e.Breakpoint
@@ -130,9 +130,9 @@ argument equals the circuit source.
 statements. Escher has its own analog. Given a link in a circuit program, the idea is to print out
 the values that flow through that link without otherwise affecting the execution of the program.
 
-<p>This is accomplished with the use of a <code>*Show</code> reflex, which simply lets values
-pass through it while printing them on standard error together with the name of the valve they 
-were received on.
+<p>This is accomplished with the use of a <code>*e.Show</code> reflex,
+which simply lets values pass through it while printing them on standard error
+together with the name of the valve they were received on.
 
 <p>Suppose the following program is to be debugged:
 
@@ -144,14 +144,14 @@ were received on.
 }
 </pre>
 
-<p>We could then add a debug <code>*Show</code> reflex to “eavesdrop” on the link
+<p>We could then add a debug <code>*e.Show</code> reflex to “eavesdrop” on the link
 from <code>source</code> to <code>sink</code>, like so:
 
 <pre>
 {
 	source *Source
 	sink *Sink
-	eve *Show
+	eve *e.Show
 	source: = eve:Source
 	eve:Sink = sink:
 }

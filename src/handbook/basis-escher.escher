@@ -30,7 +30,7 @@ the current circuit has been materialized.
 
 <pre class="escher">
 {
-	*Show = *e.Index
+	*e.Show = *e.Index
 }
 </pre>
 
@@ -57,10 +57,10 @@ program relative to the given index and will return the residue to the valve <co
 
 	m:View = f:
 	f:Program = {
-		*Show = "Hello from the child circuit program."
+		*e.Show = "Hello from the child circuit program."
 	}
 	f:Index = *e.Index
-	m:Residue = *Show
+	m:Residue = *e.Show
 }
 </pre>
 
@@ -68,7 +68,7 @@ program relative to the given index and will return the residue to the valve <co
 
 <pre class="escher">
 {
-	*Show = "Hello from the child circuit program."
+	*e.Show = "Hello from the child circuit program."
 }
 </pre>
 

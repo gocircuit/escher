@@ -43,20 +43,20 @@ blocks.
 
 <pre class="escher">
 {
-	star *Star
+	star *e.Star
 	one 1
 
 	star:X = one:
-	star:Y = *Show
-	star:Z = *Show
-	star:W = *Show
+	star:Y = *e.Show
+	star:Z = *e.Show
+	star:W = *e.Show
 }
 </pre>
 
 <p>When this circuit is materialized, the constant <code>1</code> will be emitted from gate <code>one</code>
 to valve <code>X</code> of gate <code>star</code>. The <code>star</code> gate will then forward the value
 to each of the valves <code>Y</code>, <code>Z</code> and <code>W</code> in parallel. Consequently
-it will be printed on the standard output three times by the receiving <code>*Show</code> reflexes.
+it will be printed on the standard output three times by the receiving <code>*e.Show</code> reflexes.
 
 <h3>Fork reflex</h3>
 
@@ -88,13 +88,13 @@ fork will send the value of the gate named <em>N</em> from circuit <em>W</em> to
 		y "World"
 		z "Foo"
 	}
-	f:x = *Show
-	f:y = *Show
+	f:x = *e.Show
+	f:y = *e.Show
 }
 </pre>
 
 <p>The values <code>"Hello"</code> and <code>"World"</code> will be sent 
-to and printed by the connected <code>*Show</code> reflexes.
+to and printed by the connected <code>*e.Show</code> reflexes.
 Whereas the value <code>"Foo"</code> will be ignored.
 
 <h4>Merge direction</h4>
@@ -113,7 +113,7 @@ Subsequently, these values are packed into a single circuit and sent out.
 <pre class="escher">
 {
 	f *e.Fork
-	f: = *Show
+	f: = *e.Show
 	f:x = "New"
 	f:y = "York"
 }
@@ -129,7 +129,7 @@ on valves <code>x</code> and <code>y</code>, respectively. Then the value
 }
 </pre>
 
-<p>will be sent to and printed by the <code>*Show</code> reflex.
+<p>will be sent to and printed by the <code>*e.Show</code> reflex.
 
 `
 }

@@ -185,7 +185,7 @@ valve names.
 	tkr: = sum:Sum
 
 	sum:X = :Phase
-	sum:Y = *Show
+	sum:Y = *e.Show
 }
 </pre>
 

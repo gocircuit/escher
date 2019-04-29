@@ -203,7 +203,7 @@ alpha {
 	floating   3.14
 	complex    (1-3i)
 	quoted     "abcd\n\tefgh"
-	backquoted {{ .Gate.BackQuoted }}
+	backQuoted {{ .Gate.BackQuoted }}
 }
 </pre>
 

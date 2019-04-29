@@ -90,11 +90,11 @@ and forwarding its standard output and error to those of the Escher program itse
 	yio:Stdout = *os.Stdout
 	yio:Stderr = *os.Stderr
 
-	yexit *e.Fork
-	proc:Exit = yexit:
-	
+	yExit *e.Fork
+	proc:Exit = yExit:
+
 	exit *os.Exit
-	yexit:Exit = exit:
+	yExit:Exit = exit:
 }
 </pre>
 

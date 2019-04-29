@@ -20,8 +20,8 @@ FigureExpanded {
 	fig3 *FigurePngSvg
 	fig3:Image = "expanded"
 	fig3:Width = "500px"
-	fig3:Caption = `The inversion of colors—from white-on-black in the enclosing circuit, to
-	black-on-white in the substituted circuits—is a visual symbolism indicating that 
+	fig3:Caption = `The inversion of colors — from white-on-black in the enclosing circuit, to
+	black-on-white in the substituted circuits — is a visual symbolism indicating that
 	the substitutions are separate data-structures from the enclosing one. Specifically,
 	the visual links that cross circuits are not explicitly represented in the data structure.
 	This can be accomplished by flattening (see below).`

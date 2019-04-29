@@ -15,7 +15,7 @@ InstallPage {
         t *text.QuickForm
         t:Data = {}
         t:Form = `
-<h1>Bulding and installing Escher</h1>
+<h1>Building and installing Escher</h1>
 
 <p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
 Fetching, building and installing Escher can then be accomplished with one command:

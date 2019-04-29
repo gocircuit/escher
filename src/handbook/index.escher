@@ -31,7 +31,7 @@ people interacting with vending machines, components of vending
 machines interacting with each other, animals interacting with animals, 
 cells interacting with cells, proteins interacting with proteins, and so on.
 
-<p>He called this high-level behavioral model of the world (or discernable subsystems thereof)
+<p>He called this high-level behavioral model of the world (or discernible subsystems thereof)
 <a href="http://en.wikipedia.org/wiki/Communicating_sequential_processes">Communicating Sequential Processes</a>.
 Hoare's model is nothing more and nothing less than a minimal abstraction of how
 we see and understand (and subsequently will to control) the world from an 

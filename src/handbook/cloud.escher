@@ -33,7 +33,7 @@ cloud applications comprised of large numbers of interconnected services in a ma
 and understandable to users.
 
 <p>We propose a syntactic abstraction, called Escher circuits, for representing the state of the cloud.
-The abstraction enables modular compositing of large circuits from smaller components, facilitating
+The abstraction enables modular composition of large circuits from smaller components, facilitating
 manual descriptions of cloud topologies. Further, it supports a circuit “difference” calculation 
 to facilitate the representation of incremental system changes.
 

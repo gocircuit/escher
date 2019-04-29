@@ -39,39 +39,42 @@ to facilitate the representation of incremental system changes.
 
 <p>The result is a system that provides a 3-step workflow for the Operations Engineer,
 which is captured in the following command-line operations:
-<pre>
+<pre class="bash">
 cloud sense > current_state.circuit
 cloud diff desired_state.circuit current_state.circuit > diff.circuit
 cloud materialize diff.circuit
 </pre>
 
 <p>All <code>.circuit</code> files involved in the control of the cloud are simple text files
-(that use <a href="syntax.html">Escher syntax</a>) and as such all changes to the cloud
+that use <a href="syntax.html">Escher syntax</a>. Therefore, all changes to the cloud
 integrate cleanly with versioning systems like <a href="http://git-scm.com/">Git</a>,
-resulting in full hitorical accountability of cloud state changes.
+which when used gives us full historical accountability of cloud state changes.
 
 <h2>Framework</h3>
 
-<p>Every well-defined system requires a clear specification of the objects
-at play, their possible interrelations in any moment in time, as well as the allowable operations
-that can be performed to its components.
+<p>Every well-defined system requires a clear specification of the objects at play,
+their possible interrelations in any moment in time,
+as well as the allowable operations that can be performed to its components.
 
-<p>The systems of interest here, which model cloud applications in the datacenter, have
+<p>The systems of interest here, which model cloud applications in the data-center, have
 three types of components: hosts, services and links. We will treat these objects cleanly in
-a formal manner, but it should be clear that they will end up corresponding to well-known
+a formal manner, but it should be clear that they will end up corresponding to well-known,
 real technologies utilized in specific manners.
 
 <p>Our hosts will correspond to physical machines (or virtual machines, as the case might be).
 Our services will correspond to <a href="http://docker.com">Docker</a> containers, whose images
 are configured in a standard manner to expect a number of named incoming or outgoing TCP connections.
-And each of our links will correspond to a pair of lightweiht DNS servers, one at each endpoint host, 
+And each of our links will correspond to a pair of lightweight DNS servers, one at each endpoint host,
 configured to point the respective Docker TCP connections at each other.
 
-<p>The exact details of the correspondence between hosts, services and links, and machines, Docker
-containers and DNS servers, respectively, will be fleshed out in a later section. For now, suffice it to say
-that this correspondence will be made simple and natural through the use of the <a href="http://gocircuit.org">gocircuit.org</a>
-tool for dynamic cloud orchestration (although with an appropriate driver a similar result can be accomplished
-with any cloud provider like <a href="https://cloud.google.com/compute/">Google Compute Engine</a> 
+<p>The exact details of the correspondence between hosts, services and links on the one hand,
+and machines, Docker containers and DNS servers on the other,
+will be fleshed out in a later section.
+For now, suffice it to say that this correspondence will be made simple and natural
+through the use of the <a href="http://gocircuit.org">gocircuit.org</a> tool
+for dynamic cloud orchestration (although with an appropriate driver,
+a similar result can be accomplished with any cloud provider like
+<a href="https://cloud.google.com/compute/">Google Compute Engine</a>
 or <a href="aws.amazon.com/ec2/">Amazon EC2</a>, for instance).
 
 <p>Getting back to the abstract system framework, the allowed relationships between hosts, services and links
@@ -79,12 +82,15 @@ are described in a few simple postulates:
 
 <ul>
 <li>Every host in the system is identified by a unique string identifier
-<li>Every service “resides” on one host and every such service has a string identifier, unique only across the services residing 
-on the same host.
-<li>Every service has a “type” denoted by a string (which will correspond to the Docker image name of its container).
-<li>Every service can have zero or more named “valves” (where a valve will correspond to a TCP connection, client or server)
-under the requirement that valve names are unique within one service.
-<li>Every link “connects” one service-valve pair to another, so that no such pair is connected more than once.
+<li>Every service “resides” on one host and every such service has a string identifier,
+    unique only across the services residing on the same host.
+<li>Every service has a “type” denoted by a string
+    (which will correspond to the Docker image name of its container).
+<li>Every service can have zero or more named “valves”
+    (where a valve will correspond to a TCP connection, client or server)
+    under the requirement that valve names are unique within one service.
+<li>Every link “connects” one service-valve pair to another,
+    so that no such pair is connected more than once.
 </ul>
 
 <p>Relationships between the components of a system can be represented visually using the same 
@@ -92,16 +98,16 @@ under the requirement that valve names are unique within one service.
 
 {{.Gate.Diagram}}
 
-<p>In the illustration above there are two hosts named <code>host1</code> and <code>host2</code>.
-Two services, named <code>cache</code> and <code>server</code>, reside on <code>host1</code>.
-One service, named <code>database</code>, resides on <code>host2</code>. Service <code>cache</code>
+<p>In the illustration above, there are two hosts named <code>host1</code> and <code>host2</code>.
+Two services — named <code>cache</code> and <code>server</code> — reside on <code>host1</code>.
+One service — named <code>database</code> — resides on <code>host2</code>. Service <code>cache</code>
 is of type <code>MemCache</code>, service <code>server</code> is of type <code>Http</code> and
 service <code>database</code> is of type <code>Redis</code>. There are two links in the system:
 one connecting the service-valve pair <code>(server, x)</code> to <code>(cache, y)</code>, and
 one connecting <code>(cache, z)</code> to <code>(database, w)</code>. (Disregard the labels
 <code>p</code> and <code>q</code> for now.)
 
-<p>Thus far we have addressed the properties describing the state of a system in a singular moment in time.
+<p>Thus far, we have addressed the properties describing the state of a system in a singular moment in time.
 System state can change over time, or “dynamically”, according to the following additional postulates:
 
 <ul>
@@ -112,11 +118,14 @@ System state can change over time, or “dynamically”, according to the follow
 
 <p>In particular, hosts, services and links can appear independently of each other.
 
-<p>Some of these dynamic events (of emergence or disappearance) will be caused by external 
-factors (for instance a host might die due to bad hardware) and others will be caused by operations
-that we perform with the system (for instance, we might start a service). No matter what the cause
-for an event is, the important thing is that these are the only changes of state that can happen to
-the system.
+<p>Some of these dynamic events (of emergence or disappearance)
+will be caused by external factors
+(for instance a host might die due to bad hardware)
+and others will be caused by operations that we perform with the system
+(for instance, we might start a service).
+No matter what the cause for an event is,
+the important thing is that these are the only changes of state
+that can happen to the system.
 
 <h2>The resulting UI to the engineer</h2>
 
@@ -131,14 +140,14 @@ as the case might be:
 
 <ol>
 <li>Connect to the “cloud” and retrieve a consistent representation of the “current” cloud state.
-<li>Compute the difference between a representation of the “desired” state of the cloud and the
-retrieved “current” state.
-<li>Send a minimal stream of “commands” to the cloud, aimed at modifying its state from
-“current” to “desired”.
+<li>Compute the difference between a representation of the “desired” state of the cloud
+    and the retrieved “current” state.
+<li>Send a minimal stream of “commands” to the cloud,
+    aimed at modifying its state from “current” to “desired”.
 </ol>
 
 <p>In the remainder of this document, we describe the design of a command-line tool
-<code>cloud</code> which embodies the above three operations as—
+<code>cloud</code>, which embodies the above three operations as:
 
 <ol>
 <li><code>cloud sense > current.circuit</code>
@@ -154,14 +163,14 @@ other backends, such as Amazon EC2 or Google Compute Engine, be used.
 
 <p>The symbolic visual representation of system state, exemplified above, can very well be used
 as a formal representation, much like architectural blueprints are used as formal representations
-of building design. However, this visual representation while natural for people is not easy to use
+of building design. However, this visual representation, while natural for people, is not easy to use
 by machines.
 
 <p>As we explain in the section on <a href="syntax.html">Escher syntax</a>, this visual representation
 has an equivalent syntactic (i.e. written) form, which is well-suited for machine manipulations.
 In particular, the syntactic representation of the diagram above would be as follows:
 
-<pre>
+<pre class="escher">
 {
 	host1 {
 		cache MemCache
@@ -177,21 +186,21 @@ In particular, the syntactic representation of the diagram above would be as fol
 }
 </pre>
 
-<p>In other words, every system state can be represented in the form of an Escher circuit. This gives
-us a two-fold benefit. 
+<p>In other words, every system state can be represented in the form of an Escher circuit.
+This gives us a two-fold benefit.
 
 <p>On the one hand, Escher circuits can be manipulated programmatically (both from Go and from Escher)
 simply as data structures. This allows flexible programmatic investigation of system state through familiar technologies.
 
 <p>On the other hand, Escher's <a href="program.html">programming and materialization mechanism</a>
-allows for such circuits to be built out modularly from smaller component circuits. In other words, large
-datacenter topologies can be composed out of smaller standard components, whereby even the components
-circuits can span multiple machines and themselves be non-trivial subsystems.
+allows for such circuits to be built out in a modular way from smaller component circuits.
+In other words, large data-center topologies can be composed out of smaller standard components,
+whereby even the components circuits can span multiple machines and themselves be non-trivial subsystems.
 
 <p>For instance, our example system state could be generated out of smaller components in the following manner.
 Let the following circuit be an <a href="meaning.html">index</a> (i.e. a library), consisting of two circuits designs:
 
-<pre>
+<pre class="escher">
 Index {
 	HttpHost {
 		cache MemCache
@@ -206,9 +215,9 @@ Index {
 }
 </pre>
 
-<p>Then, if we <a href="program.html">materialize</a> the program
+<p>Then, if we <a href="program.html">materialize</a> the program relative to <code>Index</code>,
 
-<pre>
+<pre class="escher">
 {
 	host1 HttpHost
 	host2 DbHost
@@ -216,23 +225,29 @@ Index {
 }
 </pre>
 
-relative to <code>Index</code>, the resulting residue will be precisely the system state circuit that
+the resulting residue will be precisely the system state circuit that
 we started with, i.e. the one illustrated in the drawing above.
 
 <h2>Dual representation</h2>
 
-<p>We call the circuit representation of system state, described thus far, a “primal” representation or simply a primal.
-Every primal has an equivalent “dual” representation. Transitioning from primal to dual and vice-versa is a matter of
+<p>We call the circuit representation of system state, described thus far,
+a “primal” representation or simply a primal.
+Every primal has an equivalent “dual” representation.
+Transitioning from primal to dual and vice-versa is a matter of
 a simple transformation, as we shall see. 
 
-<p>The dual representation of system state is useful to us, as it is more convenient to carry out certain manipulations
-within this representation. In particular, it will be easier to compute the difference between two states in the dual.
-As well as it will be easier to “materialize” a dual system state description into an actual running datacenter topology.
+<p>The dual representation of system state is useful to us,
+as it is more convenient to carry out certain manipulations within this representation.
+In particular, it will be easier to compute the difference between two states in the dual.
+As well as it will be easier to “materialize” a dual system state description
+into an actual running data-center topology.
 
-<p>The dual representation of a system state primal consists of two lists: a list of services and a list of links.
+<p>The dual representation of a system state primal consists of two lists:
+a list of services and a list of links.
 
-<p>The list of services simply enumerates all services found in the primal, each specified by its “full path”
-in the primal, accompanied by its type. For our running example, the list of services would be
+<p>The list of services simply enumerates all services found in the primal,
+each specified by its “full path” in the primal, accompanied by its type.
+For our running example, the list of services would be
 
 <pre>
 (host1.cache, MemCache)
@@ -252,7 +267,7 @@ In our example, that list would be:
 <p>It is not hard to see how the primal can be derived from the dual by reversing this process.
 
 <p>Furthermore, it is self-evident that one can compute the “difference” between two systems, when
-this makes sense, by simply computing the difference of their corresponding dual representations elementwise.
+this makes sense, by simply computing the difference of their corresponding dual representations element-wise.
 
 <h2>Sensing and materializing</h2>
 
@@ -278,33 +293,40 @@ exactly the minimum necessary for such manipulations.
 
 <p>We have chosen to use executable Docker containers as embodiment for services.
 
-<p>Each service communicates with the outside—with other services—through a set
+<p>Each service communicates with the outside — with other services — through a set
 of zero or more named valves. A valve corresponds to a TCP client connection, a TCP server
 connection or both.
 
-<p>Service container images must be prepared in a standardized manner so that after the
-execution of a container, our framework can (i) obtain the TCP server address corresponding
-to each valve (if there is one), as well as (ii) supply the remote TCP server address if the
-valve also corresponds to a TCP client connection.
+<p>Service container images must be prepared in a standardized manner, so that after the
+execution of a container, our framework can
+<ul>
+<li id="address_i">(i) obtain the TCP server address corresponding to each valve
+    (if there is one), as well as
+<li id="address_ii">(ii) supply the remote TCP server address
+    if the valve also corresponds to a TCP client connection.
+</ul>
 
-<p>There are various ways to prepare Docker containers to accomplish this and we do not
+<p>There are various ways to prepare Docker containers to accomplish this, and we do not
 mandate a specific one. Here, we merely suggest one way of doing it without going into
 unnecessary technical detail.
 
-<p>To accomplish (i), one can utilize the <a href="https://docs.docker.com/userguide/dockerlinks/">Docker 
-port mapping</a> mechanism. In particular, the software inside the container can be hardwired to
-listen to specific port numbers which, in lexicographic order, correspond to the valve names
-of the service. Once the container is executed, the effective TCP server addresses—those visible to
-other containers in the cloud network—can be automatically obtained using the <code>docker port</code>
-command. They will be utilized by our system to “link” containers (i.e. service valves) in a manner described later.
+<p>To accomplish <a href="#address_i">(i)</a>,
+one can utilize the <a href="https://docs.docker.com/userguide/dockerlinks/">
+Docker port mapping</a> mechanism. In particular, the software inside the container can be hardwired to
+listen to specific port numbers, which — in lexicographic order — correspond to the valve names
+of the service. Once the container is executed, the effective TCP server addresses — those visible to
+other containers in the cloud network — can be automatically obtained using the <code>docker port</code>
+command. They will be utilized by our system to “link” containers
+(i.e. service valves) in a manner described later.
 
-<p>To accomplish (ii), we propose configuring each Docker service container to use a DNS
+<p>To accomplish <a href="#address_ii">(ii)</a>,
+we propose configuring each Docker service container to use a DNS
 server whose address is passed on it upon execution, using any one of the various mechanisms
 available for passing arguments to containers upon execution, provided by Docker itself.
 Subsequently, the software executing inside the Docker container should simply be hardwired
 to obtain the IP address for any given valve name by simply looking up that valve name (perhaps
 prefixed by a standard domain name) through the DNS system. Our framework, described later,
-which executes the Docker containers will arrange for a light-weight dedicated DNS server
+which executes the Docker containers will arrange for a light-weight, dedicated DNS server
 for each container, whose sole job would be to resolve these queries appropriately.
 
 <h3>Materializing a dual form to the cloud</h3>
@@ -329,131 +351,158 @@ And the list of links is:
 
 <ol>
 <li>Obtain a list of available and unused hosts in the cloud.
-<p>The <a href="http://gocircuit.org">Circuit API</a> 
-presents all of its resources uniformly as a file system, where root level directories correspond to available hosts.
-Unused hosts are precisely those root level directories that have no children (i.e. no services or other Circuit elements
-are running on them). Such a list can be obtained through the API or through the command line using
-<code>circuit ls /...</code>. Let us assume, for instance, that the list of available and unused hosts is
-<pre>
-/X65cc3c8e31817756
-/Xe4abe0c286b0e0bc
-/X9738a5e29e51338e
-</pre>
+    <p>The <a href="http://gocircuit.org">Circuit API</a>
+    presents all of its resources uniformly as a *nix style file system,
+    where root level directories correspond to available hosts.
+    Unused hosts are precisely those root level directories,
+    that have no children
+    (i.e. no services or other Circuit elements are running on them).
+    Such a list can be obtained through the API,
+    or through the command line using <code>circuit ls /...</code>.
+    Let us assume, for instance, that the list of available and unused hosts is
+    <pre>
+    /X65cc3c8e31817756
+    /Xe4abe0c286b0e0bc
+    /X9738a5e29e51338e
+    </pre>
 
-<li>Group the elements of the list of services (from the dual) by host and assign a unique (available and unused)
-Circuit host to each of the hosts from dual. For instance:
-<pre>
-(/X65cc3c8e31817756, host1)
-(/Xe4abe0c286b0e0bc, host2)
-</pre>
+<li>Group the elements of the list of services (from the dual) by host,
+    and assign a unique (available and unused) Circuit host to each of the hosts from dual.
+    For instance:
+    <pre>
+    (/X65cc3c8e31817756, host1)
+    (/Xe4abe0c286b0e0bc, host2)
+    </pre>
 
-<li>Execute every service in the dual, as follows. Take, for instance, the service
-<pre>
-(host1.cache, MemCache)
-</pre>
+<li>Execute every service in the dual as follows.
+    Take, for instance, the service
+    <pre>
+    (host1.cache, MemCache)
+    </pre>
 
-<ul>
-<li>Create a dedicated light-weight DNS server for this service, on the Circuit host assigned to this service in the previous step.
-Using the Circuit, we spawn a DNS element and choose its name to follow this convention:
-<pre>
-/X65cc3c8e31817756/host1/cache/dns
-</pre>
-<p>This is accomplished using the Circuit <code>circuit mkdns</code> command. The details of this are omitted for brevity.
-Initially the DNS server will have no resource records, i.e. it will not resolve any lookups. Appropriate records will be added
-to it later, when we materialize the list of links from the dual form.
-<li>Execute the service's Docker container on that same host using a similar naming convention:
-<pre>
-/X65cc3c8e31817756/host1/cache/service
-</pre>
-<p>This is accomplished using the Circuit's <code>circuit mkdkr</code> command, and recall that the service type,
-<code>MemCache</code> in this case, is used as the name of the Docker image to be used. Furthermore, the IP address of the DNS server created in the previous step is passed to the Docker container on execution.
-</ul>
+    <ul>
+    <li>Create a dedicated, light-weight DNS server for this service,
+        on the Circuit host assigned to this service in the previous step.
+        Using the Circuit, we spawn a DNS element and choose its name to follow this convention:
+        <pre>
+        /X65cc3c8e31817756/host1/cache/dns
+        </pre>
+        <p>This is accomplished using the Circuit command <code>circuit mkdns</code>.
+        The details of this are omitted for brevity.
+        Initially, the DNS server will have no resource records,
+        i.e. it will not resolve any lookups.
+        Appropriate records will be added to it later,
+        when we materialize the list of links from the dual form.
+    <li>Execute the service's Docker container on that same host,
+        using a similar naming convention:
+        <pre>
+        /X65cc3c8e31817756/host1/cache/service
+        </pre>
+        <p>This is accomplished using the Circuit command <code>circuit mkdkr</code>.
+        Recall that the service type — <code>MemCache</code> in this case —
+        is the name of the Docker image to be used.
+        Furthermore, the IP address of the DNS server created in the previous step
+        is passed to the Docker container on execution.
+    </ul>
 
-<li>For each link in the list of links, add DNS resource records to the appropriate DNS servers. 
-Take for instance the link:
-<pre>
-(host1.cache:z, host2.database:w)
-</pre>
+<li>For each link in the list of links,
+    add DNS resource records to the appropriate DNS servers.
+    Take for instance the link:
+    <pre>
+    (host1.cache:z, host2.database:w)
+    </pre>
 
-<ul>
-<li>First, we inquire into the TCP server address for <code>host1.cache:z</code>, if one is available.
-To do so, we access the Docker container
-<pre>
-/X65cc3c8e31817756/host1/cache/service
-</pre>
-and we query the TCP server address for valve named <code>z</code>, using the Docker port exporting
-provisions set in place as <a href="#prepare">described earlier</a>.
+    <ul>
+    <li>First, we inquire into the TCP server address for <code>host1.cache:z</code>,
+        if one is available.
+        To do so, we access the Docker container
+        <pre>
+        /X65cc3c8e31817756/host1/cache/service
+        </pre>
+        and we query the TCP server address for the valve named <code>z</code>,
+        using the Docker port exporting provisions set in place as <a href="#prepare">described earlier</a>.
 
-<li>Next, we access the Circuit DNS element
-<pre>
-/Xe4abe0c286b0e0bc/host2/database/dns
-</pre>
-and set the resource record for the domain name <code>w</code> to that TCP server address obtained in the previous step.
-In addition to setting a DNS A record for the name <code>w</code>, we also set a 
-DNS TXT record for the same record with the value of <code>host1.cache:z</code>.
-This TXT record will later facilitate recovering the dual form for this link directly from the DNS server itself.
+    <li>Next, we access the Circuit DNS element
+        <pre>
+        /Xe4abe0c286b0e0bc/host2/database/dns
+        </pre>
+        and set the resource record for the domain name <code>w</code>
+        to that TCP server address obtained in the previous step.
+        In addition to setting a DNS A record for the name <code>w</code>,
+        we also set a DNS TXT record for the same record with the value of <code>host1.cache:z</code>.
+        This TXT record will later facilitate recovering the dual form
+        for this link directly from the DNS server itself.
 
-<li>Finally, we repeat the same process with the roles of <code>host1.cache:z</code>
-and <code>host2.database:w</code> reversed.
+    <li>Finally, we repeat the same process with the roles
+        of <code>host1.cache:z</code>
+        and <code>host2.database:w</code> reversed.
 
-</ul>
+    </ul>
 
 </ol>
 
 <h3>Sensing the cloud state into a dual form</h3>
 
 <p>Reading the current state of the cloud is fairly straightforward. 
-After listing the contents of the Circuit, using <code>circuit ls /...</code>,
-there will only be paths ending in <code>/service</code> and paths
-ending in <code>/dns</code>. We are going to read the list of services
-from the former ones, and then the list of links from the latter one.
+After listing the contents of the Circuit using <code>circuit ls /...</code>,
+there will only be paths ending in <code>/service</code>,
+and paths ending in <code>/dns</code>.
+We are going to read the list of services from the former ones,
+and then the list of links from the latter one.
 
 <p>To read the list of services, we consider each path ending in <code>/service</code>.
 For instance, the path
 <pre>
 /X65cc3c8e31817756/host1/cache/service
 </pre>
-will correspond to a service named <code>host1.cache</code> (simply drop the first and last path elements
-and replace slashes with dots).
-Then we query the configuration of the underlying Docker container, using the
-<code>circuit peek</code> command. This gives us the Docker image name of the
-container—which is the service type—and thus the service entry has been recovered.
+will correspond to a service named <code>host1.cache</code>
+(simply drop the first and last path elements, and replace slashes with dots).
+Then we query the configuration of the underlying Docker container,
+using the <code>circuit peek</code> command.
+This gives us the Docker image name of the container — which is the service type —
+and thus the service entry has been recovered.
 
 <p>To read the list of links, we consider in turn each path ending in <code>/dns</code>
-unless it has already been considered. For instance—
+unless it has already been considered.
+For instance:
 
 <pre>
 /X65cc3c8e31817756/host1/cache/dns
 </pre>
 
-<p>This path will be a link endpoint with a prefix <code>host1.cache:</code>, as follows
-from the manner in which we materialized links in the previous section.
+<p>This path will be a link endpoint with a prefix <code>host1.cache:</code>,
+as follows from the manner in which we materialized links in the previous section.
 
 <p>We then list the DNS resource records at this path, using <code>circuit peek</code>,
-and in the case of this example we will see resource records for the domain names 
-<code>y</code> and <code>z</code>. In other words, the names correspond to valve
-names of the service. And so each name gives us one endpoint in a link. In this case—
+and in the case of this example,
+we will see resource records for the domain names <code>y</code> and <code>z</code>.
+In other words, the names correspond to valve names of the service.
+And so each name gives us one endpoint in a link.
+In this case:
 
 <pre>
 (host1.cache:y, …)
 (host1.cache:z, …)
 </pre>
 
-<p>To recover the other endpoint in each of the links, it suffices to look at the DNS TXT
-record accompanying each of the names, <code>y</code> and <code>z</code>.
-These TXT records will contain, as per the materialization process, the other endpoint
-of the respective link, thus allowing is to recover the whole links—
+<p>To recover the other endpoint in each of the links,
+it suffices to look at the DNS TXT record accompanying each of the names,
+<code>y</code> and <code>z</code>.
+These TXT records will contain, as per the materialization process,
+the other endpoint of the respective link,
+thus allowing us to recover the whole links:
 
 <pre>
 (host1.cache:y, host1.server:x)
 (host1.cache:z, host2.database:w)
 </pre>
 
-<p>Before we add these links to the list of links, we also verify that the opposing service
-is still alive. Otherwise by convention we treat the link as not present. 
+<p>Before we add these links to the list of links,
+we also verify that the opposing service is still alive.
+Otherwise — by convention — we treat the link as not present.
 For instance, if we want to verify that the endpoint <code>host2.database</code> is alive,
-we simply consider the Circuit path list, obtained with <code>circuit ls /...</code>, and
-look for the glob pattern <code>/*/host2/database/service</code>.
+we simply consider the Circuit path list, obtained with <code>circuit ls /...</code>,
+and look for the glob pattern <code>/*/host2/database/service</code>.
 
 `
 }

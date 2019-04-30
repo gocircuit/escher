@@ -83,21 +83,21 @@ and forwarding its standard output and error to those of the Escher program itse
 	yio *e.Fork
 	proc:IO = yio:
 
-	yio:Stdin = *Ignore
+	yio:Stdin = *e.Ignore
 	yio:Stdout = *os.Stdout
 	yio:Stderr = *os.Stderr
 
-	yexit *e.Fork
-	proc:Exit = yexit:
-	
+	yExit *e.Fork
+	proc:Exit = yExit:
+
 	exit *os.Exit
-	yexit:Exit = exit:
+	yExit:Exit = exit:
 }
 </pre>
 
 <p>The standard file descriptors of the child process must always be handled.
 In this example, standard output and error are forwarded while standard input is
-“ignored”. The reflex <code>*Ignore</code> is a “smart” reflex which
+“ignored”. The reflex <code>*e.Ignore</code> is a “smart” reflex which
 ignores primitive values (integers, floats, etc.), whereas it closes <code>io.Closer</code>
 objects and it drains <code>io.Reader</code> objects.
 

@@ -39,7 +39,7 @@ that lead to the creation of the problematic reflex.
 This is reflected by the second type of trace,
 which we demonstrate by example.
 
-<p>Consider <a href="https://github.com/gocircuit/escher/blob/master/src/tutorial/break.escher">
+<p>Consider <a href="https://github.com/gocircuit/escher/blob/master/src/tutorial/Break.escher">
 the following toy Escher program</a>:
 
 <pre class="escher">

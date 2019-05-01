@@ -1,4 +1,6 @@
 Ticker {
+	`// TODO Does something with a sum, once per second ...`
+
 	tkr *time.Ticker
 	tkr:Duration = 1e9
 	tkr: = sum:Sum

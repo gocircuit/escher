@@ -9,6 +9,8 @@
 * download wikipedia data-set
 * file reader materializer
 * convert non-escher files in source directory in materializers of respective file readers
+* We need something like JavaDoc (both the standard for doc comments, and the tool)
+* We need documentation in the code, and an API doc (see point above)
 
 ## THINK
 

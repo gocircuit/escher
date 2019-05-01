@@ -10,7 +10,9 @@ IndexPage {
         h: = :
         h:Title = "The Escher language"
         h:Body = `
-<h1>Escher language</h1>
+<h1>Escher programming language</h1>
+
+<h2>Motivation</h2>
 
 <p>Web pages and links form a graph.
 Data-center computers and cables form a graph.
@@ -23,8 +25,9 @@ Processes and sockets form a graph.
 
 <p>Not only are all of the above situations visually described by graphs, but also
 their essential behavior (as best as we understand it) is the same in all cases:
-Independent processing units, pairwise-interlinked by sequential channels — both channels
-and processors emerging and disappearing asynchronously.
+They are comprised of independent processing units,
+which are pairwise-interlinked by sequential channels,
+while both channels and processors are emerging and disappearing asynchronously.
 
 <p>Three decades ago, before the above examples were within practical reach,
 a British gentleman — named <a href="http://en.wikipedia.org/wiki/Tony_Hoare">Tony

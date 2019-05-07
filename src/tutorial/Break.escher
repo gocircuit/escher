@@ -2,6 +2,10 @@ Break {
 	*e.Breakpoint = 1
 }
 
+BreakMain {
+	*Break
+}
+
 Debug {
 	*e.Show = "Parent circuit"
 
@@ -12,3 +16,8 @@ Debug {
 		*e.Breakpoint = 1
 	}
 }
+
+DebugMain {
+	*Debug
+}
+

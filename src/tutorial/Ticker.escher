@@ -15,3 +15,17 @@ Ticker {
 	`// Output sum:Y so that (sum:X + sum:Y = sum:Sum)`
 	sum:Y = *e.Show
 }
+
+TickerMain {
+	`// This is required for the program to exit`
+	`// We simply run it for 10s before exiting`
+	exit *e.Fork
+	exit: = *os.Exit
+
+	tkr *time.Ticker
+	tkr:Duration = 1e10
+	exit:1 = tkr:
+
+	mainCircuit *Ticker
+}
+

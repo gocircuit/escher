@@ -1,12 +1,28 @@
 HelloWorld {
 	`/** Prints three lines onto stdout. */`
 
+	exit *e.Fork
+	: = exit:
+
 	x *e.Show
 	x:Alice = "¡Hello, world!"
+	exit:x = x:
 
 	*e.Show = "How do you do?"
+	exit:0 = 0:
 
 	y *e.Show
 	y:Bob = answer:
 	answer `Tippy toppy, thank you.`
+	exit:y = y:
 }
+
+HelloWorldMain {
+	`// This is required for the program to exit`
+	exit *e.Fork
+	exit: = *os.Exit
+
+	mainCircuit *HelloWorld
+	exit:1 = mainCircuit:
+}
+

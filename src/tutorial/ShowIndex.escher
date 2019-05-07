@@ -1,11 +1,22 @@
+
 ShowIndex {
 	`/** Prints the whole index for debugging */`
 
 	z *e.Show  ; `// exemplary EOL doc comment`
 	z:Index = *e.Index
+	: = z:
 
 	`/* ... and here:
 	  * a multi-line one.
 	  */`
+}
+
+ShowIndexMain {
+	`// This is required for the program to exit`
+	exit *e.Fork
+	exit: = *os.Exit
+
+	mainCircuit *ShowIndex
+	exit:1 = mainCircuit:
 }
 

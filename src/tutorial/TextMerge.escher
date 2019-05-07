@@ -4,7 +4,18 @@ TextMerge {
 	h *tutorial.header
 	h:Title = "Hello, world!"
 	show *e.Show
-	show: = h:
+	show:header = h:
+
+	: = show:
+}
+
+TextMergeMain {
+	`// This is required for the program to exit`
+	exit *e.Fork
+	exit: = *os.Exit
+
+	mainCircuit *TextMerge
+	exit:1 = mainCircuit:
 }
 
 header {

@@ -17,6 +17,15 @@ Exec {
 	yExit *e.Fork
 	proc:Exit = yExit:
 
-	exit *os.Exit
-	yExit:Exit = exit:
+	yExit:Exit = :
 }
+
+ExecMain {
+	`// This is required for the program to exit`
+	exit *e.Fork
+	exit: = *os.Exit
+
+	mainCircuit *Exec
+	exit:1 = mainCircuit:
+}
+

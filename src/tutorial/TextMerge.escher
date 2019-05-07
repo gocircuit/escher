@@ -1,5 +1,5 @@
 TextMerge {
-	`// Merges multiple strings into one, and prints it onto stdout.`
+	`/** Merges multiple strings into one, and prints it onto stdout. */`
 
 	h *tutorial.header
 	h:Title = "Hello, world!"

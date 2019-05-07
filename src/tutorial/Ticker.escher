@@ -1,11 +1,17 @@
 Ticker {
-	`// TODO Does something with a sum, once per second ...`
+	`/**
+	  * Starts at 1e9, and reduces it by approximately 1e9 every second,
+	  * showing the result each time.
+	  */`
 
 	tkr *time.Ticker
+	`// Create a tick every second (1e9 nano-seconds)`
 	tkr:Duration = 1e9
+	`// This outputs roughtly (num-ticks * tkr:Duration)`
 	tkr: = sum:Sum
 
 	sum *math.IntSum
 	sum:X = 1000000000
+	`// Output sum:Y so that (sum:X + sum:Y = sum:Sum)`
 	sum:Y = *e.Show
 }

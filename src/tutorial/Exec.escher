@@ -1,5 +1,5 @@
 Exec {
-	`// Runs "ls /" in a sub-process`
+	`/** Runs "ls /" in a sub-process */`
 
 	proc *os.Process
 	proc:Command = {

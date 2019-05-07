@@ -1,5 +1,5 @@
 File {
-	`// Print on standard output the source file located at the given index address.`
+	`/** Print on standard output the source file located at the given index address. */`
 
 	*os.Stdout = {
 		"" "*"

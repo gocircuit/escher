@@ -1,5 +1,5 @@
 HelloWorld {
-	`// Prints three lines onto stdout.`
+	`/** Prints three lines onto stdout. */`
 
 	x *e.Show
 	x:Alice = "¡Hello, world!"

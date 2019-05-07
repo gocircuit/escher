@@ -10,7 +10,7 @@ then
 fi
 
 src_dir="$GOPATH/src/github.com/gocircuit/escher/src/"
-tutorial_circuits="ShowIndex HelloWorld Break Debug Exec File TextMerge"
+tutorial_circuits="ShowIndex HelloWorld Break Debug Exec File Ticker TextMerge"
 
 for circuit in $tutorial_circuits
 do

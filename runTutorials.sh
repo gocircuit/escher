@@ -20,7 +20,7 @@ do
 	echo "################################################################################"
 	echo "### Running Escher tutorial $circuit ..."
 	echo "--------------------------------------------------------------------------------"
-	timeout  --foreground --kill-after=2 --signal=SIGINT 3s \
+	#timeout  --foreground --kill-after=2 --signal=SIGINT 3s \
 		escher -src "$src_dir" "*tutorial.${circuit}Main"
 	echo
 	echo "################################################################################"

@@ -3,7 +3,7 @@ It helps future understanding of past knowledge to save
 this notice, so peers of other times and backgrounds can
 see history clearly.`
 
-Func {
+TestAlternateFunc {
 	in *e.Alternate
 	out *e.Alternate
 	star *e.Star
@@ -21,9 +21,9 @@ Func {
 	star:Spark = 1
 }
 
-TestFunc {
+TestAlternate {
 	*e.Ignore = `Test over multiple values, each with simulated processing delay`
-	func *Func
+	func *TestAlternateFunc
 	func:In = 1
 	func:Begin = func:End
 	func:Out = match:Got

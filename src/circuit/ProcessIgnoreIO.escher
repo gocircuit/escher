@@ -20,3 +20,4 @@ ProcessIgnoreIO {
 	yio:Stdout = *io.Clunk
 	yio:Stderr = *io.Clunk
 }
+

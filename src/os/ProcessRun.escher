@@ -1,0 +1,19 @@
+LICENSE `Written in 2014 by Petar Maymounkov.
+It helps future understanding of past knowledge to save
+this notice, so peers of other times and backgrounds can
+see history clearly.`
+
+ProcessRun {
+	proc *os.Process
+	:When = proc:When
+	:Exit = proc:Exit
+	:Command = proc:Command
+
+	yio *e.Fork
+	yio: = proc:IO
+
+	yio:When = *e.Ignore
+	yio:Stdin = *io.Clunk
+	yio:Stdout = *os.Stdout
+	yio:Stderr = *os.Stderr
+}

@@ -17,19 +17,3 @@ MatchOneAndExit {
 	door:To = *os.Exit
 }
 
-All {
-	*e.Ignore = `All runs all test circuits within the default index (provided by the -src command-line option).
-	Test circuits are named Test*, wherein * must be non-empty and must begin with an upper case letter.
-	Each test is run in a dedicated OS process.`
-
-	depth *yield.DepthFirst
-	depth:Root = *e.Index
-	depth:Frame = filter:In
-	depth:End = *os.ExitSuccess
-
-	filter *test.Filter
-	filter:Out = exec:In
-
-	exec *test.Exec
-	exec:Out = Ignore
-}

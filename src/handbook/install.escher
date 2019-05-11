@@ -20,22 +20,25 @@ InstallPage {
 <p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
 Fetching, building and installing Escher can then be accomplished with one command:
 
-<pre>
-	% go get github.com/gocircuit/escher/escher
+<pre class="bash">
+go get github.com/gocircuit/escher/escher
 </pre>
 
-<p>To check that installation succeeded, run
-
-<pre>
-	% ESCHER=github.com/gocircuit/escher/src escher "*test.All"
-	+ Test basic.TestFork (ok)
-	+ Test basic.TestFunc (ok)
-	+ Test text.TestForm (ok)
-	+ Test yield.TestValues (ok)
-	…
+<p>To check that installation succeeded, run:
+<pre class="bash">
+ESCHER=$GOPATH/src/github.com/gocircuit/escher/src escher "*test.All"
 </pre>
 
-<p>Note that the environment <code>ESCHER</code> must point to the <code>src</code>
+<em>NOTE</em> The environment variable <code>ESCHER</code> must point to the <code>src</code>
 subdirectory of the main Escher repo on your host.
+
+<p>You should see output similar to this:
+<pre class="bash">
++ Test *basic.TestFork (ok)
++ Test *basic.TestAlternate (ok)
++ Test *text.TestForm (ok)
++ Test *yield.TestFlows (ok)
++ Test *yield.TestValues (ok)
+</pre>
         `
 }

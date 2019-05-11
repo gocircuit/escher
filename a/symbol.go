@@ -6,6 +6,6 @@
 
 package a
 
-// Source symbols are used as gate names by the Escher compiler to attach source information
-// about the enclosing circuit.
+// Source symbols are used as gate names by the Escher compiler to attach
+// source information about the enclosing circuit.
 type Source struct{}

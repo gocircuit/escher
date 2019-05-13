@@ -24,7 +24,7 @@ Fetching, building and installing Escher can then be accomplished with one comma
 go get github.com/gocircuit/escher/escher
 </pre>
 
-<p>To check that installation succeeded, run:
+<p>To check whether the installation succeeded, run:
 <pre class="bash">
 ESCHER=$GOPATH/src/github.com/gocircuit/escher/src escher "*test.All"
 </pre>

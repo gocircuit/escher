@@ -1,11 +1,22 @@
 language: go
+sudo: false
 
+matrix:
+  include:
+    - go: 1.12.x
+      os: linux
+    - go: 1.11.x
+      os: osx
+    - name: Cross-Compile for windows (from Linux)
+      go: 1.11.x
+      os: linux
+      env: GOOS=windows GOARCH=amd64 CGO_ENABLED=0
+
+# Allow use in forks
 go_import_path: github.com/gocircuit/escher
 
 install:
 - go get -v github.com/gocircuit/circuit/client
 - go get -v github.com/gocircuit/circuit/client/docker
-
-go: 
-- tip
+- go get -v -t ./...
 

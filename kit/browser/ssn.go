@@ -14,7 +14,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/petar/maymounkov.io/code.google.com/p/go.net/websocket"
+	"golang.org/x/net/websocket"
 )
 
 // Session is a websocket session abstraction

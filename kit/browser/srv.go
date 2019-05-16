@@ -11,7 +11,7 @@ import (
 	"path"
 	"sync"
 
-	"github.com/petar/maymounkov.io/code.google.com/p/go.net/websocket"
+	"golang.org/x/net/websocket"
 )
 
 // Server is a static file and websocket server.

@@ -20,7 +20,7 @@ fi
 # as long as the tutorials are to be found
 # in the correct relative path within the escher repo.
 call_path="`dirname $0`"
-repo_root="`cd $call_path; pwd`"
+repo_root="`cd $call_path; cd ..; pwd`"
 src_dir="$repo_root/src"
 tutorials_dir="$src_dir/tutorial"
 

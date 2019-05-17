@@ -9,6 +9,7 @@ matrix:
   include:
     - go: 1.12.x
       os: linux
+      env: ONCE=true
     - go: 1.11.x
       os: osx
     - name: Cross-Compile for windows (from Linux)
@@ -27,3 +28,5 @@ install:
 script:
 - make
 - escher "*test.All"
+- if [ "$ONCE" = "true" ]; then escher "*handbook.main"; fi
+- if [ "$ONCE" = "true" ]; then scripts/runTutorials.sh; fi

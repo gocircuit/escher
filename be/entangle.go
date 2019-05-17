@@ -7,10 +7,9 @@
 package be
 
 import (
-	// "log"
 	"sync"
 
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // NewEntanglement returns two materializers that each materialize once, to
@@ -25,7 +24,7 @@ type Entanglement struct {
 	synapse *Synapse
 }
 
-func (em *Entanglement) Materialize(given Reflex, _ Circuit) Value {
+func (em *Entanglement) Materialize(given Reflex, _ cir.Circuit) cir.Value {
 	em.Lock()
 	defer em.Unlock()
 	if len(given) != 1 {
@@ -33,7 +32,7 @@ func (em *Entanglement) Materialize(given Reflex, _ Circuit) Value {
 	}
 	y := em.synapse
 	em.synapse = nil
-	go Link(given[DefaultValve], y)
+	go Link(given[cir.DefaultValve], y)
 	return nil
 }
 

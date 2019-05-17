@@ -12,14 +12,14 @@ import (
 	"unicode"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 //
 type Filter struct{ be.Sparkless }
 
 func (Filter) CognizeIn(eye *be.Eye, v interface{}) {
-	x := v.(Circuit)
+	x := v.(cir.Circuit)
 	//
 	name_, view := x.NameAt("Name"), x.CircuitAt("View")
 	name, ok := name_.(string)
@@ -33,7 +33,7 @@ func (Filter) CognizeIn(eye *be.Eye, v interface{}) {
 	if len(sfx) == 0 || !unicode.IsUpper(rune(sfx[0])) {
 		return
 	}
-	y := New().
+	y := cir.New().
 		Grow("Address", x.CircuitAt("Address")).
 		Grow("Name", name).
 		Grow("View", view)

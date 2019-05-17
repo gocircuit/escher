@@ -12,7 +12,7 @@ import (
 	"os"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	kitio "github.com/gocircuit/escher/kit/io"
 )
 
@@ -25,15 +25,15 @@ func NewWriterMaterializer(w io.Writer) be.Materializer {
 	return be.NewMaterializer(&Writer{}, w)
 }
 
-func (x *Writer) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (x *Writer) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	x.WriteCloser = kitio.SovereignWriter(aux[0].(io.Writer))
-	for vlv, _ := range matter.CircuitAt("View").Gate {
+	for vlv := range matter.CircuitAt("View").Gate {
 		go eye.Show(vlv, x.WriteCloser)
 	}
 	return nil
 }
 
-func (x *Writer) OverCognize(eye *be.Eye, _ Name, value interface{}) {
+func (x *Writer) OverCognize(eye *be.Eye, _ cir.Name, value interface{}) {
 	switch t := value.(type) {
 	case io.Reader:
 		go CopyClose(x.WriteCloser, t, false, true)
@@ -53,15 +53,15 @@ func NewReaderMaterializer(r io.Reader) be.Materializer {
 	return be.NewMaterializer(&Reader{}, r)
 }
 
-func (x *Reader) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (x *Reader) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	x.ReadCloser = kitio.SovereignReader(aux[0].(io.Reader))
-	for vlv, _ := range matter.CircuitAt("View").Gate {
+	for vlv := range matter.CircuitAt("View").Gate {
 		go eye.Show(vlv, x.ReadCloser)
 	}
 	return nil
 }
 
-func (x *Reader) OverCognize(_ *be.Eye, _ Name, value interface{}) {
+func (x *Reader) OverCognize(_ *be.Eye, _ cir.Name, value interface{}) {
 	switch t := value.(type) {
 	case io.Writer:
 		go CopyClose(t, x.ReadCloser, true, false)

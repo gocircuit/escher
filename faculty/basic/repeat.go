@@ -7,21 +7,19 @@
 package basic
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Repeat struct{}
 
-func (Repeat) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (Repeat) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 
 func (Repeat) CognizeValue(eye *be.Eye, value interface{}) {
 	for {
-		eye.Show(DefaultValve, value)
+		eye.Show(cir.DefaultValve, value)
 	}
 }
 

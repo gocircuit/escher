@@ -7,15 +7,13 @@
 package model
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type IO struct{}
 
-func (IO) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (IO) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return IO{}
 }
 
@@ -26,5 +24,5 @@ func (IO) Cognize(eye *be.Eye, v interface{}) {
 func (IO) CognizeIn(eye *be.Eye, v interface{}) {}
 
 func (IO) CognizeOut(eye *be.Eye, v interface{}) {
-	eye.Show(DefaultValve, v)
+	eye.Show(cir.DefaultValve, v)
 }

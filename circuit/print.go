@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 
-	. "github.com/gocircuit/escher/a"
+	"github.com/gocircuit/escher/a"
 )
 
 type Format struct {
@@ -109,7 +109,7 @@ func String(v Value) string {
 	case int, float64, complex128, bool:
 		return fmt.Sprintf("%v", t)
 	case string:
-		if IsName(t) {
+		if a.IsName(t) {
 			return fmt.Sprintf("%v", t)
 		} else {
 			return fmt.Sprintf("%q", t)

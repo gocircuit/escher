@@ -9,10 +9,9 @@ package io
 
 import (
 	"io"
-	// "log"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 	kio "github.com/gocircuit/escher/kit/io"
 )
@@ -24,7 +23,7 @@ func init() {
 // Chunk…
 type Chunk struct{}
 
-func (Chunk) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (Chunk) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 

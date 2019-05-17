@@ -7,13 +7,11 @@
 package be
 
 import (
-	// "fmt"
-
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // Required matter: Noun
-func materializeNoun(given Reflex, matter Circuit) (residue interface{}) {
+func materializeNoun(given Reflex, matter cir.Circuit) (residue interface{}) {
 	noun := matter.At("Noun")
 	for _, syn_ := range given {
 		syn := syn_

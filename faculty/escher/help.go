@@ -12,14 +12,14 @@ import (
 	"os"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Help struct {
-	index Circuit
+	index cir.Circuit
 }
 
-func (h *Help) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
+func (h *Help) Spark(_ *be.Eye, matter cir.Circuit, _ ...interface{}) cir.Value {
 	h.index = matter.CircuitAt("Index")
 	return nil
 }
@@ -30,9 +30,9 @@ func (h *Help) Cognize(eye *be.Eye, v interface{}) {
 
 func (h *Help) value(v interface{}) {
 	switch u := v.(type) {
-	case Circuit:
-		if IsVerb(u) {
-			fmt.Fprintf(os.Stderr, "\nThis is a verb constant equal to %v\n\n", Verb(u))
+	case cir.Circuit:
+		if cir.IsVerb(u) {
+			fmt.Fprintf(os.Stderr, "\nThis is a verb constant equal to %v\n\n", cir.Verb(u))
 		} else {
 			h.circuit(u)
 		}
@@ -49,16 +49,16 @@ func (h *Help) value(v interface{}) {
 	}
 }
 
-func (h *Help) circuit(u Circuit) {
+func (h *Help) circuit(u cir.Circuit) {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, "\nWe are looking at a circuit design \n%v\n\n", u)
 
-	valves := u.ValveNames(Super)
+	valves := u.ValveNames(cir.Super)
 	if len(valves) == 0 {
 		fmt.Fprintf(&w, "The circuit has no super valves.\n\n")
 	} else {
 		fmt.Fprintf(&w, "The circuit has %d super valve(s) ", len(valves))
-		SortNames(valves)
+		cir.SortNames(valves)
 		for _, vn := range valves {
 			fmt.Fprintf(&w, ":%v ", vn)
 		}

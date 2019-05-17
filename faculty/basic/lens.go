@@ -7,33 +7,32 @@
 package basic
 
 import (
-	// "fmt"
 	"sync"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Lens struct {
-	valve []Name
+	valve []cir.Name
 	sync.Mutex
-	history Circuit // histories from both valves { ValveOne { … }, ValveTwo { … } }
+	history cir.Circuit // histories from both valves { ValveOne { … }, ValveTwo { … } }
 }
 
-func (g *Lens) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (g *Lens) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	mvg := matter.CircuitAt("View").Gate
 	if len(mvg) < 1 || len(mvg) > 2 {
 		panic("lens can have one or two endpoints")
 	}
-	g.history = New()
+	g.history = cir.New()
 	for vlv, _ := range mvg {
 		g.valve = append(g.valve, vlv)
-		g.history.Grow(vlv, New())
+		g.history.Grow(vlv, cir.New())
 	}
 	return g // return self in residual to expose query interface
 }
 
-func (g *Lens) OverCognize(eye *be.Eye, valve Name, value interface{}) {
+func (g *Lens) OverCognize(eye *be.Eye, valve cir.Name, value interface{}) {
 	g.remember(valve, value)
 	for _, v := range g.valve {
 		if v != valve {
@@ -42,15 +41,15 @@ func (g *Lens) OverCognize(eye *be.Eye, valve Name, value interface{}) {
 	}
 }
 
-func (g *Lens) remember(valve Name, value Value) {
+func (g *Lens) remember(valve cir.Name, value cir.Value) {
 	g.Lock()
 	defer g.Unlock()
 	h := g.history.CircuitAt(valve) // valve history circuit
-	h.Grow(h.Len(), DeepCopy(value))
+	h.Grow(h.Len(), cir.DeepCopy(value))
 }
 
-func (g *Lens) Peek() Circuit {
+func (g *Lens) Peek() cir.Circuit {
 	g.Lock()
 	defer g.Unlock()
-	return DeepCopy(g.history).(Circuit)
+	return cir.DeepCopy(g.history).(cir.Circuit)
 }

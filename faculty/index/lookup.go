@@ -7,25 +7,23 @@
 package index
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Lookup struct{}
 
-func (Lookup) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (Lookup) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 
 func (Lookup) CognizeView(eye *be.Eye, v interface{}) {
-	u := v.(Circuit)
+	u := v.(cir.Circuit)
 	x := u.CircuitAt("Index")
 	addr := u.VerbAt("Address")
 	r := be.AsIndex(x).Recall(addr.Address()...)
 	if r == nil {
-		eye.Show("NotFound", New().Grow("NotFound", Circuit(addr)).Grow("In", x))
+		eye.Show("NotFound", cir.New().Grow("NotFound", cir.Circuit(addr)).Grow("In", x))
 	} else {
 		eye.Show("Found", r)
 	}

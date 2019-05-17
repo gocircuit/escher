@@ -9,10 +9,8 @@ package math
 import (
 	"sync"
 
-	// "github.com/gocircuit/escher/faculty"
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	// "github.com/gocircuit/escher/kit/plumb"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // IntSum
@@ -21,7 +19,7 @@ type IntSum struct {
 	x, y, sum int
 }
 
-func (s *IntSum) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (s *IntSum) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return &IntSum{}
 }
 

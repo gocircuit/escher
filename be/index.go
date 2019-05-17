@@ -7,35 +7,32 @@
 package be
 
 import (
-	// "fmt"
-	// "log"
-
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // Index is a hierarchy of names with associated meanings.
 // Alternatively, it is a key-value store wherein keys are sequences of names.
-type Index Circuit
+type Index cir.Circuit
 
 func NewIndex() Index {
-	return Index(New())
+	return Index(cir.New())
 }
 
-func IsIndex(v Value) bool {
-	_, ok := v.(Circuit)
+func IsIndex(v cir.Value) bool {
+	_, ok := v.(cir.Circuit)
 	return ok
 }
 
-func AsIndex(v Value) Index {
-	return Index(v.(Circuit))
+func AsIndex(v cir.Value) Index {
+	return Index(v.(cir.Circuit))
 }
 
-func (x Index) Recall(walk ...Name) Value {
+func (x Index) Recall(walk ...cir.Name) cir.Value {
 	if len(walk) == 0 {
-		return Circuit(x)
+		return cir.Circuit(x)
 	}
-	v := Circuit(x).At(walk[0])
-	if u, ok := v.(Circuit); ok && IsIndex(u) {
+	v := cir.Circuit(x).At(walk[0])
+	if u, ok := v.(cir.Circuit); ok && IsIndex(u) {
 		return AsIndex(u).Recall(walk[1:]...)
 	}
 	if len(walk) == 1 {
@@ -44,12 +41,12 @@ func (x Index) Recall(walk ...Name) Value {
 	return nil
 }
 
-func (x Index) Memorize(value Value, walk ...Name) {
-	cx, step := Circuit(x), walk[0]
+func (x Index) Memorize(value cir.Value, walk ...cir.Name) {
+	cx, step := cir.Circuit(x), walk[0]
 	//
 	y, ok := value.(Index)
 	if ok {
-		value = Circuit(y)
+		value = cir.Circuit(y)
 	}
 	//
 	if len(walk) == 1 {
@@ -60,11 +57,11 @@ func (x Index) Memorize(value Value, walk ...Name) {
 		return
 	}
 	if !cx.Has(step) { // next step is an index
-		cx.Include(step, Circuit(NewIndex()))
+		cx.Include(step, cir.Circuit(NewIndex()))
 	}
 	Index(cx.CircuitAt(step)).Memorize(value, walk[1:]...)
 }
 
 func (x Index) Merge(with Index) {
-	Circuit(x).Merge(Circuit(with))
+	cir.Circuit(x).Merge(cir.Circuit(with))
 }

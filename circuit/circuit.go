@@ -7,10 +7,8 @@
 package circuit
 
 import (
-	// "log"
 	"fmt"
 	"sort"
-	// "math/rand"
 )
 
 // Circuit ...
@@ -44,7 +42,7 @@ func (u Circuit) SortedLetters() []string {
 
 func (u Circuit) Letters() []string {
 	var l []string
-	for key, _ := range u.Gate {
+	for key := range u.Gate {
 		if s, ok := key.(string); ok {
 			l = append(l, s)
 		}
@@ -60,7 +58,7 @@ func (u Circuit) SortedNumbers() []int {
 
 func (u Circuit) Numbers() []int {
 	var l []int
-	for key, _ := range u.Gate {
+	for key := range u.Gate {
 		if i, ok := key.(int); ok {
 			l = append(l, i)
 		}
@@ -70,7 +68,7 @@ func (u Circuit) Numbers() []int {
 
 func (u Circuit) Names() []Name {
 	var r []Name
-	for n, _ := range u.Gate {
+	for n := range u.Gate {
 		r = append(r, n)
 	}
 	return r

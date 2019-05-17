@@ -10,11 +10,11 @@ import (
 	"fmt"
 	"os"
 
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/runtime"
 )
 
-func MaterializeSystem(system interface{}, index, barrier Circuit) (residue interface{}) {
+func MaterializeSystem(system interface{}, index, barrier cir.Circuit) (residue interface{}) {
 	defer func() {
 		if r := recover(); r != nil {
 			switch t := r.(type) {
@@ -29,11 +29,11 @@ func MaterializeSystem(system interface{}, index, barrier Circuit) (residue inte
 		}
 	}()
 	if barrier.IsNil() {
-		barrier = New()
+		barrier = cir.New()
 	}
-	parent := New().
+	parent := cir.New().
 		Grow("Index", index).
-		Grow("View", New()).
+		Grow("View", cir.New()).
 		Grow("System", system).
 		Grow("Barrier", barrier)
 
@@ -41,12 +41,12 @@ func MaterializeSystem(system interface{}, index, barrier Circuit) (residue inte
 }
 
 // Required matter: Index, View
-func route(design interface{}, given Reflex, matter Circuit) (residue interface{}) {
+func route(design interface{}, given Reflex, matter cir.Circuit) (residue interface{}) {
 	switch t := design.(type) {
 	case int, float64, complex128, string:
 		return materializeNoun(given, matter.Grow("Noun", t))
-	case Circuit:
-		if IsVerb(t) {
+	case cir.Circuit:
+		if cir.IsVerb(t) {
 			return materializeVerb(given, matter.Grow("Verb", t))
 		} else {
 			return materializeCircuit(given, matter.Grow("Circuit", t))

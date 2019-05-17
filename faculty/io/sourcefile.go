@@ -11,8 +11,7 @@ import (
 	"os"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	// "github.com/gocircuit/escher/faculty"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 func NewSourceFile(name string) be.Materializer {
@@ -21,7 +20,7 @@ func NewSourceFile(name string) be.Materializer {
 
 type SourceFile struct{}
 
-func (SourceFile) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
+func (SourceFile) Spark(eye *be.Eye, _ cir.Circuit, aux ...interface{}) cir.Value {
 	go func() {
 		name := aux[0].(string)
 		file, err := os.Open(name)
@@ -29,7 +28,7 @@ func (SourceFile) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
 			log.Printf("Problem opening file %q (%v)", name, err)
 			panic("open file")
 		}
-		eye.Show(DefaultValve, file)
+		eye.Show(cir.DefaultValve, file)
 	}()
 	return nil
 }

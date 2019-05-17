@@ -7,17 +7,15 @@
 package basic
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type OneWayDoor struct { // :From :To :Door
 	flow chan struct{}
 }
 
-func (w *OneWayDoor) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
+func (w *OneWayDoor) Spark(eye *be.Eye, _ cir.Circuit, aux ...interface{}) cir.Value {
 	w.flow = make(chan struct{})
 	return nil
 }

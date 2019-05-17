@@ -7,10 +7,8 @@
 package cmplx
 
 import (
-	// "math/cmplx"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -22,15 +20,15 @@ func init() {
 // Planar
 type Planar struct{}
 
-func (Planar) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (Planar) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 
 func (Planar) CognizeComplex(eye *be.Eye, v interface{}) {
-	eye.Show("Planar", New().Grow("X", real(v.(complex128))).Grow("Y", imag(v.(complex128))))
+	eye.Show("Planar", cir.New().Grow("X", real(v.(complex128))).Grow("Y", imag(v.(complex128))))
 }
 
 func (Planar) CognizePlanar(eye *be.Eye, v interface{}) {
-	x := v.(Circuit)
+	x := v.(cir.Circuit)
 	eye.Show("Complex", complex(x.FloatAt("X"), x.FloatAt("Y")))
 }

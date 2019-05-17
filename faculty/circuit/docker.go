@@ -14,7 +14,7 @@ import (
 
 	dkr "github.com/gocircuit/circuit/client/docker"
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -26,7 +26,7 @@ type Docker struct {
 	spawn     chan interface{} // notify loop of spawn memes
 }
 
-func (p *Docker) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (p *Docker) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	p.spawn = make(chan interface{})
 	return nil
 }
@@ -46,7 +46,7 @@ func (p *Docker) CognizeCommand(eye *be.Eye, dvalue interface{}) {
 
 func (p *Docker) CognizeSpawn(eye *be.Eye, dvalue interface{}) {
 	p.spawn <- dvalue
-	log.Printf("circuit container spawning (%v)", Linearize(fmt.Sprintf("%v", dvalue)))
+	log.Printf("circuit container spawning (%v)", cir.Linearize(fmt.Sprintf("%v", dvalue)))
 }
 
 func (p *Docker) CognizeExit(eye *be.Eye, dvalue interface{}) {}
@@ -75,7 +75,7 @@ func (p *Docker) CognizeIO(eye *be.Eye, dvalue interface{}) {}
 //		}
 //
 func cognizeDockerCommand(v interface{}) *dkr.Run {
-	img, ok := v.(Circuit)
+	img, ok := v.(cir.Circuit)
 	if !ok {
 		panic(fmt.Sprintf("non-image sent as circuit container command (%v)", v))
 	}
@@ -114,7 +114,7 @@ func cognizeDockerCommand(v interface{}) *dkr.Run {
 			cmd.Args = append(cmd.Args, args.StringAt(key))
 		}
 	}
-	log.Printf("circuit docker command %v", QuickPrint("", "t", -1, img))
+	log.Printf("circuit docker command %v", cir.QuickPrint("", "t", -1, img))
 	return cmd
 }
 
@@ -127,7 +127,7 @@ type dockerBack struct {
 func (p *dockerBack) loop() {
 	for {
 		spwn := <-p.spawn
-		x := New().Grow("Spawn", spwn)
+		x := cir.New().Grow("Spawn", spwn)
 		if exit := p.spawnDocker(spwn); exit != nil {
 			x.Grow("Exit", 1)
 			p.eye.Show("Exit", x)
@@ -135,13 +135,13 @@ func (p *dockerBack) loop() {
 			x.Grow("Exit", 0)
 			p.eye.Show("Exit", x)
 		}
-		log.Printf("circuit container exit meme sent (%v)", Linearize(fmt.Sprintf("%v", x)))
+		log.Printf("circuit container exit meme sent (%v)", cir.Linearize(fmt.Sprintf("%v", x)))
 	}
 }
 
 func (p *dockerBack) spawnDocker(spwn interface{}) error {
 	// anchor determination
-	s := spwn.(Circuit)
+	s := spwn.(cir.Circuit)
 	anchor := program.Client.Walk(
 		[]string{
 			s.StringAt("Server"), // server name
@@ -153,19 +153,19 @@ func (p *dockerBack) spawnDocker(spwn interface{}) error {
 		log.Fatalf("container spawn error (%v)", err)
 	}
 	defer anchor.Scrub() // Anchor will be scrubbed before the exit meme is sent out
-	g := New().
+	g := cir.New().
 		Grow("Spawn", spwn).
 		Grow("Stdin", container.Stdin()).
 		Grow("Stdout", container.Stdout()).
 		Grow("Stderr", container.Stderr())
-	log.Printf("circuit docker io (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	log.Printf("circuit docker io (%v)", cir.Linearize(fmt.Sprintf("%v", spwn)))
 	p.eye.Show("IO", g)
-	log.Printf("circuit docker waiting (%v)", Linearize(fmt.Sprintf("%v", spwn)))
+	log.Printf("circuit docker waiting (%v)", cir.Linearize(fmt.Sprintf("%v", spwn)))
 	stat, err := container.Wait()
 	if err != nil {
 		panic("circuit container wait aborted by user")
 	}
-	log.Printf("circuit container (%v) exited", Linearize(fmt.Sprintf("%v", spwn)))
+	log.Printf("circuit container (%v) exited", cir.Linearize(fmt.Sprintf("%v", spwn)))
 	var exit error
 	if stat.State.ExitCode != 0 {
 		exit = errors.New(fmt.Sprintf("circuit container exit code: %d", stat.State.ExitCode))

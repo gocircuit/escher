@@ -7,23 +7,22 @@
 package be
 
 import (
-	. "github.com/gocircuit/escher/circuit"
-	// . "github.com/gocircuit/escher/faculty"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // Reflex is a bundle of not yet attached sense endpoints (synapses).
-type Reflex map[Name]*Synapse
+type Reflex map[cir.Name]*Synapse
 
 //
-type Materializer func(Reflex, Circuit) interface{}
+type Materializer func(Reflex, cir.Circuit) interface{}
 
 // Material represents a materializable object implemented as a Go type.
 type Material interface {
-	Spark(eye *Eye, matter Circuit, aux ...interface{}) Value // Initializer
+	Spark(eye *Eye, matter cir.Circuit, aux ...interface{}) cir.Value // Initializer
 }
 
 type Sparkless struct{}
 
-func (Sparkless) Spark(eye *Eye, matter Circuit, aux ...interface{}) Value {
+func (Sparkless) Spark(eye *Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	return nil
 }

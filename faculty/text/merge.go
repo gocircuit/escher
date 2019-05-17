@@ -10,10 +10,9 @@ package text
 import (
 	"bytes"
 	"io"
-	// "log"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -28,7 +27,7 @@ type Merge struct{ be.Sparkless }
 
 func (Merge) CognizeIn(eye *be.Eye, v interface{}) {
 	var w bytes.Buffer
-	x := v.(Circuit)
+	x := v.(cir.Circuit)
 	for _, name := range x.SortedLetters() {
 		w.WriteString(flatten(x.StringAt(name)))
 	}

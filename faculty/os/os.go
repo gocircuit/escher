@@ -13,7 +13,7 @@ import (
 	"path"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 	fio "github.com/gocircuit/escher/faculty/io"
 )
@@ -31,8 +31,8 @@ func Init(arg []string) {
 	faculty.Register(fio.NewWriterMaterializer(os.Stderr), "os", "Stderr")
 }
 
-func argCircuit(arg []string) Circuit {
-	r := New()
+func argCircuit(arg []string) cir.Circuit {
+	r := cir.New()
 	for i, a := range arg {
 		r.Include(i, a)
 	}
@@ -42,7 +42,7 @@ func argCircuit(arg []string) Circuit {
 // Exit
 type Exit struct{ be.Sparkless }
 
-func (Exit) OverCognize(eye *be.Eye, name Name, value interface{}) {
+func (Exit) OverCognize(eye *be.Eye, name cir.Name, value interface{}) {
 	switch t := value.(type) {
 	case int:
 		os.Exit(t)
@@ -54,7 +54,7 @@ func (Exit) OverCognize(eye *be.Eye, name Name, value interface{}) {
 // Fatal
 type Fatal struct{ be.Sparkless }
 
-func (Fatal) OverCognize(eye *be.Eye, name Name, value interface{}) {
+func (Fatal) OverCognize(eye *be.Eye, name cir.Name, value interface{}) {
 	log.Fatalf("%v", value)
 }
 
@@ -66,7 +66,7 @@ func (LookPath) CognizeName(eye *be.Eye, value interface{}) {
 	if err != nil {
 		log.Fatalf("no file path to %s", value.(string))
 	}
-	eye.Show(DefaultValve, p)
+	eye.Show(cir.DefaultValve, p)
 }
 
 func (LookPath) Cognize(eye *be.Eye, value interface{}) {}
@@ -75,12 +75,12 @@ func (LookPath) Cognize(eye *be.Eye, value interface{}) {}
 type Join struct{ be.Sparkless }
 
 func (Join) CognizeView(eye *be.Eye, v interface{}) {
-	u := v.(Circuit)
+	u := v.(cir.Circuit)
 	var s []string
 	for _, n := range u.SortedNames() {
 		s = append(s, u.Gate[n].(string))
 	}
-	eye.Show(DefaultValve, path.Join(s...))
+	eye.Show(cir.DefaultValve, path.Join(s...))
 }
 
 func (Join) Cognize(*be.Eye, interface{}) {}

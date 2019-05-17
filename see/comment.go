@@ -7,17 +7,17 @@
 package see
 
 import (
-	. "github.com/gocircuit/escher/a"
+	"github.com/gocircuit/escher/a"
 )
 
-func SpaceNoNewline(src *Src) {
-	if len(Whitespace(src)) > 0 {
+func SpaceNoNewline(src *a.Src) {
+	if len(a.Whitespace(src)) > 0 {
 		return
 	}
 	panic("whitespace")
 }
 
-func Space(src *Src) (newLine bool) {
+func Space(src *a.Src) (newLine bool) {
 	for endOfLine(src) {
 		newLine = true
 	}
@@ -27,7 +27,7 @@ func Space(src *Src) (newLine bool) {
 	return
 }
 
-func endOfLine(src *Src) bool {
-	Whitespace(src)
-	return len(src.Consume(IsCommaOrSemicolonOrNewline)) > 0
+func endOfLine(src *a.Src) bool {
+	a.Whitespace(src)
+	return len(src.Consume(a.IsCommaOrSemicolonOrNewline)) > 0
 }

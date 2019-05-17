@@ -10,7 +10,7 @@ import (
 	"log"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // TODO: Make sure matching works when opposing streams come at different speeds
@@ -18,13 +18,13 @@ import (
 
 //
 type Match struct {
-	name []Name
+	name []cir.Name
 	flow []chan interface{}
 }
 
-func (m *Match) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
-	for vlv, _ := range matter.CircuitAt("View").Gate {
-		if vlv == DefaultValve {
+func (m *Match) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
+	for vlv := range matter.CircuitAt("View").Gate {
+		if vlv == cir.DefaultValve {
 			continue
 		}
 		m.name = append(m.name, vlv)
@@ -36,11 +36,11 @@ func (m *Match) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
 	return nil
 }
 
-func (m *Match) OverCognize(eye *be.Eye, name Name, v interface{}) {
+func (m *Match) OverCognize(eye *be.Eye, name cir.Name, v interface{}) {
 	// compute valve index
 	var i int
 	for j, n := range m.name {
-		if Same(n, name) {
+		if cir.Same(n, name) {
 			i = j
 			break
 		}
@@ -48,10 +48,10 @@ func (m *Match) OverCognize(eye *be.Eye, name Name, v interface{}) {
 	// match
 	select {
 	case u := <-m.flow[1-i]: // if the opposing channel is ready
-		if !Same(u, v) {
+		if !cir.Same(u, v) {
 			log.Fatalf("mismatch %v vs %v: %v vs %v\n", m.name[1-i], name, u, v)
 		}
-		eye.Show(DefaultValve, v) // emit the matched object
+		eye.Show(cir.DefaultValve, v) // emit the matched object
 	default: // otherwise, offer our value
 		m.flow[i] <- v
 	}

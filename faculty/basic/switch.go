@@ -7,10 +7,8 @@
 package basic
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -19,18 +17,18 @@ func init() {
 }
 
 type Switch struct {
-	view Circuit
+	view cir.Circuit
 }
 
-func (s *Switch) Spark(_ *be.Eye, matter Circuit, _ ...interface{}) Value {
+func (s *Switch) Spark(_ *be.Eye, matter cir.Circuit, _ ...interface{}) cir.Value {
 	s.view = matter.CircuitAt("View")
 	return nil
 }
 
 func (s *Switch) Cognize(eye *be.Eye, value interface{}) {
 	switch t := value.(type) {
-	case Circuit:
-		if IsVerb(t) {
+	case cir.Circuit:
+		if cir.IsVerb(t) {
 			eye.Show("Verb", value)
 			return
 		}
@@ -60,4 +58,4 @@ func (s *Switch) Cognize(eye *be.Eye, value interface{}) {
 	}
 }
 
-func (s *Switch) OverCognize(eye *be.Eye, name Name, value interface{}) {}
+func (s *Switch) OverCognize(eye *be.Eye, name cir.Name, value interface{}) {}

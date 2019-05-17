@@ -9,20 +9,20 @@ package faculty
 import (
 	"sync"
 
-	. "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/be"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 var lk sync.Mutex
-var root = NewIndex()
+var root = be.NewIndex()
 
-func Root() Index {
+func Root() be.Index {
 	lk.Lock()
 	defer lk.Unlock()
 	return root
 }
 
-func Register(v Materializer, addr ...Name) {
+func Register(v be.Materializer, addr ...cir.Name) {
 	lk.Lock()
 	defer lk.Unlock()
 	root.Memorize(v, addr...)

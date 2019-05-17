@@ -7,15 +7,12 @@
 package escher
 
 import (
-	// "fmt"
-	// "log"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Breakpoint struct{ be.Sparkless }
 
-func (Breakpoint) OverCognize(eye *be.Eye, valve Name, value interface{}) {
+func (Breakpoint) OverCognize(eye *be.Eye, valve cir.Name, value interface{}) {
 	panic("Escher breakpoint")
 }

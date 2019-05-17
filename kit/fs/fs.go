@@ -8,20 +8,19 @@
 package fs
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
 
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/a"
+	"github.com/gocircuit/escher/be"
+	cir "github.com/gocircuit/escher/circuit"
 	fio "github.com/gocircuit/escher/faculty/io"
 	"github.com/gocircuit/escher/see"
 )
 
-func Load(filedir string) Index {
+func Load(filedir string) be.Index {
 	fi, err := os.Stat(filedir)
 	if err != nil {
 		log.Fatalf("cannot read source file %s (%v)", filedir, err)
@@ -33,15 +32,15 @@ func Load(filedir string) Index {
 }
 
 // loadDirectory ...
-func loadDirectory(dir string) Index {
+func loadDirectory(dir string) be.Index {
 	d, err := os.Open(dir)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer d.Close()
 	//
-	x := NewIndex()
-	x.Memorize(New().Grow("Dir", dir), Source{})
+	x := be.NewIndex()
+	x.Memorize(cir.New().Grow("Dir", dir), a.Source{})
 	//
 	fileInfos, err := d.Readdir(0)
 	if err != nil {
@@ -63,13 +62,13 @@ func loadDirectory(dir string) Index {
 }
 
 // loadFile ...
-func loadFile(dir, file string) Index {
+func loadFile(dir, file string) be.Index {
 	text, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatalf("Problem reading source file %s (%v)", file, err)
 	}
-	x := NewIndex()
-	src := NewSrcString(string(text))
+	x := be.NewIndex()
+	src := a.NewSrcString(string(text))
 	for {
 		see.Space(src)
 		n_, u_ := see.SeePeer(src)
@@ -77,8 +76,8 @@ func loadFile(dir, file string) Index {
 			break
 		}
 		n := n_.(string) // n is a string
-		if u, ok := u_.(Circuit); ok {
-			u.Include(Source{}, New().Grow("Dir", dir).Grow("File", file))
+		if u, ok := u_.(cir.Circuit); ok {
+			u.Include(a.Source{}, cir.New().Grow("Dir", dir).Grow("File", file))
 		}
 		x.Memorize(u_, n)
 	}

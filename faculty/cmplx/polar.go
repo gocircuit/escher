@@ -10,22 +10,22 @@ import (
 	"math/cmplx"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // Polar
 type Polar struct{}
 
-func (Polar) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (Polar) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 
 func (Polar) CognizeComplex(eye *be.Eye, v interface{}) {
 	r, theta := cmplx.Polar(v.(complex128))
-	eye.Show("Polar", New().Grow("R", r).Grow("Theta", theta))
+	eye.Show("Polar", cir.New().Grow("R", r).Grow("Theta", theta))
 }
 
 func (Polar) CognizePolar(eye *be.Eye, v interface{}) {
-	x := v.(Circuit)
+	x := v.(cir.Circuit)
 	eye.Show("Complex", cmplx.Rect(x.FloatAt("R"), x.FloatAt("Theta")))
 }

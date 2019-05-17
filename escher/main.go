@@ -12,11 +12,11 @@ import (
 	"io"
 	"os"
 
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/kit/fs"
+	"github.com/gocircuit/escher/a"
+	"github.com/gocircuit/escher/be"
+	cir "github.com/gocircuit/escher/circuit"
+	fac "github.com/gocircuit/escher/faculty"
+	"github.com/gocircuit/escher/kit/fs"
 	kio "github.com/gocircuit/escher/kit/io"
 	"github.com/gocircuit/escher/see"
 
@@ -65,18 +65,18 @@ func main() {
 	test.Init(*flagSrc)
 	circuit.Init(*flagDiscover)
 	//
-	index := Root()
+	index := fac.Root()
 	if *flagSrc != "" {
-		index.Merge(Load(*flagSrc))
+		index.Merge(fs.Load(*flagSrc))
 	}
 	// run main
 	if flagMain != "" {
 		verb := see.ParseVerb(flagMain)
-		if Circuit(verb).IsNil() {
+		if cir.Circuit(verb).IsNil() {
 			fmt.Fprintf(os.Stderr, "verb not recognized\n")
 			os.Exit(1)
 		}
-		exec(index, Circuit(verb), false)
+		exec(index, cir.Circuit(verb), false)
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -88,20 +88,20 @@ func main() {
 				break
 			}
 		}
-		src := NewSrcString(string(chunk))
+		src := a.NewSrcString(string(chunk))
 		for src.Len() > 0 {
 			u := see.SeeChamber(src)
-			if u == nil || u.(Circuit).Len() == 0 {
+			if u == nil || u.(cir.Circuit).Len() == 0 {
 				break
 			}
 			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n", u)
-			exec(index, u.(Circuit), true)
+			exec(index, u.(cir.Circuit), true)
 		}
 	}
 }
 
-func exec(index Index, verb Circuit, showResidue bool) {
-	residue := MaterializeSystem(Circuit(verb), Circuit(index), New().Grow("Main", New()))
+func exec(index be.Index, verb cir.Circuit, showResidue bool) {
+	residue := be.MaterializeSystem(cir.Circuit(verb), cir.Circuit(index), cir.New().Grow("Main", cir.New()))
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)
 	}

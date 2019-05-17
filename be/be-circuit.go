@@ -7,22 +7,20 @@
 package be
 
 import (
-	// "fmt"
-
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // *Spirit gates emit the residue of the enclosing circuit itself
-var SpiritVerb = NewVerbAddress("*", "Spirit")
+var SpiritVerb = cir.NewVerbAddress("*", "Spirit")
 
 // Required matter: Index, View, Circuit
-func materializeCircuit(given Reflex, matter Circuit) interface{} {
+func materializeCircuit(given Reflex, matter cir.Circuit) interface{} {
 
 	design := matter.CircuitAt("Circuit")
 
 	// create all links before materializing gates
-	gates := make(map[Name]Reflex)
-	gates[Super] = make(Reflex)
+	gates := make(map[cir.Name]Reflex)
+	gates[cir.Super] = make(Reflex)
 	for name, view := range design.Flow {
 		if gates[name] == nil {
 			gates[name] = make(Reflex)
@@ -39,25 +37,25 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 	}
 
 	// materialize gates
-	residue := New()
-	spirit := make(map[Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
+	residue := cir.New()
+	spirit := make(map[cir.Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
 	for g, _ := range design.Gate {
-		if g == Super {
+		if g == cir.Super {
 			panicWithMatter(matter, "Circuit design overwrites the empty-string gate, in design %v\n", design)
 		}
 		gsyntax := design.At(g)
 		var gresidue interface{}
 
 		// Compute view of gate within circuit
-		view := New()
+		view := cir.New()
 		for vlv, vec := range design.Flow[g] {
 			view.Grow(vlv, design.Gate[vec.Gate])
 		}
 
-		if Same(gsyntax, SpiritVerb) {
+		if cir.Same(gsyntax, SpiritVerb) {
 			gresidue, spirit[g] = MaterializeInstance(gates[g], newSubMatterView(matter, view), &Future{})
 		} else {
-			if gcir, ok := gsyntax.(Circuit); ok && !IsVerb(gcir) {
+			if gcir, ok := gsyntax.(cir.Circuit); ok && !cir.IsVerb(gcir) {
 				gresidue = materializeNoun(gates[g], newSubMatterView(matter, view).Grow("Noun", gcir))
 			} else {
 				gresidue = route(gsyntax, gates[g], newSubMatterView(matter, view))
@@ -68,11 +66,11 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 
 	// connect boundary synapses
 	for vlv, s := range given {
-		t, ok := gates[Super][vlv]
+		t, ok := gates[cir.Super][vlv]
 		if !ok {
 			panicWithMatter(matter, "connected valve %v is not connected within circuit design %v", vlv, design)
 		}
-		delete(gates[Super], vlv)
+		delete(gates[cir.Super], vlv)
 		go Link(s, t)
 		go Link(t, s)
 	}
@@ -85,14 +83,14 @@ func materializeCircuit(given Reflex, matter Circuit) interface{} {
 		}
 	}()
 
-	if len(gates[Super]) > 0 {
+	if len(gates[cir.Super]) > 0 {
 		panicWithMatter(matter, "circuit valves left unconnected")
 	}
 
 	return res
 }
 
-func newSubMatterView(matter Circuit, view Circuit) Circuit {
+func newSubMatterView(matter cir.Circuit, view cir.Circuit) cir.Circuit {
 	r := newSubMatter(matter)
 	r.Include("View", view)
 	return r
@@ -100,14 +98,14 @@ func newSubMatterView(matter Circuit, view Circuit) Circuit {
 
 // CleanUp removes nil-valued gates and their incident edges.
 // CleanUp never returns nil.
-func CleanUp(u Circuit) Circuit {
+func CleanUp(u cir.Circuit) cir.Circuit {
 	for n, g := range u.Gate {
 		if g != nil {
 			continue
 		}
 		delete(u.Gate, n)
 		for vlv, vec := range u.Flow[n] {
-			u.Unlink(Vector{n, vlv}, vec)
+			u.Unlink(cir.Vector{n, vlv}, vec)
 		}
 	}
 	return u

@@ -7,14 +7,11 @@
 package basic
 
 import (
-	// "fmt"
 	"strconv"
-	// "sync"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
-	// "github.com/gocircuit/escher/kit/plumb"
 )
 
 func init() {
@@ -25,7 +22,7 @@ func init() {
 // IntString
 type IntString struct{}
 
-func (IntString) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (IntString) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return IntString{}
 }
 

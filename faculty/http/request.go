@@ -7,22 +7,21 @@
 package http
 
 import (
-	// "fmt"
 	"net/http"
 	"strings"
 
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // requestCircuit converts an http.Request object into a data circuit representation
-func requestCircuit(req *http.Request) Circuit {
-	x := New()
+func requestCircuit(req *http.Request) cir.Circuit {
+	x := cir.New()
 
 	// HTTP method
 	x.Gate["Method"] = req.Method
 
 	// URL path
-	var nn []Name
+	var nn []cir.Name
 	parts := strings.Split(req.URL.Path, "/")
 	if len(parts) > 0 && parts[0] == "" {
 		parts = parts[1:]
@@ -33,10 +32,10 @@ func requestCircuit(req *http.Request) Circuit {
 	for _, n := range parts {
 		nn = append(nn, n)
 	}
-	x.Gate["Path"] = NewAddress(nn...)
+	x.Gate["Path"] = cir.NewAddress(nn...)
 
 	// URL query
-	v := New()
+	v := cir.New()
 	for k, ss := range req.URL.Query() {
 		v.Gate[k] = sliceCircuit(ss)
 	}
@@ -45,8 +44,8 @@ func requestCircuit(req *http.Request) Circuit {
 	return x
 }
 
-func sliceCircuit(ss []string) Circuit {
-	x := New()
+func sliceCircuit(ss []string) cir.Circuit {
+	x := cir.New()
 	for i, v := range ss {
 		x.Gate[i] = v
 	}

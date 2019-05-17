@@ -7,10 +7,10 @@
 package yield
 
 import (
-	// "fmt"
+	//"fmt"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 /*
@@ -31,28 +31,28 @@ import (
 */
 type Flows struct{ be.Sparkless }
 
-func sanitizeValue(u Circuit, name Name) Value {
+func sanitizeValue(u cir.Circuit, name cir.Name) cir.Value {
 	value, ok := u.Gate[name]
 	if !ok {
-		return NewAddress("missing")
+		return cir.NewAddress("missing")
 	}
 	if value == nil {
-		return NewAddress("nil")
+		return cir.NewAddress("nil")
 	}
 	return value
 }
 
 func (Flows) Cognize(eye *be.Eye, value interface{}) {
-	u := value.(Circuit)
+	u := value.(cir.Circuit)
 	for xname, xview := range u.Flow {
 		for xvalve, xvec := range xview {
 			yname, yvalve := xvec.Gate, xvec.Valve
 			//
 			xvalue, yvalue := sanitizeValue(u, xname), sanitizeValue(u, yname)
 			//
-			frame := New()
-			xy := New().Grow("Name", xname).Grow("Value", xvalue).Grow("Valve", xvalve)
-			yx := New().Grow("Name", xname).Grow("Value", yvalue).Grow("Valve", yvalve)
+			frame := cir.New()
+			xy := cir.New().Grow("Name", xname).Grow("Value", xvalue).Grow("Valve", xvalve)
+			yx := cir.New().Grow("Name", xname).Grow("Value", yvalue).Grow("Valve", yvalve)
 			frame.Grow(0, xy).Grow(1, yx)
 			eye.Show("Frame", frame)
 		}

@@ -10,7 +10,7 @@ import (
 	"fmt"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // The Mirror gate recursively transforms an input circuit into one wherein
@@ -21,29 +21,29 @@ import (
 type Mirror struct{ be.Sparkless }
 
 func (Mirror) CognizeIndex(eye *be.Eye, v interface{}) {
-	eye.Show(DefaultValve, MirrorIndex(v.(Circuit), nil))
+	eye.Show(cir.DefaultValve, MirrorIndex(v.(cir.Circuit), nil))
 }
 
 func (Mirror) Cognize(eye *be.Eye, v interface{}) {}
 
-func MirrorIndex(u Circuit, addr []Name) Circuit {
-	r := New()
-	for n, v := range Circuit(u).Gate {
+func MirrorIndex(u cir.Circuit, addr []cir.Name) cir.Circuit {
+	r := cir.New()
+	for n, v := range cir.Circuit(u).Gate {
 		switch t := v.(type) {
-		case Circuit:
+		case cir.Circuit:
 			r.Include(n, MirrorIndex(t, append(addr, n)))
 		case be.Materializer:
-			r.Include(n, be.NewSource(NewAddress(append(addr, n)...)))
+			r.Include(n, be.NewSource(cir.NewAddress(append(addr, n)...)))
 		case int:
-			r.Include(n, be.NewSource(NewAddress("int")))
+			r.Include(n, be.NewSource(cir.NewAddress("int")))
 		case float64:
-			r.Include(n, be.NewSource(NewAddress("float")))
+			r.Include(n, be.NewSource(cir.NewAddress("float")))
 		case complex128:
-			r.Include(n, be.NewSource(NewAddress("complex")))
+			r.Include(n, be.NewSource(cir.NewAddress("complex")))
 		case string:
-			r.Include(n, be.NewSource(NewAddress("string")))
+			r.Include(n, be.NewSource(cir.NewAddress("string")))
 		default:
-			r.Include(n, be.NewSource(NewAddress("go", fmt.Sprintf("%T", t))))
+			r.Include(n, be.NewSource(cir.NewAddress("go", fmt.Sprintf("%T", t))))
 		}
 	}
 	return r

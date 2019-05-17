@@ -13,12 +13,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	// "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // cognizeResponse reads the circuit response u and fills in the http header object, returning the status and body.
-func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, body io.ReadCloser, ok bool) {
+func (s *Server) cognizeResponse(header http.Header, u cir.Circuit) (status int, body io.ReadCloser, ok bool) {
 
 	// Status
 	if status, ok = u.IntOptionAt("Status"); !ok {
@@ -26,7 +25,7 @@ func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, bod
 	}
 
 	// Header
-	var h Circuit
+	var h cir.Circuit
 	if h, ok = u.CircuitOptionAt("Header"); !ok {
 		return
 	}
@@ -39,7 +38,7 @@ func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, bod
 	}
 
 	// Body gate should be convertible to string
-	var v Value
+	var v cir.Value
 	if v, ok = u.OptionAt("Body"); !ok {
 		return
 	}
@@ -70,7 +69,7 @@ func (s *Server) cognizeResponse(header http.Header, u Circuit) (status int, bod
 	return
 }
 
-func circuitSlice(u Circuit) []string {
+func circuitSlice(u cir.Circuit) []string {
 	var ss []string
 	for _, j := range u.SortedNumbers() {
 		ss = append(ss, fmt.Sprintf("%v", u.At(j)))

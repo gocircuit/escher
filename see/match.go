@@ -7,24 +7,22 @@
 package see
 
 import (
-	// "fmt"
-
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/a"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Carry struct {
-	Name
-	Value
+	cir.Name
+	cir.Value
 }
 
-func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
+func SeeLink(src *a.Src, nsugar int) (x []cir.Vector, carry []*Carry) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
 		}
 	}()
-	x, carry = make([]Vector, 2), make([]*Carry, 2)
+	x, carry = make([]cir.Vector, 2), make([]*Carry, 2)
 	t := src.Copy()
 	Space(t)
 	//
@@ -34,15 +32,15 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	}
 	if g != nil {
 		carry[0] = &Carry{nsugar, g}
-		x[0] = Vector{nsugar, DefaultValve}
+		x[0] = cir.Vector{nsugar, cir.DefaultValve}
 		nsugar++
 	} else {
-		x[0] = Vector{p, v}
+		x[0] = cir.Vector{p, v}
 	}
 	//
-	Whitespace(t)
+	a.Whitespace(t)
 	t.Match("=")
-	Whitespace(t)
+	a.Whitespace(t)
 	//
 	g, p, v, ok = seeEndpoint(t)
 	if !ok {
@@ -50,10 +48,10 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	}
 	if g != nil {
 		carry[1] = &Carry{nsugar, g}
-		x[1] = Vector{nsugar, DefaultValve}
+		x[1] = cir.Vector{nsugar, cir.DefaultValve}
 		nsugar++
 	} else {
-		x[1] = Vector{p, v}
+		x[1] = cir.Vector{p, v}
 	}
 	//
 	if !Space(t) { // require newline at end
@@ -63,7 +61,7 @@ func SeeLink(src *Src, nsugar int) (x []Vector, carry []*Carry) {
 	return
 }
 
-func seeEndpoint(src *Src) (m Value, p, v Name, ok bool) {
+func seeEndpoint(src *a.Src) (m cir.Value, p, v cir.Name, ok bool) {
 	if p, v, ok = seeNameEndpoint(src); ok { // valve (or empty string)
 		return
 	}
@@ -71,7 +69,7 @@ func seeEndpoint(src *Src) (m Value, p, v Name, ok bool) {
 	return
 }
 
-func seeValueEndpoint(src *Src) (m Value, ok bool) {
+func seeValueEndpoint(src *a.Src) (m cir.Value, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			ok = false
@@ -83,7 +81,7 @@ func seeValueEndpoint(src *Src) (m Value, ok bool) {
 	return m, true
 }
 
-func seeNameEndpoint(src *Src) (gate, valve Name, ok bool) {
+func seeNameEndpoint(src *a.Src) (gate, valve cir.Name, ok bool) {
 	defer func() {
 		if r := recover(); r != nil {
 			ok = false
@@ -91,7 +89,7 @@ func seeNameEndpoint(src *Src) (gate, valve Name, ok bool) {
 	}()
 	t := src.Copy()
 	gate = SeeValue(t)
-	t.Match(string(ValveSelector))
+	t.Match(string(a.ValveSelector))
 	valve = SeeValue(t)
 	src.Become(t)
 	ok = true

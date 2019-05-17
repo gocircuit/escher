@@ -7,14 +7,11 @@
 package see
 
 import (
-	// "log"
-	// "fmt"
-
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/gocircuit/escher/a"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
-func SeeCircuit(src *Src) (v Value) {
+func SeeCircuit(src *a.Src) (v cir.Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			v = nil
@@ -31,13 +28,13 @@ func SeeCircuit(src *Src) (v Value) {
 	return
 }
 
-func SeeChamber(src *Src) (v Value) {
+func SeeChamber(src *a.Src) (v cir.Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			v = nil
 		}
 	}()
-	u := New()
+	u := cir.New()
 	t := src.Copy()
 	Space(t)
 	var j int

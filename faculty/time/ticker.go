@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/kit/plumb"
 )
 
@@ -19,7 +19,7 @@ type Ticker struct {
 	ctl chan time.Duration
 }
 
-func (t *Ticker) Spark(eye *be.Eye, _ Circuit, _ ...interface{}) Value {
+func (t *Ticker) Spark(eye *be.Eye, _ cir.Circuit, _ ...interface{}) cir.Value {
 	t.ctl = make(chan time.Duration)
 	go func() {
 		var start time.Time
@@ -37,7 +37,7 @@ func (t *Ticker) Spark(eye *be.Eye, _ Circuit, _ ...interface{}) Value {
 					ch = tkr.C
 				}
 			case t := <-ch:
-				eye.Show(DefaultValve, int(t.Sub(start)))
+				eye.Show(cir.DefaultValve, int(t.Sub(start)))
 			}
 		}
 	}()

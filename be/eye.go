@@ -7,9 +7,7 @@
 package be
 
 import (
-	// "fmt"
-
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // Eye is a runtime facility that delivers messages by invoking gate methods and
@@ -22,21 +20,21 @@ import (
 // higher-level concepts of cause and effect).
 //
 type Eye struct {
-	show map[Name]nerve
+	show map[cir.Name]nerve
 }
 
 type nerve chan *ReCognizer
 
 type change struct {
-	Valve Name
+	Valve cir.Name
 	Value interface{}
 }
 
-type EyeCognizer func(eye *Eye, valve Name, value interface{})
+type EyeCognizer func(eye *Eye, valve cir.Name, value interface{})
 
 func NewEye(given Reflex) (eye *Eye) {
 	eye = &Eye{
-		show: make(map[Name]nerve),
+		show: make(map[cir.Name]nerve),
 	}
 	for vlv, _ := range given {
 		eye.show[vlv] = make(nerve, 1)
@@ -57,7 +55,7 @@ func (eye *Eye) Connect(given Reflex, cog EyeCognizer) {
 	}
 }
 
-func (eye *Eye) Show(valve Name, v interface{}) {
+func (eye *Eye) Show(valve cir.Name, v interface{}) {
 	n := eye.show[valve]
 	r := <-n
 	defer func() {

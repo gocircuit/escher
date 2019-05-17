@@ -7,10 +7,8 @@
 package yield
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 /*
@@ -24,9 +22,9 @@ import (
 type Gates struct{ be.Sparkless }
 
 func (Gates) Cognize(eye *be.Eye, value interface{}) {
-	u := value.(Circuit)
+	u := value.(cir.Circuit)
 	for name, _ := range u.SortedNames() {
-		frame := New()
+		frame := cir.New()
 		frame.Grow("Name", name).Grow("Value", u.At(name))
 		eye.Show("Frame", frame)
 	}

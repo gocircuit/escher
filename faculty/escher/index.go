@@ -7,20 +7,18 @@
 package escher
 
 import (
-	// "log"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // The index gate is a design for a source reflex that returns a copy of the
 // index contextual to the materialization of this gate.
 type Index struct{}
 
-func (Index) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (Index) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	index, view := matter.CircuitAt("Index"), matter.CircuitAt("View")
 	go func() {
-		for vlv, _ := range view.Gate {
+		for vlv := range view.Gate {
 			eye.Show(vlv, index)
 		}
 	}()
@@ -30,4 +28,4 @@ func (Index) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
 	return nil
 }
 
-func (Index) OverCognize(*be.Eye, Name, interface{}) {}
+func (Index) OverCognize(*be.Eye, cir.Name, interface{}) {}

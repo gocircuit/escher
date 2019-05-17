@@ -8,7 +8,6 @@ package be
 
 import (
 	"fmt"
-	// "log"
 	"os"
 	"reflect"
 
@@ -101,7 +100,7 @@ func verify(matter circuit.Circuit, r gate, given Reflex) {
 
 	// Verify all connected valves have dedicated handlers or there is a generic handler.
 	ellipses := r.Ellipses.IsValid()
-	for vlv, _ := range given {
+	for vlv := range given {
 		if ellipses {
 			continue
 		}
@@ -111,7 +110,7 @@ func verify(matter circuit.Circuit, r gate, given Reflex) {
 	}
 
 	// Verify all dedicated valves are connected
-	for vlv, _ := range r.Fixed {
+	for vlv := range r.Fixed {
 		if _, ok := given[vlv]; !ok {
 			Panicf("gate valve (%v) must be connected", vlv)
 		}

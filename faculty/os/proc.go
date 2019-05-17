@@ -13,7 +13,7 @@ import (
 	"os/exec"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	kio "github.com/gocircuit/escher/kit/io"
 )
 
@@ -21,7 +21,7 @@ import (
 type Process struct{ be.Sparkless }
 
 func (Process) CognizeCommand(eye *be.Eye, dvalue interface{}) {
-	x := New()
+	x := cir.New()
 	if exit := spawnProcess(eye, cognizeCommand(dvalue)); exit != nil {
 		x.Grow("Exit", 1)
 		eye.Show("Exit", x)
@@ -56,7 +56,7 @@ func spawnProcess(eye *be.Eye, cmd *exec.Cmd) (err error) {
 	stdin = kio.RunOnCloseWriter(stdin, func() { stdClose <- struct{}{} })
 	stdout = kio.RunOnCloseReader(stdout, func() { stdClose <- struct{}{} })
 	stderr = kio.RunOnCloseReader(stderr, func() { stdClose <- struct{}{} })
-	g := New().
+	g := cir.New().
 		Grow("Stdin", stdin).
 		Grow("Stdout", stdout).
 		Grow("Stderr", stderr)
@@ -88,7 +88,7 @@ func (Process) CognizeIO(*be.Eye, interface{}) {}
 //	}
 //
 func cognizeCommand(v interface{}) *exec.Cmd {
-	img, ok := v.(Circuit)
+	img, ok := v.(cir.Circuit)
 	if !ok {
 		panic(fmt.Sprintf("Non-image sent to Process.Command (%v)", v))
 	}

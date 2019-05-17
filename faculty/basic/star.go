@@ -11,7 +11,7 @@ import (
 	"fmt"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -22,14 +22,14 @@ func init() {
 	faculty.Register(be.NewMaterializer(&Star{}, StarFunc(show2)), "e", "Show2")
 }
 
-type StarFunc func(Name, interface{})
+type StarFunc func(cir.Name, interface{})
 
 type Star struct {
 	f    StarFunc
-	view Circuit
+	view cir.Circuit
 }
 
-func (s *Star) Spark(_ *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (s *Star) Spark(_ *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	s.view = matter.CircuitAt("View")
 	if len(aux) == 1 {
 		s.f = aux[0].(StarFunc)
@@ -37,7 +37,7 @@ func (s *Star) Spark(_ *be.Eye, matter Circuit, aux ...interface{}) Value {
 	return nil
 }
 
-func (s *Star) OverCognize(eye *be.Eye, name Name, value interface{}) {
+func (s *Star) OverCognize(eye *be.Eye, name cir.Name, value interface{}) {
 	if s.f != nil {
 		s.f(name, value)
 	}
@@ -50,18 +50,18 @@ func (s *Star) OverCognize(eye *be.Eye, name Name, value interface{}) {
 	}
 }
 
-func show(name Name, v interface{}) {
-	fmt.Printf("Showing:%v = %v\n", name, String(v))
+func show(name cir.Name, v interface{}) {
+	fmt.Printf("Showing:%v = %v\n", name, cir.String(v))
 }
 
-func show1(name Name, v interface{}) {
+func show1(name cir.Name, v interface{}) {
 	var w bytes.Buffer
-	Print(&w, Format{"", "\t", 1}, v)
+	cir.Print(&w, cir.Format{"", "\t", 1}, v)
 	fmt.Printf("Showing:%v = %v\n", name, w.String())
 }
 
-func show2(name Name, v interface{}) {
+func show2(name cir.Name, v interface{}) {
 	var w bytes.Buffer
-	Print(&w, Format{"", "\t", 2}, v)
+	cir.Print(&w, cir.Format{"", "\t", 2}, v)
 	fmt.Printf("Showing:%v = %v\n", name, w.String())
 }

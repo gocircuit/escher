@@ -7,20 +7,19 @@
 package basic
 
 import (
-	// "fmt"
 	"sync"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Grow struct {
 	sync.Mutex
-	u Circuit
+	u cir.Circuit
 }
 
-func (g *Grow) Spark(*be.Eye, Circuit, ...interface{}) Value {
-	g.u = New()
+func (g *Grow) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
+	g.u = cir.New()
 	return &Grow{}
 }
 
@@ -41,7 +40,7 @@ func (g *Grow) CognizeValue(eye *be.Eye, v interface{}) {
 func (g *Grow) CognizeImg(eye *be.Eye, v interface{}) {
 	g.Lock()
 	defer g.Unlock()
-	g.u.ReGrow("Img", v.(Circuit))
+	g.u.ReGrow("Img", v.(cir.Circuit))
 	g.fire(eye)
 }
 

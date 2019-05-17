@@ -52,7 +52,7 @@ func (u Circuit) Valves(gate Name) map[Name]Vector {
 
 func (u Circuit) ValveNames(gate Name) []Name {
 	var r []Name
-	for n, _ := range u.Flow[gate] {
+	for n := range u.Flow[gate] {
 		r = append(r, n)
 	}
 	return r

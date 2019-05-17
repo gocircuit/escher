@@ -12,7 +12,7 @@ import (
 	"io"
 	"strings"
 
-	. "github.com/gocircuit/escher/a"
+	"github.com/gocircuit/escher/a"
 )
 
 // DefaultValve
@@ -88,17 +88,17 @@ func (a Verb) String() string {
 	return a.summarize()
 }
 
-func (a Verb) summarize() string {
-	index := Circuit(a).SortedNumbers()
+func (verb Verb) summarize() string {
+	index := Circuit(verb).SortedNumbers()
 	var w bytes.Buffer
-	if v, ok := a.Gate[""]; ok {
+	if v, ok := verb.Gate[""]; ok {
 		w.WriteString(fmt.Sprintf("%v", v))
 	}
 	for _, i := range index {
-		x := a.Gate[i]
+		x := verb.Gate[i]
 		fmt.Fprintf(&w, "%v", x)
 		if i+1 < len(index) {
-			w.WriteString(RefineSymbolString)
+			w.WriteString(a.RefineSymbolString)
 		}
 	}
 	return w.String()

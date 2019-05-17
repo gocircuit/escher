@@ -11,16 +11,15 @@ import (
 	"fmt"
 	"io"
 
-	. "github.com/gocircuit/escher/circuit"
-	// "github.com/gocircuit/escher/kit/runtime"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Panic struct {
-	Matter Circuit
+	Matter cir.Circuit
 	Msg    string
 }
 
-func panicWithMatter(matter Circuit, format string, arg ...interface{}) {
+func panicWithMatter(matter cir.Circuit, format string, arg ...interface{}) {
 	var w bytes.Buffer
 	fmt.Fprintf(&w, format, arg...)
 	fmt.Fprintf(&w, "\n")
@@ -34,13 +33,13 @@ func Panicf(f string, a ...interface{}) {
 	panic(w.String())
 }
 
-func PrintableMatter(u Circuit) string {
+func PrintableMatter(u cir.Circuit) string {
 	var w bytes.Buffer
 	PrintMatter(&w, u)
 	return w.String()
 }
 
-func PrintMatter(w io.Writer, matter Circuit) {
+func PrintMatter(w io.Writer, matter cir.Circuit) {
 	for {
 		view, _ := matter.CircuitOptionAt("View")
 		switch {
@@ -49,13 +48,13 @@ func PrintMatter(w io.Writer, matter Circuit) {
 			fmt.Fprintf(w, "CIRCUIT(%v)%v %v\n", PrintView(view), SummarizeIndex(matter), cir)
 
 		case matter.Has("Verb"):
-			verb := Verb(matter.CircuitAt("Verb"))
-			addr := Verb(matter.CircuitAt("Resolved"))
+			verb := cir.Verb(matter.CircuitAt("Verb"))
+			addr := cir.Verb(matter.CircuitAt("Resolved"))
 			fmt.Fprintf(w, "DIRECTIVE(%v)%v %v/%v\n", PrintView(view), SummarizeIndex(matter), verb, addr)
 
 		case matter.Has("System"):
 			system := matter.At("System")
-			fmt.Fprintf(w, "MATERIALIZE(%v)%v %v\n", PrintView(view), SummarizeIndex(matter), String(system))
+			fmt.Fprintf(w, "MATERIALIZE(%v)%v %v\n", PrintView(view), SummarizeIndex(matter), cir.String(system))
 
 		case matter.Has("Noun"):
 			noun := matter.At("Noun")
@@ -84,7 +83,7 @@ func PrintMatter(w io.Writer, matter Circuit) {
 	}
 }
 
-func PrintView(u Circuit) string {
+func PrintView(u cir.Circuit) string {
 	var w bytes.Buffer
 	for i, n := range u.SortedNames() {
 		if i > 0 {
@@ -95,7 +94,7 @@ func PrintView(u Circuit) string {
 	return w.String()
 }
 
-func SummarizeIndex(matter Circuit) string {
+func SummarizeIndex(matter cir.Circuit) string {
 	x := matter.CircuitAt("Index")
 	var w bytes.Buffer
 	w.WriteString(" Index{ ")

@@ -7,10 +7,8 @@
 package yield
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type DepthFirst struct{ be.Sparkless }
@@ -23,8 +21,8 @@ func (DepthFirst) CognizeFrame(eye *be.Eye, v interface{}) {}
 
 func (DepthFirst) CognizeEnd(eye *be.Eye, v interface{}) {}
 
-func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
-	x, ok := v.(Circuit)
+func depthFirst(eye *be.Eye, walk []cir.Name, v interface{}) {
+	x, ok := v.(cir.Circuit)
 	if !ok {
 		return
 	}
@@ -36,13 +34,13 @@ func depthFirst(eye *be.Eye, walk []Name, v interface{}) {
 		}
 	}
 
-	var nm Name = "" // The root circuit is shown with the empty name
+	var nm cir.Name = "" // The root circuit is shown with the empty name
 	if len(walk) > 0 {
 		nm = walk[len(walk)-1]
 	}
 
-	frame := New().
-		Grow("Address", Circuit(NewAddress(walk...))).
+	frame := cir.New().
+		Grow("Address", cir.Circuit(cir.NewAddress(walk...))).
 		Grow("Name", nm).
 		Grow("View", x)
 

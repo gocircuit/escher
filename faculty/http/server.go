@@ -12,7 +12,7 @@ import (
 	"sync"
 
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 	"github.com/gocircuit/escher/faculty"
 )
 
@@ -22,13 +22,13 @@ func init() {
 
 type Server struct {
 	eye    *be.Eye
-	matter Circuit
+	matter cir.Circuit
 	sync.Mutex
 	server   *http.Server
 	throttle chan struct{}
 }
 
-func (s *Server) Spark(eye *be.Eye, matter Circuit, aux ...interface{}) Value {
+func (s *Server) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	s.eye, s.matter = eye, matter
 	const throttle = 50
 	s.throttle = make(chan struct{}, throttle)
@@ -44,7 +44,7 @@ func (s *Server) CognizeStart(eye *be.Eye, value interface{}) {
 	s.Lock()
 	defer s.Unlock()
 	//
-	u := value.(Circuit)
+	u := value.(cir.Circuit)
 	if s.server != nil {
 		panic("server running")
 	}
@@ -70,7 +70,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			defer func() {
 				ch <- struct{}{} // release throttle token when request/response complete
 			}()
-			status, body, ok := s.cognizeResponse(w.Header(), v.(Circuit))
+			status, body, ok := s.cognizeResponse(w.Header(), v.(cir.Circuit))
 			if !ok {
 				w.WriteHeader(http.StatusInternalServerError)
 				w.Write([]byte("Escher web server: App error."))
@@ -83,7 +83,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	)
 	s.eye.Show(
 		"RequestResponse",
-		New().
+		cir.New().
 			Grow("Request", requestCircuit(req)).
 			Grow("Respond", yy),
 	)

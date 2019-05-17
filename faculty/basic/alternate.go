@@ -7,10 +7,8 @@
 package basic
 
 import (
-	// "fmt"
-
 	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 type Alternate struct {
@@ -20,14 +18,14 @@ type Alternate struct {
 // SX -> TX
 // SY -> TY
 
-func (a *Alternate) Spark(eye *be.Eye, _ Circuit, aux ...interface{}) Value {
+func (a *Alternate) Spark(eye *be.Eye, _ cir.Circuit, aux ...interface{}) cir.Value {
 	a.flow = make([]chan struct{}, 2)
 	a.flow[0] = make(chan struct{}, 1)
 	a.flow[1] = make(chan struct{}, 1)
 	return nil
 }
 
-func (a *Alternate) OverCognize(eye *be.Eye, valve Name, value interface{}) {
+func (a *Alternate) OverCognize(eye *be.Eye, valve cir.Name, value interface{}) {
 	switch valve.(string) {
 	case "SX":
 		a.flow[0] <- struct{}{} // obtain token to send

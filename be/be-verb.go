@@ -7,13 +7,11 @@
 package be
 
 import (
-	// "fmt"
-
-	. "github.com/gocircuit/escher/circuit"
+	cir "github.com/gocircuit/escher/circuit"
 )
 
 // Required matter: Index, View, Verb
-func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
+func materializeVerb(given Reflex, matter cir.Circuit) (residue interface{}) {
 	val, verb := lookup(matter)
 	switch verb {
 	case "*":
@@ -25,14 +23,14 @@ func materializeVerb(given Reflex, matter Circuit) (residue interface{}) {
 	return
 }
 
-func newSubMatter(matter Circuit) Circuit {
-	return New().
+func newSubMatter(matter cir.Circuit) cir.Circuit {
+	return cir.New().
 		Grow("Index", matter.CircuitAt("Index")).
 		Grow("View", matter.CircuitAt("View")).
 		Grow("Super", matter)
 }
 
-func relativize(matter Circuit) []Name {
+func relativize(matter cir.Circuit) []cir.Name {
 	sup, ok := matter.CircuitOptionAt("Super")
 	if !ok {
 		return nil
@@ -48,16 +46,16 @@ func relativize(matter Circuit) []Name {
 	if !ok {
 		return nil
 	}
-	reladdr := Verb(supverb).Address()
+	reladdr := cir.Verb(supverb).Address()
 	if len(reladdr) < 2 {
 		return nil
 	}
 	return reladdr[:len(reladdr)-1] // chop off the circuit name at the end
 }
 
-func lookup(matter Circuit) (interface{}, string) {
+func lookup(matter cir.Circuit) (interface{}, string) {
 	index, syntax := Index(matter.CircuitAt("Index")), matter.CircuitAt("Verb")
-	verb, addr := Verb(syntax).Verb().(string), Verb(syntax).Address()
+	verb, addr := cir.Verb(syntax).Verb().(string), cir.Verb(syntax).Address()
 
 	rel := relativize(matter)
 	var val interface{}
@@ -65,15 +63,15 @@ func lookup(matter Circuit) (interface{}, string) {
 		abs := append(rel, addr...)
 		val = index.Recall(abs...) // lookup relative to enclosing circuit's parent circuit
 		if val != nil {
-			matter.Grow("Resolved", Circuit(NewVerbAddress(verb, abs...)))
+			matter.Grow("Resolved", cir.Circuit(cir.NewVerbAddress(verb, abs...)))
 			return val, verb
 		}
 	}
 	val = index.Recall(addr...) // otherwise lookup globally
-	matter.Include("Resolved", New().Grow(0, "???"))
+	matter.Include("Resolved", cir.New().Grow(0, "???"))
 	if val == nil {
-		panicWithMatter(matter, "dangling address %v", Verb(syntax))
+		panicWithMatter(matter, "dangling address %v", cir.Verb(syntax))
 	}
-	matter.Include("Resolved", Circuit(NewVerbAddress(verb, addr...)))
+	matter.Include("Resolved", cir.Circuit(cir.NewVerbAddress(verb, addr...)))
 	return val, verb
 }

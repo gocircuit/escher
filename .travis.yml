@@ -1,6 +1,10 @@
 language: go
 sudo: false
 
+env:
+  global:
+  - ESCHER=src
+
 matrix:
   include:
     - go: 1.12.x
@@ -20,3 +24,6 @@ install:
 - go get -v github.com/gocircuit/circuit/client/docker
 - go get -v -t ./...
 
+script:
+- make
+- escher "*test.All"

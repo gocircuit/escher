@@ -1,9 +1,9 @@
 package matchers_test
 
 import (
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/matchers"
+	. "github.com/onsi/ginkgo"
 )
 
 var _ = Describe("MatchRegexp", func() {

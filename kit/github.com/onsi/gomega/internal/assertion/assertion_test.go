@@ -2,10 +2,10 @@ package assertion_test
 
 import (
 	"errors"
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/internal/assertion"
 	"github.com/gocircuit/escher/kit/github.com/onsi/gomega/internal/fakematcher"
+	. "github.com/onsi/ginkgo"
 )
 
 var _ = Describe("Assertion", func() {

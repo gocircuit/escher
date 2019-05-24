@@ -1,13 +1,13 @@
 package reporters_test
 
 import (
-	"time"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/config"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/reporters"
 	st "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/reporters/stenographer"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/types"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	"time"
 )
 
 var _ = Describe("DefaultReporter", func() {

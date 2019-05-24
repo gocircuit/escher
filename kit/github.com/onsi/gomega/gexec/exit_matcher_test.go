@@ -1,12 +1,12 @@
 package gexec_test
 
 import (
+	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gexec"
 	"os/exec"
 	"time"
-	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gexec"
 
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo"
 )
 
 type NeverExits struct{}

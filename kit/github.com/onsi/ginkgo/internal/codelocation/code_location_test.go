@@ -1,11 +1,11 @@
 package codelocation_test
 
 import (
-	"runtime"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/codelocation"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/types"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	"runtime"
 )
 
 var _ = Describe("CodeLocation", func() {

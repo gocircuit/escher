@@ -9,7 +9,7 @@ package plumb
 import "sync"
 
 type Client struct {
-	req chan chan<- interface{}
+	req       chan chan<- interface{}
 	recognize func(interface{})
 	sync.Mutex
 }

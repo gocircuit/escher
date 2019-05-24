@@ -42,8 +42,8 @@ package anaconda
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gocircuit/escher/kit/github.com/ChimeraCoder/tokenbucket"
 	"github.com/garyburd/go-oauth/oauth"
+	"github.com/gocircuit/escher/kit/github.com/ChimeraCoder/tokenbucket"
 	"io/ioutil"
 	"net/http"
 	"net/url"

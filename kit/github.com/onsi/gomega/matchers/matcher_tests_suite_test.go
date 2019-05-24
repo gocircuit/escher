@@ -1,9 +1,9 @@
 package matchers_test
 
 import (
-	"testing"
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo"
+	"testing"
 )
 
 type myStringer struct {

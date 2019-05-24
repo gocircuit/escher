@@ -2,12 +2,12 @@ package ghttp_test
 
 import (
 	"bytes"
+	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/ghttp"
+	. "github.com/onsi/ginkgo"
 	"io/ioutil"
 	"net/http"
 	"regexp"
-	. "github.com/onsi/ginkgo"
-	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
-	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/ghttp"
 )
 
 var _ = Describe("TestServer", func() {

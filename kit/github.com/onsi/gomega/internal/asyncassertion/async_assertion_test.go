@@ -2,10 +2,10 @@ package asyncassertion_test
 
 import (
 	"errors"
-	"time"
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/internal/asyncassertion"
+	. "github.com/onsi/ginkgo"
+	"time"
 )
 
 var _ = Describe("Async Assertion", func() {

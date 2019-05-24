@@ -106,13 +106,13 @@ A more comprehensive example is available at https://onsi.github.io/gomega/#_tes
 package ghttp
 
 import (
+	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"regexp"
 	"sync"
-	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 )
 
 func new() *Server {

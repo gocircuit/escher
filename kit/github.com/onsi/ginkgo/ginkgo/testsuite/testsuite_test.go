@@ -1,12 +1,12 @@
 package testsuite_test
 
 import (
-	"io/ioutil"
-	"os"
-	"path/filepath"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/ginkgo/testsuite"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 var _ = Describe("TestSuite", func() {

@@ -5,14 +5,14 @@ import (
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/suite"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 
-	"math/rand"
-	"time"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/config"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/codelocation"
 	Failer "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/failer"
 	Writer "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/writer"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/reporters"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/types"
+	"math/rand"
+	"time"
 )
 
 var _ = Describe("Suite", func() {

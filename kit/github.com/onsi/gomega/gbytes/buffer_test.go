@@ -1,11 +1,11 @@
 package gbytes_test
 
 import (
-	"time"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gbytes"
+	"time"
 
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo"
 )
 
 var _ = Describe("Buffer", func() {

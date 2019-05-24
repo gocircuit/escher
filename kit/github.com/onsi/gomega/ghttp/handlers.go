@@ -4,10 +4,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	"github.com/gocircuit/escher/kit/github.com/onsi/gomega/types"
+	"io/ioutil"
+	"net/http"
 )
 
 //CombineHandler takes variadic list of handlers and produces one handler

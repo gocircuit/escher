@@ -1,13 +1,13 @@
 package integration_test
 
 import (
-	"runtime"
-	"strings"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/types"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	"github.com/gocircuit/escher/kit/github.com/onsi/gomega/gbytes"
 	"github.com/gocircuit/escher/kit/github.com/onsi/gomega/gexec"
+	"runtime"
+	"strings"
 )
 
 var _ = Describe("Running Specs", func() {

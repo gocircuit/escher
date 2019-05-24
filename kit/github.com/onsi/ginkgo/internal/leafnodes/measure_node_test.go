@@ -5,10 +5,10 @@ import (
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/leafnodes"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 
-	"time"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/codelocation"
 	Failer "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/failer"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/types"
+	"time"
 )
 
 var _ = Describe("Measure Nodes", func() {

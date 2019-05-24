@@ -1,10 +1,10 @@
 package matchers_test
 
 import (
-	"time"
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/matchers"
+	. "github.com/onsi/ginkgo"
+	"time"
 )
 
 type kungFuActor interface {

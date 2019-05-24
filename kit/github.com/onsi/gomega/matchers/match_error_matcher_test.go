@@ -3,9 +3,9 @@ package matchers_test
 import (
 	"errors"
 	"fmt"
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/matchers"
+	. "github.com/onsi/ginkgo"
 )
 
 type CustomError struct {

@@ -4,11 +4,11 @@ import (
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 
-	"time"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/config"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/internal/remote"
 	st "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/reporters/stenographer"
 	"github.com/gocircuit/escher/kit/github.com/onsi/ginkgo/types"
+	"time"
 )
 
 var _ = Describe("Aggregator", func() {

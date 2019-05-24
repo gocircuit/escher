@@ -1,14 +1,14 @@
 package gexec_test
 
 import (
+	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gbytes"
+	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gexec"
 	"os/exec"
 	"syscall"
 	"time"
-	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gbytes"
-	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/gexec"
 
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo"
 )
 
 var _ = Describe("Session", func() {

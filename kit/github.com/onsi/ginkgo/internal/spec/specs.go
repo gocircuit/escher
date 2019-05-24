@@ -14,7 +14,7 @@ type Specs struct {
 
 func NewSpecs(specs []*Spec) *Specs {
 	return &Specs{
-		specs: specs,
+		specs:                 specs,
 		numberOfOriginalSpecs: len(specs),
 	}
 }

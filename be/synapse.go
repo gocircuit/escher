@@ -9,7 +9,6 @@ package be
 import (
 	// "fmt"
 	"sync"
-
 	// . "github.com/gocircuit/escher/circuit"
 )
 

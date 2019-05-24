@@ -1,14 +1,14 @@
 package integration_test
 
 import (
-	"io/ioutil"
-	"os"
-	"path/filepath"
-	"time"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
 	"github.com/gocircuit/escher/kit/github.com/onsi/gomega/gbytes"
 	"github.com/gocircuit/escher/kit/github.com/onsi/gomega/gexec"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"time"
 )
 
 var _ = Describe("Watch", func() {

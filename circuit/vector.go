@@ -12,7 +12,7 @@ import (
 
 // Vector identifies a specific valve of a gate (== instance of a circuit)
 type Vector struct {
-	Gate Name
+	Gate  Name
 	Valve Name
 }
 

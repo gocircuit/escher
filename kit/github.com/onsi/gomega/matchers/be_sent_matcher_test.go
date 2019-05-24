@@ -1,11 +1,11 @@
 package matchers_test
 
 import (
-	"time"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega/matchers"
+	"time"
 
-	. "github.com/onsi/ginkgo"
 	. "github.com/gocircuit/escher/kit/github.com/onsi/gomega"
+	. "github.com/onsi/ginkgo"
 )
 
 var _ = Describe("BeSent", func() {

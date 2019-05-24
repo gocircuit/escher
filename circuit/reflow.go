@@ -6,11 +6,6 @@
 
 package circuit
 
-import (
-	// "fmt"
-	// "log"
-)
-
 func (u Circuit) Reflow(s, t Name) {
 	if _, ok := u.Flow[t]; ok {
 		panic("reflow overwrite")

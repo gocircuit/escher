@@ -35,6 +35,65 @@ into a labeled graph data structure, called a <em>circuit</em>. If you view
 XML as a syntax that represents labeled trees, then Escher would be a 
 syntax that represents labeled graphs.
 
+<h2>Syntax comparison with Java and C++</h2>
+
+<p>As Escher is a so called <em>Conceptual Programming Language</em>,
+it uses concepts that are very different then what you may know
+from <em>Object Oriented</em> or <em>Functional Programming</em>, for example.
+It therefore also uses very different concepts, parts, and names thereof.
+This section tries to clarify those names.
+
+<table class='paddingBetweenRows'>
+	<tr>
+		<th><i>Declarative unit</i></th>
+		<th>Java</th>
+		<th>Escher</th>
+		<th>C++</th>
+	</tr>
+	<tr>
+		<td><i>Basic declaration unit</i></td>
+		<td>class</td>
+		<td><a href="meaning.html#circuit">circuit</a></td>
+		<td>class</td>
+	</tr>
+	<tr>
+		<td><i>Logical group of basic declaration units</i></td>
+		<td>package</td>
+		<td><a href="meaning.html#faculty">faculty</a></td>
+		<td>namespace</td>
+	</tr>
+	<tr>
+		<td><i>Runtime instantiation of a basic declaration unit</i></td>
+		<td>instance</td>
+		<td>gate</td>
+		<td>instance</td>
+	</tr>
+	<tr>
+		<td><i>The runtime structure containing all the code</i></td>
+		<td>class-path</td>
+		<td>index</td>
+		<td>LD_LIBRARY_PATH</td>
+	</tr>
+	<tr>
+		<td><i>Unique string identifier of a declaration unit</i></td>
+		<td>fully-qualified (class-)name</td>
+		<td>address</td>
+		<td>fully-qualified (class-)name</td>
+	</tr>
+	<tr>
+		<td><i>The underlying runtime</i></td>
+		<td>JVM</td>
+		<td>Escher runtime</td>
+		<td>the OS</td>
+	</tr>
+	<tr>
+		<td><i>The underlying technology</i></td>
+		<td>JVM</td>
+		<td>Golang</td>
+		<td>the OS</td>
+	</tr>
+</table>
+
 <h2 id="circuits">Circuits</h2>
 
 <p>A circuit consists of nodes, called <em>gates</em>, which have

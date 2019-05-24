@@ -1,0 +1,15 @@
+Debug {
+	*e.Show = "Parent circuit"
+
+	m *e.QuickMaterialize
+	m:Residue = *e.Ignore
+	m:Index = *e.Index
+	m:Program = {
+		*e.Breakpoint = 1
+	}
+}
+
+DebugMain {
+	*Debug
+}
+

@@ -61,7 +61,7 @@ func (n *source) Spark(eye *Eye, matter cir.Circuit, aux ...interface{}) cir.Val
 	println("spark source")
 	n.Value = aux[0]
 	go func() {
-		for vlv, _ := range matter.CircuitAt("View").Gate {
+		for vlv := range matter.CircuitAt("View").Gate {
 			eye.Show(vlv, aux[0])
 		}
 	}()
@@ -91,7 +91,7 @@ func (f *Future) Spark(eye *Eye, matter cir.Circuit, _ ...interface{}) cir.Value
 
 func (f *Future) Charge(v cir.Value) {
 	go func() {
-		for vlv, _ := range f.view.Gate {
+		for vlv := range f.view.Gate {
 			f.eye.Show(vlv, cir.DeepCopy(v))
 		}
 	}()

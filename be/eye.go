@@ -36,7 +36,7 @@ func NewEye(given Reflex) (eye *Eye) {
 	eye = &Eye{
 		show: make(map[cir.Name]nerve),
 	}
-	for vlv, _ := range given {
+	for vlv := range given {
 		eye.show[vlv] = make(nerve, 1)
 	}
 	return

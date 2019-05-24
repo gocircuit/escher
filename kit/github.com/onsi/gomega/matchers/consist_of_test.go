@@ -55,8 +55,8 @@ var _ = Describe("ConsistOf", func() {
 		})
 
 		It("should not depend on the order of the matchers", func() {
-			Ω([][]int{[]int{1, 2}, []int{2}}).Should(ConsistOf(ContainElement(1), ContainElement(2)))
-			Ω([][]int{[]int{1, 2}, []int{2}}).Should(ConsistOf(ContainElement(2), ContainElement(1)))
+			Ω([][]int{{1, 2}, {2}}).Should(ConsistOf(ContainElement(1), ContainElement(2)))
+			Ω([][]int{{1, 2}, {2}}).Should(ConsistOf(ContainElement(2), ContainElement(1)))
 		})
 
 		Context("when a matcher errors", func() {

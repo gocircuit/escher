@@ -41,7 +41,7 @@ func (s *Star) OverCognize(eye *be.Eye, name cir.Name, value interface{}) {
 	if s.f != nil {
 		s.f(name, value)
 	}
-	for gn_, _ := range s.view.Gate {
+	for gn_ := range s.view.Gate {
 		gn := gn_
 		if gn == name {
 			continue

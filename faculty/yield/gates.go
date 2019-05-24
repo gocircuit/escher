@@ -23,7 +23,7 @@ type Gates struct{ be.Sparkless }
 
 func (Gates) Cognize(eye *be.Eye, value interface{}) {
 	u := value.(cir.Circuit)
-	for name, _ := range u.SortedNames() {
+	for name := range u.SortedNames() {
 		frame := cir.New()
 		frame.Grow("Name", name).Grow("Value", u.At(name))
 		eye.Show("Frame", frame)

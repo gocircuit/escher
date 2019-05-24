@@ -39,7 +39,7 @@ func materializeCircuit(given Reflex, matter cir.Circuit) interface{} {
 	// materialize gates
 	residue := cir.New()
 	spirit := make(map[cir.Name]interface{}) // channel to pass circuit residue back to spirit gates inside the circuit
-	for g, _ := range design.Gate {
+	for g := range design.Gate {
 		if g == cir.Super {
 			panicWithMatter(matter, "Circuit design overwrites the empty-string gate, in design %v\n", design)
 		}

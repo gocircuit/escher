@@ -25,7 +25,7 @@ func InstallCtrlCPanic() {
 		//defer SavePanicTrace()
 		ch := make(chan os.Signal, 1)
 		signal.Notify(ch, os.Interrupt)
-		for _ = range ch {
+		for range ch {
 			println("ctrl/c")
 			// prof := pprof.Lookup("goroutine")
 			// prof.WriteTo(os.Stderr, 2)

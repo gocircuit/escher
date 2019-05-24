@@ -64,7 +64,7 @@ func (ms *memStorage) GetFile(num uint64, t FileType) File {
 func (ms *memStorage) GetFiles(t FileType) ([]File, error) {
 	ms.mu.Lock()
 	var ff []File
-	for x, _ := range ms.files {
+	for x := range ms.files {
 		num, mt := x>>typeShift, FileType(x)&TypeAll
 		if mt&t == 0 {
 			continue

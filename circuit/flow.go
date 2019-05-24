@@ -79,7 +79,7 @@ func (u Circuit) Follow(v Vector) Vector {
 func (u Circuit) Flows() (r [][2]Vector) {
 	for xname, xview := range u.Flow {
 		for xvalve, xvec := range xview {
-			r = append(r, [2]Vector{Vector{xname, xvalve}, xvec})
+			r = append(r, [2]Vector{{xname, xvalve}, xvec})
 		}
 	}
 	return
@@ -87,7 +87,7 @@ func (u Circuit) Flows() (r [][2]Vector) {
 
 func (u Circuit) Vol() (vol int) {
 	for _, view := range u.Flow {
-		for _ = range view {
+		for range view {
 			vol++
 		}
 	}

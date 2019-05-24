@@ -25,7 +25,7 @@ type Union struct {
 func (u *Union) Spark(eye *Eye, matter cir.Circuit, aux ...interface{}) cir.Value {
 	// check whether default valve is connected and extract names of connected non-default valves
 	var defaultConnected bool
-	for vlv, _ := range matter.CircuitAt("View").Gate {
+	for vlv := range matter.CircuitAt("View").Gate {
 		if vlv == cir.DefaultValve {
 			defaultConnected = true
 		} else {
@@ -62,7 +62,7 @@ func (u *Union) Cognize(eye *Eye, value interface{}) {
 			y <- struct{}{}
 		}()
 	}
-	for _ = range u.field {
+	for range u.field {
 		<-y
 	}
 }
@@ -76,7 +76,7 @@ func (u *Union) OverCognize(eye *Eye, valve cir.Name, value interface{}) {
 	if u.union.Len() == len(u.field) { // flush if all the fields have been set
 		w := u.union
 		u.union = cir.New() // flush
-		for f, _ := range u.flow {
+		for f := range u.flow {
 			u.flow[f] <- struct{}{} // replenish flow tokens
 		}
 		eye.Show(cir.DefaultValve, w)

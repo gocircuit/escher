@@ -25,7 +25,7 @@ func (g *Lens) Spark(eye *be.Eye, matter cir.Circuit, aux ...interface{}) cir.Va
 		panic("lens can have one or two endpoints")
 	}
 	g.history = cir.New()
-	for vlv, _ := range mvg {
+	for vlv := range mvg {
 		g.valve = append(g.valve, vlv)
 		g.history.Grow(vlv, cir.New())
 	}

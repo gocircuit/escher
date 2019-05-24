@@ -22,7 +22,7 @@ func NewBucket(rate time.Duration, capacity int64) *Bucket {
 	//Set off a function that will continuously add tokens to the bucket
 	go func(b *Bucket) {
 		ticker := time.NewTicker(rate)
-		for _ = range ticker.C {
+		for range ticker.C {
 			b.tokens <- struct{}{}
 		}
 	}(b)

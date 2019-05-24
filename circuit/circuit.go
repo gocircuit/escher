@@ -37,7 +37,7 @@ func (u Circuit) IsEmpty() bool {
 	return len(u.Gate) == 0 && len(u.Flow) == 0
 }
 
-// Letters returns a sorted list of all gate IDs that are strings
+// SortedLetters returns a sorted list of all gate IDs that are strings
 func (u Circuit) SortedLetters() []string {
 	x := u.Letters()
 	sort.Strings(x)
@@ -73,7 +73,7 @@ func (u Circuit) Numbers() []int {
 	return l
 }
 
-// Numbers returns a list of all gate IDs (whether they are string or int)
+// Names returns a list of all gate IDs (whether they are string or int)
 func (u Circuit) Names() []Name {
 	var r []Name
 	for n := range u.Gate {

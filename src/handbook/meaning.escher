@@ -34,6 +34,7 @@ the representational freedoms of a circuit, and will have an intuitive graphical
 <p>Here we introduce four basic circuit interpretations — or specializations, if you will — that
 will also serve us as a vocabulary when discussing Escher in following chapters.
 
+
 <h2 id="series">Series</h2>
 
 <p>Circuit gate names, recall, can be integers or strings. If a circuit has no links and the gate
@@ -70,15 +71,24 @@ Singer {
 }
 </pre>
 
-<h2 id="indices">Indices</h2>
 
-<p>More generally than series, when a circuit has no links, we call it an <em>index</em>, and
-we view it as a map from integers and/or strings to anything else. In this respect, an index
-is akin in purpose to structures, dictionaries, hash tables and maps in other languages.
+<h2 id="maps">Maps</h2>
 
-<p>The gate values of index circuits are analogously called <em>children</em> and they can
-be of primitive types (integers, floats, etc.) as well as recursively they can be other circuits
-or indices.
+<p>
+More generally than <a href="#series">series</a>,
+when a circuit has no valves/links,
+we call it a <em>map</em> (previously <em>index</em>),
+and we view it as a mapping from integers and/or strings to anything else.
+In this respect, a map is akin in purpose to structures, dictionaries, hash tables and maps in other languages.
+</p>
+
+
+<h2 id="trees">Trees</h2>
+
+<p>
+The gate values of <a href="#maps">map circuit</a> are analogously called <em>children</em>,
+and they can be of primitive types (integers, floats, etc.)
+as well as recursively, they can be other circuits or maps.
 
 <pre class="escher">
 Tree {
@@ -96,13 +106,28 @@ Tree {
 	}
 }
 </pre>
+</p>
 
-<p>Such recursive structures of indices, or just indices for short, serve the same purpose as
-file-systems, namespaces, trees and others: To organize their internal and leaf values in a
-hierarchical manner, so that each node (internal or leaf) is identifiable by a unique
-path which we shall call <em>address</em> of a value relative to a given index.
+<p>
+Such recursive structures of maps, or just <em>trees</em> for short,
+serve the same purpose as file-systems, namespaces, trees and others:
+To organize their internal and leaf values in a hierarchical manner,
+so that each node (internal or leaf) is identifiable by a unique path.
+</p>
 
-<p>For instance, the address of <code>"Grandma"</code> relative to the index
+
+<h2 id="indices">Indices</h2>
+
+<p>
+An <em>Escher index</em> is basically a <a href="#trees">tree circuit</a>,
+which we interprete as a an absolute (and in future releases also relative)
+tree containing all circuits/gates.
+This also associates a unique path to each gate,
+which we shall call <em>address</em> of a value relative to a given index.
+</p>
+
+<p>
+For instance, the address of <code>"Grandma"</code> relative to the index
 <code>Tree</code> would be 
 
 <pre class="escher">
@@ -113,6 +138,8 @@ path which we shall call <em>address</em> of a value relative to a given index.
 }</pre>
 
 (Note that addresses are represented by series circuits.)
+</p>
+
 
 <h2 id="directives">Directives</h2>
 

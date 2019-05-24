@@ -1,0 +1,7 @@
+
+faculty {
+	doc `/**
+		TODO Can't see a rationale for this faculties chosen name.
+		*/`
+}
+

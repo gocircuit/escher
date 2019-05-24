@@ -1,0 +1,7 @@
+
+faculty {
+	doc `/**
+		Tests for basic functions of Escher, implemented in Escher.
+		*/`
+}
+

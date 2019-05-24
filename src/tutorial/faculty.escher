@@ -1,0 +1,12 @@
+
+faculty {
+	doc `/**
+		This package contains basic Escher tutorials.
+		Some of them are referenced in the handbook.
+		All of them can be execute din series by the
+		<code>runTutorials.sh</code> script.
+		To run the tutorials, you may run a command like this:
+		<pre>escher -src "$GOPATH/src/github.com/gocircuit/escher/src/" "*tutorial.HelloWorld"</pre>
+		*/`
+}
+

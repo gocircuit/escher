@@ -1,0 +1,7 @@
+
+faculty {
+	doc `/**
+		Root of the runtime faculties for Escher, implemented in Escher.
+		*/`
+}
+

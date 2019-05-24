@@ -1,0 +1,7 @@
+
+faculty {
+	doc `/**
+		Operating-System related circuits.
+		*/`
+}
+

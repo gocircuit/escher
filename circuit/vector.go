@@ -10,12 +10,13 @@ import (
 	"fmt"
 )
 
-// Vector ...
+// Vector identifies a specific valve of a gate (== instance of a circuit)
 type Vector struct {
 	Gate Name
 	Valve Name
 }
 
+// String prints a string representation of the vector
 func (v Vector) String() string {
 	return fmt.Sprintf("%v:%v", v.Gate, v.Valve)
 }

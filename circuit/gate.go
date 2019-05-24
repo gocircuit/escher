@@ -11,15 +11,19 @@ import (
 	"log"
 )
 
+// TODO
 func (u Circuit) OptionAt(name Name) (Value, bool) {
 	v, ok := u.Gate[name]
 	return v, ok
 }
 
+// At returns the value of the gate with the supplied name
 func (u Circuit) At(name Name) Value {
 	return u.Gate[name]
 }
 
+// IntOrZeroAt returns the value of the gate with the supplied name
+// if it is an int value, 0 otherwise
 func (u Circuit) IntOrZeroAt(name Name) int {
 	i, ok := u.OptionAt(name)
 	if !ok {
@@ -28,6 +32,7 @@ func (u Circuit) IntOrZeroAt(name Name) int {
 	return i.(int)
 }
 
+// TODO ... and more below
 func (u Circuit) NameAt(name Name) Name {
 	return u.At(name).(Name)
 }
@@ -40,6 +45,8 @@ func (u Circuit) FloatAt(name Name) float64 {
 	return u.At(name).(float64)
 }
 
+// FloatOrZeroAt returns the value of the gate with the supplied name
+// if it is a float value, 0.0 otherwise
 func (u Circuit) FloatOrZeroAt(name Name) float64 {
 	f, ok := u.OptionAt(name)
 	if !ok {
@@ -266,6 +273,7 @@ func (u Circuit) Exclude(name Name) (forgotten Value) {
 	return
 }
 
+// Len returns the number of gates in a circuit
 func (u Circuit) Len() int {
 	return len(u.Gate)
 }

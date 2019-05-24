@@ -11,6 +11,8 @@ import (
 	"log"
 )
 
+// Link connects two diffferent, yet unconnected valves (by vector),
+// potentially from the same gate
 func (u Circuit) Link(x, y Vector) {
 	if x.Gate == y.Gate && x.Valve == y.Valve {
 		panic("self loop")

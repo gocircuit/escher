@@ -111,7 +111,7 @@ same gate name have unique valve names.
 
 <p>Circuits have a standard visual representation that fully captures
 the <em>internal</em> structure of the circuit, which consists of the
-gate names and links and excludes the gate values—the <em>external</em> structure.
+gate names and links and excludes the gate values — the <em>external</em> structure.
 
 <p>To draw a circuit, we start with a solid black oval, denoting the circuit's internal name space.
 White ovals — contained inside the black one and mutually non-overlapping — denote gates.

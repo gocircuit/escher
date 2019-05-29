@@ -21,7 +21,7 @@ GlossaryPage {
 <p>Gate statements begin on a new line with a gate name identifier, space, and a gate value expression.
 	There are six value types that can be expressed:
 
-<table class='paddingBetweenRows'>
+<table class='rowLines'>
 	<tr>
 		<th>Word</th>
 		<th>Alternative Words</th>

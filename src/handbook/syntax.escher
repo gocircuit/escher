@@ -59,7 +59,7 @@ This section tries to clarify those names.
 	<tr>
 		<td><i>Logical group of basic declaration units</i></td>
 		<td>package</td>
-		<td><a href="meaning.html#faculty">faculty</a></td>
+		<td><a href="glossary.html#faculty">faculty</a></td>
 		<td>namespace</td>
 	</tr>
 	<tr>

@@ -82,6 +82,26 @@ and we view it as a mapping from integers and/or strings to anything else.
 In this respect, a map is akin in purpose to structures, dictionaries, hash tables and maps in other languages.
 </p>
 
+<pre class="escher">
+ImplicitIntMap {
+	*fully.qualified.Name
+	123
+	3.14
+}
+
+ExplicitIntMap {
+	3   *fully.qualified.Name
+	6   @fully.qualified.Name
+	1   123
+}
+
+StringMap {
+	directive  *fully.qualified.Name
+	integral   123
+	floating   3.14
+}
+</pre>
+
 
 <h2 id="trees">Trees</h2>
 
@@ -91,7 +111,7 @@ and they can be of primitive types (integers, floats, etc.)
 as well as recursively, they can be other circuits or maps.
 
 <pre class="escher">
-Tree {
+TreeCircuit {
 	Trunk {
 		Branches {
 			"Johnny"
@@ -192,9 +212,9 @@ written using the abbreviated syntax described earlier.
 defined within the circuit or the empty-string gate name.
 
 <p>The empty-string gate name represents an implicit 
-“enclosing” or “parent” circuit. In particular, program 
-circuits are not allowed to define a gate with the empty-string
-name.
+“enclosing” or “parent” circuit we call <a href="glossary.html#super_gate">super gate</a>.
+In particular, program circuits are not allowed to use a <a href="glossary.html#vector">vector</a>
+with the empty-string name.
 
 <p>Links whose endpoints are connected to the same 
 gate name are allowed, as long as they connect into different

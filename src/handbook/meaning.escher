@@ -120,7 +120,7 @@ so that each node (internal or leaf) is identifiable by a unique path.
 
 <p>
 An <em>Escher index</em> is basically a <a href="#trees">tree circuit</a>,
-which we interprete as a an absolute (and in future releases also relative)
+which we interpret as a an absolute (and in future releases also relative)
 tree containing all circuits/gates.
 This also associates a unique path to each gate,
 which we shall call <em>address</em> of a value relative to a given index.

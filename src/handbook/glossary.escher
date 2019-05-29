@@ -30,55 +30,19 @@ GlossaryPage {
 		<th>Example</th>
 		<th>Explanation</th>
 	</tr>
-	<tr id="flow">
-		<td><a href="#flow">Flow</a></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>
-			TODO (A synonym for Link?) see go code of the circuit struct
-			at <a href="https://github.com/hoijui/escher/blob/master/circuit/circuit.go#L17">circuit/circuit.go</a>
-		</td>
-	</tr>
-	<tr id="link">
-		<td><a href="#link">Link</a></td>
-		<td><a href="#flow">Flow</a></td>
-		<td>-</td>
-		<td><a href="syntax.html#links">Link syntax</a></td>
-		<td>
-			<code>gateX:valveNo3 = gateY:valveNo2</code><br>
-			<code>:valveNo3 = gateX:</code><br>
-		</td>
-		<td>A connection between two <a href="#vector">vectors</a>.</td>
-	</tr>
-	<tr id="vector">
-		<td><a href="#vector">Vector</a></td>
-		<td>valve-ID?</td>
+	<tr id="address">
+		<td><a href="#address">Address</a></td>
 		<td>-</td>
 		<td>-</td>
-		<td>
-			<code>gateX:valveNo3</code><br>
-			<code>:valveNo3</code><br>
-			<code>gateX:</code><br>
-			<code>:</code>
+		<td>-</td>
+		<td><code>rootFaculty.parentFac.childFac.theGate</code><br>
+			TODO or is it <code>"topMostGate.lowerGate.lowestGate"</code> ?<br>
+			I think it is the first one,
+			but what is the second one? or is it an address too?<br>
+			I guess it is practically simply never used/required.
 		</td>
 		<td>
-			A qualified <a href="#valve">valve</a>, consisting of a <a href="#gate">gate</a>-name
-			and one of its valves names, separated with a <code>":"</code>.<br>
-			If the gate is being omitted, the vector refers to the <a href="#super_gate">super gte</a>.<br>
-			If the valve is being omitted, the vector refers to the <a href="#default_valve">default valve</a>.
-		</td>
-	</tr>
-	<tr id="faculty">
-		<td><a href="#faculty">Faculty</a></td>
-		<td>package?</td>
-		<td><a href="meaning.html#faculty">Faculty meaning</a></td>
-		<td>-</td>
-		<td>-</td>
-		<td>
-			Eschers word for a <b>namespace</b>; a group of escher source files in a single directory,
-			respectively the circuits therein.
+			The <em>fully qualified path</em> to a gate, relative to a certain <a href="#index">Index</a>.
 		</td>
 	</tr>
 	<tr id="circuit">
@@ -89,28 +53,16 @@ GlossaryPage {
 		<td>TODO</td>
 		<td>TODO</td>
 	</tr>
-	<tr id="gate">
-		<td><a href="#gate">Gate</a></td>
-		<td>Membrane?<br> Brane?</td>
-		<td>-</td>
-		<td><a href="syntax.html#gates">Gate syntax</a></td>
-		<td>TODO</td>
-		<td>TODO</td>
-	</tr>
-	<tr id="address">
-		<td><a href="#address">Address</a></td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td><code>rootFaculty.parentFac.childFac.theGate</code><br>
-			TODO or is it <code>"topMostGate.lowerGate.lowestGate"</code> ?<br>
-			I think it is the first one,
-			but what is the second one, or is it an address too?<br>
-			I guess it is practically simply never used/required
-		</td>
+	<tr id="default_valve">
+		<td><a href="#default_valve">Default Valve</a></td>
+		<td></td>
+		<td></td>
+		<td></td>
 		<td>
-			The fully qualified path to a gate, relative to a certain <a href="#index">Index</a>.
+			<code>gateX:</code> (vector on gate <code>gateX</code> with the default valve)<br>
+			<code>:</code> (vector on the super gate with the default valve)
 		</td>
+		<td>TODO</td>
 	</tr>
 	<tr id="directive">
 		<td><a href="#directive">Directive</a></td>
@@ -125,33 +77,33 @@ GlossaryPage {
 		</td>
 		<td>TODO</td>
 	</tr>
-	<tr id="verb">
-		<td><a href="#verb">Verb</a></td>
-		<td>instruction?</td>
+	<tr id="faculty">
+		<td><a href="#faculty">Faculty</a></td>
+		<td>package?</td>
+		<td><a href="meaning.html#faculty">Faculty meaning</a></td>
 		<td>-</td>
 		<td>-</td>
 		<td>
-			<code>*</code><br> or<br> <code>@</code>
+			Eschers word for a <b>namespace</b>; a group of escher source files in a single directory,
+			respectively the circuits therein.
 		</td>
+	</tr>
+	<tr id="flow">
+		<td><a href="#flow">Flow</a></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
 		<td>
-			Can be either <code>"*"</code> (<a href="#materialize">materialize</a>)
-			or <code>"@"</code> (<a href="#recall">recall</a>),
-			and is the first part of a <a href="#directive">Directive</a>
+			TODO (A synonym for Link?) see go code of the circuit struct
+			at <a href="https://github.com/hoijui/escher/blob/master/circuit/circuit.go#L17">circuit/circuit.go</a>
 		</td>
 	</tr>
-	<tr id="materialize">
-		<td><a href="#materialize">materialize</a></td>
+	<tr id="gate">
+		<td><a href="#gate">Gate</a></td>
+		<td>Membrane?<br> Brane?</td>
 		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>TODO</td>
-		<td>TODO</td>
-	</tr>
-	<tr id="recall">
-		<td><a href="#recall">recall</a></td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
+		<td><a href="syntax.html#gates">Gate syntax</a></td>
 		<td>TODO</td>
 		<td>TODO</td>
 	</tr>
@@ -159,6 +111,88 @@ GlossaryPage {
 		<td><a href="#index">Index</a></td>
 		<td>-</td>
 		<td><a href="meaning.html#indices">Index meaning</a></td>
+		<td>-</td>
+		<td>TODO</td>
+		<td>TODO</td>
+	</tr>
+	<tr id="link">
+		<td><a href="#link">Link</a></td>
+		<td><a href="#flow">Flow</a></td>
+		<td>-</td>
+		<td><a href="syntax.html#links">Link syntax</a></td>
+		<td>
+			<code>gateX:valveNo3 = gateY:valveNo2</code><br>
+			<code>:valveNo3 = gateX:</code><br>
+		</td>
+		<td>A connection between two <a href="#vector">vectors</a>.</td>
+	</tr>
+	<tr id="map">
+		<td><a href="#map">Map</a></td>
+		<td>-</td>
+		<td><a href="meaning.html#maps">Map meaning</a></td>
+		<td>-</td>
+		<td>
+			<pre class="escher">
+ImplicitIntMap {
+	*fully.qualified.Name
+	123
+	3.14
+}
+
+ExplicitIntMap {
+	3   *fully.qualified.Name
+	6   @fully.qualified.Name
+	1   123
+}
+
+StringMap {
+	directive  *fully.qualified.Name
+	integral   123
+	floating   3.14
+}
+			</pre>
+		</td>
+		<td>TODO</td>
+	</tr>
+	<tr id="materialize">
+
+		<td><a href="#materialize">materialize</a></td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>TODO</td>
+		<td>TODO</td>
+	</tr>
+	<tr id="name">
+		<td><a href="#name">Name</a></td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>
+			The name part of a <a href="#gate">gate</a>.
+			Each gate is comprised of a name and a <a href="#value">value</a>.
+			A name can be any string without spaces,
+			but in practise you probably want to limit it more,
+			say to a common definition of a variable name as found in many other languages,
+			for example using the regex: <code>[a-zA-Z0-9_]+</code>
+		</td>
+	</tr>
+	<tr id="program">
+		<td><a href="#program">Program</a></td>
+		<td>runnable/executable circuit?</td>
+		<td><a href="meaning.html#programs">Program meaning</a></td>
+		<td>-</td>
+		<td>
+			See any of the <code>*Main</code> circuits in the
+			<a href="https://github.com/gocircuit/escher/tree/master/src/tutorial">Escher tutorials</a>
+		</td>
+		<td>TODO</td>
+	</tr>
+	<tr id="recall">
+		<td><a href="#recall">recall</a></td>
+		<td>-</td>
+		<td>-</td>
 		<td>-</td>
 		<td>TODO</td>
 		<td>TODO</td>
@@ -206,31 +240,14 @@ alpha {
 		</td>
 		<td>TODO</td>
 	</tr>
-	<tr id="map">
-		<td><a href="#map">Map</a></td>
+	<tr id="super_gate">
+		<td><a href="#super_gate">Super Gate</a></td>
+		<td>super-membrane<br> super-brane</td>
 		<td>-</td>
-		<td><a href="meaning.html#maps">Map meaning</a></td>
 		<td>-</td>
 		<td>
-			<pre class="escher">
-ImplicitIntMap {
-	*fully.qualified.Name
-	123
-	3.14
-}
-
-ExplicitIntMap {
-	3   *fully.qualified.Name
-	6   @fully.qualified.Name
-	1   123
-}
-
-StringMap {
-	directive  *fully.qualified.Name
-	integral   123
-	floating   3.14
-}
-			</pre>
+			<code>:valveNo3</code> (vector with valve <code>valveNo3</code> on the super gate)<br>
+			<code>:</code> (vector with default valve on the super gate)
 		</td>
 		<td>TODO</td>
 	</tr>
@@ -259,62 +276,6 @@ Tree {
 		</td>
 		<td>TODO</td>
 	</tr>
-	<tr id="program">
-		<td><a href="#program">Program</a></td>
-		<td>runnable/executable circuit?</td>
-		<td><a href="meaning.html#programs">Program meaning</a></td>
-		<td>-</td>
-		<td>
-			See any of the <code>*Main</code> circuits in the
-			<a href="https://github.com/gocircuit/escher/tree/master/src/tutorial">Escher tutorials</a>
-		</td>
-		<td>TODO</td>
-	</tr>
-	<tr id="valve">
-		<td><a href="#valve">Valve</a></td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>TODO</td>
-	</tr>
-	<tr id="super_gate">
-		<td><a href="#super_gate">Super Gate</a></td>
-		<td>super-membrane<br> super-brane</td>
-		<td>-</td>
-		<td>-</td>
-		<td>
-			<code>:valveNo3</code> (vector with valve <code>valveNo3</code> on the super gate)<br>
-			<code>:</code> (vector with default valve on the super gate)
-		</td>
-		<td>TODO</td>
-	</tr>
-	<tr id="default_valve">
-		<td><a href="#default_valve">Default Valve</a></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td>
-			<code>gateX:</code> (vector on gate <code>gateX</code> with the default valve)<br>
-			<code>:</code> (vector on the super gate with the default valve)
-		</td>
-		<td>TODO</td>
-	</tr>
-	<tr id="name">
-		<td><a href="#name">Name</a></td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>-</td>
-		<td>
-			The name part of a <a href="#gate">gate</a>.
-			Each gate is comprised of a name and a <a href="#value">value</a>.
-			A name can be any string without spaces,
-			but in practise you probably want to limit it more,
-			say to a common definition of a variable name as found in many other languages,
-			for example using the regex: <code>[a-zA-Z0-9_]+</code>
-		</td>
-	</tr>
 	<tr id="value">
 		<td><a href="#value">Value</a></td>
 		<td>-</td>
@@ -338,6 +299,46 @@ SomeCircuit {
 			Each gate is comprised of a <a href="#name">name</a> and a value.
 			FIXME Some point of the documentation says, the value cna be any Go value, while an other part states,
 			that it cane be one of Integer, Float, complex-number, string, directive or circuit. Both can't be true.
+		</td>
+	</tr>
+	<tr id="valve">
+		<td><a href="#valve">Valve</a></td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>TODO</td>
+	</tr>
+	<tr id="vector">
+		<td><a href="#vector">Vector</a></td>
+		<td>valve-ID?</td>
+		<td>-</td>
+		<td>-</td>
+		<td>
+			<code>gateX:valveNo3</code><br>
+			<code>:valveNo3</code><br>
+			<code>gateX:</code><br>
+			<code>:</code>
+		</td>
+		<td>
+			A qualified <a href="#valve">valve</a>, consisting of a <a href="#gate">gate</a>-name
+			and one of its valves names, separated with a <code>":"</code>.<br>
+			If the gate is being omitted, the vector refers to the <a href="#super_gate">super gte</a>.<br>
+			If the valve is being omitted, the vector refers to the <a href="#default_valve">default valve</a>.
+		</td>
+	</tr>
+	<tr id="verb">
+		<td><a href="#verb">Verb</a></td>
+		<td>instruction?</td>
+		<td>-</td>
+		<td>-</td>
+		<td>
+			<code>*</code><br> or<br> <code>@</code>
+		</td>
+		<td>
+			Can be either <code>"*"</code> (<a href="#materialize">materialize</a>)
+			or <code>"@"</code> (<a href="#recall">recall</a>),
+			and is the first part of a <a href="#directive">Directive</a>
 		</td>
 	</tr>
 </table>

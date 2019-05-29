@@ -1,4 +1,4 @@
-*, body, li, ul, table, td, ul, ol, dt, dd {
+body, li, ul, table, ul, ol, dt, dd {
 	/*background: rgb(240,255,255);*/
 	background:  rgb(245,255,255);
 	/*color: rgba(95,95,95, 0.8);*/
@@ -9,8 +9,19 @@
 	/*letter-spacing: -0.05em;*/
 }
 
+/* Highlights link targets: The tag with the id set to the part of the URL after the '#'. */
+*:target {
+	background: #FF4;
+	-webkit-transition: all 1s linear;
+}
+
+/* This makes highlighted table rows be a single area, instead of being separated column-fields. */
+table {
+	border-collapse:collapse;
+}
+
 .paddingBetweenRows td {
-    padding: 0 15px 0 15px;
+	padding: 0 15px 0 15px;
 }
 
 body, div {
@@ -68,7 +79,7 @@ pre {
 div.page {
 	margin: auto auto;
 	padding: 4em;
-	//width: 750px;
+	/*width: 750px;*/
 }
 
 div.header {

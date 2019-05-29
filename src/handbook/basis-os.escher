@@ -1,9 +1,9 @@
 
 BuildBasisOSPage {
-        wf *io.WriteFile
-        wf:Content = *BasisOSPage
-        wf:Name = "basis-os.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *BasisOSPage
+		wf:Name = "basis-os.html"
+		: = wf:Ready
 }
 
 BasisOSPage {

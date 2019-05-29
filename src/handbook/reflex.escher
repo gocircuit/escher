@@ -1,9 +1,9 @@
 
 BuildReflexPage {
-        wf *io.WriteFile
-        wf:Content = *ReflexPage
-        wf:Name = "reflex.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *ReflexPage
+		wf:Name = "reflex.html"
+		: = wf:Ready
 }
 
 ReflexPage {

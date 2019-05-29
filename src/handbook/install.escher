@@ -1,20 +1,20 @@
 
 BuildInstallPage {
-        wf *io.WriteFile
-        wf:Content = *InstallPage
-        wf:Name = "install.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *InstallPage
+		wf:Name = "install.html"
+		: = wf:Ready
 }
 
 InstallPage {
-        h *Html
-        h: = :
-        h:Title = "Building and installing Escher"
-        h:Body = t:
+		h *Html
+		h: = :
+		h:Title = "Building and installing Escher"
+		h:Body = t:
 
-        t *text.QuickForm
-        t:Data = {}
-        t:Form = `
+		t *text.QuickForm
+		t:Data = {}
+		t:Form = `
 <h1>Building and installing Escher</h1>
 
 <p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
@@ -40,5 +40,5 @@ subdirectory of the main Escher repo on your host.
 + Test *yield.TestFlows (ok)
 + Test *yield.TestValues (ok)
 </pre>
-        `
+		`
 }

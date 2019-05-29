@@ -1,9 +1,9 @@
 
 BuildCloudPage {
-        wf *io.WriteFile
-        wf:Content = *CloudPage
-        wf:Name = "cloud.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *CloudPage
+		wf:Name = "cloud.html"
+		: = wf:Ready
 }
 
 CloudPage {
@@ -83,14 +83,14 @@ are described in a few simple postulates:
 <ul>
 <li>Every host in the system is identified by a unique string identifier
 <li>Every service “resides” on one host and every such service has a string identifier,
-    unique only across the services residing on the same host.
+	unique only across the services residing on the same host.
 <li>Every service has a “type” denoted by a string
-    (which will correspond to the Docker image name of its container).
+	(which will correspond to the Docker image name of its container).
 <li>Every service can have zero or more named “valves”
-    (where a valve will correspond to a TCP connection, client or server)
-    under the requirement that valve names are unique within one service.
+	(where a valve will correspond to a TCP connection, client or server)
+	under the requirement that valve names are unique within one service.
 <li>Every link “connects” one service-valve pair to another,
-    so that no such pair is connected more than once.
+	so that no such pair is connected more than once.
 </ul>
 
 <p>Relationships between the components of a system can be represented visually using the same 
@@ -141,9 +141,9 @@ as the case might be:
 <ol>
 <li>Connect to the “cloud” and retrieve a consistent representation of the “current” cloud state.
 <li>Compute the difference between a representation of the “desired” state of the cloud
-    and the retrieved “current” state.
+	and the retrieved “current” state.
 <li>Send a minimal stream of “commands” to the cloud,
-    aimed at modifying its state from “current” to “desired”.
+	aimed at modifying its state from “current” to “desired”.
 </ol>
 
 <p>In the remainder of this document, we describe the design of a command-line tool
@@ -301,9 +301,9 @@ connection or both.
 execution of a container, our framework can
 <ul>
 <li id="address_i">(i) obtain the TCP server address corresponding to each valve
-    (if there is one), as well as
+	(if there is one), as well as
 <li id="address_ii">(ii) supply the remote TCP server address
-    if the valve also corresponds to a TCP client connection.
+	if the valve also corresponds to a TCP client connection.
 </ul>
 
 <p>There are various ways to prepare Docker containers to accomplish this, and we do not
@@ -351,93 +351,93 @@ And the list of links is:
 
 <ol>
 <li>Obtain a list of available and unused hosts in the cloud.
-    <p>The <a href="http://gocircuit.org">Circuit API</a>
-    presents all of its resources uniformly as a *nix style file system,
-    where root level directories correspond to available hosts.
-    Unused hosts are precisely those root level directories,
-    that have no children
-    (i.e. no services or other Circuit elements are running on them).
-    Such a list can be obtained through the API,
-    or through the command line using <code>circuit ls /...</code>.
-    Let us assume, for instance, that the list of available and unused hosts is
-    <pre>
-    /X65cc3c8e31817756
-    /Xe4abe0c286b0e0bc
-    /X9738a5e29e51338e
-    </pre>
+	<p>The <a href="http://gocircuit.org">Circuit API</a>
+	presents all of its resources uniformly as a *nix style file system,
+	where root level directories correspond to available hosts.
+	Unused hosts are precisely those root level directories,
+	that have no children
+	(i.e. no services or other Circuit elements are running on them).
+	Such a list can be obtained through the API,
+	or through the command line using <code>circuit ls /...</code>.
+	Let us assume, for instance, that the list of available and unused hosts is
+	<pre>
+	/X65cc3c8e31817756
+	/Xe4abe0c286b0e0bc
+	/X9738a5e29e51338e
+	</pre>
 
 <li>Group the elements of the list of services (from the dual) by host,
-    and assign a unique (available and unused) Circuit host to each of the hosts from dual.
-    For instance:
-    <pre>
-    (/X65cc3c8e31817756, host1)
-    (/Xe4abe0c286b0e0bc, host2)
-    </pre>
+	and assign a unique (available and unused) Circuit host to each of the hosts from dual.
+	For instance:
+	<pre>
+	(/X65cc3c8e31817756, host1)
+	(/Xe4abe0c286b0e0bc, host2)
+	</pre>
 
 <li>Execute every service in the dual as follows.
-    Take, for instance, the service
-    <pre>
-    (host1.cache, MemCache)
-    </pre>
+	Take, for instance, the service
+	<pre>
+	(host1.cache, MemCache)
+	</pre>
 
-    <ul>
-    <li>Create a dedicated, light-weight DNS server for this service,
-        on the Circuit host assigned to this service in the previous step.
-        Using the Circuit, we spawn a DNS element and choose its name to follow this convention:
-        <pre>
-        /X65cc3c8e31817756/host1/cache/dns
-        </pre>
-        <p>This is accomplished using the Circuit command <code>circuit mkdns</code>.
-        The details of this are omitted for brevity.
-        Initially, the DNS server will have no resource records,
-        i.e. it will not resolve any lookups.
-        Appropriate records will be added to it later,
-        when we materialize the list of links from the dual form.
-    <li>Execute the service's Docker container on that same host,
-        using a similar naming convention:
-        <pre>
-        /X65cc3c8e31817756/host1/cache/service
-        </pre>
-        <p>This is accomplished using the Circuit command <code>circuit mkdkr</code>.
-        Recall that the service type — <code>MemCache</code> in this case —
-        is the name of the Docker image to be used.
-        Furthermore, the IP address of the DNS server created in the previous step
-        is passed to the Docker container on execution.
-    </ul>
+	<ul>
+	<li>Create a dedicated, light-weight DNS server for this service,
+		on the Circuit host assigned to this service in the previous step.
+		Using the Circuit, we spawn a DNS element and choose its name to follow this convention:
+		<pre>
+		/X65cc3c8e31817756/host1/cache/dns
+		</pre>
+		<p>This is accomplished using the Circuit command <code>circuit mkdns</code>.
+		The details of this are omitted for brevity.
+		Initially, the DNS server will have no resource records,
+		i.e. it will not resolve any lookups.
+		Appropriate records will be added to it later,
+		when we materialize the list of links from the dual form.
+	<li>Execute the service's Docker container on that same host,
+		using a similar naming convention:
+		<pre>
+		/X65cc3c8e31817756/host1/cache/service
+		</pre>
+		<p>This is accomplished using the Circuit command <code>circuit mkdkr</code>.
+		Recall that the service type — <code>MemCache</code> in this case —
+		is the name of the Docker image to be used.
+		Furthermore, the IP address of the DNS server created in the previous step
+		is passed to the Docker container on execution.
+	</ul>
 
 <li>For each link in the list of links,
-    add DNS resource records to the appropriate DNS servers.
-    Take for instance the link:
-    <pre>
-    (host1.cache:z, host2.database:w)
-    </pre>
+	add DNS resource records to the appropriate DNS servers.
+	Take for instance the link:
+	<pre>
+	(host1.cache:z, host2.database:w)
+	</pre>
 
-    <ul>
-    <li>First, we inquire into the TCP server address for <code>host1.cache:z</code>,
-        if one is available.
-        To do so, we access the Docker container
-        <pre>
-        /X65cc3c8e31817756/host1/cache/service
-        </pre>
-        and we query the TCP server address for the valve named <code>z</code>,
-        using the Docker port exporting provisions set in place as <a href="#prepare">described earlier</a>.
+	<ul>
+	<li>First, we inquire into the TCP server address for <code>host1.cache:z</code>,
+		if one is available.
+		To do so, we access the Docker container
+		<pre>
+		/X65cc3c8e31817756/host1/cache/service
+		</pre>
+		and we query the TCP server address for the valve named <code>z</code>,
+		using the Docker port exporting provisions set in place as <a href="#prepare">described earlier</a>.
 
-    <li>Next, we access the Circuit DNS element
-        <pre>
-        /Xe4abe0c286b0e0bc/host2/database/dns
-        </pre>
-        and set the resource record for the domain name <code>w</code>
-        to that TCP server address obtained in the previous step.
-        In addition to setting a DNS A record for the name <code>w</code>,
-        we also set a DNS TXT record for the same record with the value of <code>host1.cache:z</code>.
-        This TXT record will later facilitate recovering the dual form
-        for this link directly from the DNS server itself.
+	<li>Next, we access the Circuit DNS element
+		<pre>
+		/Xe4abe0c286b0e0bc/host2/database/dns
+		</pre>
+		and set the resource record for the domain name <code>w</code>
+		to that TCP server address obtained in the previous step.
+		In addition to setting a DNS A record for the name <code>w</code>,
+		we also set a DNS TXT record for the same record with the value of <code>host1.cache:z</code>.
+		This TXT record will later facilitate recovering the dual form
+		for this link directly from the DNS server itself.
 
-    <li>Finally, we repeat the same process with the roles
-        of <code>host1.cache:z</code>
-        and <code>host2.database:w</code> reversed.
+	<li>Finally, we repeat the same process with the roles
+		of <code>host1.cache:z</code>
+		and <code>host2.database:w</code> reversed.
 
-    </ul>
+	</ul>
 
 </ol>
 

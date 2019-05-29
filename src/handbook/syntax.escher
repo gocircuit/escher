@@ -1,9 +1,9 @@
 
 BuildSyntaxPage {
-        wf *io.WriteFile
-        wf:Content = *SyntaxPage
-        wf:Name = "syntax.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *SyntaxPage
+		wf:Name = "syntax.html"
+		: = wf:Ready
 }
 
 SyntaxPage {
@@ -14,7 +14,7 @@ SyntaxPage {
 
 	f *e.Fork
 	f:BackQuoted = "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
-	f:CommentsSample = "alpha {          `// circuit definition`\n\tfloat 1.23 ; `// gate named float with a floating-point value`\n\tbeta {}    ; `// gate named beta with an empty circuit value`\n\t`/*\n\t  * We can also do this:\n\t  * A multi-line comment within a circuit definition.\n\t  * Outside the circuit though, no comments are possible.\n\t  */`\n}"
+	f:CommentsSample = "alpha {		  `// circuit definition`\n\tfloat 1.23 ; `// gate named float with a floating-point value`\n\tbeta {}	; `// gate named beta with an empty circuit value`\n\t`/*\n\t  * We can also do this:\n\t  * A multi-line comment within a circuit definition.\n\t  * Outside the circuit though, no comments are possible.\n\t  */`\n}"
 	f:ImgNand = fig:
 
 	fig *FigurePngSvg
@@ -400,5 +400,5 @@ This will expand to:
 	0: = 1:
 </pre>
 
-        `
+		`
 }

@@ -1,9 +1,9 @@
 
 BuildBasisEscherPage {
-        wf *io.WriteFile
-        wf:Content = *BasisEscherPage
-        wf:Name = "basis-escher.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *BasisEscherPage
+		wf:Name = "basis-escher.html"
+		: = wf:Ready
 }
 
 BasisEscherPage {

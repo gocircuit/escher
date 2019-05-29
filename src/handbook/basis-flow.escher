@@ -1,9 +1,9 @@
 
 BuildBasisFlowPage {
-        wf *io.WriteFile
-        wf:Content = *BasisFlowPage
-        wf:Name = "basis-flow.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *BasisFlowPage
+		wf:Name = "basis-flow.html"
+		: = wf:Ready
 }
 
 BasisFlowPage {

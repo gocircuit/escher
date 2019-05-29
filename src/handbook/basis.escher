@@ -1,9 +1,9 @@
 
 BuildBasisPage {
-        wf *io.WriteFile
-        wf:Content = *BasisPage
-        wf:Name = "basis.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *BasisPage
+		wf:Name = "basis.html"
+		: = wf:Ready
 }
 
 BasisPage {
@@ -23,11 +23,11 @@ BasisPage {
 <p>There are two kinds of reflexes in Escher: 
 <ul>
 <li><em>Basis reflexes</em>
-    are implemented in the underlying technology —
-    the Go language — and linked into the runtime
+	are implemented in the underlying technology —
+	the Go language — and linked into the runtime
 <li><em>Derivative reflexes</em>
-    are compositions of other reflexes,
-    described by program circuits
+	are compositions of other reflexes,
+	described by program circuits
 </ul>
 
 <p>We will now have a look at the equivalent of <code>std</code> in C++,

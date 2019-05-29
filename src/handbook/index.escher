@@ -1,15 +1,15 @@
 BuildIndexPage {
-        wf *io.WriteFile
-        wf:Content = *IndexPage
-        wf:Name = "index.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *IndexPage
+		wf:Name = "index.html"
+		: = wf:Ready
 }
 
 IndexPage {
-        h *Html
-        h: = :
-        h:Title = "The Escher language"
-        h:Body = `
+		h *Html
+		h: = :
+		h:Title = "The Escher language"
+		h:Body = `
 <h1>Escher programming language</h1>
 
 <h2>Motivation</h2>
@@ -110,5 +110,5 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
 <p>
 
-        `
+		`
 }

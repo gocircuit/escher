@@ -1,9 +1,9 @@
 
 BuildDebugPage {
-        wf *io.WriteFile
-        wf:Content = *DebugPage
-        wf:Name = "debug.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *DebugPage
+		wf:Name = "debug.html"
+		: = wf:Ready
 }
 
 DebugPage {
@@ -75,41 +75,41 @@ The following Escher trace will be printed:
 BASIS(:)
 DIRECTIVE(:) *e.Breakpoint/*e.Breakpoint
 CIRCUIT() {
-        0 *e.Breakpoint
-        1 1
-        0: = 1:
+		0 *e.Breakpoint
+		1 1
+		0: = 1:
 }
 MATERIALIZE() {
-        0 *e.Breakpoint
-        1 1
-        0: = 1:
+		0 *e.Breakpoint
+		1 1
+		0: = 1:
 }
 BASIS(:Residue :View)
 DIRECTIVE(:Residue :View) *e.Materialize/*e.Materialize
 CIRCUIT(:Index :Program :Residue) {
-        x *e.Materialize
-        y *e.Fork
-        :Residue = x:Residue
-        :Index = y:Index
-        :Program = y:Program
-        x:View = y:
+		x *e.Materialize
+		y *e.Fork
+		:Residue = x:Residue
+		:Index = y:Index
+		:Program = y:Program
+		x:View = y:
 }
 DIRECTIVE(:Index :Program :Residue) *e.QuickMaterialize/*e.QuickMaterialize
 CIRCUIT() {
-        m *e.QuickMaterialize
-        0 *e.Show
-        1 "Parent circuit"
-        2 *e.Ignore
-        3 *e.Index
-        4 {
-                0 *e.Breakpoint
-                1 1
-                0: = 1:
-        }
-        0: = 1:
-        m:Program = 4:
-        m:Residue = 2:
-        m:Index = 3:
+		m *e.QuickMaterialize
+		0 *e.Show
+		1 "Parent circuit"
+		2 *e.Ignore
+		3 *e.Index
+		4 {
+				0 *e.Breakpoint
+				1 1
+				0: = 1:
+		}
+		0: = 1:
+		m:Program = 4:
+		m:Residue = 2:
+		m:Index = 3:
 }
 DIRECTIVE() *tutorial.Debug/*tutorial.Debug
 MATERIALIZE() *tutorial.Debug
@@ -129,13 +129,13 @@ Following the brackets is a frame argument whose meaning depends on the type of 
 <ul>
 <li><code>MAIN</code> marks the start of the Escher runtime.
 <li><code>MATERIALIZE</code> frames mark the beginning of materialization.
-    The argument of such frames describe the program that is being materialized.
+	The argument of such frames describe the program that is being materialized.
 <li><code>DIRECTIVE</code> frames indicate that a directive gate value is being resolved.
-    The argument equals the source of the directive,
-    followed by the computed, fully-qualified source of directive
-    (in case the directive uses local addressing).
+	The argument equals the source of the directive,
+	followed by the computed, fully-qualified source of directive
+	(in case the directive uses local addressing).
 <li><code>CIRCUIT</code> frames indicate that a program circuit is being materialized.
-    Their argument equals the circuit source.
+	Their argument equals the circuit source.
 <li><code>BASIS</code> frames indicate that a basis reflex is being materialized.
 <li><code>NOUN</code> frames indicate that a noun reflex is being materialized.
 </ul>

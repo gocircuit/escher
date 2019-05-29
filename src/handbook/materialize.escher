@@ -1,8 +1,8 @@
 BuildMaterializePage {
-        file *io.WriteFile
-        file:Content = *MaterializePage
-        file:Name = "m.html"
-        : = file:Ready
+		file *io.WriteFile
+		file:Content = *MaterializePage
+		file:Name = "m.html"
+		: = file:Ready
 }
 
 MaterializePage {
@@ -35,5 +35,5 @@ MaterializePage {
 
 <p>
 
-        `
+		`
 }

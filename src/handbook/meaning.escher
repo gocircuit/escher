@@ -1,9 +1,9 @@
 
 BuildMeaningPage {
-        wf *io.WriteFile
-        wf:Content = *MeaningPage
-        wf:Name = "meaning.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *MeaningPage
+		wf:Name = "meaning.html"
+		: = wf:Ready
 }
 
 MeaningPage {

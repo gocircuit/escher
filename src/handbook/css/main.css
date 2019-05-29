@@ -1,4 +1,4 @@
-*, body, li, ul, table, td, ul, ol, dt, dd {
+body, li, ul, table, ul, ol, dt, dd {
 	/*background: rgb(240,255,255);*/
 	background:  rgb(245,255,255);
 	/*color: rgba(95,95,95, 0.8);*/
@@ -7,6 +7,12 @@
 	font-weight: 400;
 	line-height: 1.4em;
 	/*letter-spacing: -0.05em;*/
+}
+
+/* Highlights link targets: The tag with the id set to the part of the URL after the '#'. */
+*:target {
+	background: #FF4;
+	-webkit-transition: all 1s linear;
 }
 
 .paddingBetweenRows td {

@@ -15,6 +15,11 @@ body, li, ul, table, ul, ol, dt, dd {
 	-webkit-transition: all 1s linear;
 }
 
+/* This makes highlighted table rows be a single area, instead of being separated column-fields. */
+table {
+	border-collapse:collapse;
+}
+
 .paddingBetweenRows td {
 	padding: 0 15px 0 15px;
 }

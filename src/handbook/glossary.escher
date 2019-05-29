@@ -62,7 +62,11 @@ GlossaryPage {
 			<code>gateX:</code> (vector on gate <code>gateX</code> with the default valve)<br>
 			<code>:</code> (vector on the super gate with the default valve)
 		</td>
-		<td>TODO</td>
+		<td>
+			The <a href="#valve">valve</a> denoted by the empty string "".<br>
+			You may think of it as the default input/output of a circuit.<br>
+			It has not special logic within Escher, other then not requiring to be named in code.
+		</td>
 	</tr>
 	<tr id="directive">
 		<td><a href="#directive">Directive</a></td>
@@ -75,7 +79,11 @@ GlossaryPage {
 			<a href="#recall">recall</a>:
 			<code class="escher">@fully.qualified.Name</code>
 		</td>
-		<td>TODO</td>
+		<td>
+			A combination of a <a href="#verb">verb</a> and an <a href="#address">address</a>.<br>
+			It means:<br>
+			Do '<a href="#verb">verb</a>' with '<a href="#address">address</a>'."
+		</td>
 	</tr>
 	<tr id="faculty">
 		<td><a href="#faculty">Faculty</a></td>
@@ -90,10 +98,10 @@ GlossaryPage {
 	</tr>
 	<tr id="flow">
 		<td><a href="#flow">Flow</a></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
 		<td>
 			TODO (A synonym for Link?) see go code of the circuit struct
 			at <a href="https://github.com/hoijui/escher/blob/master/circuit/circuit.go#L17">circuit/circuit.go</a>
@@ -105,7 +113,11 @@ GlossaryPage {
 		<td>-</td>
 		<td><a href="syntax.html#gates">Gate syntax</a></td>
 		<td>TODO</td>
-		<td>TODO</td>
+		<td>
+			An instantiation of a <a href="#circuit">circuit</a> inside an other circuit.<br>
+			Gates are the nodes of an Escher <a href="#circuit">circuit</a>, if interpreted as a graph.<br>
+			They are connected to each other by creating <a href="#link">links</a> between their <a href="#valve">valves</a>.
+		</td>
 	</tr>
 	<tr id="index">
 		<td><a href="#index">Index</a></td>
@@ -124,7 +136,10 @@ GlossaryPage {
 			<code>gateX:valveNo3 = gateY:valveNo2</code><br>
 			<code>:valveNo3 = gateX:</code><br>
 		</td>
-		<td>A connection between two <a href="#vector">vectors</a>.</td>
+		<td>
+			A connection between two <a href="#vector">vectors</a>.<br>
+			Links are the edges of an Escher <a href="#circuit">circuit</a>, if interpreted as a graph.
+		</td>
 	</tr>
 	<tr id="map">
 		<td><a href="#map">Map</a></td>
@@ -150,9 +165,21 @@ StringMap {
 	integral   123
 	floating   3.14
 }
+
+MixedMap {
+	directive  *fully.qualified.Name
+	1          123
+	2          3.14
+}
 			</pre>
 		</td>
-		<td>TODO</td>
+		<td>
+			A <a href="#circuit">circuit</a> with the limitation that it has no <a href="#link">links</a>.<br>
+			While we might think of a general circuit more of as a set of instructions plus data,
+			a map is rather purely data.<br>
+			It maps keys of type <code>int</code> or <code>string</code> to arbitrary values,
+			quite like maps in other programming languages.
+		</td>
 	</tr>
 	<tr id="materialize">
 
@@ -160,7 +187,17 @@ StringMap {
 		<td>-</td>
 		<td>-</td>
 		<td>-</td>
-		<td>TODO</td>
+		<td>
+			<code>*fully.qualified.Name</code><br>
+			or<br>
+			<pre class="escher">
+*{
+	fully
+	qualified
+	Name
+}
+			</pre>
+		</td>
 		<td>TODO</td>
 	</tr>
 	<tr id="name">
@@ -194,7 +231,17 @@ StringMap {
 		<td>-</td>
 		<td>-</td>
 		<td>-</td>
-		<td>TODO</td>
+		<td>
+			<code>@fully.qualified.Name</code><br>
+			or<br>
+			<pre class="escher">
+@{
+	fully
+	qualified
+	Name
+}
+			</pre>
+		</td>
 		<td>TODO</td>
 	</tr>
 	<tr id="series">
@@ -338,7 +385,7 @@ SomeCircuit {
 		<td>
 			Can be either <code>"*"</code> (<a href="#materialize">materialize</a>)
 			or <code>"@"</code> (<a href="#recall">recall</a>),
-			and is the first part of a <a href="#directive">Directive</a>
+			and is the first part of a <a href="#directive">directive</a>.
 		</td>
 	</tr>
 </table>

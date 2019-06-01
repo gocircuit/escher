@@ -35,7 +35,8 @@ GlossaryPage {
 		<td>-</td>
 		<td>-</td>
 		<td>-</td>
-		<td><code>rootFaculty.parentFac.childFac.theGate</code><br>
+		<td>
+			<code>rootFaculty.parentFac.childFac.theGate</code><br>
 			TODO or is it <code>"topMostGate.lowerGate.lowestGate"</code> ?<br>
 			I think it is the first one,
 			but what is the second one? or is it an address too?<br>
@@ -43,6 +44,7 @@ GlossaryPage {
 		</td>
 		<td>
 			The <em>fully qualified path</em> to a gate, relative to a certain <a href="#index">Index</a>.
+			An address is represented by <a href="#series">series circuits</a>.
 		</td>
 	</tr>
 	<tr id="circuit">
@@ -50,8 +52,27 @@ GlossaryPage {
 		<td>-</td>
 		<td><a href="meaning.html#circuits">Circuit meaning</a></td>
 		<td><a href="syntax.html#circuits">Circuit syntax</a></td>
-		<td>TODO</td>
-		<td>TODO</td>
+		<td>
+			A simple circuit called <code>Nand</code>,
+			with 2 gates and 4 links:
+			<pre class="escher">
+Nand {
+	and *binary.And
+	not *binary.Not
+
+	and:X = :X
+	and:Y = :Y
+	and:XAndY = not:Z
+	not:NotZ = :
+}
+			</pre>
+		</td>
+		<td>
+			A circuit is the central unit of declaration in Escher.
+			It specifies <a href="#gate">gates</a> and <a href="#link">links</a>
+			immediately contained within that (class of) circuit
+			(no gates or links outside or inside its own gates).
+		</td>
 	</tr>
 	<tr id="default_valve">
 		<td><a href="#default_valve">Default Valve</a></td>
@@ -82,7 +103,7 @@ GlossaryPage {
 		<td>
 			A combination of a <a href="#verb">verb</a> and an <a href="#address">address</a>.<br>
 			It means:<br>
-			Do '<a href="#verb">verb</a>' with '<a href="#address">address</a>'."
+			"Do <em>'<a href="#verb">verb</a>'</em> with <em>'<a href="#address">address</a>'</em>."
 		</td>
 	</tr>
 	<tr id="faculty">
@@ -103,8 +124,10 @@ GlossaryPage {
 		<td>-</td>
 		<td>-</td>
 		<td>
-			TODO (A synonym for Link?) see go code of the circuit struct
-			at <a href="https://github.com/hoijui/escher/blob/master/circuit/circuit.go#L17">circuit/circuit.go</a>
+			XXX (A synonym for <a href="#link">Link</a>?)<br>
+			TODO Should probably be renamed to <b>Link</b><br>
+			See the go code of the circuit struct at
+			<a href="https://github.com/hoijui/escher/blob/master/circuit/circuit.go#L17">circuit/circuit.go</a>.
 		</td>
 	</tr>
 	<tr id="gate">
@@ -112,7 +135,20 @@ GlossaryPage {
 		<td>Membrane?<br> Brane?</td>
 		<td>-</td>
 		<td><a href="syntax.html#gates">Gate syntax</a></td>
-		<td>TODO</td>
+		<td>
+			A circuit with 7 gates:
+			<pre class="escher">
+alpha {
+	directive1 *fully.qualified.Name
+	directive2 @fully.qualified.Name
+	integral   123
+	floating   3.14
+	complex    (1-3i)
+	quoted     "abcd\n\tefgh"
+	backQuoted {{ .Gate.BackQuoted }}
+}
+			</pre>
+		</td>
 		<td>
 			An instantiation of a <a href="#circuit">circuit</a> inside an other circuit.<br>
 			Gates are the nodes of an Escher <a href="#circuit">circuit</a>, if interpreted as a graph.<br>
@@ -124,8 +160,32 @@ GlossaryPage {
 		<td>-</td>
 		<td><a href="meaning.html#indices">Index meaning</a></td>
 		<td>-</td>
-		<td>TODO</td>
-		<td>TODO</td>
+		<td>
+			This exemplifies part of a typical index:
+			<pre class="escher">
+{
+	e {
+		Alt (be.Materializer)
+		Alternate (be.Materializer)
+		Breakpoint (be.Materializer)
+		Fork (be.Materializer)
+		Grow (be.Materializer)
+		Help (be.Materializer)
+		Ignore (be.Materializer)
+		...
+	}
+	element {
+		Docker (be.Materializer)
+		Process (be.Materializer)
+	}
+	...
+}
+			</pre>
+		</td>
+		<td>
+			An <em>Escher index</em> is a <a href="#tree">tree circuit</a>,
+			which we interpret as a an list containing the <a href="#addresse">addresses</a> to all <a href="#gate">gates</a>.
+		</td>
 	</tr>
 	<tr id="link">
 		<td><a href="#link">Link</a></td>
@@ -182,7 +242,6 @@ MixedMap {
 		</td>
 	</tr>
 	<tr id="materialize">
-
 		<td><a href="#materialize">materialize</a></td>
 		<td>-</td>
 		<td>-</td>
@@ -217,14 +276,14 @@ MixedMap {
 	</tr>
 	<tr id="program">
 		<td><a href="#program">Program</a></td>
-		<td>runnable/executable circuit?</td>
+		<td>runnable?, executable circuit?</td>
 		<td><a href="meaning.html#programs">Program meaning</a></td>
 		<td>-</td>
 		<td>
 			See any of the <code>*Main</code> circuits in the
 			<a href="https://github.com/gocircuit/escher/tree/master/src/tutorial">Escher tutorials</a>
 		</td>
-		<td>TODO</td>
+		<td>Programs are circuits that describe executable systems.</td>
 	</tr>
 	<tr id="recall">
 		<td><a href="#recall">recall</a></td>
@@ -285,7 +344,14 @@ alpha {
 }
 			</pre>
 		</td>
-		<td>TODO</td>
+		<td>
+			A series is a <a href="#map">map</a> with the additional restrictions that:<br>
+			<ul>
+				<li>it can only have int <a href="#name">names</a></li>
+				<li>the names have to form a consecutive series, starting from 0</li>
+			</ul>
+			They are an analogue to arrays in other languages.
+		</td>
 	</tr>
 	<tr id="super_gate">
 		<td><a href="#super_gate">Super Gate</a></td>
@@ -296,7 +362,13 @@ alpha {
 			<code>:valveNo3</code> (vector with valve <code>valveNo3</code> on the super gate)<br>
 			<code>:</code> (vector with default valve on the super gate)
 		</td>
-		<td>TODO</td>
+		<td>
+			The empty-string named <a href="#gate">gate</a> is called the <em>super gate</em>.<br>
+			While one cannot assign a value to it through syntax, it is possible to connect links to it.
+
+			<p>When <a href="#materialize">materializing</a>,
+			the links connected to the super gate are exposed to the higher-level/enclosing/“super” circuit.
+		</td>
 	</tr>
 	<tr id="tree">
 		<td><a href="#tree">Tree</a></td>
@@ -321,7 +393,10 @@ Tree {
 }
 			</pre>
 		</td>
-		<td>TODO</td>
+		<td>
+			A recursive structure of <a href="#map">maps</a>,
+			where maps can contain other maps.
+		</td>
 	</tr>
 	<tr id="value">
 		<td><a href="#value">Value</a></td>
@@ -350,11 +425,16 @@ SomeCircuit {
 	</tr>
 	<tr id="valve">
 		<td><a href="#valve">Valve</a></td>
+		<td>I/O whole/connector</td>
 		<td>-</td>
 		<td>-</td>
 		<td>-</td>
-		<td>-</td>
-		<td>TODO</td>
+		<td>
+			An input and-or output "connector" between the inside and the outside of a <a href="#gate">gate</a><.
+			It has a unique name within the circuit it is declared.
+			It can be connected to at most one other valve (of the same gate or an other)
+			using a <a href="#link">link</a>.
+		</td>
 	</tr>
 	<tr id="vector">
 		<td><a href="#vector">Vector</a></td>

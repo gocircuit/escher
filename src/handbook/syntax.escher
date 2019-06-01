@@ -69,10 +69,16 @@ This section tries to clarify those names.
 		<td>instance</td>
 	</tr>
 	<tr>
+		<td><i>enclosing declataion unit instance</i></td>
+		<td>this</td>
+		<td><a href="glossary.html#super_gate">super gate</a></td>
+		<td>this</td>
+	</tr>
+	<tr>
 		<td><i>The runtime structure containing all the code</i></td>
 		<td>class-path</td>
 		<td>index</td>
-		<td>LD_LIBRARY_PATH</td>
+		<td>LD_LIBRARY_PATH</td> <!-- TODO There should be a more fitting idea then this. -->
 	</tr>
 	<tr>
 		<td><i>Unique string identifier of a declaration unit</i></td>
@@ -88,9 +94,9 @@ This section tries to clarify those names.
 	</tr>
 	<tr>
 		<td><i>The underlying technology</i></td>
-		<td>JVM</td>
+		<td>JVM/C/Assembler</td>
 		<td>Golang</td>
-		<td>the OS</td>
+		<td>none/the OS</td>
 	</tr>
 </table>
 

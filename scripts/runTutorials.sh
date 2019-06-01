@@ -24,15 +24,20 @@ repo_root="`cd $call_path; cd ..; pwd`"
 src_dir="$repo_root/src"
 tutorials_dir="$src_dir/tutorial"
 
-find "$tutorials_dir" -regex '.*/[A-Z][^/]*.escher' > /dev/null
-if [ $? -ne 0 ]
+if [ "$1" = "" ]
 then
-	>&2 echo "Error: No tutorials found in '`pwd`$tutorials_dir'."
-	exit 2
-fi
+	find "$tutorials_dir" -regex '.*/[A-Z][^/]*.escher' > /dev/null
+	if [ $? -ne 0 ]
+	then
+		>&2 echo "Error: No tutorials found in '`pwd`$tutorials_dir'."
+		exit 2
+	fi
 
-tutorial_circuits=`find "$tutorials_dir" -regex '.*/[A-Z][^/]*.escher' \
-	| xargs basename --multiple --suffix '.escher'`
+	tutorial_circuits=`find "$tutorials_dir" -regex '.*/[A-Z][^/]*.escher' \
+		| xargs basename --multiple --suffix '.escher'`
+else
+	tutorial_circuits="$1"
+fi
 export ESCHER="$src_dir"
 
 for circuit in $tutorial_circuits

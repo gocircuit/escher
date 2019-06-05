@@ -418,9 +418,9 @@ SomeCircuit {
 		</td>
 		<td>
 			The value part of a <a href="#gate">gate</a>.
-			Each gate is comprised of a <a href="#name">name</a> and a value.
+			Each gate is comprised of a <a href="#name">name</a> and a value.<br>
 			FIXME Some point of the documentation says, the value cna be any Go value, while an other part states,
-			that it cane be one of Integer, Float, complex-number, string, directive or circuit. Both can't be true.
+			that it can be one of Integer, Float, complex-number, string, directive or circuit. Both can't be true.
 		</td>
 	</tr>
 	<tr id="valve">
@@ -430,7 +430,7 @@ SomeCircuit {
 		<td>-</td>
 		<td>-</td>
 		<td>
-			An input and-or output "connector" between the inside and the outside of a <a href="#gate">gate</a><.
+			An input and-or output "connector" between the inside and the outside of a <a href="#gate">gate</a>.
 			It has a unique name within the circuit it is declared.
 			It can be connected to at most one other valve (of the same gate or an other)
 			using a <a href="#link">link</a>.

@@ -9,24 +9,47 @@ body {
 	/*letter-spacing: -0.05em;*/
 }
 
-/* Highlights link targets: The tag with the id set to the part of the URL after the '#'. */
-*:target {
-	background: #FF4;
-	-webkit-transition: all 1s linear;
-}
-
-table.rowLines {
-	padding: 0 15px 0 15px;
+table.dataRows {
 	/* This makes highlighted table rows be a single area, instead of being separated column-fields. */
 	border-collapse: collapse;
+	width: 100%;
 }
 
-table.rowLines tr {
-    border-bottom: 1px solid lightgray;
-}​
+table.dataRows th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: rgb(150, 200, 255);
+}
 
-table.rowLines tr:last-child {
-    border-bottom: none;
+table.dataRows td, table.dataRows th {
+	border-right: 1px dashed lightgray;
+	padding: 8px;
+}
+
+table.dataRows td:last-child, #indexTable th:last-child {
+	border-right: none;
+}
+
+table.dataRows tr:last-child td {
+	border-bottom: none;
+}
+
+table.dataRows tr:nth-child(even) {
+	background-color: rgb(235, 255, 255);
+}
+
+table.dataRows tr:nth-child(odd) {
+	background-color: rgb(215, 255, 255);
+}
+
+/* Highlights link targets: The tag with the id set to the part of the URL after the '#'. */
+table.dataRows tr:target {
+	animation: flashTableRow 2s linear;
+}
+
+@keyframes flashTableRow {
+	50% { background: rgb(255, 255, 50) }
 }
 
 .paddingBetweenRows td {

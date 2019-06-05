@@ -50,8 +50,8 @@ GlossaryPage {
 	<tr id="circuit">
 		<td><a href="#circuit">Circuit</a></td>
 		<td>-</td>
-		<td><a href="meaning.html#circuits">Circuit meaning</a></td>
-		<td><a href="syntax.html#circuits">Circuit syntax</a></td>
+		<td><a href="meaning.html#circuits">meaning</a></td>
+		<td><a href="syntax.html#circuits">syntax</a></td>
 		<td>
 			A simple circuit called <code>Nand</code>,
 			with 2 gates and 4 links:
@@ -92,7 +92,7 @@ Nand {
 	<tr id="directive">
 		<td><a href="#directive">Directive</a></td>
 		<td>-</td>
-		<td><a href="meaning.html#directives">Directive meaning</a></td>
+		<td><a href="meaning.html#directives">meaning</a></td>
 		<td>-</td>
 		<td>
 			<a href="#materialize">materialize</a>:
@@ -109,7 +109,7 @@ Nand {
 	<tr id="faculty">
 		<td><a href="#faculty">Faculty</a></td>
 		<td>package?</td>
-		<td><a href="meaning.html#faculty">Faculty meaning</a></td>
+		<td><a href="meaning.html#faculty">meaning</a></td>
 		<td>-</td>
 		<td>-</td>
 		<td>
@@ -134,7 +134,7 @@ Nand {
 		<td><a href="#gate">Gate</a></td>
 		<td>Membrane?<br> Brane?</td>
 		<td>-</td>
-		<td><a href="syntax.html#gates">Gate syntax</a></td>
+		<td><a href="syntax.html#gates">syntax</a></td>
 		<td>
 			A circuit with 7 gates:
 			<pre class="escher">
@@ -158,7 +158,7 @@ alpha {
 	<tr id="index">
 		<td><a href="#index">Index</a></td>
 		<td>-</td>
-		<td><a href="meaning.html#indices">Index meaning</a></td>
+		<td><a href="meaning.html#indices">meaning</a></td>
 		<td>-</td>
 		<td>
 			This exemplifies part of a typical index:
@@ -191,7 +191,7 @@ alpha {
 		<td><a href="#link">Link</a></td>
 		<td><a href="#flow">Flow</a></td>
 		<td>-</td>
-		<td><a href="syntax.html#links">Link syntax</a></td>
+		<td><a href="syntax.html#links">syntax</a></td>
 		<td>
 			<code>gateX:valveNo3 = gateY:valveNo2</code><br>
 			<code>:valveNo3 = gateX:</code><br>
@@ -204,7 +204,7 @@ alpha {
 	<tr id="map">
 		<td><a href="#map">Map</a></td>
 		<td>-</td>
-		<td><a href="meaning.html#maps">Map meaning</a></td>
+		<td><a href="meaning.html#maps">meaning</a></td>
 		<td>-</td>
 		<td>
 			<pre class="escher">
@@ -277,7 +277,7 @@ MixedMap {
 	<tr id="program">
 		<td><a href="#program">Program</a></td>
 		<td>runnable?, executable circuit?</td>
-		<td><a href="meaning.html#programs">Program meaning</a></td>
+		<td><a href="meaning.html#programs">meaning</a></td>
 		<td>-</td>
 		<td>
 			See any of the <code>*Main</code> circuits in the
@@ -306,8 +306,8 @@ MixedMap {
 	<tr id="series">
 		<td><a href="#series">Series</a></td>
 		<td></td>
-		<td><a href="meaning.html#series">Series meaning</a></td>
-		<td><a href="syntax.html#series">Series syntax</a></td>
+		<td><a href="meaning.html#series">meaning</a></td>
+		<td><a href="syntax.html#series">syntax</a></td>
 		<td>
 			implicit series:
 			<pre class="escher">
@@ -373,7 +373,7 @@ alpha {
 	<tr id="tree">
 		<td><a href="#tree">Tree</a></td>
 		<td>-</td>
-		<td><a href="meaning.html#trees">Tree meaning</a></td>
+		<td><a href="meaning.html#trees">meaning</a></td>
 		<td>-</td>
 		<td>
 			<pre class="escher">

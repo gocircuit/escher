@@ -1,8 +1,8 @@
 body, li, ul, table, ul, ol, dt, dd {
 	/*background: rgb(240,255,255);*/
-	background:  rgb(245,255,255);
+	background:  rgb(245, 255, 255);
 	/*color: rgba(95,95,95, 0.8);*/
-	color: rgba(30,30,30, 0.7);
+	color: rgba(30, 30, 30, 0.7);
 	font-family: 'helvetica', sans-serif;
 	font-weight: 400;
 	line-height: 1.4em;

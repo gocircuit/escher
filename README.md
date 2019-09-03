@@ -51,7 +51,7 @@ There are only emergences and disappearances of events.
 Escher presents the world in a model called
 [Choiceless Computation](http://arxiv.org/pdf/math/9705225.pdf).
 
-Understanding the difference between Turing Machines and Choiceless Computation,
+Understanding the difference between _Turing Machines_ and _Choiceless Computation_,
 while not entirely necessary, sheds much light on the profound difference between
 Escher and other languages.
 The relevant publications are quoted in the [bibliography](#bibliography) at the end.
@@ -74,7 +74,7 @@ Upon action there is no guarantee as to which corner, diagonal
 or side, respectively, the robot will choose to flip.
 
 Devise a sequence of commands that forces the robot to turn all caps in a
-conﬁguration where they all have the same orientation.
+configuration where they all have the same orientation.
 
 Can you devise a sequence that ensures they all face up? Down?
 
@@ -109,11 +109,11 @@ Please reffer to [the projects website](http://escher.io).
 ## Syntax (files) and faculties (directories) structure
 
 Escher programs are designated by a local root directory and all its descendants.
-That directory is represented as the root in the faculty namespace
+That directory is represented as the root in the faculty name-space
 inside the Escher programming environment.
 
 Escher compiles all files ending in `.escher` and attaches the resulting circuit designs
-to the namespaces corresponding to their directory parents.
+to the name-spaces corresponding to their directory parents.
 
 To materialize (i.e. run) an Escher program, use the mandatory `-x` flag
 to specify the path to the local source directory.
@@ -140,7 +140,7 @@ Escher allows the mixing of two source hierarchies into a single execution.
 For instance, the hierarchy `acid/karajan` contains circuit definitions
 (in terms of gates or other circuits),
 while the hierarchy `tutorial/circuit/autorespawn` contains a root `main` circuit.
-To execute the latter, using the former as a "library" available in the visisble namespace,
+To execute the latter, using the former as a "library" available in the visible name-space,
 run for instance
 
 ```bash
@@ -170,7 +170,7 @@ You will notice that the visual language follows a prescribed format.
 
 ### Data (Noun) gates
 
-On blank slate, there is "nothing to do" — so to speak.
+On blank slate, there is "nothing to do" -- so to speak.
 For this reason, we have a collection of gates which are effectively "springs" of objects.
 
 Some produce integers, some floats, some complex numbers, some strings.
@@ -212,7 +212,7 @@ This is the _Reason Gate_, illustrated below.
 The following three illustrations show the same gate design,
 but under different orientations of the event streams.
 In all valid cases, the relationship between the valve values shown,
-examplifies the effect of the gate.
+exemplifies the effect of the gate.
 
 ![Generalization](misc/img/generalization.png)
 
@@ -236,7 +236,7 @@ Duality gates are the boundary between Escher semantics and the outside world.
 They are the I/O with the outside.
 Such gates affect some external technology when prompted through Escher in a certain way.
 Alternatively, such gates might fire an Escher message on one of its valves,
-in response to an asynchronous events occuring in an external technology.
+in response to an asynchronous events occurring in an external technology.
 
 ### Variation (Surprise) and Causation (Action) gates
 
@@ -244,7 +244,7 @@ in response to an asynchronous events occuring in an external technology.
 
 For instance, with the gates we've seen so far,
 one might construct the following higher-level circuit abstraction for an I/O device,
-which is controlled by a defered logic:
+which is controlled by a deferred logic:
 
 ![I/O device](misc/img/io.png)
 

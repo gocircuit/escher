@@ -23,6 +23,8 @@ const DefaultValve = ""
 // The value of the empty-string gate, if present, is expected to be a string and is a ‘verb’ word.
 type Verb Circuit
 
+// NewAddress returns a verb-view circuit (like an array in other languages)
+// of the supplied names in the supplied order.
 func NewAddress(addr ...Name) Verb {
 	x := New()
 	for i, n := range addr {
@@ -31,12 +33,15 @@ func NewAddress(addr ...Name) Verb {
 	return Verb(x)
 }
 
+// NewVerbAddress returns a verb-view circuit (like an array in other languages)
+// with the given name and the supplied names in the supplied order
 func NewVerbAddress(verb string, addr ...Name) Verb {
 	x := NewAddress(addr...)
 	x.Gate[""] = verb
 	return x
 }
 
+// IsVerb returns true if the supplied value is a verb
 func IsVerb(v Value) bool {
 	u, ok := v.(Circuit)
 	if !ok {

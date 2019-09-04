@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Link connects two diffferent, yet unconnected valves (by vector),
+// Link connects two different, yet unconnected valves (by vector),
 // potentially from the same gate
 func (u Circuit) Link(x, y Vector) {
 	if x.Gate == y.Gate && x.Valve == y.Valve {
@@ -36,6 +36,7 @@ func (u Circuit) valves(p Name) map[Name]Vector {
 	return u.Flow[p]
 }
 
+// Unlink removes the link between two Vectors
 func (u Circuit) Unlink(x, y Vector) {
 	xs, ys := u.Flow[x.Gate], u.Flow[y.Gate]
 	delete(xs, x.Valve)
@@ -48,10 +49,15 @@ func (u Circuit) Unlink(x, y Vector) {
 	}
 }
 
+// Valves returns the list of connected valve-name
+// of the gate with the supplied name,
+// and their connected vectors
 func (u Circuit) Valves(gate Name) map[Name]Vector {
 	return u.Flow[gate]
 }
 
+// ValveNames returns the list of connected valve-names
+// of the gate with the supplied name
 func (u Circuit) ValveNames(gate Name) []Name {
 	var r []Name
 	for n := range u.Flow[gate] {
@@ -60,10 +66,13 @@ func (u Circuit) ValveNames(gate Name) []Name {
 	return r
 }
 
+// Degree returns the number of connected valves
+// of the gate with the supplied name
 func (u Circuit) Degree(gate Name) int {
 	return len(u.Flow[gate])
 }
 
+// View returns a copy of this circuit reduced to the supplied gate
 func (u Circuit) View(gate Name) Circuit {
 	x := New()
 	for vlv, vec := range u.Flow[gate] {
@@ -72,6 +81,7 @@ func (u Circuit) View(gate Name) Circuit {
 	return x
 }
 
+// Follow returns the vector linked up with the supplied vector
 func (u Circuit) Follow(v Vector) Vector {
 	return u.Flow[v.Gate][v.Valve]
 }
@@ -85,6 +95,7 @@ func (u Circuit) Flows() (r [][2]Vector) {
 	return
 }
 
+// Vol counts the number of connected valves within this circuit
 func (u Circuit) Vol() (vol int) {
 	for _, view := range u.Flow {
 		for range view {

@@ -11,12 +11,15 @@ import (
 	"sort"
 )
 
-// Circuit ...
+// Circuit represents an Escher circuit.
+// See the Escher Handbook for a description of circuits.
 type Circuit struct {
 	Gate map[Name]Value
 	Flow map[Name]map[Name]Vector // gate -> valve -> opposing gate and valve
 }
 
+// Super is the super-gates name.
+// The super-gate is the gate-view of the current/top-most circuit.
 const Super = ""
 
 // New creates a new circuit without gates nor flows

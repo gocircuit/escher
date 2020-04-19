@@ -26,16 +26,16 @@ ReflexPage {
 
 <h1>Implementing reflexes</h1>
 
-<p>A key motivation for the design of Escher is the idea that 
+<p>A key motivation for the design of Escher is the idea that
 software programs should be assembled as the interconnection of
 independently-executing computational devices of special-purpose logic.
 In other words, computer programs — small or large — should be
-no different in their essential structure than cloud applications, 
+no different in their essential structure than cloud applications,
 which are no more and no less than an interconnection of independently
 running special-purpose services.
 
 <p>We call these “computational devices” <em>reflexes</em>.
-Reflexes can be implemented in the language underlying Escher 
+Reflexes can be implemented in the language underlying Escher
 (the Go language) or they can be composed out of other reflexes,
 using <a href="programs.html">circuit programs</a> from within Escher.
 Here we describe how to implement reflexes in Go and link them
@@ -68,7 +68,7 @@ type Receiver struct {
 
 <h2>The spark</h2>
 
-<p>When a reflex is materialized, the Escher runtime creates a new instance of the underlying 
+<p>When a reflex is materialized, the Escher runtime creates a new instance of the underlying
 Go receiver type and invokes a designated initialization method, called <code>Spark</code>.
 All receivers must implement that method.
 
@@ -103,7 +103,7 @@ is printed out by the Escher tool when an Escher program panics.
 
 <p>From a programmatic standpoint, only one of the gates of circuit <code>matter</code>
 is of interest to reflex programmers. The gate called <code>View</code> lists
-the names of all valves connected to this reflex by the parent system which is 
+the names of all valves connected to this reflex by the parent system which is
 materializing this reflex. The <code>View</code> gate has
 a circuit value, whose gate names correspond to the names of the
 valves connected to the reflex being materialized.
@@ -119,22 +119,22 @@ valves connected to the reflex being materialized.
 
 <h3>Auxiliary input</h3>
 
-<p>The last argument <code>aux</code> contains user-supplied auxiliary 
+<p>The last argument <code>aux</code> contains user-supplied auxiliary
 information that can inform the <code>Spark</code> method to specialize
-this reflex one way or another. The auxiliary information is specified 
-by the user when linking the reflex to the runtime, which is explained 
+this reflex one way or another. The auxiliary information is specified
+by the user when linking the reflex to the runtime, which is explained
 further below.
 
 <h3>Return residue</h3>
 
-<p>The <code>Spark</code> method can return a value called the 
+<p>The <code>Spark</code> method can return a value called the
 <em>residue</em> (of materializing this reflex). The residue value
 can be <code>int</code>, <code>float64</code>, <code>complex128</code>,
 <code>string</code>, <code>Circuit</code> or <code>Materializer</code>.
 The latter is a Go type that can materialize reflexes (it is essentially a factory
 object for reflexes), described in the linking section below.
 
-<p>The residue will be made available through the Escher 
+<p>The residue will be made available through the Escher
 <a href="program.html">programming environment</a> for further
 manipulations.
 
@@ -146,7 +146,7 @@ a reflex implementation.
 
 <h3>Fixed valve names</h3>
 
-<p>The first kind are receiver methods named 
+<p>The first kind are receiver methods named
 <code>CognizeVALVE</code>, where <code>VALVE</code>
 can be any string (including the empty string), that have the following
 signature:
@@ -161,10 +161,10 @@ func (r *Receiver) CognizeVALVE(eye *be.Eye, value interface{}) {
 runtime that this reflex type requires the valve named <code>VALVE</code>
 to be connected (when the reflex is materialized as part of a circuit of reflexes).
 
-<p>Furthermore, every event sent to this valve (of this reflex instance) 
+<p>Furthermore, every event sent to this valve (of this reflex instance)
 will result in an invocation of the method <code>CognizeVALVE</code>, wherein the event value
-is held by the argument <code>value</code>. The <code>eye</code> object, supplied 
-for convenience, can be used to send out events to any of the reflex's connected 
+is held by the argument <code>value</code>. The <code>eye</code> object, supplied
+for convenience, can be used to send out events to any of the reflex's connected
 valves.
 
 <p>We say that the method <code>CognizeVALVE</code> captures the event.
@@ -180,7 +180,7 @@ func (r *Receiver) OverCognize(eye *be.Eye, valve Name, value interface{}) {
 </pre>
 
 <p>If such a method is present, the runtime is informed that the reflex
-accepts any number and naming of connected valves. The method 
+accepts any number and naming of connected valves. The method
 <code>OverCognize</code> will be invoked whenever an event is
 received that is not captured by a fixed-name valve method.
 

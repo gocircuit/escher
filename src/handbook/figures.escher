@@ -10,7 +10,7 @@ FigureTelescope {
 	fig2 *FigurePngSvg
 	fig2:Image = "telescope"
 	fig2:Width = "600px"
-	fig2:Caption = `This is a <a href="syntax.html">symbolic representation</a> 
+	fig2:Caption = `This is a <a href="syntax.html">symbolic representation</a>
 	of two circuit designs, named <code>App</code> and <code>Database</code>.
 	The illustration omits valve names.`
 	fig2: = :

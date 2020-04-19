@@ -22,7 +22,7 @@ SyntaxPage {
 	fig:Width = "500px"
 	fig:Caption = `
 		In this illustration, the depicted circuit has three valves at the super gate,
-		labeled as “X”, “Y” and “” (the empty string). 
+		labeled as “X”, “Y” and “” (the empty string).
 		The <a href="#links">source for this circuit</a> is given later below.`
 
 	t *text.QuickForm
@@ -32,7 +32,7 @@ SyntaxPage {
 
 <p>At heart Escher is a Go package that parses a simple written syntax
 into a labeled graph data structure, called a <em>circuit</em>. If you view
-XML as a syntax that represents labeled trees, then Escher would be a 
+XML as a syntax that represents labeled trees, then Escher would be a
 syntax that represents labeled graphs.
 
 <h2>Syntax comparison with Java and C++</h2>
@@ -123,10 +123,10 @@ gate names and links and excludes the gate values — the <em>external</em> stru
 White ovals — contained inside the black one and mutually non-overlapping — denote gates.
 
 <p>Links are depicted as white lines that connect the outlines of gate ovals.
-Link endpoints connecting to the <a href="#links">super gate</a> are attached to 
+Link endpoints connecting to the <a href="#links">super gate</a> are attached to
 the outline of the surrounding black oval.
 
-<p>Valve names are written in white within the black oval, next to their 
+<p>Valve names are written in white within the black oval, next to their
 respective visual connection point. Connection points where valve names
 are visually missing correspond to empty-string valves.
 
@@ -346,13 +346,13 @@ the second vector. Valid examples:
 <li>Gate names can be the empty string. The empty-string gate is called the <em>super</em> gate.
 While one cannot assign a value to it through syntax, it is possible to connect links to it.
 
-<p>The super gate has a distinguished role in some contexts. 
-For instance, when <a href="program.html">materializing circuits</a>, 
+<p>The super gate has a distinguished role in some contexts.
+For instance, when <a href="program.html">materializing circuits</a>,
 the links connected to the super gate are exposed to the higher-level “super” circuit.</li>
 <li>Valve names can be the empty string. We call such valves <em>default</em>, as
 they are commonly referred to hereinafter in various idioms.
 
-<p>For instance, it is a common pattern to name the output valve of 
+<p>For instance, it is a common pattern to name the output valve of
 materializable circuits after the empty string. The default valve of the super gate,
 on the other hand, is a way of taking advantage of Escher's <a href="#sugar">syntactic sugar rule</a>.
 </ul>

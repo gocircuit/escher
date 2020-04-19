@@ -34,7 +34,7 @@ and understandable to users.
 
 <p>We propose a syntactic abstraction, called Escher circuits, for representing the state of the cloud.
 The abstraction enables modular composition of large circuits from smaller components, facilitating
-manual descriptions of cloud topologies. Further, it supports a circuit “difference” calculation 
+manual descriptions of cloud topologies. Further, it supports a circuit “difference” calculation
 to facilitate the representation of incremental system changes.
 
 <p>The result is a system that provides a 3-step workflow for the Operations Engineer,
@@ -93,7 +93,7 @@ are described in a few simple postulates:
 	so that no such pair is connected more than once.
 </ul>
 
-<p>Relationships between the components of a system can be represented visually using the same 
+<p>Relationships between the components of a system can be represented visually using the same
 <a href="syntax.html">symbolism employed by Escher for representing nested circuits</a>:
 
 {{.Gate.Diagram}}
@@ -134,7 +134,7 @@ Some of the changes to the cloud will be caused by external factors, for instanc
 failures in the hosting hardware. Other changes will be caused by commands initiated by the
 user.
 
-<p>Since user-initiated changes and external changes are mutually asynchronous, we 
+<p>Since user-initiated changes and external changes are mutually asynchronous, we
 propose the following simple workflow for the user's point-of-view or point-of-control,
 as the case might be:
 
@@ -234,7 +234,7 @@ we started with, i.e. the one illustrated in the drawing above.
 a “primal” representation or simply a primal.
 Every primal has an equivalent “dual” representation.
 Transitioning from primal to dual and vice-versa is a matter of
-a simple transformation, as we shall see. 
+a simple transformation, as we shall see.
 
 <p>The dual representation of system state is useful to us,
 as it is more convenient to carry out certain manipulations within this representation.
@@ -255,7 +255,7 @@ For our running example, the list of services would be
 (host2.database, Redis)
 </pre>
 
-<p>The list of links enumerates all service-to-service links present in the primal representation as pairs 
+<p>The list of links enumerates all service-to-service links present in the primal representation as pairs
 of endpoints, wherein each endpoint (a service-valve pair) is also specified by its “full path” in the primal.
 In our example, that list would be:
 
@@ -271,7 +271,7 @@ this makes sense, by simply computing the difference of their corresponding dual
 
 <h2>Sensing and materializing</h2>
 
-<p>Sensing and materializing are the two operations that convert between the abstract circuit 
+<p>Sensing and materializing are the two operations that convert between the abstract circuit
 representation of a cloud topology and the actual physical topology that executes on the cloud.
 
 <p>Sensing is the operation of “reading” the current state of the cloud and representing it in the
@@ -284,8 +284,8 @@ into an actual physical network of services running in the cloud.
 work. The subsequent conversions from dual to primal, a mere data structure transformation,
 was explained in the previous section.
 
-<p>The specific API for manipulating the cloud can be any: 
-Google Compute Engine, Amazon EC2, <a href="http://gocircuit.org">Circuit</a>, and 
+<p>The specific API for manipulating the cloud can be any:
+Google Compute Engine, Amazon EC2, <a href="http://gocircuit.org">Circuit</a>, and
 so forth.  Our following explanations will be based on the Circuit as its simple API provides
 exactly the minimum necessary for such manipulations.
 
@@ -443,7 +443,7 @@ And the list of links is:
 
 <h3>Sensing the cloud state into a dual form</h3>
 
-<p>Reading the current state of the cloud is fairly straightforward. 
+<p>Reading the current state of the cloud is fairly straightforward.
 After listing the contents of the Circuit using <code>circuit ls /...</code>,
 there will only be paths ending in <code>/service</code>,
 and paths ending in <code>/dns</code>.

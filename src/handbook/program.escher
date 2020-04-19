@@ -71,7 +71,7 @@ residual value.
 
 <p>A program circuit describes a system of interconnected reflexes.
 
-<p>Each circuit gate corresponds to a reflex. The gate value 
+<p>Each circuit gate corresponds to a reflex. The gate value
 describes the type of reflex that is to be materialized. While the
 gate name is merely an identifier, unique to the program circuit,
 used mainly to enable the specification of the reflex-to-reflex links.
@@ -113,7 +113,7 @@ whose noun value is the gate value.
 
 <p>A noun reflex is a generic, built-in reflex type, which — after materialization —
 emits its corresponding gate value to each one of its connected valves.
-If no valves are connected, the noun reflex leaves the gate value as its 
+If no valves are connected, the noun reflex leaves the gate value as its
 residue. Otherwise, it leaves no residue.
 
 <h4>Expanding directives</h4>
@@ -196,7 +196,7 @@ Whereas assume that <code>Web</code>, <code>Cache</code>, <code>Shard</code> and
 {{.Gate.Telescope}}
 
 If we materialize the program circuit <code>App</code> with respect to the index given above
-(i.e. directive addresses will resolve with respect to that index), 
+(i.e. directive addresses will resolve with respect to that index),
 we are going to get the following residue:
 
 <pre class="escher">
@@ -272,11 +272,11 @@ directive addresses are interpreted.
 
 <p>The last argument, <code>barrier</code>, is to be set to <code>nil</code>.
 
-<p>The function returns the residue of the materialization process. 
+<p>The function returns the residue of the materialization process.
 
 <h3 id="materialize-from-escher">Materializing from within Escher</h3>
 
-<p>One can recursively materialize circuits programs from within other 
+<p>One can recursively materialize circuits programs from within other
 circuit programs. This is accomplished using the built-in reflex <code>e.Materialize</code>
 which is described in the <a href="basis-escher.html">materialization faculty section</a>.
 

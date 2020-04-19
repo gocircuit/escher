@@ -21,7 +21,7 @@ BasisOSPage {
 <p>The <code>os</code> faculty contains various reflexes for interacting with the POSIX
 environment within which an Escher program executes. It contains a few simple reflexes
 for accessing things like command-line arguments, environment variables, standard file
-descriptors, process execution and the like. 
+descriptors, process execution and the like.
 
 <p>Most reflexes in <code>os</code> are implemented in less than 10 lines of code
 and in that sense their implementation is their best documentation. Here we detail

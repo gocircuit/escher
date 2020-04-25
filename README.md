@@ -9,7 +9,10 @@ ___NOTE___ _Escher (in this repository) is stagnant since 2015_
 See [the projects website](http://escher.io)
 for more info about the language.
 
-![Escher in language](misc/img/main.png)
+Enclosed | Enclosing
+--- | ---
+![Escher code](misc/img/main.svg) | ![Escher Hand with Reflecting Sphere](https://upload.wikimedia.org/wikipedia/en/6/66/Hand_with_Reflecting_Sphere.jpg) 
+Discrete | Continuous
 
 Escher is a programming language for everything.
 It can naturally represent both process and data,

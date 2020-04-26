@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Builds the escher handbook.
+# Builds the Escher handbook.
 # NOTE
-# * Requires the `escher` command to be available on the PATH.
-# * Requires the `inkscape` command to be available on the PATH.
+# * Requires the `escher` command available on the PATH.
+# * Requires the `inkscape` command available on the PATH.
 # * Requires the AWK script `svg_hide_group.awk`,
 #   which should already be in the same directory as this script.
 
@@ -12,10 +12,19 @@
 set -Eeu
 
 script_dir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
-
+repo_root="$(cd $script_dir; cd ..; pwd)"
+# NOTE We do not use this path,
+#      even though it would make the script position independent,
+#      because it would break (or worse: run the wrong code)
+#      when working on a fork of the repository.
+#src_dir="$GOPATH/src/github.com/gocircuit/escher/src/"
+# This way of defning src_dir ensures that we can use relative paths,
+# while the script may still be called from anywhere,
+# as long as the sources are to be found
+# under the same relative path within the escher repo.
+src_dir="$repo_root/src"
 svg_hide="$script_dir/svg_hide_group.awk"
-#export ESCHER="$GOPATH/src/github.com/gocircuit/escher/src/"
-export ESCHER="$script_dir/../src/"
+export ESCHER="$src_dir"
 
 cd "$ESCHER/handbook"
 

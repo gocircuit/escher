@@ -1,3 +1,5 @@
+// MEANT_TO_FAIL
+
 Break {
 	*e.Breakpoint = 1
 }

@@ -54,9 +54,17 @@ do
 	echo "################################################################################"
 	echo "### Running Escher tutorial $circuit ..."
 	echo "--------------------------------------------------------------------------------"
+	src_file="${ESCHER}/tutorial/${circuit}.escher"
+	main_address="tutorial.${circuit}Main"
+	meant_to_fail=$(cat "$src_file" | grep -q -e 'MEANT_TO_FAIL' && echo "true" || echo "false")
 	## run each tutorial for at most 2 seconds
 	#timeout  --foreground --kill-after=2 --signal=SIGINT 3s \
-		escher "*tutorial.${circuit}Main"
+	if $meant_to_fail
+	then
+		! escher "*$main_address"
+	else
+		escher "*$main_address"
+	fi
 	echo
 	echo "################################################################################"
 done

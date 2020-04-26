@@ -1,3 +1,5 @@
+// MEANT_TO_FAIL
+
 Debug {
 	*e.Show = "Parent circuit"
 

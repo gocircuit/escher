@@ -20,6 +20,9 @@ matrix:
 # Allow use in forks
 go_import_path: github.com/gocircuit/escher
 
+before_install:
+- if [ "$ONCE" = "true" ]; then  sudo apt-get -y install inkscape; fi
+
 install:
 - go get -v github.com/gocircuit/circuit/client
 - go get -v github.com/gocircuit/circuit/client/docker

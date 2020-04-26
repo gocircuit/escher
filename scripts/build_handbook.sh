@@ -22,36 +22,69 @@ repo_root="$(cd $script_dir; cd ..; pwd)"
 # while the script may still be called from anywhere,
 # as long as the sources are to be found
 # under the same relative path within the escher repo.
-src_dir="$repo_root/src"
+escher_src_dir="$repo_root/src"
 svg_hide="$script_dir/svg_hide_group.awk"
-export ESCHER="$src_dir"
+src_dir="$escher_src_dir/handbook"
+export ESCHER="$escher_src_dir"
 
-cd "$ESCHER/handbook"
+rel_out_dir="${1:-}"
+if [ "$rel_out_dir" = "" ]
+then
+	>&2 echo "Please supply a directory path to build the handbook in."
+	exit 1
+fi
+out_dir=$(mkdir -p "$rel_out_dir"; cd "$rel_out_dir"; pwd)
+if [ "$out_dir" = "$repo_root" ]
+then
+	>&2 echo "Please supply an output directory different then the escher repo root."
+	exit 1
+fi
+if [ "$out_dir" = "$src_dir" ]
+then
+	>&2 echo "Please supply an output directory different then the hanbook source directory."
+	exit 1
+fi
+
+echo "Building the handbook in '$out_dir'; press Ctrl+C to abort"
+echo "Waiting 3 seconds ..."
+sleep 3
 
 echo
 echo "Removing previous build artifacts ..."
-rm -f img/*-generated.*
-rm -f img/*.png
+rm -Rf "$out_dir/img"
+rm -Rf "$out_dir/css"
+rm -Rf "$out_dir/pdf"
+rm -f "$out_dir/"*.html
+
+echo
+echo "Copying assets from sources to output directory ..."
+echo -e "\tcss ..."
+cp -r "$src_dir/css" "$out_dir/"
+echo -e "\timg ..."
+cp -r "$src_dir/img" "$out_dir/"
+echo -e "\tpdf ..."
+cp -r "$src_dir/pdf" "$out_dir/"
+rm -f "$out_dir/css/font/.gitignore"
 
 echo
 echo "Generating different views of a \"packed\" SVG (using AWK) ..."
-svg_in="img/circuit.svg"
+svg_in="$src_dir/img/circuit.svg"
 
-svg_out="img/circuit-parts-generated.svg"
+svg_out="$out_dir/img/circuit-parts-generated.svg"
 echo -e "\t\"$svg_in\" --> \"$svg_out\""
-cat "img/circuit.svg" | awk \
+cat "$svg_in" | awk \
 	-v label_regex=labels-instances -v do_show=0 -f "$svg_hide" \
 	> "$svg_out"
 
-svg_out="img/circuit-instances-generated.svg"
+svg_out="$out_dir/img/circuit-instances-generated.svg"
 echo -e "\t\"$svg_in\" --> \"$svg_out\""
-cat "img/circuit.svg" | awk \
+cat "$svg_in" | awk \
 	-v label_regex=labels-parts -v do_show=0 -f "$svg_hide" \
 	> "$svg_out"
 
-svg_out="img/circuit-raw-generated.svg"
+svg_out="$out_dir/img/circuit-raw-generated.svg"
 echo -e "\t\"$svg_in\" --> \"$svg_out\""
-cat "img/circuit.svg" | awk \
+cat "$svg_in" | awk \
 	-v label_regex='labels-.*' -v do_show=0 -f "$svg_hide" \
 	> "$svg_out"
 
@@ -60,7 +93,7 @@ echo "Generate widely-compatible versions of our SVG images (using inkscape) ...
 # This makes the generated versions be
 # not just Inkscape compatible,
 # but display correctly everywhere.
-for svg_in in img/*-generated.svg
+for svg_in in "$out_dir/img/"*-generated.svg
 do
 	svg_out=$(echo "$svg_in" | sed -e 's|-generated\.svg$|-plain-generated.svg|')
 	echo -e "\t\"$svg_in\" --> \"$svg_out\""
@@ -70,7 +103,7 @@ done
 
 echo
 echo "Convert SVGs to PNGs (using inkscape) ..."
-for svg in img/*.svg
+for svg in "$out_dir/img/"*.svg
 do
 	png=$(echo "$svg" | sed -e 's|\(-plain\)\?\(-generated\)\?\.svg$|.png|')
 	echo -e "\t\"$svg\" --> \"$png\""

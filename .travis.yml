@@ -31,6 +31,7 @@ install:
 script:
 - make
 - escher "*test.All"
-- if [ "$ONCE" = "true" ]; then scripts/build_handbook.sh; fi
+- mkdir -p public
+- if [ "$ONCE" = "true" ]; then scripts/build_handbook.sh public; fi
 - if [ "$ONCE" = "true" ]; then scripts/tutorials.sh; fi
 - if [ "$ONCE" = "true" ]; then scripts/tests.sh; fi

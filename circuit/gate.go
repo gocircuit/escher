@@ -98,11 +98,11 @@ func (u Circuit) StringAt(name Name) string {
 func (u Circuit) StringOptionAt(name Name) (string, bool) {
 	v, ok := u.OptionAt(name)
 	if !ok {
-		return "", false
+		return "", false // "" means just an empty string value here
 	}
 	t, ok := v.(string)
 	if !ok {
-		return "", false
+		return "", false // "" means just an empty string value here
 	}
 	return t, true
 }

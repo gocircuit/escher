@@ -15,7 +15,7 @@ MeaningPage {
 	f *e.Fork
 	f:Ticker = tkr:
 
-	tkr *FigureJpg
+	tkr *FigurePngSvg
 	tkr:Image = "tkr"
 	tkr:Width = "500px"
 	tkr:Caption = ``

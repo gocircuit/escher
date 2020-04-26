@@ -15,7 +15,7 @@ ReflexPage {
 	f *e.Fork
 	f:Reflex = rfx:
 
-	rfx *FigureJpg
+	rfx *FigurePngSvg
 	rfx:Image = "reflex"
 	rfx:Width = "300px"
 	rfx:Caption = ``

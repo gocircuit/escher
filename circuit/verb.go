@@ -37,7 +37,7 @@ func NewAddress(addr ...Name) Verb {
 // with the given name and the supplied names in the supplied order
 func NewVerbAddress(verb string, addr ...Name) Verb {
 	x := NewAddress(addr...)
-	x.Gate[""] = verb
+	x.Gate[Super] = verb
 	return x
 }
 
@@ -47,7 +47,7 @@ func IsVerb(v Value) bool {
 	if !ok {
 		return false
 	}
-	s, ok := u.StringOptionAt("")
+	s, ok := u.StringOptionAt(Super)
 	return s == "*" || s == "@"
 }
 
@@ -62,7 +62,7 @@ func (a Verb) Address() (addr []Name) {
 }
 
 func (a Verb) Verb() Value {
-	return a.Gate[""]
+	return a.Gate[Super]
 }
 
 func (a Verb) compactible() bool {
@@ -96,7 +96,7 @@ func (a Verb) String() string {
 func (verb Verb) summarize() string {
 	index := Circuit(verb).SortedNumbers()
 	var w bytes.Buffer
-	if v, ok := verb.Gate[""]; ok {
+	if v, ok := verb.Gate[Super]; ok {
 		w.WriteString(fmt.Sprintf("%v", v))
 	}
 	for _, i := range index {

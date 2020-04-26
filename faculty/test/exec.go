@@ -23,7 +23,7 @@ func (Exec) CognizeIn(eye *be.Eye, v interface{}) {
 	x := v.(cir.Circuit)
 	//
 	addr := cir.Verb(x.CircuitAt("Address").Copy())
-	addr.Gate[""] = "*"
+	addr.Gate[cir.Super] = "*"
 	cmd := exec.Command(os.Args[0], "-src", srcDir, addr.String())
 
 	var success bool

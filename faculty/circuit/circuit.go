@@ -13,9 +13,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gocircuit/circuit/client"
-	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/faculty"
+	"github.com/hoijui/circuit/client"
+	"github.com/hoijui/escher/be"
+	"github.com/hoijui/escher/faculty"
 )
 
 // client *client.Client

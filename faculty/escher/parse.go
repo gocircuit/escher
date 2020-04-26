@@ -9,10 +9,10 @@ package escher
 import (
 	// "log"
 
-	"github.com/gocircuit/escher/a"
-	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/kit/plumb"
-	"github.com/gocircuit/escher/see"
+	"github.com/hoijui/escher/a"
+	"github.com/hoijui/escher/be"
+	"github.com/hoijui/escher/kit/plumb"
+	"github.com/hoijui/escher/see"
 )
 
 type Parse struct{ be.Sparkless }

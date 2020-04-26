@@ -9,7 +9,7 @@ package be
 import (
 	"sync"
 
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // NewEntanglement returns two materializers that each materialize once, to

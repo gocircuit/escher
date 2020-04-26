@@ -27,7 +27,7 @@ implementations to realize the huge variety of other possible designs.
 <h3>Star reflex</h3>
 
 <p>(The implementation can be found in
-<a href="https://github.com/gocircuit/escher/blob/master/faculty/basic/star.go">faculty/basic/star.go</a>.)
+<a href="https://github.com/hoijui/escher/blob/master/faculty/basic/star.go">faculty/basic/star.go</a>.)
 
 <p>The star is the simplest flow reflex. It accepts any number of
 connected valves and ignores their specific names.
@@ -61,7 +61,7 @@ it will be printed on the standard output three times by the receiving <code>*e.
 <h3>Fork reflex</h3>
 
 <p>(The implementation can be found in
-<a href="https://github.com/gocircuit/escher/blob/master/be/union.go">be/union.go</a>.)
+<a href="https://github.com/hoijui/escher/blob/master/be/union.go">be/union.go</a>.)
 
 <p>In our experience, the fork is the most commonly used synchronization primitive in Escher.
 It requires that the distinguished empty-string valve be connected, as well as one or more

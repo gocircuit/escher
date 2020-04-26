@@ -7,7 +7,7 @@
 package be
 
 import (
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // Required matter: Index, View, Verb

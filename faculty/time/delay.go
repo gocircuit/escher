@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/faculty"
+	"github.com/hoijui/escher/kit/plumb"
 )
 
 func init() {

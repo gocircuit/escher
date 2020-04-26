@@ -12,10 +12,10 @@ import (
 	"os/exec"
 	"path"
 
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty"
-	fio "github.com/gocircuit/escher/faculty/io"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/faculty"
+	fio "github.com/hoijui/escher/faculty/io"
 )
 
 func Init(arg []string) {

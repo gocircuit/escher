@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"strings"
 
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // requestCircuit converts an http.Request object into a data circuit representation

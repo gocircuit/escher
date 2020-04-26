@@ -14,7 +14,7 @@ repo_root="$(cd $script_dir; cd ..; pwd)"
 #      even though it would make the script position independent,
 #      because it would break (or worse: run the wrong code)
 #      when working on a fork of the repository.
-#src_dir="$GOPATH/src/github.com/gocircuit/escher/src/"
+#src_dir="$GOPATH/src/github.com/hoijui/escher/src/"
 # This way of defning src_dir ensures that we can use relative paths,
 # while the script may still be called from anywhere,
 # as long as the sources are to be found

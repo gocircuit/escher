@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"os"
 
-	cir "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/kit/runtime"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/kit/runtime"
 )
 
 func MaterializeSystem(system interface{}, index, barrier cir.Circuit) (residue interface{}) {

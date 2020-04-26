@@ -9,8 +9,8 @@ package yield
 import (
 	// "fmt"
 
-	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/faculty"
+	"github.com/hoijui/escher/be"
+	"github.com/hoijui/escher/faculty"
 )
 
 func init() {

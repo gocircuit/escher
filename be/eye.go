@@ -7,7 +7,7 @@
 package be
 
 import (
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // Eye is a runtime facility that delivers messages by invoking gate methods and

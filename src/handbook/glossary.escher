@@ -281,7 +281,7 @@ MixedMap {
 		<td>-</td>
 		<td>
 			See any of the <code>*Main</code> circuits in the
-			<a href="https://github.com/gocircuit/escher/tree/master/src/tutorial">Escher tutorials</a>
+			<a href="https://github.com/hoijui/escher/tree/master/src/tutorial">Escher tutorials</a>
 		</td>
 		<td>Programs are circuits that describe executable systems.</td>
 	</tr>

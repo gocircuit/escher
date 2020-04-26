@@ -18,14 +18,14 @@ matrix:
       env: GOOS=windows GOARCH=amd64 CGO_ENABLED=0
 
 # Allow use in forks
-go_import_path: github.com/gocircuit/escher
+go_import_path: github.com/hoijui/escher
 
 before_install:
 - if [ "$ONCE" = "true" ]; then  sudo apt-get -y install inkscape; fi
 
 install:
-- go get -v github.com/gocircuit/circuit/client
-- go get -v github.com/gocircuit/circuit/client/docker
+- go get -v github.com/hoijui/circuit/client
+- go get -v github.com/hoijui/circuit/client/docker
 - go get -v -t ./...
 
 script:

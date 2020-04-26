@@ -1,7 +1,7 @@
 # [Escher - A language for programming in pure metaphors](http://escher.io)
 
-[![Build Status](https://travis-ci.org/gocircuit/escher.svg?branch=master)](https://travis-ci.org/gocircuit/escher)
-[![GoDoc](https://godoc.org/github.com/gocircuit/escher?status.png)](https://godoc.org/github.com/gocircuit/escher)
+[![Build Status](https://travis-ci.org/hoijui/escher.svg?branch=master)](https://travis-ci.org/hoijui/escher)
+[![GoDoc](https://godoc.org/github.com/hoijui/escher?status.png)](https://godoc.org/github.com/hoijui/escher)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hoijui/escher)](https://goreportcard.com/report/github.com/hoijui/escher)
 
 ___NOTE___ _Escher (in this repository) is stagnant since 2015_
@@ -95,13 +95,13 @@ Given that the [Go Language compiler is installed](http://golang.org/doc/install
 you can build and install the circuit binary with one line:
 
 ```bash
-go get github.com/gocircuit/escher/escher
+go get github.com/hoijui/escher/escher
 ```
 
 Go to the Escher base directory and run one of the tutorials
 
 ```bash
-cd $GOPATH/src/github.com/gocircuit/escher
+cd $GOPATH/src/github.com/hoijui/escher
 escher -src src/tutorial "*helloworld.escher"
 ```
 

@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/gocircuit/escher/a"
+	. "github.com/hoijui/escher/a"
 )
 
 var testValue = []string{

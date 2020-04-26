@@ -7,7 +7,7 @@
 package be
 
 import (
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // *Spirit gates emit the residue of the enclosing circuit itself

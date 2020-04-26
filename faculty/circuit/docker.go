@@ -12,10 +12,10 @@ import (
 	"log"
 	"sync"
 
-	dkr "github.com/gocircuit/circuit/client/docker"
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/kit/plumb"
+	dkr "github.com/hoijui/circuit/client/docker"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/kit/plumb"
 )
 
 // Docker

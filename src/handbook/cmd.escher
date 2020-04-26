@@ -54,7 +54,7 @@ The following steps are performed upon invocation:
 current working directory where it is invoked:
 
 <pre class="bash">
-escher -src "$GOPATH/src/github.com/gocircuit/escher/src/" "*handbook.main"
+escher -src "$GOPATH/src/github.com/hoijui/escher/src/" "*handbook.main"
 </pre>
 
 <p>The <code>-src</code> can be omitted in favor of setting the <code>ESCHER</code> environment variable.

@@ -21,12 +21,12 @@ InstallPage {
 Fetching, building and installing Escher can then be accomplished with one command:
 
 <pre class="bash">
-go get github.com/gocircuit/escher/escher
+go get github.com/hoijui/escher/escher
 </pre>
 
 <p>To check whether the installation succeeded, run:
 <pre class="bash">
-ESCHER=$GOPATH/src/github.com/gocircuit/escher/src escher "*test.All"
+ESCHER=$GOPATH/src/github.com/hoijui/escher/src escher "*test.All"
 </pre>
 
 <em>NOTE</em> The environment variable <code>ESCHER</code> must point to the <code>src</code>

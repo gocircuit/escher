@@ -57,7 +57,7 @@ These gates can be viewed as Escher's “synchronization” facilities.
 <p>Basis reflexes are also Escher's way of interacting with external technologies
 such as input/output devices. The POSIX systems is a canonical example of an
 external technology, and Escher has a dedicated
-<a href="https://github.com/gocircuit/escher/tree/master/faculty/os"><code>os</code></a>
+<a href="https://github.com/hoijui/escher/tree/master/faculty/os"><code>os</code></a>
 faculty for it.
 
 <h3>Escher within Escher</h3>
@@ -65,7 +65,7 @@ faculty for it.
 <p>The most powerful feature of Escher is its recursive nature:
 Circuit programs can create program circuits and materialize them into other circuit programs.
 This programming pattern is enabled by the
-<a href="https://github.com/gocircuit/escher/tree/master/faculty/escher"><code>escher</code></a>
+<a href="https://github.com/hoijui/escher/tree/master/faculty/escher"><code>escher</code></a>
 faculty, which among other things offers reflexes that materialize program circuits.
 
 `

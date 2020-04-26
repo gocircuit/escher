@@ -187,7 +187,7 @@ Type <code>Value</code> designates any Go value.
 <p>Using the Escher parser is very simple, in three steps:
 
 <ul>
-<li>Import the parsing packages <code>"github.com/gocircuit/escher/a"</code> and <code>"github.com/gocircuit/escher/see"</code></li>
+<li>Import the parsing packages <code>"github.com/hoijui/escher/a"</code> and <code>"github.com/hoijui/escher/see"</code></li>
 <li>Create a parsing object for your source string</li>
 <li>Repeatedly parse one circuit definition at a time</li>
 </ul>
@@ -199,8 +199,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/gocircuit/escher/a"
-	"github.com/gocircuit/escher/see"
+	"github.com/hoijui/escher/a"
+	"github.com/hoijui/escher/see"
 )
 
 func main() {

@@ -246,9 +246,9 @@ value sent to <code>Door</code>.
 package example
 
 import (
-	"github.com/gocircuit/escher/be"
-	"github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/be"
+	"github.com/hoijui/escher/faculty"
+	. "github.com/hoijui/escher/circuit"
 )
 
 func init() {

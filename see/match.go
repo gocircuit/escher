@@ -7,8 +7,8 @@
 package see
 
 import (
-	"github.com/gocircuit/escher/a"
-	cir "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/a"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 type Carry struct {

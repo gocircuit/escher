@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 type Panic struct {

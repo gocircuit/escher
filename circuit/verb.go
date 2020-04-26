@@ -12,7 +12,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/gocircuit/escher/a"
+	"github.com/hoijui/escher/a"
 )
 
 // DefaultValve is the name of the default valve

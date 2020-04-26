@@ -12,9 +12,9 @@ import (
 	"log"
 	"os/exec"
 
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
-	kio "github.com/gocircuit/escher/kit/io"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	kio "github.com/hoijui/escher/kit/io"
 )
 
 // Process

@@ -9,8 +9,8 @@ package cmplx
 import (
 	"math/cmplx"
 
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // Polar

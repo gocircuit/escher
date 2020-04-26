@@ -6,7 +6,7 @@ faculty {
 		All of them can be executed in series by running
 		<code>$ESCHER/scripts/tutorials.sh</code>.
 		To run the tutorials manually, you may run a command like this:
-		<pre>escher -src "$GOPATH/src/github.com/gocircuit/escher/src/" "*tutorial.HelloWorld"</pre>
+		<pre>escher -src "$GOPATH/src/github.com/hoijui/escher/src/" "*tutorial.HelloWorld"</pre>
 		*/`
 }
 

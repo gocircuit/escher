@@ -13,7 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // cognizeResponse reads the circuit response u and fills in the http header object, returning the status and body.

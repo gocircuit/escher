@@ -11,9 +11,9 @@ import (
 	"log"
 	"sync"
 
-	"github.com/gocircuit/circuit/client"
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/circuit/client"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // Process

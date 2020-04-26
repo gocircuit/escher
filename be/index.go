@@ -7,7 +7,7 @@
 package be
 
 import (
-	cir "github.com/gocircuit/escher/circuit"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // Index is a hierarchy of names with associated meanings.

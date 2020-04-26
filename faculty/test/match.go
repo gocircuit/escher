@@ -9,8 +9,8 @@ package test
 import (
 	"log"
 
-	"github.com/gocircuit/escher/be"
-	cir "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 // TODO: Make sure matching works when opposing streams come at different speeds

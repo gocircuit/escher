@@ -9,7 +9,7 @@ package be
 import (
 	// "fmt"
 	"sync"
-	// . "github.com/gocircuit/escher/circuit"
+	// . "github.com/hoijui/escher/circuit"
 )
 
 // Cognize routines are called when a change in value is to be delivered to a reflex.

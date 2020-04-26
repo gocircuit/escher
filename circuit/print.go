@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/gocircuit/escher/a"
+	"github.com/hoijui/escher/a"
 )
 
 type Format struct {

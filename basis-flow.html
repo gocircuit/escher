@@ -23,69 +23,76 @@ implementations to realize the huge variety of other possible designs.
 
 <h3>Star reflex</h3>
 
-<p>The star is the simplest flow reflex. It accepts any number of 
+<p>(The implementation can be found in
+<a href="https://github.com/gocircuit/escher/blob/master/faculty/basic/star.go">faculty/basic/star.go</a>.)
+
+<p>The star is the simplest flow reflex. It accepts any number of
 connected valves and ignores their specific names.
 
 <p>When a value is received on any one of its connected valves,
 the star reflex forwards that value to all other connected valves.
 
-<p>Every forwarded value is emitted (i.e. sent) to its respective 
-valve on a dedicated goroutine. Therefore the star reflex never
-blocks. 
+<p>Every forwarded value is emitted (i.e. sent) to its respective
+valve on a dedicated Go routine. Therefore, the star reflex never
+blocks.
 
 <p>An example usage:
 
-<pre>
+<pre class="escher">
 {
-	star *Star
+	star *e.Star
 	one 1
 
 	star:X = one:
-	star:Y = *Show
-	star:Z = *Show
-	star:W = *Show
+	star:Y = *e.Show
+	star:Z = *e.Show
+	star:W = *e.Show
 }
 </pre>
 
 <p>When this circuit is materialized, the constant <code>1</code> will be emitted from gate <code>one</code>
 to valve <code>X</code> of gate <code>star</code>. The <code>star</code> gate will then forward the value
 to each of the valves <code>Y</code>, <code>Z</code> and <code>W</code> in parallel. Consequently
-it will be printed on the standard output three times by the receiving <code>*Show</code> reflexes.
+it will be printed on the standard output three times by the receiving <code>*e.Show</code> reflexes.
 
 <h3>Fork reflex</h3>
 
+<p>(The implementation can be found in
+<a href="https://github.com/gocircuit/escher/blob/master/be/union.go">be/union.go</a>.)
+
 <p>In our experience, the fork is the most commonly used synchronization primitive in Escher.
-It requires that the distinguished empty-string valve be connected, as well as one or more 
+It requires that the distinguished empty-string valve be connected, as well as one or more
 freely-named (string or integer) other valves.
 
-<p>Fork can be described as two entirely independent reflexes, let us call 
-them <em>merge</em> and <em>split</em>, embodied in one.
+<p>Fork can be described as two entirely independent reflexes.
+Let us call them <em>merge</em> and <em>split</em>, embodied in one.
 
 <h4>Split direction</h4>
 
-<p>Whenever a value W is received on the empty string valve of a fork,
-the reflex will process it using the split logic. The received value must be of type
-circuit. For every valve whose name N is not the empty string, fork will
-send the value of the gate named N from circuit W to that valve.
+<p>Whenever a value <em>W</em> (must be of type <code>Circuit</code>)
+is received on the empty string valve of a fork,
+the reflex will process it using the split logic.
+For every valve whose name <em>N</em> is not the empty string,
+fork will send the value of the gate named <em>N</em> from circuit <em>W</em> to that valve.
 
 <p>Take for instance this program:
 
-<pre>
+<pre class="escher">
 {
-	f *Fork
+	f *e.Fork
 	f: = {
 		x "Hello"
 		y "World"
 		z "Foo"
 	}
-	f:x = *Show
-	f:y = *Show
+	f:x = *e.Show
+	f:y = *e.Show
 }
 </pre>
 
-<p>The values <code>"Hello"</code> and <code>"World"</code> will be sent 
-to and printed by the connected <code>*Show</code> reflexes. Whereas the value <code>"Foo"</code>
-will be ignored.
+<p>The values <code>"Hello"</code> and <code>"World"</code> will be sent
+to and printed by the connected <code>*e.Show</code> reflexes.
+Whereas the value <code>"Foo"</code> will be ignored.
 
 <h4>Merge direction</h4>
 
@@ -94,16 +101,16 @@ this condition is met, it will merge all such values as the gates of a single ci
 gate names follow respective valve names, and will send this circuit out to its empty string valve.
 
 <p>Note that in the merge direction fork reflexes act as powerful synchronization primitives.
-They effectively wait, blocking any other receptions on the non-empty-string valves, until 
-one value is available on each such valve. Subsequently these values are packed into a 
-single circuit and sent out.
+They effectively wait, blocking any other receptions on the non-empty-string valves, until
+one value is available on each such valve.
+Subsequently, these values are packed into a single circuit and sent out.
 
 <p>Consider the following program, for instance:
 
-<pre>
+<pre class="escher">
 {
-	f *Fork
-	f: = *Show
+	f *e.Fork
+	f: = *e.Show
 	f:x = "New"
 	f:y = "York"
 }
@@ -112,21 +119,21 @@ single circuit and sent out.
 <p>Fork will wait until <code>"New"</code> and <code>"York"</code> are received
 on valves <code>x</code> and <code>y</code>, respectively. Then the value
 
-<pre>
+<pre class="escher">
 {
 	x "New"
 	y "York"
 }
 </pre>
 
-<p>will be sent to and printed by the <code>*Show</code> reflex.
+<p>will be sent to and printed by the <code>*e.Show</code> reflex.
 
 
 	</div>
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

@@ -18,7 +18,7 @@
 <p>The <code>os</code> faculty contains various reflexes for interacting with the POSIX
 environment within which an Escher program executes. It contains a few simple reflexes
 for accessing things like command-line arguments, environment variables, standard file
-descriptors, process execution and the like. 
+descriptors, process execution and the like.
 
 <p>Most reflexes in <code>os</code> are implemented in less than 10 lines of code
 and in that sense their implementation is their best documentation. Here we detail
@@ -36,7 +36,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 
 <p>An example of the command circuit value is as follows:
 
-<pre>
+<pre class="escher">
 {
 	Env {
 		"PATH=/abc:/bin"
@@ -50,7 +50,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 
 <p>The returned IO circuit value is of the following form:
 
-<pre>
+<pre class="escher">
 {
 	Stdin (io.WriteCloser)
 	Stdout (io.ReadCloser)
@@ -63,7 +63,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 
 <p>The exit circuit is of the form
 
-<pre>
+<pre class="escher">
 {
 	Exit (int)
 }
@@ -72,7 +72,7 @@ a circuit value, containing the exit code of the process, is sent out to the <co
 <p>The following example demonstrates invoking the <code>/bin/ls</code> command
 and forwarding its standard output and error to those of the Escher program itself.
 
-<pre>
+<pre class="escher">
 {
 	proc *os.Process
 	proc:Command = {
@@ -80,24 +80,24 @@ and forwarding its standard output and error to those of the Escher program itse
 		Args { "/" }
 	}
 
-	yio *Fork
+	yio *e.Fork
 	proc:IO = yio:
 
-	yio:Stdin = *Ignore
+	yio:Stdin = *e.Ignore
 	yio:Stdout = *os.Stdout
 	yio:Stderr = *os.Stderr
 
-	yexit *Fork
-	proc:Exit = yexit:
-	
+	yExit *e.Fork
+	proc:Exit = yExit:
+
 	exit *os.Exit
-	yexit:Exit = exit:
+	yExit:Exit = exit:
 }
 </pre>
 
 <p>The standard file descriptors of the child process must always be handled.
 In this example, standard output and error are forwarded while standard input is
-“ignored”. The reflex <code>*Ignore</code> is a “smart” reflex which
+“ignored”. The reflex <code>*e.Ignore</code> is a “smart” reflex which
 ignores primitive values (integers, floats, etc.), whereas it closes <code>io.Closer</code>
 objects and it drains <code>io.Reader</code> objects.
 
@@ -106,7 +106,7 @@ objects and it drains <code>io.Reader</code> objects.
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

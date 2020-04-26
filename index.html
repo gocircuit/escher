@@ -12,50 +12,61 @@
 	
 	<div class="page">
 	
-<h1>Escher language</h1>
+<h1>Escher programming language</h1>
 
-<p>Web pages and links form a graph. Datacenter computers and cables form a graph.
-Application processes and connections form a graph. Facebook users and
-friendships form a graph. Facebook groups and memberships form a graph.
-Neurons and synapses form a graph. Threads and shared data structures form a graph.
+<h2>Motivation</h2>
+
+<p>Web pages and links form a graph.
+Data-center computers and cables form a graph.
+Application processes and connections form a graph.
+Facebook users and friendships form a graph.
+Facebook groups and memberships form a graph.
+Neurons and synapses form a graph.
+Threads and shared data structures form a graph.
 Processes and sockets form a graph.
 
 <p>Not only are all of the above situations visually described by graphs, but also
 their essential behavior (as best as we understand it) is the same in all cases:
-Independent processing units, pairwise-interlinked by sequential channels—both channels
-and processors emerging and disappearing asynchronously.
+They are comprised of independent processing units,
+which are pairwise-interlinked by sequential channels,
+while both channels and processors are emerging and disappearing asynchronously.
 
 <p>Three decades ago, before the above examples were within practical reach,
-a British gentleman—named <a href="http://en.wikipedia.org/wiki/Tony_Hoare">Tony
-Hoare</a>—had noticed that this essential behavior was exhibited by virtually
-all identifiable interacting physical (as well as man-made abstract) entities: People interacting with people,
-people interacting with vending machines, components of vending
-machines interacting with each other, animals interacting with animals, 
-cells interacting with cells, proteins interacting with proteins, and so on.
+a British gentleman — named <a href="http://en.wikipedia.org/wiki/Tony_Hoare">Tony
+Hoare</a> — had noticed that this essential behavior was exhibited by virtually
+all identifiable interacting physical (as well as man-made abstract) entities:
+People interacting with people,
+people interacting with vending machines,
+components of vending machines interacting with each other,
+animals interacting with animals,
+cells interacting with cells,
+proteins interacting with proteins,
+and so on.
 
-<p>He called this high-level behavioral model of the world (or discernable subsystems thereof)
+<p>He called this high-level behavioral model of the world (or discernible subsystems thereof)
 <a href="http://en.wikipedia.org/wiki/Communicating_sequential_processes">Communicating Sequential Processes</a>.
 Hoare's model is nothing more and nothing less than a minimal abstraction of how
-we see and understand (and subsequently will to control) the world from an 
-observer—i.e. third person—point of view.
+we see and understand (and subsequently will to control) the world
+from an observer — i.e. third person — point of view.
 
-<p>I prefer to call such systems <em>circuits</em> both for brevity and for the fact that
+<p>I prefer to call such systems <em>circuits</em>, both for brevity and for the fact that
 electrical circuits were probably the first man-made manifestation of communicating sequential
 processes that was rich, flexible and not present in untouched nature.
 
 <p>Today's connected Internet services and devices are no different than electrical components on
 a circuit: They are independent processing units communicating via sequential streams of
 data, as opposed to sequential streams of changes in electrical voltage. The difference
-between circuits analog and digital is entirely linguistic: It is the difference between a 
+between analog and digital circuits is entirely linguistic: It is the difference between a
 floating-point number (the voltage) and a data structure (a digital message).
 
 <p>If it is indeed the case that most things that we program or that we program about
 are circuits at the end of the day, then it is only appropriate to complement Hoare's
-model of everything with an appropriate programming language. This is the goal of Escher.
+model of everything with an appropriate programming language.
+This is the goal of Escher.
 
 <h2>Sources</h2>
 
-<p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>. 
+<p>Find the source repository for <a href="https://github.com/gocircuit/escher">Escher on GitHub</a>.
 Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
 <h2>Documentation</h2>
@@ -101,12 +112,12 @@ Follow us on Twitter <a href="https://twitter.com/escherio">@escherio</a>.
 
 <p>
 
-        
+		
 	</div>
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

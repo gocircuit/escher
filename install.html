@@ -12,34 +12,37 @@
 	
 	<div class="page">
 	
-<h1>Bulding and installing Escher</h1>
+<h1>Building and installing Escher</h1>
 
 <p>Escher requires the <a href="http://golang.org">Go language toolchain</a> to be installed first.
 Fetching, building and installing Escher can then be accomplished with one command:
 
-<pre>
-	% go get github.com/gocircuit/escher/escher
+<pre class="bash">
+go get github.com/gocircuit/escher/escher
 </pre>
 
-<p>To check that installation succeeded, run
-
-<pre>
-	% ESCHER=github.com/gocircuit/escher/src escher test.All
-	+ Test basic.TestFork (ok)
-	+ Test basic.TestFunc (ok)
-	+ Test text.TestForm (ok)
-	+ Test yield.TestValues (ok)
-	…
+<p>To check whether the installation succeeded, run:
+<pre class="bash">
+ESCHER=$GOPATH/src/github.com/gocircuit/escher/src escher "*test.All"
 </pre>
 
-<p>Note that the environment <code>ESCHER</code> must point to the <code>src</code>
+<em>NOTE</em> The environment variable <code>ESCHER</code> must point to the <code>src</code>
 subdirectory of the main Escher repo on your host.
-        
+
+<p>You should see output similar to this:
+<pre class="bash">
++ Test *basic.TestFork (ok)
++ Test *basic.TestAlternate (ok)
++ Test *text.TestForm (ok)
++ Test *yield.TestFlows (ok)
++ Test *yield.TestValues (ok)
+</pre>
+		
 	</div>
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

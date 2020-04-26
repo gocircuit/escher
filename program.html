@@ -30,7 +30,7 @@ residual value.
 
 <p>A program circuit describes a system of interconnected reflexes.
 
-<p>Each circuit gate corresponds to a reflex. The gate value 
+<p>Each circuit gate corresponds to a reflex. The gate value
 describes the type of reflex that is to be materialized. While the
 gate name is merely an identifier, unique to the program circuit,
 used mainly to enable the specification of the reflex-to-reflex links.
@@ -45,7 +45,7 @@ Links are allowed either between two gates defined within the circuit,
 or between a defined gate and the super gate.
 
 <p>Links connected to the super gate are endpoints whose eventual connection
-to a reflex is defered to the enclosing circuit.
+to a reflex is deferred to the enclosing circuit.
 
 <p>Circuit programs that have no links to the super gate are called <em>closed</em>
 circuits, as they describe complete materializable systems on their own.
@@ -56,20 +56,23 @@ can only be materialized as reflexes within higher-level enclosing circuits.
 <h3>Gate value interpretation</h3>
 
 <p>Circuit programs recognize the following types of gate values:
-<ul>
-<li>Integer, float, complex, string, or a non-directive circuit, or</li>
+<ol>
+<li>Integer</li>
+<li>Float</li>
+<li>Complex</li>
+<li>String</li>
+<li>Circuit (non-directive)</li>
 <li><a href="meaning.html#directives">Directive circuit</a>
-</ul>
+</ol>
 
 <h4>Noun reflexes</h4>
 
-<p>Gate values in the first group (integer, float, complex, string or a non-directive circuit) 
-will result in the materialization of a “noun” reflex, whose noun value is the
-gate value.
+<p>Gate value types 1 to 5 will result in the materialization of a “noun” reflex,
+whose noun value is the gate value.
 
-<p>A noun reflex is a generic built-in reflex type which, after materialization,
+<p>A noun reflex is a generic, built-in reflex type, which — after materialization —
 emits its corresponding gate value to each one of its connected valves.
-If no valves are connected, the noun reflex leaves the gate value as its 
+If no valves are connected, the noun reflex leaves the gate value as its
 residue. Otherwise, it leaves no residue.
 
 <h4>Expanding directives</h4>
@@ -77,24 +80,24 @@ residue. Otherwise, it leaves no residue.
 <p>When the gate value is a <a href="meaning.html#directives">directive</a>,
 materialization proceeds as follows:
 
-<ul>
-<li>First, the runtime looks up the “target” value, which resides in the index
-at the address specified in the directive.</li>
-<li>Second,
-<ul>
-<li>If the directive verb is <code>@</code>, the gate is materialized as a noun gate
-emitting the target value.</li>
-<li>If the directive verb is <code>*</code>, the target value is substituted as the gate value,
-and the materialization process described in this section is repeated now with the target
-value as the gate value.
-</ul>
+<ol>
+<li>The runtime looks up the “target” value, which resides in the index
+	at the address specified in the directive.</li>
+<li>
+	<ul>
+	<li>If the directive verb is <code>@</code>, the gate is materialized as a noun gate
+		emitting the target value.</li>
+	<li>If the directive verb is <code>*</code>, the target value is substituted as the gate value,
+		and the materialization process described in this section is repeated now with the target
+		value as the gate value.
+	</ul>
 </li>
-</ul>
+</ol>
 
 <h3>Circuit residue</h4>
 
 <p>As pointed out in the <a href="reflex.html">section on reflexes</a>, every reflex
-can leave a residue value as a result of being materialized, or the Go value <code>nil</code>
+can leave a residue value as a result of being materialized, or the Go value <code>nil</code>,
 which indicates leaving no residue.
 
 <p>Circuit programs are no different than reflexes (in fact they describe higher-order reflexes themselves)
@@ -102,7 +105,7 @@ in that they leave a residue value as well.
 
 <p>The residue of materializing a circuit program is the same circuit,
 wherein each gate value is replaced by the residue of materializing that gate.
-Gate corresponding to reflexes that leave no residue are not present
+Gates corresponding to reflexes that leave no residue are not present
 in the residue circuit.
 
 <p>If no gates leave any residue, the circuit program itself leaves no residue.
@@ -111,31 +114,31 @@ in the residue circuit.
 
 <p>Consider, for instance, the following index:
 
-<pre>
+<pre class="escher">
 {
 	Database {
 		cache Cache
-		left Shard
-		right Shard
+		shard1 Shard
+		shard2 Shard
 		link Link
 
 		cache:Web = :Web
-		left:Cache = cache:Left
-		right:Cache = cache:Right
-		left:Backup = link:Left
-		right:Backup = link:Right
+		shard1:Cache = cache:Left
+		shard2:Cache = cache:Right
+		shard1:Backup = link:Left
+		shard2:Backup = link:Right
 		link: = :Backup
 	}
 	App {
 		web Web
-		left Database
-		right Database
-		backup Backup
+		db1 Database
+		db2 Database
+		bkp Backup
 
-		left:Web = web:Left
-		right:Web = web:Right
-		left:Backup = backup:Left
-		right:Backup = backup:Right
+		db1:Web = web:Left
+		db2:Web = web:Right
+		db1:Backup = bkp:Left
+		db2:Backup = bkp:Right
 	}
 	Web …
 	Cache …
@@ -152,7 +155,7 @@ Whereas assume that <code>Web</code>, <code>Cache</code>, <code>Shard</code> and
 
 	<p><center>
 	<figure class="shadowless">
-		<object data="img/telescope.svg" type="image/svg+xml" width="600px">
+		<object data="img/telescope.svg" type="image/svg+xml" width="800px">
 		<img src="img/telescope.png" alt="" />
 	</object>
 		<div><em></em></div>
@@ -161,10 +164,10 @@ Whereas assume that <code>Web</code>, <code>Cache</code>, <code>Shard</code> and
 	
 
 If we materialize the program circuit <code>App</code> with respect to the index given above
-(i.e. directive addresses will resolve with respect to that index), 
+(i.e. directive addresses will resolve with respect to that index),
 we are going to get the following residue:
 
-<pre>
+<pre class="escher">
 {
 	web WebResidue
 	bkp BackupResidue
@@ -188,27 +191,27 @@ we are going to get the following residue:
 		link LinkResidue
 
 		cache:Web = :Web
-		left:Cache = cache:Left
-		right:Cache = cache:Right
-		left:Backup = link:Left
-		right:Backup = link:Right
+		shard1:Cache = cache:Left
+		shard2:Cache = cache:Right
+		shard1:Backup = link:Left
+		shard2:Backup = link:Right
 		link: = :Backup
 	}
-	left:Web = web:Left
-	right:Web = web:Right
-	left:Backup = backup:Left
-	right:Backup = backup:Right
+	db1:Web = web:Left
+	db2:Web = web:Right
+	db1:Backup = bkp:Left
+	db2:Backup = bkp:Right
 }
 </pre>
 
 <p>Where <code>WebResidue</code>, <code>BackupResidue</code>, <code>Shard1Residue</code>, etc. are
-merely placeholders here for whatever the actual residue values of the respetive reflexes are.
+merely placeholders here for whatever the actual residue values of the respective reflexes are.
 Visually the program residue could be represented as:
 
 
 	<p><center>
 	<figure class="shadowless">
-		<object data="img/expanded.svg" type="image/svg+xml" width="500px">
+		<object data="img/expanded.svg" type="image/svg+xml" width="1000px">
 		<img src="img/expanded.png" alt="" />
 	</object>
 		<div><em></em></div>
@@ -222,7 +225,7 @@ can be visualized like so:
 
 	<p><center>
 	<figure class="shadowless">
-		<object data="img/flattened.svg" type="image/svg+xml" width="500px">
+		<object data="img/flattened.svg" type="image/svg+xml" width="1000px">
 		<img src="img/flattened.png" alt="" />
 	</object>
 		<div><em></em></div>
@@ -235,20 +238,19 @@ It is merely an illustration of the executed reflexes and their runtime connecti
 
 <h2>Three ways to invoke materialization</h2>
 
-<p>One can materialize (i.e. execute) a program circuit given an index from three different places:
-from Go, from another program circuit (i.e. from Escher) and from the POSIX shell.
+<p>One can materialize (i.e. execute) a program circuit given an index from three different places.
 
-<h3>Materializing from Go</h3>
+<h3 id="materialize-from-go">Materializing from Go</h3>
 
 <p>Package <code>be</code> provides the materialization method:
 
-<pre>
+<pre class="go">
 func MaterializeSystem(program interface{}, index, barrier Circuit) (residue interface{})
 </pre>
 
-<p>Argument <code>program</code> contains the program circuit, of Go type <code>Circuit</code>,
+<p>Argument <code>program</code> contains the program circuit — of Go type <code>Circuit</code> —
 that is to be materialized. Incidentally, the value of <code>program</code> can be any value
-recognized as a gate value in a circuit program as described earlier. Often one will pass a directive 
+recognized as a gate value in a circuit program as described earlier. Often, one will pass a directive
 circuit as program.
 
 <p>Argument <code>index</code> holds the materialization index, relative to which
@@ -256,21 +258,24 @@ directive addresses are interpreted.
 
 <p>The last argument, <code>barrier</code>, is to be set to <code>nil</code>.
 
-<p>The function returns the residue of the materialization process. 
+<p>The function returns the residue of the materialization process.
 
-<h3>Materializing from Escher</h3>
+<h3 id="materialize-from-escher">Materializing from within Escher</h3>
 
-<p>One can recursively materialize circuits programs from within other 
-circuit programs. This is accomplished using the built-in reflex <code>escher.Materialize</code>
+<p>One can recursively materialize circuits programs from within other
+circuit programs. This is accomplished using the built-in reflex <code>e.Materialize</code>
 which is described in the <a href="basis-escher.html">materialization faculty section</a>.
 
-<h3>Materializing from POSIX</h3>
+<h3 id="materialize-from-command-line">Materializing from the command-line</h3>
 
 <p>The Escher executable, which is explained in detail in the <a href="runtime.html">runtime section</a>,
-will materialize a directive from the command-line:
+will materialize a directive from the command-line.
+Given our index (project source root) is "/src/app/",
+and in one of the "*.escher" files in that directory we have a gate named "Main",
+we can materialize it from the command-line like this:
 
-<pre>
-% escher -src /src/app *app.Main
+<pre class="bash">
+escher -src /src/ "*app.Main"
 </pre>
 
 
@@ -278,7 +283,7 @@ will materialize a directive from the command-line:
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

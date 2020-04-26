@@ -20,8 +20,9 @@ When thinking and programming in Escher, circuits will have a meaning
 dependent on context and/or content. A circuit interpretation will usually utilize a subset of
 the representational freedoms of a circuit, and will have an intuitive graphical representation.
 
-<p>Here we introduce four basic circuit interpretations—or specializations, if you will—that
+<p>Here we introduce four basic circuit interpretations — or specializations, if you will — that
 will also serve us as a vocabulary when discussing Escher in following chapters.
+
 
 <h2 id="series">Series</h2>
 
@@ -31,7 +32,7 @@ Series are equivalent to arrays and/or slices in other programming languages, li
 Gate names are slice indices; gate values are slice element values.
 
 <p>For instance, the circuit
-<pre>
+<pre class="escher">
 Singer {
 	0 "Dolly"
 	1 "Rebecca"
@@ -39,7 +40,7 @@ Singer {
 }
 </pre>
 is analogous (in meaning) to the Go slice:
-<pre>
+<pre class="escher">
 var Singer = []interface{}{
 	"Dolly",
 	"Rebecca",
@@ -51,7 +52,7 @@ var Singer = []interface{}{
 the <a href="syntax.html#series">syntax section</a>, we have dedicated a shorthand
 syntax for series circuits that omits the gate names:
 
-<pre>
+<pre class="escher">
 Singer {
 	"Dolly"
 	"Rebecca"
@@ -59,18 +60,47 @@ Singer {
 }
 </pre>
 
-<h2 id="indices">Indices</h2>
 
-<p>More generally than series, when a circuit has no links we call it an <em>index</em> and
-we view it as a map from integers and/or strings to anything else. In this respect an index
-is akin in purpose to structures, dictionaries, hash tables and maps in other languages.
+<h2 id="maps">Maps</h2>
 
-<p>The gate values of index circuits are analogously called <em>children</em> and they can
-be of primitive types (integers, floats, etc.) as well as recursively they can be other circuits
-or indices.
+<p>
+More generally than <a href="#series">series</a>,
+when a circuit has no valves/links,
+we call it a <em>map</em> (previously <em>index</em>),
+and we view it as a mapping from integers and/or strings to anything else.
+In this respect, a map is akin in purpose to structures, dictionaries, hash tables and maps in other languages.
+</p>
 
-<pre>
-Tree {
+<pre class="escher">
+ImplicitIntMap {
+	*fully.qualified.Name
+	123
+	3.14
+}
+
+ExplicitIntMap {
+	3   *fully.qualified.Name
+	6   @fully.qualified.Name
+	1   123
+}
+
+StringMap {
+	directive  *fully.qualified.Name
+	integral   123
+	floating   3.14
+}
+</pre>
+
+
+<h2 id="trees">Trees</h2>
+
+<p>
+The gate values of <a href="#maps">map circuit</a> are analogously called <em>children</em>,
+and they can be of primitive types (integers, floats, etc.)
+as well as recursively, they can be other circuits or maps.
+
+<pre class="escher">
+TreeCircuit {
 	Trunk {
 		Branches {
 			"Johnny"
@@ -85,16 +115,31 @@ Tree {
 	}
 }
 </pre>
+</p>
 
-<p>Such recursive structures of indices, or just indices for short, serve the same purpose as
-file-systems, namespaces, trees and others: To organize their internal and leaf values in a
-hierarchical manner, so that each node (internal or leaf) is identifiable by a unique
-path which we shall call <em>address</em> of a value relative to a given index.
+<p>
+Such recursive structures of maps, or just <em>trees</em> for short,
+serve the same purpose as file-systems, namespaces, trees and others:
+To organize their internal and leaf values in a hierarchical manner,
+so that each node (internal or leaf) is identifiable by a unique path.
+</p>
 
-<p>For instance, the address of <code>"Grandma"</code> relative to the index
-<code>Tree</code> would be 
 
-<pre>
+<h2 id="indices">Indices</h2>
+
+<p>
+An <em>Escher index</em> is basically a <a href="#trees">tree circuit</a>,
+which we interpret as a an absolute (and in future releases also relative)
+tree containing all circuits/gates.
+This also associates a unique path to each gate,
+which we shall call <em>address</em> of a value relative to a given index.
+</p>
+
+<p>
+For instance, the address of <code>"Grandma"</code> relative to the index
+<code>Tree</code> would be
+
+<pre class="escher">
 {
 	Root
 	Tentacles
@@ -102,6 +147,8 @@ path which we shall call <em>address</em> of a value relative to a given index.
 }</pre>
 
 (Note that addresses are represented by series circuits.)
+</p>
+
 
 <h2 id="directives">Directives</h2>
 
@@ -110,7 +157,7 @@ A directive is a pair of a string-valued <em>verb</em> and a target address.
 Directives are represented as a single circuit, wherein the empty-string gate holds the verb,
 while the number gates hold the components of the address. For instance,
 
-<pre>
+<pre class="escher">
 {
 	"" "*"
 	0 Root
@@ -122,15 +169,15 @@ while the number gates hold the components of the address. For instance,
 <p>This circuit holds the verb value <code>"*"</code> and the address whose components
 are <code>Root</code>, <code>Tentacles</code> and <code>1</code>, in that order.
 There are only two types of verbs, signified by the verb values <code>"*"</code>
-and <code>"@"</code>, whose meaning is explained in later sections. 
-We call these verbs <em>materialize</em> and <em>recall</em>, respectively, while their 
+and <code>"@"</code>, whose meaning is explained in later sections.
+We call these verbs <em>materialize</em> and <em>recall</em>, respectively, while their
 single-characters values, <code>"*"</code> and <code>"@"</code>, are a design
 choice of expediency.
 
 <p>Due to the ubiquitous use of directives in circuit programs, directives can be written
 using the <a href="syntax.html">dedicated syntactic sugar</a>:
 
-<pre>
+<pre class="escher">
 *Root.Tentacles.1
 </pre>
 
@@ -143,7 +190,7 @@ Here we describe their circuit structure.
 <p>The gates of program circuits ultimately represent independently executing services,
 which are interconnected according to the link pattern of the circuit.
 
-<p>Gate values designate the processing logic—i.e. they codify the service type—while
+<p>Gate values designate the processing logic — i.e. they codify the service type — while
 gate names are used solely as identifiers, needed in the description of the circuit links.
 
 <p>Gate values can be of any kind: integer, float, complex, string
@@ -153,18 +200,18 @@ written using the abbreviated syntax described earlier.
 <p>Circuit links are allowed only between gate names,
 defined within the circuit or the empty-string gate name.
 
-<p>The empty-string gate name represents an implicit 
-“enclosing” or “parent” circuit. In particular, program 
-circuits are not allowed to define a gate with the empty-string
-name.
+<p>The empty-string gate name represents an implicit
+“enclosing” or “parent” circuit we call <a href="glossary.html#super_gate">super gate</a>.
+In particular, program circuits are not allowed to use a <a href="glossary.html#vector">vector</a>
+with the empty-string name.
 
-<p>Links whose endpoints are connected to the same 
+<p>Links whose endpoints are connected to the same
 gate name are allowed, as long as they connect into different
 valve names.
 
 <p>Here is an example of a valid program circuit:
 
-<pre>
+<pre class="escher">
 {
 	tkr *time.Ticker
 	sum *math.Sum
@@ -174,7 +221,7 @@ valve names.
 	tkr: = sum:Sum
 
 	sum:X = :Phase
-	sum:Y = *Show
+	sum:Y = *e.Show
 }
 </pre>
 
@@ -183,7 +230,9 @@ valve names.
 
 	<p><center>
 	<figure class="shadowless">
-		<img src="img/tkr.jpg" width="500px" alt="" />
+		<object data="img/tkr.svg" type="image/svg+xml" width="500px">
+		<img src="img/tkr.png" alt="" />
+	</object>
 		<div><em></em></div>
 	</figure>
 	</center></p>
@@ -194,7 +243,7 @@ valve names.
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

@@ -70,10 +70,10 @@ This section tries to clarify those names.
 		<td>namespace</td>
 	</tr>
 	<tr>
-		<td><i>Runtime instantiation of a basic declaration unit</i></td>
-		<td>instance</td>
+		<td><i>Variable name + type/interface</i></td>
+		<td>variable name + type</td>
 		<td>gate</td>
-		<td>instance</td>
+		<td>variable name + type</td>
 	</tr>
 	<tr>
 		<td><i>enclosing declataion unit instance</i></td>
@@ -136,9 +136,10 @@ with the same gate name (within the circuit) have unique valve names.
 
 <h2 id="symbolism">Symbolism</h2>
 
-<p>Circuits have a standard visual representation that fully captures
-the <em>internal</em> structure of the circuit, which consists of the
-gate names and links and excludes the gate values — the <em>external</em> structure.
+<p>Circuits have a standard visual representation
+that fully captures the <em>internal</em> structure of the circuit,
+which consists of the gate names and links,
+and excludes the gate values — the <em>external</em> structure.
 
 <p>To draw a circuit, we start with a solid black oval, denoting the circuit's internal name space.
 White ovals — contained inside the black one and mutually non-overlapping — denote gates.

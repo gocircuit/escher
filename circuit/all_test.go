@@ -15,7 +15,7 @@ func TestSame(t *testing.T) {
 	if !Same(New().Grow("x", nil), New().Grow("x", nil)) {
 		t.Errorf("same")
 	}
-	if !Same(New().Grow("x", ""), New().Grow("x", "")) {
+	if !Same(New().Grow("x", DefaultValve), New().Grow("x", DefaultValve)) {
 		t.Errorf("same")
 	}
 }

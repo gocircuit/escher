@@ -29,4 +29,4 @@ script:
 - make
 - escher "*test.All"
 - if [ "$ONCE" = "true" ]; then scripts/build_handbook.sh; fi
-- if [ "$ONCE" = "true" ]; then scripts/runTutorials.sh; fi
+- if [ "$ONCE" = "true" ]; then scripts/tutorials.sh; fi

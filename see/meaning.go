@@ -86,7 +86,7 @@ func SeeVerb(src *a.Src) interface{} {
 func SeeInt(src *a.Src) interface{} {
 	t := src.Copy()
 	l := a.Literal(t)
-	if l == "" {
+	if l == a.NullLiteral {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
@@ -102,7 +102,7 @@ func SeeInt(src *a.Src) interface{} {
 func SeeFloat(src *a.Src) interface{} {
 	t := src.Copy()
 	l := a.Literal(t)
-	if l == "" {
+	if l == a.NullLiteral {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
@@ -118,7 +118,7 @@ func SeeFloat(src *a.Src) interface{} {
 func SeeComplex(src *a.Src) interface{} {
 	t := src.Copy()
 	l := a.Literal(t)
-	if l == "" {
+	if l == a.NullLiteral {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
@@ -148,7 +148,7 @@ func DelimitBackquoteString(src *a.Src) (string, bool) {
 	// first backquote
 	r, n, err := buf.ReadRune()
 	if err != nil || r != '`' {
-		return "", false
+		return a.NullLiteral, false
 	}
 	m += n
 	//
@@ -157,7 +157,7 @@ func DelimitBackquoteString(src *a.Src) (string, bool) {
 		r, n, err = buf.ReadRune()
 		if err != nil {
 			if q != 1 { // reached end without finding closing backquote
-				return "", false
+				return a.NullLiteral, false
 			}
 			return src.SkipString(src.Len() - buf.Len()), true
 		}
@@ -206,7 +206,7 @@ func DelimitDoubleQuoteString(src *a.Src) (string, bool) {
 	// first quote
 	r, n, err := buf.ReadRune()
 	if err != nil || r != '"' {
-		return "", false
+		return a.NullLiteral, false
 	}
 	m += n
 	//
@@ -214,7 +214,7 @@ func DelimitDoubleQuoteString(src *a.Src) (string, bool) {
 	for {
 		r, n, err = buf.ReadRune()
 		if err != nil {
-			return "", false // reached end of string without closing quote
+			return a.NullLiteral, false // reached end of string without closing quote
 		}
 		if backslash {
 			backslash = false

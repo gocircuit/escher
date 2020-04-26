@@ -34,7 +34,7 @@ func seeNameGate(src *a.Src) (n cir.Name, m cir.Value) {
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if right == "" {
+	if right == a.NullLiteral {
 		panic("no gate value")
 	}
 	src.Become(t)
@@ -53,7 +53,7 @@ func seeNamelessGate(src *a.Src) (n cir.Name, m cir.Value) {
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if value == "" {
+	if value == a.NullLiteral {
 		panic("nameless empty-string value implicit")
 	}
 	src.Become(t)

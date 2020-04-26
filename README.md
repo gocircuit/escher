@@ -155,7 +155,7 @@ escher \
 	-d 228.8.8.8:22
 ```
 
-![Auto-respawn tutorial](misc/img/proc1.png)
+![Auto-respawn tutorial](misc/img/proc1.svg)
 
 ## Basic gates
 
@@ -186,11 +186,11 @@ Trees are the basic type of "weavable" (or mutable) knowledge.
 In the illustration below, the syntax of the respective gate design is displayed
 as their name (white on black).
 
-![Impression of the mind](misc/img/impress.png)
+![Impression of the mind](misc/img/impress.svg)
 
 ### Combinator (Manipulator) gates
 
-![Grammar manipulation gates](misc/img/combine.png)
+![Grammar manipulation gates](misc/img/combine.svg)
 
 ### Arithmetic (Applying) gates
 
@@ -217,18 +217,18 @@ but under different orientations of the event streams.
 In all valid cases, the relationship between the valve values shown,
 exemplifies the effect of the gate.
 
-![Generalization](misc/img/generalization.png)
+![Generalization](misc/img/generalization.svg)
 
 > Belief for the current state of the world,
   combined with a new observation,
   results in a theory.
 
-![Explanation](misc/img/explanation.png)
+![Explanation](misc/img/explanation.svg)
 
 > A theory of observations, which explains (includes) an observation at hand,
   explains the observation only to a belief consisting of the theory without the observation.
 
-![Prediction](misc/img/prediction.png)
+![Prediction](misc/img/prediction.svg)
 
 > When a belief of the state of the world is combined with a theory that is bigger,
   the conjectured difference must be found in a new observation.
@@ -243,13 +243,13 @@ in response to an asynchronous events occurring in an external technology.
 
 ### Variation (Surprise) and Causation (Action) gates
 
-![See and Show](misc/img/seeshow.png)
+![See and Show](misc/img/seeshow.svg)
 
 For instance, with the gates we've seen so far,
 one might construct the following higher-level circuit abstraction for an I/O device,
 which is controlled by a deferred logic:
 
-![I/O device](misc/img/io.png)
+![I/O device](misc/img/io.svg)
 
 And the respective source code:
 

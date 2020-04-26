@@ -15,7 +15,7 @@ import (
 	"github.com/gocircuit/escher/a"
 )
 
-// DefaultValve
+// DefaultValve is the name of the default valve
 const DefaultValve = ""
 
 // Verb is an interpretation of a circuit.

@@ -16,6 +16,7 @@ SyntaxPage {
 	f:BackQuoted = "`\n\t\t&lt;html&gt;\n\t\t\t&lt;div&gt;abc&lt;/div&gt;\n\t\t&lt;/html&gt;\n\t`"
 	f:CommentsSample = "alpha {		  `// circuit definition`\n\tfloat 1.23 ; `// gate named float with a floating-point value`\n\tbeta {}	; `// gate named beta with an empty circuit value`\n\t`/*\n\t  * We can also do this:\n\t  * A multi-line comment within a circuit definition.\n\t  * Outside the circuit though, no comments are possible.\n\t  */`\n}"
 	f:ImgNand = fig:
+	f:ImgCircuitParts = FigureCircuitParts:
 
 	fig *FigurePngSvg
 	fig:Image = "NAND"
@@ -24,6 +25,12 @@ SyntaxPage {
 		In this illustration, the depicted circuit has three valves at the super gate,
 		labeled as “X”, “Y” and “” (the empty string).
 		The <a href="#links">source for this circuit</a> is given later below.`
+
+	FigureCircuitParts *FigurePngSvg
+	FigureCircuitParts:Image = "circuit-parts"
+	FigureCircuitParts:Width = "750px"
+	FigureCircuitParts:Caption = `
+		Shows the different parts of a circuit, with each type of a part coded with a diferent color.`
 
 	t *text.QuickForm
 	t:Data = f:
@@ -102,16 +109,30 @@ This section tries to clarify those names.
 
 <h2 id="circuits">Circuits</h2>
 
-<p>A circuit consists of nodes, called <em>gates</em>, which have
-a <em>name</em> and a <em>value</em>. Names are strings or integers. Gates have unique names
-within a circuit. Values are anything representable by the underlying
-technology, which for our implementation means any Go value, equivalently, <code>interface{}</code>.
+{{.Gate.ImgCircuitParts}}
 
-<p>Additionally, a circuit has a set of <em>links</em> across pairs of gates.
+<p>A circuit has the strucutre of a graph,
+consists of nodes, called <em>gates</em>,
+and edges, called <em>links</em>.
+
+Gates have a <em>name</em> and a <em>value</em>:
+<ul>
+	<li>
+		<em>Names</em> are strings or integers.
+		Gates have unique names within a circuit.
+	</li>
+	<li>
+		<em>Values</em> are anything representable by the underlying technology,
+		which — for this Escher implementation — means any Go value,
+		or equivalently <code>interface{}</code>.
+	</li>
+</ul>
+
+<p>A circuits <em>links</em> go across pairs of gates.
 A link has two endpoints, called <em>vectors</em>.
-Each vector consists of a gate name and a <em>valve</em>
-name. Vectors do not overlap in the sense that all vectors with the
-same gate name have unique valve names.
+Each vector consists of a gate name and a <em>valve</em> name.
+Vectors do not overlap, in the sense that all vectors
+with the same gate name (within the circuit) have unique valve names.
 
 <h2 id="symbolism">Symbolism</h2>
 

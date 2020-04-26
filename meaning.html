@@ -137,7 +137,7 @@ which we shall call <em>address</em> of a value relative to a given index.
 
 <p>
 For instance, the address of <code>"Grandma"</code> relative to the index
-<code>Tree</code> would be 
+<code>Tree</code> would be
 
 <pre class="escher">
 {
@@ -169,8 +169,8 @@ while the number gates hold the components of the address. For instance,
 <p>This circuit holds the verb value <code>"*"</code> and the address whose components
 are <code>Root</code>, <code>Tentacles</code> and <code>1</code>, in that order.
 There are only two types of verbs, signified by the verb values <code>"*"</code>
-and <code>"@"</code>, whose meaning is explained in later sections. 
-We call these verbs <em>materialize</em> and <em>recall</em>, respectively, while their 
+and <code>"@"</code>, whose meaning is explained in later sections.
+We call these verbs <em>materialize</em> and <em>recall</em>, respectively, while their
 single-characters values, <code>"*"</code> and <code>"@"</code>, are a design
 choice of expediency.
 
@@ -200,12 +200,12 @@ written using the abbreviated syntax described earlier.
 <p>Circuit links are allowed only between gate names,
 defined within the circuit or the empty-string gate name.
 
-<p>The empty-string gate name represents an implicit 
+<p>The empty-string gate name represents an implicit
 “enclosing” or “parent” circuit we call <a href="glossary.html#super_gate">super gate</a>.
 In particular, program circuits are not allowed to use a <a href="glossary.html#vector">vector</a>
 with the empty-string name.
 
-<p>Links whose endpoints are connected to the same 
+<p>Links whose endpoints are connected to the same
 gate name are allowed, as long as they connect into different
 valve names.
 
@@ -230,7 +230,9 @@ valve names.
 
 	<p><center>
 	<figure class="shadowless">
-		<img src="img/tkr.jpg" width="500px" alt="" />
+		<object data="img/tkr.svg" type="image/svg+xml" width="500px">
+		<img src="img/tkr.png" alt="" />
+	</object>
 		<div><em></em></div>
 	</figure>
 	</center></p>
@@ -241,7 +243,7 @@ valve names.
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

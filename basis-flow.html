@@ -26,15 +26,15 @@ implementations to realize the huge variety of other possible designs.
 <p>(The implementation can be found in
 <a href="https://github.com/gocircuit/escher/blob/master/faculty/basic/star.go">faculty/basic/star.go</a>.)
 
-<p>The star is the simplest flow reflex. It accepts any number of 
+<p>The star is the simplest flow reflex. It accepts any number of
 connected valves and ignores their specific names.
 
 <p>When a value is received on any one of its connected valves,
 the star reflex forwards that value to all other connected valves.
 
-<p>Every forwarded value is emitted (i.e. sent) to its respective 
+<p>Every forwarded value is emitted (i.e. sent) to its respective
 valve on a dedicated Go routine. Therefore, the star reflex never
-blocks. 
+blocks.
 
 <p>An example usage:
 
@@ -61,7 +61,7 @@ it will be printed on the standard output three times by the receiving <code>*e.
 <a href="https://github.com/gocircuit/escher/blob/master/be/union.go">be/union.go</a>.)
 
 <p>In our experience, the fork is the most commonly used synchronization primitive in Escher.
-It requires that the distinguished empty-string valve be connected, as well as one or more 
+It requires that the distinguished empty-string valve be connected, as well as one or more
 freely-named (string or integer) other valves.
 
 <p>Fork can be described as two entirely independent reflexes.
@@ -90,7 +90,7 @@ fork will send the value of the gate named <em>N</em> from circuit <em>W</em> to
 }
 </pre>
 
-<p>The values <code>"Hello"</code> and <code>"World"</code> will be sent 
+<p>The values <code>"Hello"</code> and <code>"World"</code> will be sent
 to and printed by the connected <code>*e.Show</code> reflexes.
 Whereas the value <code>"Foo"</code> will be ignored.
 
@@ -101,7 +101,7 @@ this condition is met, it will merge all such values as the gates of a single ci
 gate names follow respective valve names, and will send this circuit out to its empty string valve.
 
 <p>Note that in the merge direction fork reflexes act as powerful synchronization primitives.
-They effectively wait, blocking any other receptions on the non-empty-string valves, until 
+They effectively wait, blocking any other receptions on the non-empty-string valves, until
 one value is available on each such valve.
 Subsequently, these values are packed into a single circuit and sent out.
 
@@ -133,7 +133,7 @@ on valves <code>x</code> and <code>y</code>, respectively. Then the value
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

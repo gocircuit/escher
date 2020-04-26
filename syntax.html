@@ -16,7 +16,7 @@
 
 <p>At heart Escher is a Go package that parses a simple written syntax
 into a labeled graph data structure, called a <em>circuit</em>. If you view
-XML as a syntax that represents labeled trees, then Escher would be a 
+XML as a syntax that represents labeled trees, then Escher would be a
 syntax that represents labeled graphs.
 
 <h2>Syntax comparison with Java and C++</h2>
@@ -47,10 +47,10 @@ This section tries to clarify those names.
 		<td>namespace</td>
 	</tr>
 	<tr>
-		<td><i>Runtime instantiation of a basic declaration unit</i></td>
-		<td>instance</td>
+		<td><i>Variable name + type/interface</i></td>
+		<td>variable name + type</td>
 		<td>gate</td>
-		<td>instance</td>
+		<td>variable name + type</td>
 	</tr>
 	<tr>
 		<td><i>enclosing declataion unit instance</i></td>
@@ -86,31 +86,56 @@ This section tries to clarify those names.
 
 <h2 id="circuits">Circuits</h2>
 
-<p>A circuit consists of nodes, called <em>gates</em>, which have
-a <em>name</em> and a <em>value</em>. Names are strings or integers. Gates have unique names
-within a circuit. Values are anything representable by the underlying
-technology, which for our implementation means any Go value, equivalently, <code>interface{}</code>.
 
-<p>Additionally, a circuit has a set of <em>links</em> across pairs of gates.
+	<p><center>
+	<figure class="shadowless">
+		<object data="img/circuit-parts.svg" type="image/svg+xml" width="750px">
+		<img src="img/circuit-parts.png" alt="" />
+	</object>
+		<div><em>
+		Shows the different parts of a circuit, with each type of a part coded with a diferent color.</em></div>
+	</figure>
+	</center></p>
+	
+
+<p>A circuit has the strucutre of a graph,
+consists of nodes, called <em>gates</em>,
+and edges, called <em>links</em>.
+
+Gates have a <em>name</em> and a <em>value</em>:
+<ul>
+	<li>
+		<em>Names</em> are strings or integers.
+		Gates have unique names within a circuit.
+	</li>
+	<li>
+		<em>Values</em> are anything representable by the underlying technology,
+		which — for this Escher implementation — means any Go value,
+		or equivalently <code>interface{}</code>.
+	</li>
+</ul>
+
+<p>A circuits <em>links</em> go across pairs of gates.
 A link has two endpoints, called <em>vectors</em>.
-Each vector consists of a gate name and a <em>valve</em>
-name. Vectors do not overlap in the sense that all vectors with the
-same gate name have unique valve names.
+Each vector consists of a gate name and a <em>valve</em> name.
+Vectors do not overlap, in the sense that all vectors
+with the same gate name (within the circuit) have unique valve names.
 
 <h2 id="symbolism">Symbolism</h2>
 
-<p>Circuits have a standard visual representation that fully captures
-the <em>internal</em> structure of the circuit, which consists of the
-gate names and links and excludes the gate values — the <em>external</em> structure.
+<p>Circuits have a standard visual representation
+that fully captures the <em>internal</em> structure of the circuit,
+which consists of the gate names and links,
+and excludes the gate values — the <em>external</em> structure.
 
 <p>To draw a circuit, we start with a solid black oval, denoting the circuit's internal name space.
 White ovals — contained inside the black one and mutually non-overlapping — denote gates.
 
 <p>Links are depicted as white lines that connect the outlines of gate ovals.
-Link endpoints connecting to the <a href="#links">super gate</a> are attached to 
+Link endpoints connecting to the <a href="#links">super gate</a> are attached to
 the outline of the surrounding black oval.
 
-<p>Valve names are written in white within the black oval, next to their 
+<p>Valve names are written in white within the black oval, next to their
 respective visual connection point. Connection points where valve names
 are visually missing correspond to empty-string valves.
 
@@ -128,7 +153,7 @@ white and black colors everywhere.
 	</object>
 		<div><em>
 		In this illustration, the depicted circuit has three valves at the super gate,
-		labeled as “X”, “Y” and “” (the empty string). 
+		labeled as “X”, “Y” and “” (the empty string).
 		The <a href="#links">source for this circuit</a> is given later below.</em></div>
 	</figure>
 	</center></p>
@@ -362,13 +387,13 @@ the second vector. Valid examples:
 <li>Gate names can be the empty string. The empty-string gate is called the <em>super</em> gate.
 While one cannot assign a value to it through syntax, it is possible to connect links to it.
 
-<p>The super gate has a distinguished role in some contexts. 
-For instance, when <a href="program.html">materializing circuits</a>, 
+<p>The super gate has a distinguished role in some contexts.
+For instance, when <a href="program.html">materializing circuits</a>,
 the links connected to the super gate are exposed to the higher-level “super” circuit.</li>
 <li>Valve names can be the empty string. We call such valves <em>default</em>, as
 they are commonly referred to hereinafter in various idioms.
 
-<p>For instance, it is a common pattern to name the output valve of 
+<p>For instance, it is a common pattern to name the output valve of
 materializable circuits after the empty string. The default valve of the super gate,
 on the other hand, is a way of taking advantage of Escher's <a href="#sugar">syntactic sugar rule</a>.
 </ul>
@@ -427,7 +452,7 @@ This will expand to:
 	
 	<div class="footer">
 	The <a href="http://escher.io">Escher</a> and <a href="http://gocircuit.org">Circuit</a> projects are
-	partially supported by the 
+	partially supported by the
 	<a href="http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx">DARPA XData Initiative</a>.<br>
 	Sponsors and partners are welcome and appreciated. Contact <a href="mailto:p@gocircuit.org">Petar Maymounkov</a> for details.
 	</div>

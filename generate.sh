@@ -10,15 +10,10 @@ fi
 
 escher_repo="$GOPATH/src/github.com/gocircuit/escher"
 src_dir="$escher_repo/src"
+scripts_dir="$escher_repo/scripts"
 
 # Generate the static HTML pages
-escher -src "$src_dir" "*handbook.main"
-
-# Copy over the resources
-cp -r "$src_dir/handbook/css" ./
-cp -r "$src_dir/handbook/img" ./
-cp -r "$src_dir/handbook/pdf" ./
-rm -f css/font/.gitignore
+"${scripts_dir}/build_handbook.sh" "./"
 
 # Create a git commit, if requested, and if there are local changes
 local_changes=$(git status --porcelain)

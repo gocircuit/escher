@@ -21,7 +21,7 @@ func TestSame(t *testing.T) {
 }
 
 func TestVerb(t *testing.T) {
-	a, b := Circuit(NewLookupVerb("abc", "d", 1)), Circuit(NewLookupVerb("abc", "d", 1))
+	a, b := Circuit(NewVerbAddress("@", "abc", "d", 1)), Circuit(NewVerbAddress("@", "abc", "d", 1))
 	if !Same(a, b) {
 		t.Errorf("verb same")
 	}

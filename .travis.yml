@@ -30,3 +30,4 @@ script:
 - escher "*test.All"
 - if [ "$ONCE" = "true" ]; then scripts/build_handbook.sh; fi
 - if [ "$ONCE" = "true" ]; then scripts/tutorials.sh; fi
+- if [ "$ONCE" = "true" ]; then scripts/tests.sh; fi

@@ -1,3 +1,15 @@
+### NOTE: This repository is deprecated; please go to [the successor](https://github.com/hoijui/escher)
+
+This is left here for reference.
+
+**Go to <https://hoijui.github.io/escher> for the current repo!**
+
+---
+
+---
+
+Old content following ...
+
 # [Escher - A language for programming in pure metaphors](https://hoijui.github.io/escher-old-history/)
 
 [![Build Status](https://travis-ci.org/hoijui/escher-old-history.svg?branch=master)](https://travis-ci.org/hoijui/escher-old-history)
@@ -6,7 +18,8 @@
 
 > ___NOTE___\
 > _Escher -- in the original repository -- is stagnant since 2015._\
-> This project however, is (more) alive!
+> This repo is archived since April 2020.\
+> **Go to <https://hoijui.github.io/escher> for the current repo!**
 
 See [the projects website](https://hoijui.github.io/escher-old-history/)
 for more info about the language.

@@ -1,9 +1,0 @@
-Ticker {
-	tkr *time.Ticker
-	tkr:Duration = 1e9
-	tkr: = sum:Sum
-
-	sum *math.IntSum
-	sum:X = 1000000000
-	sum:Y = *e.Show
-}

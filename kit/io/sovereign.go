@@ -102,7 +102,7 @@ func (x *nopWriteCloser) Close() error {
 	return nil
 }
 
-// RunOnCloseReader returns an io.ReadCloser which 
+// RunOnCloseReader returns an io.ReadCloser which
 // executes run once, on the first call to Close.
 func RunOnCloseReader(x io.Reader, run CloseFunc) io.ReadCloser {
 	return &runOnCloseReader{run: run, Reader: x}
@@ -124,7 +124,7 @@ func (x *runOnCloseReader) Close() (err error) {
 	return
 }
 
-// RunOnCloseWrite returns an io.WriteCloser which 
+// RunOnCloseWrite returns an io.WriteCloser which
 // executes run once, on the first call to Close.
 func RunOnCloseWriter(x io.Writer, run CloseFunc) io.WriteCloser {
 	return &runOnCloseWriter{run: run, Writer: x}

@@ -12,29 +12,29 @@ import (
 	"io"
 	"os"
 
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	. "github.com/gocircuit/escher/faculty"
-	. "github.com/gocircuit/escher/kit/fs"
-	kio "github.com/gocircuit/escher/kit/io"
-	"github.com/gocircuit/escher/see"
+	"github.com/hoijui/escher/a"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	fac "github.com/hoijui/escher/faculty"
+	"github.com/hoijui/escher/kit/fs"
+	kio "github.com/hoijui/escher/kit/io"
+	"github.com/hoijui/escher/see"
 
 	// Load faculties
-	_ "github.com/gocircuit/escher/faculty/basic"
-	"github.com/gocircuit/escher/faculty/circuit"
-	_ "github.com/gocircuit/escher/faculty/cmplx"
-	_ "github.com/gocircuit/escher/faculty/escher"
-	_ "github.com/gocircuit/escher/faculty/http"
-	_ "github.com/gocircuit/escher/faculty/index"
-	_ "github.com/gocircuit/escher/faculty/io"
-	_ "github.com/gocircuit/escher/faculty/math"
-	_ "github.com/gocircuit/escher/faculty/model"
-	fos "github.com/gocircuit/escher/faculty/os"
-	"github.com/gocircuit/escher/faculty/test"
-	_ "github.com/gocircuit/escher/faculty/text"
-	_ "github.com/gocircuit/escher/faculty/time"
-	_ "github.com/gocircuit/escher/faculty/yield"
+	_ "github.com/hoijui/escher/faculty/basic"
+	"github.com/hoijui/escher/faculty/circuit"
+	_ "github.com/hoijui/escher/faculty/cmplx"
+	_ "github.com/hoijui/escher/faculty/escher"
+	_ "github.com/hoijui/escher/faculty/http"
+	_ "github.com/hoijui/escher/faculty/index"
+	_ "github.com/hoijui/escher/faculty/io"
+	_ "github.com/hoijui/escher/faculty/math"
+	_ "github.com/hoijui/escher/faculty/model"
+	fos "github.com/hoijui/escher/faculty/os"
+	"github.com/hoijui/escher/faculty/test"
+	_ "github.com/hoijui/escher/faculty/text"
+	_ "github.com/hoijui/escher/faculty/time"
+	_ "github.com/hoijui/escher/faculty/yield"
 )
 
 // usage: escher [-a dir] [-show] address arguments...
@@ -65,18 +65,18 @@ func main() {
 	test.Init(*flagSrc)
 	circuit.Init(*flagDiscover)
 	//
-	index := Root()
+	index := fac.Root()
 	if *flagSrc != "" {
-		index.Merge(Load(*flagSrc))
+		index.Merge(fs.Load(*flagSrc))
 	}
 	// run main
 	if flagMain != "" {
 		verb := see.ParseVerb(flagMain)
-		if Circuit(verb).IsNil() {
+		if cir.Circuit(verb).IsNil() {
 			fmt.Fprintf(os.Stderr, "verb not recognized\n")
 			os.Exit(1)
 		}
-		exec(index, Circuit(verb), false)
+		exec(index, cir.Circuit(verb), false)
 	}
 	// standard loop
 	r := kio.NewChunkReader(os.Stdin)
@@ -88,20 +88,20 @@ func main() {
 				break
 			}
 		}
-		src := NewSrcString(string(chunk))
+		src := a.NewSrcString(string(chunk))
 		for src.Len() > 0 {
 			u := see.SeeChamber(src)
-			if u == nil || u.(Circuit).Len() == 0 {
+			if u == nil || u.(cir.Circuit).Len() == 0 {
 				break
 			}
 			fmt.Fprintf(os.Stderr, "MATERIALIZING %v\n", u)
-			exec(index, u.(Circuit), true)
+			exec(index, u.(cir.Circuit), true)
 		}
 	}
 }
 
-func exec(index Index, verb Circuit, showResidue bool) {
-	residue := MaterializeSystem(Circuit(verb), Circuit(index), New().Grow("Main", New()))
+func exec(index be.Index, verb cir.Circuit, showResidue bool) {
+	residue := be.MaterializeSystem(cir.Circuit(verb), cir.Circuit(index), cir.New().Grow("Main", cir.New()))
 	if showResidue {
 		fmt.Fprintf(os.Stderr, "RESIDUE %v\n\n", residue)
 	}

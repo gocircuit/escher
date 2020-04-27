@@ -12,10 +12,10 @@ import (
 	"io"
 	"strings"
 
-	. "github.com/gocircuit/escher/a"
+	"github.com/hoijui/escher/a"
 )
 
-// DefaultValve
+// DefaultValve is the name of the default valve
 const DefaultValve = ""
 
 // Verb is an interpretation of a circuit.
@@ -23,6 +23,8 @@ const DefaultValve = ""
 // The value of the empty-string gate, if present, is expected to be a string and is a ‘verb’ word.
 type Verb Circuit
 
+// NewAddress returns a verb-view circuit (like an array in other languages)
+// of the supplied names in the supplied order.
 func NewAddress(addr ...Name) Verb {
 	x := New()
 	for i, n := range addr {
@@ -31,18 +33,21 @@ func NewAddress(addr ...Name) Verb {
 	return Verb(x)
 }
 
+// NewVerbAddress returns a verb-view circuit (like an array in other languages)
+// with the given name and the supplied names in the supplied order
 func NewVerbAddress(verb string, addr ...Name) Verb {
 	x := NewAddress(addr...)
-	x.Gate[""] = verb
+	x.Gate[Super] = verb
 	return x
 }
 
+// IsVerb returns true if the supplied value is a verb
 func IsVerb(v Value) bool {
 	u, ok := v.(Circuit)
 	if !ok {
 		return false
 	}
-	s, ok := u.StringOptionAt("")
+	s, ok := u.StringOptionAt(Super)
 	return s == "*" || s == "@"
 }
 
@@ -57,7 +62,7 @@ func (a Verb) Address() (addr []Name) {
 }
 
 func (a Verb) Verb() Value {
-	return a.Gate[""]
+	return a.Gate[Super]
 }
 
 func (a Verb) compactible() bool {
@@ -88,17 +93,17 @@ func (a Verb) String() string {
 	return a.summarize()
 }
 
-func (a Verb) summarize() string {
-	index := Circuit(a).SortedNumbers()
+func (verb Verb) summarize() string {
+	index := Circuit(verb).SortedNumbers()
 	var w bytes.Buffer
-	if v, ok := a.Gate[""]; ok {
+	if v, ok := verb.Gate[Super]; ok {
 		w.WriteString(fmt.Sprintf("%v", v))
 	}
 	for _, i := range index {
-		x := a.Gate[i]
+		x := verb.Gate[i]
 		fmt.Fprintf(&w, "%v", x)
 		if i+1 < len(index) {
-			w.WriteString(RefineSymbolString)
+			w.WriteString(a.RefineSymbolString)
 		}
 	}
 	return w.String()

@@ -9,15 +9,14 @@ package see
 import (
 	"bytes"
 	"fmt"
-	// "log"
 	"strconv"
 	"strings"
 
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/a"
+	cir "github.com/hoijui/escher/circuit"
 )
 
-func SeeValueOrNil(src *Src) (x Value) {
+func SeeValueOrNil(src *a.Src) (x cir.Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			x = nil
@@ -26,7 +25,7 @@ func SeeValueOrNil(src *Src) (x Value) {
 	return SeeValue(src)
 }
 
-func SeeValue(src *Src) (x Value) {
+func SeeValue(src *a.Src) (x cir.Value) {
 	if x = SeeCircuit(src); x != nil {
 		return
 	}
@@ -54,12 +53,12 @@ func SeeValue(src *Src) (x Value) {
 	panic(0)
 }
 
-func SeeName(src *Src) Name {
-	return src.Consume(IsIdentifier)
+func SeeName(src *a.Src) cir.Name {
+	return src.Consume(a.IsIdentifier)
 }
 
 // SeeVerb ...
-func SeeVerb(src *Src) interface{} {
+func SeeVerb(src *a.Src) interface{} {
 	t := src.Copy()
 	verb := ""
 	switch {
@@ -70,24 +69,24 @@ func SeeVerb(src *Src) interface{} {
 	default:
 		return nil
 	}
-	delimit := t.Consume(IsIdentifierOrRefineSymbol)
-	xx := strings.Split(delimit, RefineSymbolString)
+	delimit := t.Consume(a.IsIdentifierOrRefineSymbol)
+	xx := strings.Split(delimit, a.RefineSymbolString)
 	if len(xx) == 1 && xx[0] == "" {
 		xx = nil
 	}
 	src.Become(t)
-	var nn []Name
+	var nn []cir.Name
 	for _, x := range xx {
 		nn = append(nn, x)
 	}
-	return Circuit(NewVerbAddress(verb, nn...))
+	return cir.Circuit(cir.NewVerbAddress(verb, nn...))
 }
 
 // Int …
-func SeeInt(src *Src) interface{} {
+func SeeInt(src *a.Src) interface{} {
 	t := src.Copy()
-	l := Literal(t)
-	if l == "" {
+	l := a.Literal(t)
+	if l == a.NullLiteral {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
@@ -100,10 +99,10 @@ func SeeInt(src *Src) interface{} {
 }
 
 // Float …
-func SeeFloat(src *Src) interface{} {
+func SeeFloat(src *a.Src) interface{} {
 	t := src.Copy()
-	l := Literal(t)
-	if l == "" {
+	l := a.Literal(t)
+	if l == a.NullLiteral {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
@@ -116,10 +115,10 @@ func SeeFloat(src *Src) interface{} {
 }
 
 // Complex …
-func SeeComplex(src *Src) interface{} {
+func SeeComplex(src *a.Src) interface{} {
 	t := src.Copy()
-	l := Literal(t)
-	if l == "" {
+	l := a.Literal(t)
+	if l == a.NullLiteral {
 		return nil
 	}
 	r := bytes.NewBufferString(l)
@@ -132,7 +131,7 @@ func SeeComplex(src *Src) interface{} {
 }
 
 // SeeBackquoteString …
-func SeeBackquoteString(src *Src) interface{} {
+func SeeBackquoteString(src *a.Src) interface{} {
 	t := src.Copy()
 	quoted, ok := DelimitBackquoteString(t)
 	if !ok {
@@ -143,13 +142,13 @@ func SeeBackquoteString(src *Src) interface{} {
 	return str
 }
 
-func DelimitBackquoteString(src *Src) (string, bool) {
+func DelimitBackquoteString(src *a.Src) (string, bool) {
 	var m int // number of bytes accepted into the quoted portion
 	buf := src.Buffer()
 	// first backquote
 	r, n, err := buf.ReadRune()
 	if err != nil || r != '`' {
-		return "", false
+		return a.NullLiteral, false
 	}
 	m += n
 	//
@@ -158,7 +157,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 		r, n, err = buf.ReadRune()
 		if err != nil {
 			if q != 1 { // reached end without finding closing backquote
-				return "", false
+				return a.NullLiteral, false
 			}
 			return src.SkipString(src.Len() - buf.Len()), true
 		}
@@ -186,7 +185,7 @@ func DelimitBackquoteString(src *Src) (string, bool) {
 }
 
 // SeeDoubleQuoteString …
-func SeeDoubleQuoteString(src *Src) interface{} {
+func SeeDoubleQuoteString(src *a.Src) interface{} {
 	t := src.Copy()
 	quoted, ok := DelimitDoubleQuoteString(t)
 	if !ok {
@@ -201,13 +200,13 @@ func SeeDoubleQuoteString(src *Src) interface{} {
 	return str
 }
 
-func DelimitDoubleQuoteString(src *Src) (string, bool) {
+func DelimitDoubleQuoteString(src *a.Src) (string, bool) {
 	var m int // number of bytes accepted into the quoted portion
 	buf := src.Buffer()
 	// first quote
 	r, n, err := buf.ReadRune()
 	if err != nil || r != '"' {
-		return "", false
+		return a.NullLiteral, false
 	}
 	m += n
 	//
@@ -215,7 +214,7 @@ func DelimitDoubleQuoteString(src *Src) (string, bool) {
 	for {
 		r, n, err = buf.ReadRune()
 		if err != nil {
-			return "", false // reached end of string without closing quote
+			return a.NullLiteral, false // reached end of string without closing quote
 		}
 		if backslash {
 			backslash = false

@@ -1,9 +1,9 @@
 
 BuildBasisPage {
-        wf *io.WriteFile
-        wf:Content = *BasisPage
-        wf:Name = "basis.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *BasisPage
+		wf:Name = "basis.html"
+		: = wf:Ready
 }
 
 BasisPage {
@@ -18,15 +18,22 @@ BasisPage {
 
 <h1>Reflex basis and faculties</h1>
 
-<p>There are two kinds of reflexes in Escher: 
+<p>A faculty is a set of reflexes, similar to a package in Java, or a namespace in C++.
+
+<p>There are two kinds of reflexes in Escher:
 <ul>
-<li>Those that are implemented in the underlying technology, the Go language, and linked into the runtime, which we call
-<em>basis</em> reflexes.
-<li>And those that are compositions of other reflexes, described by program circuits, which we call 
-<em>derivative reflexes</em>.
+<li><em>Basis reflexes</em>
+	are implemented in the underlying technology —
+	the Go language — and linked into the runtime
+<li><em>Derivative reflexes</em>
+	are compositions of other reflexes,
+	described by program circuits
 </ul>
 
-<p>Basis reflexes determine the basic arithmetic and data manipulation 
+<p>We will now have a look at the equivalent of <code>std</code> in C++,
+the Escher basis faculty.
+
+<p>Basis reflexes determine the basic arithmetic and data manipulation
 operations that Escher programs can ultimately perform, as well as
 external technologies that Escher programs might have access to.
 
@@ -40,22 +47,26 @@ and use cases might inform choices that we cannot predict from scratch.
 <h3>Information flow</h3>
 
 <p>We find that most Escher programs benefit from
-a few basic reflexes that control information flow. 
-We have included a few in the default runtime and they are described in the following
-sections. These gates can be viewed as Escher's “synchronization” facilities.
+a few basic reflexes that control information flow.
+We have included a few in the default runtime,
+and they are described in <a href="basis-flow.html">a separate page</a>.
+These gates can be viewed as Escher's “synchronization” facilities.
 
 <h3>External technologies</h3>
 
-<p>Basis reflexes are also Escher's way of interacting with external technologies,
+<p>Basis reflexes are also Escher's way of interacting with external technologies
 such as input/output devices. The POSIX systems is a canonical example of an
-external technology and Escher has a dedicated <code>os</code> faculty for it.
+external technology, and Escher has a dedicated
+<a href="https://github.com/hoijui/escher/tree/master/faculty/os"><code>os</code></a>
+faculty for it.
 
 <h3>Escher within Escher</h3>
 
-<p>The most powerful feature of Escher is its recursive nature: Circuit programs
-can create program circuits and materialize them into other circuit programs.
-This programming pattern is enabled by the <code>escher</code> faculty,
-which among other things offers reflexes that materialize program circuits.
+<p>The most powerful feature of Escher is its recursive nature:
+Circuit programs can create program circuits and materialize them into other circuit programs.
+This programming pattern is enabled by the
+<a href="https://github.com/hoijui/escher/tree/master/faculty/escher"><code>escher</code></a>
+faculty, which among other things offers reflexes that materialize program circuits.
 
 `
 }

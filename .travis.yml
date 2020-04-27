@@ -1,4 +1,37 @@
 language: go
+sudo: false
 
-go: 
-	- tip
+env:
+  global:
+  - ESCHER=src
+
+matrix:
+  include:
+    - go: 1.12.x
+      os: linux
+      env: ONCE=true
+    - go: 1.11.x
+      os: osx
+    - name: Cross-Compile for windows (from Linux)
+      go: 1.11.x
+      os: linux
+      env: GOOS=windows GOARCH=amd64 CGO_ENABLED=0
+
+# Allow use in forks
+go_import_path: github.com/hoijui/escher
+
+before_install:
+- if [ "$ONCE" = "true" ]; then  sudo apt-get -y install inkscape; fi
+
+install:
+- go get -v github.com/hoijui/circuit/client
+- go get -v github.com/hoijui/circuit/client/docker
+- go get -v -t ./...
+
+script:
+- make
+- escher "*test.All"
+- mkdir -p public
+- if [ "$ONCE" = "true" ]; then scripts/build_handbook.sh public; fi
+- if [ "$ONCE" = "true" ]; then scripts/tutorials.sh; fi
+- if [ "$ONCE" = "true" ]; then scripts/tests.sh; fi

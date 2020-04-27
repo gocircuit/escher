@@ -1,9 +1,9 @@
 
 BuildBasisEscherPage {
-        wf *io.WriteFile
-        wf:Content = *BasisEscherPage
-        wf:Name = "basis-escher.html"
-        : = wf:Ready
+		wf *io.WriteFile
+		wf:Content = *BasisEscherPage
+		wf:Name = "basis-escher.html"
+		: = wf:Ready
 }
 
 BasisEscherPage {
@@ -23,57 +23,57 @@ BasisEscherPage {
 <h2>Index reflex</h2>
 
 <p>Every running Escher circuit program has been <a href="program.html">materialized relative to an index</a>.
-The index reflex, <code>escher.Index</code>, is a noun reflex that emits the index relative to which
+The index reflex, <code>e.Index</code>, is a noun reflex that emits the index relative to which
 the current circuit has been materialized.
 
 <p>The following program, for instance, will print out the index used to materialize the invoking circuit program:
 
-<pre>
+<pre class="escher">
 {
-	*Show = *escher.Index
+	*e.Show = *e.Index
 }
 </pre>
 
 <h2>Materialize reflex</h2>
 
-<p>The materialize reflex, named <code>escher.Materialize</code>,
+<p>The materialize reflex, named <code>e.Materialize</code>,
 materializes a program circuit relative to an index of faculties.
 
 <p>The reflex requires that two valves, <code>:View</code> and <code>:Residue</code>, be connected.
 Values sent to <code>:View</code> must be circuits containing gates named <code>Index</code> and <code>Program</code>.
-The value of the <code>Program</code> gate must be a circuit program (or any 
+The value of the <code>Program</code> gate must be a circuit program (or any
 <a href="program.html">gate value allowed within a circuit program</a>). Whereas the value of the
 <code>Index</code> gate should hold the index, relative to which the program will be materialized.
 
-<p>When a value is received at <code>:View</code>, the materialize reflex will materialize the 
+<p>When a value is received at <code>:View</code>, the materialize reflex will materialize the
 program relative to the given index and will return the residue to the valve <code>:Residue</code>.
 
 <p>Consider the following example program:
 
-<pre>
+<pre class="escher">
 {
-	m *escher.Materialize
+	m *e.Materialize
 	f *e.Fork
 
 	m:View = f:
 	f:Program = {
-		*Show = "Hello from the child circuit program."
+		*e.Show = "Hello from the child circuit program."
 	}
-	f:Index = *escher.Index
-	m:Residue = *Show
+	f:Index = *e.Index
+	m:Residue = *e.Show
 }
 </pre>
 
 <p>This program will materialize the child program
 
-<pre>
+<pre class="escher">
 {
-	*Show = "Hello from the child circuit program."
+	*e.Show = "Hello from the child circuit program."
 }
 </pre>
 
 <p>using the same index that was used to materialize the parent program, as acquired from
-the <code>*escher.Index</code> reflex in the parent program.
+the <code>*e.Index</code> reflex in the parent program.
 
 `
 }

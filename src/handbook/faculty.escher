@@ -1,0 +1,9 @@
+
+faculty {
+	doc `/**
+		This package contains the sources for escher language user guide.
+		You may build it by running
+		<code>$ESCHER/scripts/build_handbook.sh</code>.
+		*/`
+}
+

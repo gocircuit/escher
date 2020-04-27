@@ -10,11 +10,10 @@ import (
 	"bytes"
 	"io"
 	"io/ioutil"
-	// "log"
 
-	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/faculty"
 )
 
 func init() {
@@ -26,7 +25,7 @@ type WriteFile struct {
 	named chan struct{}
 }
 
-func (h *WriteFile) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (h *WriteFile) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	h.named = make(chan struct{})
 	return &WriteFile{}
 }

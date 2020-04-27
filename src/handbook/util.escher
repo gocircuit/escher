@@ -42,7 +42,7 @@ FigurePngSvg {
 	fig *Figure
 	fig:Caption = :Caption
 
-	ps *PngSvg	
+	ps *PngSvg
 	ps:Name = :Image
 	ps:Width = :Width
 	fig:Body = ps:

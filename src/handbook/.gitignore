@@ -1,1 +1,3 @@
 *.html
+/img/*.png
+/img/*-generated.*

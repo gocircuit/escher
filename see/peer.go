@@ -7,55 +7,53 @@
 package see
 
 import (
-	// "log"
-
-	. "github.com/gocircuit/escher/a"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/a"
+	cir "github.com/hoijui/escher/circuit"
 )
 
-func SeePeer(src *Src) (n Name, m Value) {
+func SeePeer(src *a.Src) (n cir.Name, m cir.Value) {
 	if n, m = seeNameGate(src); n != nil {
 		return n, m
 	}
 	return seeNamelessGate(src)
 }
 
-func seeNameGate(src *Src) (n Name, m Value) {
+func seeNameGate(src *a.Src) (n cir.Name, m cir.Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			n, m = nil, nil
 		}
 	}()
 	t := src.Copy()
-	Whitespace(t)
+	a.Whitespace(t)
 	left := SeeValue(t)
-	if len(Whitespace(t)) == 0 {
+	if len(a.Whitespace(t)) == 0 {
 		panic("no whitespace after name")
 	}
 	right := SeeValue(t)
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if right == "" {
+	if right == a.NullLiteral {
 		panic("no gate value")
 	}
 	src.Become(t)
 	return left, right
 }
 
-func seeNamelessGate(src *Src) (n Name, m Value) {
+func seeNamelessGate(src *a.Src) (n cir.Name, m cir.Value) {
 	defer func() {
 		if r := recover(); r != nil {
 			n, m = nil, nil
 		}
 	}()
 	t := src.Copy()
-	Whitespace(t)
+	a.Whitespace(t)
 	value := SeeValue(t)
 	if !Space(t) { // require newline at end
 		return nil, nil
 	}
-	if value == "" {
+	if value == a.NullLiteral {
 		panic("nameless empty-string value implicit")
 	}
 	src.Become(t)

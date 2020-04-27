@@ -1,0 +1,10 @@
+// MEANT_TO_FAIL
+
+Break {
+	*e.Breakpoint = 1
+}
+
+BreakMain {
+	*Break
+}
+

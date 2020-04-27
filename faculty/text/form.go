@@ -10,14 +10,14 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
 )
 
 type Form struct{ be.Sparkless }
 
 func (Form) CognizeIn(eye *be.Eye, v interface{}) {
-	td := v.(Circuit)
+	td := v.(cir.Circuit)
 	t, err := template.New("").Parse(td.StringAt("Form"))
 	if err != nil {
 		panic(err)

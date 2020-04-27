@@ -1,0 +1,7 @@
+
+faculty {
+	doc `/**
+		HTTP server examples.
+		*/`
+}
+

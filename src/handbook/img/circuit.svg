@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="300mm"
+   height="300mm"
+   viewBox="0 0 300 300"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="circuit.svg">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker1433"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1431"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#a141d0;stroke-width:1pt;stroke-opacity:1;fill:#a141d0;fill-opacity:1"
+         transform="scale(0.4) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotM"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1047"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#a141d0;stroke-width:1pt;stroke-opacity:1;fill:#a141d0;fill-opacity:1"
+         transform="scale(0.4) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Lend"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path1004"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#ffcc00;stroke-opacity:1;fill:#ffcc00;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) rotate(180) translate(1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path983"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#ffcc00;stroke-width:1pt;stroke-opacity:1;fill:#ffcc00;fill-opacity:1"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker1267"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1265"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#ffcc00;stroke-opacity:1;fill:#ffcc00;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) translate(1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Lstart"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1001"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#ffcc00;stroke-opacity:1;fill:#ffcc00;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) translate(1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM-6"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1047-2"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker1433-6"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1431-1"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM-3"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1047-7"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker1433-5"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1431-9"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM-2"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1047-8"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker1433-9"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1431-7"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM-61"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1047-29"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker1433-3"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1431-19"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM-7"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1047-84"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker1433-50"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1431-3"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotM-1"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1047-0"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker1433-63"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1431-2"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#a141d0;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.4,0,0,0.4,2.96,0.4)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.45254834"
+     inkscape:cx="-21.864833"
+     inkscape:cy="499.72848"
+     inkscape:document-units="mm"
+     inkscape:current-layer="labels-parts"
+     showgrid="false"
+     inkscape:snap-global="true"
+     inkscape:object-paths="true"
+     inkscape:snap-bbox="false"
+     inkscape:snap-nodes="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-smooth-nodes="false"
+     inkscape:snap-others="true"
+     inkscape:snap-text-baseline="true"
+     inkscape:snap-to-guides="true"
+     inkscape:snap-page="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1025"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,3)">
+    <rect
+       style="opacity:1;vector-effect:none;fill:#e7e7e7;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.99999988;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="world"
+       width="300"
+       height="300"
+       x="0"
+       y="-2.9999976"
+       inkscape:label="world" />
+    <ellipse
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#7ad23e;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="circuit"
+       cx="150"
+       cy="147"
+       rx="134.18152"
+       ry="128.09993"
+       inkscape:label="circuit" />
+    <g
+       id="gates-incorperati"
+       inkscape:label="gates-incorperati"
+       style="display:inline">
+      <circle
+         inkscape:label="gate1"
+         r="15.875"
+         cy="86.845245"
+         cx="98.273804"
+         id="gate1"
+         style="opacity:1;vector-effect:none;fill:#e7e7e7;fill-opacity:1;fill-rule:nonzero;stroke:#7ad23e;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate2"
+         r="17.008928"
+         cy="218.00298"
+         cx="119.06249"
+         id="gate2"
+         style="opacity:1;vector-effect:none;fill:#e7e7e7;fill-opacity:1;fill-rule:nonzero;stroke:#7ad23e;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate3"
+         r="37.797619"
+         cy="146.94344"
+         cx="213.55655"
+         id="gate3"
+         style="opacity:1;vector-effect:none;fill:#e7e7e7;fill-opacity:1;fill-rule:nonzero;stroke:#7ad23e;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <g
+       id="valves"
+       inkscape:label="valves"
+       transform="translate(-4.0039072e-8,1.8945313e-6)">
+      <circle
+         inkscape:label="gate3-valve6"
+         r="3.4410954"
+         cy="154.53789"
+         cx="176.52974"
+         id="gate3-valve6"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate3-valve5"
+         r="3.4410954"
+         cy="159.92583"
+         cx="249.05469"
+         id="gate3-valve5"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate3-valve4"
+         r="3.4410954"
+         cy="141.04105"
+         cx="250.89047"
+         id="gate3-valve4"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate3-valve3"
+         r="3.4410954"
+         cy="131.20689"
+         cx="179.19057"
+         id="gate3-valve3"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate3-valve2"
+         r="3.4410954"
+         cy="175.84776"
+         cx="189.20085"
+         id="gate3-valve2"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate3-valve1"
+         r="3.4410954"
+         cy="114.88909"
+         cx="193.5271"
+         id="gate3-valve1"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate2-valve3"
+         r="3.4410954"
+         cy="234.80331"
+         cx="121.71811"
+         id="gate2-valve3"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate2-valve2"
+         r="3.4410954"
+         cy="228.89284"
+         cx="105.99672"
+         id="gate2-valve2"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate2-valve1"
+         r="3.4410954"
+         cy="209.49081"
+         cx="133.78821"
+         id="gate2-valve1"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate1-valve3"
+         r="3.4410954"
+         cy="101.65903"
+         cx="103.98058"
+         id="gate1-valve3"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate1-valve2"
+         r="3.4410954"
+         cy="88.283119"
+         cx="114.08355"
+         id="gate1-valve2"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="gate1-valve1"
+         r="3.4410954"
+         cy="77.494537"
+         cx="85.444931"
+         id="gate1-valve1"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="super-valve-3"
+         r="3.4410954"
+         cy="262.53009"
+         cx="207.96609"
+         id="super-valve-3"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="super-valve-2"
+         r="3.4410954"
+         cy="255.48688"
+         cx="78.647102"
+         id="super-valve-2"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="super-valve-0"
+         r="3.4410951"
+         cy="55.445229"
+         cx="56.27927"
+         id="super-valve-0"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:label="super-valve-1"
+         r="3.4410954"
+         cy="68.26506"
+         cx="255.84375"
+         id="super-valve-1"
+         style="opacity:1;vector-effect:none;fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <g
+       id="links"
+       inkscape:label="links"
+       style="display:inline;stroke:#a141d0;stroke-opacity:1">
+      <path
+         inkscape:label="link7"
+         inkscape:connector-curvature="0"
+         id="link7"
+         d="M 56.279269,55.445227 85.44493,77.494536"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM);marker-end:url(#marker1433)" />
+      <path
+         inkscape:label="link6"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="link6"
+         d="M 78.647102,255.48688 105.99672,228.89284"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM-6);marker-end:url(#marker1433-6)" />
+      <path
+         inkscape:label="link5"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="link5"
+         d="m 121.71811,234.80331 c 3.55843,29.82707 75.53959,0.92732 86.24798,27.72678"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM-3);marker-end:url(#marker1433-5)" />
+      <path
+         inkscape:label="link4"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="link4"
+         d="m 133.78821,209.49081 55.41264,-33.64305"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM-2);marker-end:url(#marker1433-9)" />
+      <path
+         inkscape:label="link3"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="link3"
+         d="m 250.89047,141.04105 c 29.52451,-3.36736 34.08258,24.00354 -1.83578,18.88478"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM-61);marker-end:url(#marker1433-3)" />
+      <path
+         inkscape:label="link2"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="link2"
+         d="m 103.98058,101.65903 c 28.92776,23.40102 43.45937,26.61249 75.20998,29.54786"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM-7);marker-end:url(#marker1433-50)" />
+      <path
+         inkscape:label="link1"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="link1"
+         d="m 114.08355,88.283119 c 38.47642,1.841382 55.21343,4.107453 79.44355,26.605971"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#a141d0;stroke-width:0.66500002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#DotM-1);marker-end:url(#marker1433-63)" />
+    </g>
+    <g
+       id="labels-parts"
+       inkscape:label="labels-parts"
+       style="display:inline">
+      <flowRoot
+         inkscape:label="label-circuit"
+         transform="matrix(0.26458333,0,0,0.26458333,-3.7797619,0.40178568)"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#717171;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+         id="label-circuit"
+         xml:space="preserve"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#717171;fill-opacity:1;"
+           id="flowRegion12181"><rect
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#717171;fill-opacity:1;"
+             y="162.4297"
+             x="407.14285"
+             height="103.44888"
+             width="437.82382"
+             id="rect12183" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#717171;fill-opacity:1;"
+           id="flowPara12185">Circuit</flowPara></flowRoot>      <flowRoot
+         inkscape:label="label-valves"
+         transform="matrix(0.26458333,0,0,0.26458333,-33.993019,-7.4558034)"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="label-valves"
+         xml:space="preserve"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono'"
+           id="flowRegion12197"><rect
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono'"
+             y="578.14398"
+             x="538.57141"
+             height="56.377827"
+             width="246.62802"
+             id="rect12199" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ff0000"
+           id="flowPara12201">Valves</flowPara></flowRoot>      <g
+         id="label-gates-combined"
+         inkscape:label="label-gates-combined">
+        <text
+           inkscape:label="label-membranes"
+           id="text2996"
+           y="224.35698"
+           x="51.010891"
+           style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#7ad23e;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           xml:space="preserve"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1;stroke-width:0.26458332px"
+             y="224.35698"
+             x="51.010891"
+             id="tspan2994"
+             sodipodi:role="line">(= Membranes)</tspan></text>
+        <flowRoot
+           xml:space="preserve"
+           id="flowRoot12187"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#7ad23e;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           transform="matrix(0.26458333,0,0,0.26458333,-13.325488,56.143103)"
+           inkscape:label="label-gates"><flowRegion
+             id="flowRegion12189"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"><rect
+               id="rect12191"
+               width="194.28572"
+               height="74.285713"
+               x="228.57143"
+               y="569.57257"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1" /></flowRegion><flowPara
+             id="flowPara12193"
+             style="font-size:64px">Gates</flowPara></flowRoot>      </g>
+      <flowRoot
+         xml:space="preserve"
+         id="label-links"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#a141d0;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.26458333,0,0,0.26458333,-2.0241904,0.84461239)"
+         inkscape:label="label-links"><flowRegion
+           id="flowRegion12205"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#a141d0;fill-opacity:1;stroke:none;stroke-opacity:1"><rect
+             id="rect12207"
+             width="223.8833"
+             height="129.7883"
+             x="482.85715"
+             y="386.71542"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#a141d0;fill-opacity:1;stroke:none;stroke-opacity:1" /></flowRegion><flowPara
+           style="font-size:64px"
+           id="flowPara12209">Links</flowPara></flowRoot>      <flowRoot
+         inkscape:label="label-extenal-2"
+         transform="matrix(0.26458333,0,0,0.26458333,176.51488,127.77976)"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="label-extenal-2"
+         xml:space="preserve"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ffffff"
+           id="flowRegion12217"><rect
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ffffff"
+             y="48.14399"
+             x="44.285713"
+             height="74.285713"
+             width="214.28572"
+             id="rect12219" /></flowRegion><flowPara
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Italic';fill:#999999"
+           id="flowPara12221">external</flowPara></flowRoot>      <flowRoot
+         inkscape:label="label-extenal-1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="label-extenal-1"
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,9.4089496,2.5428904)"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ffffff"
+           id="flowRegion12217-3"><rect
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ffffff"
+             y="48.14399"
+             x="44.285713"
+             height="74.285713"
+             width="214.28572"
+             id="rect12219-4" /></flowRegion><flowPara
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Italic';fill:#999999"
+           id="flowPara12221-5">external</flowPara></flowRoot>      <flowRoot
+         inkscape:label="label-internal"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="label-internal"
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,31.123756,146.336)"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ffffff"
+           id="flowRegion12217-3-5"><rect
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ffffff"
+             y="48.14399"
+             x="44.285713"
+             height="74.285713"
+             width="214.28572"
+             id="rect12219-4-7" /></flowRegion><flowPara
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono Italic';fill:#999999"
+           id="flowPara12221-5-3">internal</flowPara></flowRoot>    </g>
+    <g
+       id="labels-instances"
+       inkscape:label="labels-instances"
+       style="display:inline">
+      <text
+         inkscape:label="label-:valve3"
+         id="text2558-2-0"
+         y="262.44543"
+         x="172.26373"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ff0000;stroke-width:0.26458332px"
+           y="262.44543"
+           x="172.26373"
+           id="tspan2556-7-9"
+           sodipodi:role="line">:valve3</tspan><tspan
+           id="tspan2644-3"
+           style="fill:#ff0000;stroke-width:0.26458332px"
+           y="271.26489"
+           x="172.26373"
+           sodipodi:role="line" /></text>
+      <text
+         inkscape:label="label-gate2:valve1"
+         id="text2558-2"
+         y="214.4893"
+         x="138.86151"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ff0000;stroke-width:0.26458332px"
+           y="214.4893"
+           x="138.86151"
+           id="tspan2556-7"
+           sodipodi:role="line">gate2:valve1</tspan><tspan
+           id="tspan2644"
+           style="fill:#ff0000;stroke-width:0.26458332px"
+           y="223.30875"
+           x="138.86151"
+           sodipodi:role="line" /></text>
+      <text
+         inkscape:label="label-gate3:valve4"
+         id="text2558"
+         y="177.28195"
+         x="132.76413"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ff0000;stroke-width:0.26458332px"
+           y="177.28195"
+           x="132.76413"
+           id="tspan2556"
+           sodipodi:role="line">gate3:valve2</tspan></text>
+      <text
+         inkscape:label="label-:"
+         id="text2558-2-0-3"
+         y="57.183514"
+         x="61.442554"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#ff0000;stroke-width:0.26458332px"
+           y="57.183514"
+           x="61.442554"
+           id="tspan2556-7-9-2"
+           sodipodi:role="line">:</tspan><tspan
+           id="tspan2644-3-7"
+           style="fill:#ff0000;stroke-width:0.26458332px"
+           y="66.00296"
+           x="61.442554"
+           sodipodi:role="line" /></text>
+      <flowRoot
+         inkscape:label="label-gate3"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#7ad23e;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot2512-35"
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,136.43209,-11.927796)"><flowRegion
+           style="fill:#7ad23e;fill-opacity:1"
+           id="flowRegion2514-62"><rect
+             style="fill:#7ad23e;fill-opacity:1"
+             y="402.42969"
+             x="261.42856"
+             height="79.676338"
+             width="158.55945"
+             id="rect2516-9" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.66666794px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"
+           id="flowPara2518-1">gate3</flowPara></flowRoot>      <flowRoot
+         inkscape:label="label-gate2"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#7ad23e;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot2512-3"
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,35.636925,81.805011)"><flowRegion
+           style="fill:#7ad23e;fill-opacity:1"
+           id="flowRegion2514-6"><rect
+             style="fill:#7ad23e;fill-opacity:1"
+             y="402.42969"
+             x="261.42856"
+             height="79.676338"
+             width="158.55945"
+             id="rect2516-7" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.66666794px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"
+           id="flowPara2518-5">gate2</flowPara></flowRoot>      <flowRoot
+         inkscape:label="label-gate1"
+         transform="matrix(0.26458333,0,0,0.26458333,-5.5810547,-11.061523)"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#7ad23e;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot2512"
+         xml:space="preserve"><flowRegion
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"
+           id="flowRegion2514"><rect
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"
+             y="402.42969"
+             x="261.42856"
+             height="79.676338"
+             width="158.55945"
+             id="rect2516" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.66666794px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"
+           id="flowPara2518">gate1</flowPara></flowRoot>      <text
+         inkscape:label="label-link3"
+         id="text2558-2-8"
+         y="203.05965"
+         x="151.76625"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#a141d0;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#a141d0;fill-opacity:1;stroke-width:0.26458332px"
+           y="203.05965"
+           x="151.76625"
+           id="tspan2556-7-7"
+           sodipodi:role="line">gate2:valve1 = gate3:valve2</tspan><tspan
+           id="tspan2644-5"
+           style="fill:#a141d0;fill-opacity:1;stroke-width:0.26458332px"
+           y="211.87909"
+           x="151.76625"
+           sodipodi:role="line" /></text>
+      <flowRoot
+         xml:space="preserve"
+         id="flowRoot2512-4"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';letter-spacing:0px;word-spacing:0px;fill:#7ad23e;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         transform="matrix(0.26458333,0,0,0.26458333,-50.312094,33.551286)"
+         inkscape:label="label-gate-super"><flowRegion
+           id="flowRegion2514-8"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1"><rect
+             id="rect2516-8"
+             width="158.55945"
+             height="79.676338"
+             x="261.42856"
+             y="402.42969"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1" /></flowRegion><flowPara
+           id="flowPara2518-3"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.66666794px;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#7ad23e;fill-opacity:1">&quot;&quot;</flowPara></flowRoot>      <text
+         inkscape:label="label-link2"
+         id="text2558-2-8-0"
+         y="244.55629"
+         x="133.2361"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;display:inline;fill:#a141d0;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#a141d0;fill-opacity:1;stroke-width:0.26458332px"
+           y="244.55629"
+           x="133.2361"
+           sodipodi:role="line"
+           id="tspan2793">gate2:valve3 = :valve3</tspan><tspan
+           id="tspan2644-5-7"
+           style="fill:#a141d0;fill-opacity:1;stroke-width:0.26458332px"
+           y="253.37573"
+           x="133.2361"
+           sodipodi:role="line" /></text>
+      <text
+         inkscape:label="label-link1"
+         id="text2558-2-8-3"
+         y="66.140091"
+         x="74.090836"
+         style="font-style:normal;font-weight:normal;font-size:7.05555534px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;display:inline;fill:#a141d0;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Liberation Mono';-inkscape-font-specification:'Liberation Mono';fill:#a141d0;fill-opacity:1;stroke-width:0.26458332px"
+           y="66.140091"
+           x="74.090836"
+           id="tspan2556-7-7-4"
+           sodipodi:role="line">: = gate1:valve1</tspan><tspan
+           id="tspan2644-5-9"
+           style="fill:#a141d0;fill-opacity:1;stroke-width:0.26458332px"
+           y="74.959534"
+           x="74.090836"
+           sodipodi:role="line" /></text>
+    </g>
+  </g>
+</svg>

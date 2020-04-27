@@ -1,0 +1,7 @@
+
+faculty {
+	doc `/**
+		Unit tests for the yield faculty.
+		*/`
+}
+

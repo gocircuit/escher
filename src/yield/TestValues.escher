@@ -1,0 +1,44 @@
+
+Values {
+	`// Values yields all gate values of its default valve circuit argument.`
+	yield *Gates
+	yield: = :
+	yield:End = :End
+	yield:Frame = fork:
+
+	fork *e.Fork
+	fork:Value = :Frame
+}
+
+Names {
+	`// Names yields all gate names of its default valve circuit argument.`
+	yield *Gates
+	yield: = :
+	yield:End = :End
+	yield:Frame = fork:
+
+	fork *e.Fork
+	fork:Name = :Frame
+}
+
+TestValues {
+	`// TODO: The expected side of the match gate should use a different method to compute the result.`
+	tx *testValues
+	tx:Frame = match:Got
+	tx:End = *os.ExitSuccess
+
+	match *test.Match
+	match:Expected = ty:Frame
+	match: = *e.Ignore
+
+	ty:End = *e.Ignore
+	ty *testValues
+}
+
+testValues {
+	t *Values
+	t: = { 1, 2, 3 }
+	t:Frame = :Frame
+	t:End = :End
+}
+

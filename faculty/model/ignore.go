@@ -7,11 +7,9 @@
 package model
 
 import (
-	// "fmt"
-
-	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/faculty"
 )
 
 func init() {
@@ -20,16 +18,16 @@ func init() {
 
 type IgnoreValves struct{}
 
-func (IgnoreValves) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (IgnoreValves) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 
 func (IgnoreValves) CognizeCircuit(eye *be.Eye, v interface{}) {
-	u := v.(Circuit).Copy()
+	u := v.(cir.Circuit).Copy()
 	n := u.Unify("ignoreValves")
-	u.Gate[n] = NewVerbAddress("*", "Ignore")
-	u.Reflow(Super, n)
-	eye.Show(DefaultValve, u)
+	u.Gate[n] = cir.NewVerbAddress("*", "Ignore")
+	u.Reflow(cir.Super, n)
+	eye.Show(cir.DefaultValve, u)
 }
 
 func (IgnoreValves) Cognize(eye *be.Eye, v interface{}) {}

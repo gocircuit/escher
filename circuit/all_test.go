@@ -15,13 +15,13 @@ func TestSame(t *testing.T) {
 	if !Same(New().Grow("x", nil), New().Grow("x", nil)) {
 		t.Errorf("same")
 	}
-	if !Same(New().Grow("x", ""), New().Grow("x", "")) {
+	if !Same(New().Grow("x", DefaultValve), New().Grow("x", DefaultValve)) {
 		t.Errorf("same")
 	}
 }
 
 func TestVerb(t *testing.T) {
-	a, b := Circuit(NewLookupVerb("abc", "d", 1)), Circuit(NewLookupVerb("abc", "d", 1))
+	a, b := Circuit(NewVerbAddress("@", "abc", "d", 1)), Circuit(NewVerbAddress("@", "abc", "d", 1))
 	if !Same(a, b) {
 		t.Errorf("verb same")
 	}

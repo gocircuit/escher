@@ -8,6 +8,9 @@ package a
 
 import "strconv"
 
+// NullLiteral is the go value of a null/invalid escher literal
+const NullLiteral = ""
+
 func isNotVerbatim(r rune) bool {
 	return r != '`'
 }

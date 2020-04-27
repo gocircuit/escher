@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gocircuit/escher/be"
-	. "github.com/gocircuit/escher/circuit"
-	"github.com/gocircuit/escher/faculty"
-	"github.com/gocircuit/escher/kit/plumb"
+	"github.com/hoijui/escher/be"
+	cir "github.com/hoijui/escher/circuit"
+	"github.com/hoijui/escher/faculty"
+	"github.com/hoijui/escher/kit/plumb"
 )
 
 func init() {
@@ -27,7 +27,7 @@ type Delay struct {
 	dur time.Duration
 }
 
-func (t *Delay) Spark(*be.Eye, Circuit, ...interface{}) Value {
+func (t *Delay) Spark(*be.Eye, cir.Circuit, ...interface{}) cir.Value {
 	return nil
 }
 

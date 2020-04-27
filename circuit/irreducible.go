@@ -6,10 +6,6 @@
 
 package circuit
 
-import (
-	// "fmt"
-)
-
 // Circuit is an irreducible. An irreducible is an object with a Copy and Same methods.
 
 func (u Circuit) Copy() Circuit {

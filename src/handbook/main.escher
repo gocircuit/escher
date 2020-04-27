@@ -10,6 +10,7 @@ main {
 	x:6 = *BuildMeaningPage
 	x:7 = *BuildReflexPage
 	x:8 = *BuildProgramPage
+	x:glossary = *BuildGlossaryPage
 
 	x:9 = *BuildBasisPage
 	x:10 = *BuildBasisFlowPage

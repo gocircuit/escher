@@ -4,7 +4,9 @@
 [![GoDoc](https://godoc.org/github.com/hoijui/escher?status.png)](https://godoc.org/github.com/hoijui/escher)
 [![Go Report Card](https://goreportcard.com/badge/github.com/hoijui/escher)](https://goreportcard.com/report/github.com/hoijui/escher)
 
-___NOTE___ _Escher (in this repository) is stagnant since 2015_
+> ___NOTE___\
+> _Escher -- in the original repository -- is stagnant since 2015._\
+> This project however, is (more) alive!
 
 See [the projects website](http://escher.io)
 for more info about the language.

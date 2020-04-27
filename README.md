@@ -1,14 +1,14 @@
-# [Escher - A language for programming in pure metaphors](https://hoijui.github.io/escher/)
+# [Escher - A language for programming in pure metaphors](https://hoijui.github.io/escher-old-history/)
 
-[![Build Status](https://travis-ci.org/hoijui/escher.svg?branch=master)](https://travis-ci.org/hoijui/escher)
-[![GoDoc](https://godoc.org/github.com/hoijui/escher?status.png)](https://godoc.org/github.com/hoijui/escher)
-[![Go Report Card](https://goreportcard.com/badge/github.com/hoijui/escher)](https://goreportcard.com/report/github.com/hoijui/escher)
+[![Build Status](https://travis-ci.org/hoijui/escher-old-history.svg?branch=master)](https://travis-ci.org/hoijui/escher-old-history)
+[![GoDoc](https://godoc.org/github.com/hoijui/escher-old-history?status.png)](https://godoc.org/github.com/hoijui/escher-old-history)
+[![Go Report Card](https://goreportcard.com/badge/github.com/hoijui/escher-old-history)](https://goreportcard.com/report/github.com/hoijui/escher-old-history)
 
 > ___NOTE___\
 > _Escher -- in the original repository -- is stagnant since 2015._\
 > This project however, is (more) alive!
 
-See [the projects website](https://hoijui.github.io/escher/)
+See [the projects website](https://hoijui.github.io/escher-old-history/)
 for more info about the language.
 
 Enclosed | Enclosing
@@ -109,7 +109,7 @@ escher -src src/tutorial "*helloworld.escher"
 
 ## Structure
 
-Please refer to [the projects website](https://hoijui.github.io/escher/).
+Please refer to [the projects website](https://hoijui.github.io/escher-old-history/).
 
 ## Syntax (files) and faculties (directories) structure
 
